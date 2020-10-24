@@ -1,0 +1,25 @@
+h4 {
+	color: blue;
+	display: inline;
+}
+
+table, th, td {
+	border: 1px solid #CCCCFF;
+}
+
+th, td {
+	padding: 5px;
+	text-align: center;
+}
+
+.container {
+	text-align: center;
+}
+
+button.btn {
+	padding: 5px 5px;
+	border: 0 none;
+	cursor: pointer;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}

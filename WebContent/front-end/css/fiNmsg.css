@@ -1,0 +1,331 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+/* 以下為聊天室的 CSS  */
+.msg {
+	position: fixed;
+	z-index: 500;
+	bottom: 5%;
+	right: 5%;
+}
+
+.chat_box_wrapper.chat_box_small.chat_box_active {
+	height: 342px;
+	overflow-y: scroll;
+	width: 316px;
+}
+
+aside {
+	background-attachment: fixed;
+	background-clip: border-box;
+	background-color: rgba(0, 0, 0, 0);
+	background-image:
+		url("https://z-1-scontent-cdg2-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/12670232_624826600991767_3547881030871377118_n.jpg?oh=b4541268dfcdc6c8b2758066dba9c0c7&oe=572DDCE7");
+	background-origin: padding-box;
+	background-position: center top;
+	background-repeat: repeat;
+	border: 0px;
+	bottom: 0;
+	display: none;
+	height: 466px;
+	position: fixed;
+	right: 70px;
+	width: 300px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.chat_box {
+	padding: 16px;
+}
+
+.md-user-image {
+	border-radius: 50%;
+	width: 34px;
+}
+
+.popup-box-on {
+	display: block !important;
+}
+
+.popup-head {
+	background: #304445 none repeat scroll 0 0 !important;
+	color: #fff;
+	display: table;
+	width: 105.5%;
+	padding: 8px;
+}
+
+.chat-header-button {
+	background: transparent none repeat scroll 0 0;
+	border: 1px solid #fff;
+	border-radius: 7px;
+	font-size: 15px;
+	height: 26px;
+	opacity: 0.9;
+	padding: 0;
+	text-align: center;
+	width: 26px;
+}
+
+.popup-head-right {
+	margin: 9px 0 0;
+}
+
+.chat_box .chat_message_wrapper .chat_user_avatar {
+	float: left;
+}
+
+.chat_box .chat_message_wrapper::after {
+	clear: both;
+}
+
+.chat_box .chat_message_wrapper::after, .chat_box .chat_message_wrapper::before
+	{
+	content: " ";
+	display: table;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message, .chat_box .chat_message_wrapper ul.chat_message>li
+	{
+	list-style: outside none none;
+	padding: 0;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message {
+	float: left;
+	margin: 0 0 0 20px;
+	max-width: 77%;
+}
+
+.chat_box.chat_box_colors_a .chat_message_wrapper ul.chat_message>li:first-child::before
+	{
+	border-right-color: #616161;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li:first-child::before {
+	border-color: transparent #fff transparent transparent;
+	border-style: solid;
+	border-width: 0 16px 16px 0;
+	content: "";
+	height: 0;
+	left: -14px;
+	position: absolute;
+	top: 0;
+	width: 0;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li {
+	background: #fff none repeat scroll 0 0;
+	border-radius: 4px;
+	clear: both;
+	color: #212121;
+	display: block;
+	float: left;
+	font-size: 13px;
+	padding: 8px 16px;
+	position: relative;
+	word-break: break-all;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message, .chat_box .chat_message_wrapper ul.chat_message>li
+	{
+	list-style: outside none none;
+	padding: 0;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li {
+	margin: 0;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li p {
+	margin: 0;
+}
+
+.chat_box.chat_box_colors_a .chat_message_wrapper ul.chat_message>li .chat_message_time
+	{
+	color: rgba(185, 186, 180, 0.9);
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li .chat_message_time {
+	color: #727272;
+	display: block;
+	font-size: 11px;
+	padding-top: 2px;
+	text-transform: uppercase;
+}
+
+.chat_box .chat_message_wrapper.chat_message_right .chat_user_avatar {
+	float: right;
+}
+
+.chat_box .chat_message_wrapper.chat_message_right ul.chat_message {
+	float: right;
+	margin-left: 0 !important;
+	margin-right: 24px !important;
+}
+
+.chat_box .chat_message_wrapper.chat_message_right ul.chat_message>li:first-child::before
+	{
+	border-color: transparent transparent transparent #fff;
+	border-width: 0 0 29px 29px;
+	left: auto;
+	right: -14px;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li:first-child::before {
+	border-width: 0 29px 29px 0;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li {
+	background: #fff none repeat scroll 0 0;
+	border-radius: 12px;
+	clear: both;
+	color: #212121;
+	display: block;
+	float: left;
+	font-size: 13px;
+	padding: 8px 16px;
+	position: relative;
+}
+
+img {
+	border: 0 none;
+	box-sizing: border-box;
+	height: auto;
+	max-width: 100%;
+	vertical-align: middle;
+}
+
+#custSvc {
+	width: 128px;
+	display: inline-block;
+	position: fixed;
+	top: 73%;
+	right: 5%;
+}
+
+#chatClose {
+	margin-bottom: 5px;
+	width: 16px;
+}
+
+#sendMsg {
+	margin-left: 15px;
+	margin-top: 10px;
+	width: 24px;
+}
+
+#sidebar_secondary {
+	z-index: 300;
+}
+
+.chat_box .chat_message_wrapper ul.chat_message>li+li {
+	margin-top: 4px;
+}
+
+.chat_box .chat_message_wrapper {
+	margin-bottom: 20px;
+}
+
+.chat_box.chat_box_colors_a .chat_message_wrapper ul.chat_message>li:first-child::before
+	{
+	border-right-color: #fff3b8;
+}
+
+.chat_box.chat_box_colors_a .chat_message_wrapper ul.chat_message>li {
+	background: #fff3b8 none repeat scroll 0 0;
+	color: #000000;
+}
+
+.chat_box.chat_box_colors_a .chat_message_wrapper.chat_message_right ul.chat_message>li:first-child::before
+	{
+	border-left-color: #c9ff99;
+}
+
+.chat_box.chat_box_colors_a .chat_message_wrapper.chat_message_right ul.chat_message>li
+	{
+	background: #c9ff99 none repeat scroll 0 0;
+}
+
+.uk-input-group {
+	border-collapse: separate;
+	display: table;
+	position: relative;
+}
+
+.chat_submit_box {
+	bottom: 0;
+	box-sizing: border-box;
+	left: 0;
+	overflow: hidden;
+	padding: 10px;
+	position: absolute;
+	width: 105.5%;
+	background: #e3e3e3;
+}
+
+.gurdeep-chat-box {
+	background: #fff none repeat scroll 0 0;
+	border-radius: 5px;
+	float: left;
+	padding: 3px;
+	width: 230px;
+}
+
+.uk-input-group-addon .glyphicon {
+	color: #000;
+	font-size: 21px;
+	line-height: 36px;
+	padding: 0 6px;
+}
+
+.glyphicon-send {
+	color: #ffffff;
+	font-size: 21px;
+	line-height: 36px;
+	padding: 0 6px;
+	position: relative;
+	left: 3%;
+}
+
+.gurdeep-chat-box i {
+	color: #333;
+	font-size: 21px;
+	line-height: 1px;
+}
+
+#submit_message {
+	background: transparent none repeat scroll 0 0;
+	border: 0px;
+	padding: 4px;
+	width: 220px;
+}
+
+/* 以下為小鈴鐺的 CSS  */
+table {
+	width: 800px;
+	background-color: white;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid #CCCCFF;
+}
+
+th, td {
+	padding: 5px;
+	text-align: center;
+}
+
+.badge {
+	min-width: 1px;
+	padding: 3px 3px;
+	vertical-align: text-bottom;
+	background-color: #FF0000;
+	display: none;
+}
+
+#fi_cont {
+	color: #000;
+}

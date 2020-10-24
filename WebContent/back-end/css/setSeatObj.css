@@ -1,0 +1,29 @@
+h4 {
+	color: blue;
+	display: inline;
+}
+
+table {
+	width: 100%;
+	background-color: white;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid #CCCCFF;
+}
+
+#myFile {
+	width: 230px;
+}
+
+th, td {
+	padding: 5px;
+	text-align: center;
+}
+
+#table_img {
+	width: 80px;
+	height: 80px;
+}

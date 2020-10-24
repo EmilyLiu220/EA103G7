@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<display-name>EA103G7</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/EA103G7</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<!-- 員工 -->
+	<servlet>
+		<servlet-name>EmpServlet</servlet-name>
+		<servlet-class>com.emp.controller.EmpServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EmpServlet</servlet-name>
+		<url-pattern>/back-end/emp/emp.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- 會員 -->
+	<servlet>
+		<servlet-name>MemServlet</servlet-name>
+		<servlet-class>com.mem.controller.MemServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MemServlet</servlet-name>
+		<url-pattern>/back-end/mem/mem.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>MemServlet</servlet-name>
+		<url-pattern>/front-end/mem/mem.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- 餐點控制 -->
+	<servlet>
+		<servlet-name>MealServlet</servlet-name>
+		<servlet-class>com.meal.controller.MealServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MealServlet</servlet-name>
+		<url-pattern>/meal/meal.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- 評價&紅利 -->
+	<servlet>
+		<servlet-name>Member_ReviewServlet</servlet-name>
+		<servlet-class>com.member_review.controller.Member_ReviewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Member_ReviewServlet</servlet-name>
+		<url-pattern>/back-end/member_review/forwarded</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Report_AppraiseServlet</servlet-name>
+		<servlet-class>com.report_appraise.controller.Report_AppraiseServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Report_AppraiseServlet</servlet-name>
+		<url-pattern>/back-end/report_appraise/forwarded</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>BonusServlet</servlet-name>
+		<servlet-class>com.bonus.controller.BonusServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BonusServlet</servlet-name>
+		<url-pattern>/back-end/bonus/forwarded</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Bonus_OrderServlet</servlet-name>
+		<servlet-class>com.bonus_order.controller.Bonus_OrderServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Bonus_OrderServlet</servlet-name>
+		<url-pattern>/back-end/bonus_order/forwarded</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Bonus_Order_DetailServlet</servlet-name>
+		<servlet-class>com.bonus_order_detail.controller.Bonus_Order_DetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Bonus_Order_DetailServlet</servlet-name>
+		<url-pattern>/back-end/bonus_order_detail/forwarded</url-pattern>
+	</servlet-mapping>
+
+	<!-- 訊息 -->
+	<servlet>
+		<servlet-name>Front_informServlet</servlet-name>
+		<servlet-class>com.front_inform.controller.Front_informServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Front_informServlet</servlet-name>
+		<url-pattern>/front_inform/fi.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Front_informServlet</servlet-name>
+		<url-pattern>/front_inform/fiServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Inform_SetServlet</servlet-name>
+		<servlet-class>com.inform_set.controller.Inform_SetServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Inform_SetServlet</servlet-name>
+		<url-pattern>/inform_set/is.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Inform_SetServlet</servlet-name>
+		<url-pattern>/inform_set/isServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Message_RecordServlet</servlet-name>
+		<servlet-class>com.message_record.controller.Message_RecordServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Message_RecordServlet</servlet-name>
+		<url-pattern>/message_record/msg.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Message_RecordServlet</servlet-name>
+		<url-pattern>/message_record/msgServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 營養 -->
+	<servlet>
+		<servlet-name>NutServlet</servlet-name>
+		<servlet-class>com.nut.controller.NutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NutServlet</servlet-name>
+		<url-pattern>/nut/nut.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Nut_valueServlet</servlet-name>
+		<servlet-class>com.nut_value.controller.Nut_valueServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Nut_valueServlet</servlet-name>
+		<url-pattern>/nut_value/nut_value.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>FoodServlet</servlet-name>
+		<servlet-class>com.food.controller.FoodServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FoodServlet</servlet-name>
+		<url-pattern>/food/food.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Meal_partServlet</servlet-name>
+		<servlet-class>com.meal_part.controller.Meal_partServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Meal_partServlet</servlet-name>
+		<url-pattern>/meal_part/meal_part.do</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 廣告 -->
+	<servlet>
+		<servlet-name>NewsServlet</servlet-name>
+		<servlet-class>com.news.controller.NewsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NewsServlet</servlet-name>
+		<url-pattern>/news/news.do</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>AdServlet</servlet-name>
+		<servlet-class>com.ad.controller.AdServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdServlet</servlet-name>
+		<url-pattern>/ad/ad.do</url-pattern>
+	</servlet-mapping>
+	
+	<!--前台會員登入濾器 -->
+	<filter>
+	  <filter-name>frontLoginFilter</filter-name>
+	  <filter-class>frontfilters.FrontLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>frontLoginFilter</filter-name>
+	  <url-pattern>/front-end/mem/login_success_mem.jsp</url-pattern>
+	  <url-pattern>/front-end/mem/showMemInfo.jsp</url-pattern>
+	  <url-pattern>/front-end/mem/update_mem_info.jsp</url-pattern>
+	  <dispatcher>REQUEST</dispatcher>
+	  <dispatcher>FORWARD</dispatcher>
+	  <dispatcher>INCLUDE</dispatcher>
+	  <dispatcher>ERROR</dispatcher>
+	  <dispatcher>ASYNC</dispatcher>
+	</filter-mapping>  
+	  
+	<!--後台員工登入濾器 -->
+	<filter>
+	  <filter-name>backLoginFilter</filter-name>
+	  <filter-class>backfilters.BackLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>backLoginFilter</filter-name>
+	  <url-pattern>/back-end/emp/addEmp.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/listAllEmp.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/listOneEmp.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/select_page.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/update_emp_auth.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/update_emp_info.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/update_emp_sts.jsp</url-pattern>
+	  <url-pattern>/back-end/mem/*</url-pattern>
+	  <dispatcher>REQUEST</dispatcher>
+	  <dispatcher>FORWARD</dispatcher>
+	  <dispatcher>INCLUDE</dispatcher>
+	  <dispatcher>ERROR</dispatcher>
+	  <dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	  
+	<!--後台員工權限濾器 -->
+	<filter>
+	  <filter-name>authFilter</filter-name>
+	  <filter-class>authfilters.AuthFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>authFilter</filter-name>
+	  <url-pattern>/back-end/emp/addEmp.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/listAllEmp.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/listOneEmp.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/select_page.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/update_emp_auth.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/update_emp_info.jsp</url-pattern>
+	  <url-pattern>/back-end/emp/update_emp_sts.jsp</url-pattern>
+	  <url-pattern>/back-end/mem/*</url-pattern>
+	  <dispatcher>REQUEST</dispatcher>
+	  <dispatcher>FORWARD</dispatcher>
+	  <dispatcher>INCLUDE</dispatcher>
+	  <dispatcher>ERROR</dispatcher>
+	  <dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	
+</web-app>

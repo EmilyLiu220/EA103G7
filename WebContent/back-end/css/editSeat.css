@@ -1,0 +1,175 @@
+.rotate-img {
+	transform: rotate(90deg);
+}
+
+.draggable {
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin: 0;
+	font-size: .9em;
+	position: relative;
+}
+
+#container {
+	height: 900px;
+	width: 1400px;
+	border: 1px solid black;
+	position: absolute;
+	background: whitesmoke
+		url('https://s3.amazonaws.com/com.appgrinders.test/images/grid_20.png')
+		repeat;
+}
+
+.obj_bar {
+	background-color: deeppink;
+	border: 1px solid black;
+	width: 250px;
+	height: 100%;
+	position: fixed;
+	bottom: 0px;
+	right: 20px;
+	z-index: 9;
+	overflow: auto;
+	margin: 0 auto;
+}
+
+p {
+	background: #CCCAAD;
+	text-align: center;
+	width: 100%;
+	margin: 0;
+	display: inline-block;
+	position: relative;
+	padding: 20px;
+}
+
+.draggable .myCheckbox {
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	bottom: 10px;
+	right: 0px;
+	display: none;
+}
+
+.draggable .seatName {
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	display: none;
+}
+
+.draggable .seatLabel {
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	display: none;
+}
+
+.drag .myCheckbox {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	bottom: 15px;
+	right: 0px;
+	display: none;
+}
+
+.drag1 .myCheckbox {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	bottom: 15px;
+	right: 0px;
+	display: none;
+}
+
+label {
+	height: 0;
+	display: inline-block;
+}
+
+.ui-draggable-dragging {
+	/* 	border: 1px solid black; */
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	z-index: 100;
+}
+
+.drag {
+	/* 	border: 1px solid black; */
+	width: 100px;
+	height: 120px;
+	float: left;
+	margin: 0;
+	font-size: .9em;
+	position: relative;
+}
+
+.drag1 {
+	/* 	border: 1px solid black; */
+	width: 100px;
+	height: 120px;
+	float: left;
+	margin: 0;
+	font-size: .9em;
+	position: relative;
+}
+
+img {
+	width: 100px;
+	height: 100px;
+	z-index: 10;
+	cursor: move;
+}
+
+.delete {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 10px auto;
+}
+
+form {
+	height: 100%
+}
+
+span {
+	border: 1px solid black;
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	margin: 10px auto;
+}
+
+#setSeat {
+	margin: 0 auto;
+}
+
+.seatName {
+	width: 50px;
+	text-align: center;
+}
+
+.seatLabel {
+	position: absolute;
+	bottom: 10px;
+	right: 0;
+	font-size: 16px;
+}
+
+.select_div {
+	text-align: center;
+}
+
+#floor_list {
+	width: 100%;
+	padding: 0 0 0 20px;
+	font-size: 36px;
+}

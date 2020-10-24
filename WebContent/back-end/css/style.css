@@ -1,0 +1,151 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 10px;
+	font-family: "Poppins", Arial, sans-serif;
+	line-height: 2;
+}
+
+div.main_content {
+	width: 1200px;
+	margin: 0 auto;
+	font-size: 0;
+}
+
+div.aside {
+	width: 250px;
+	display: inline-block;
+	vertical-align: top;
+	font-size: 1rem;
+	margin-right: 10px;
+	border: 1px solid #000;
+	border-radius: 10px;
+}
+
+div.firstLine{
+	height: 100px;
+}
+
+div.r1 {
+	display: inline-block;
+	position: relative;
+	top: -20px;
+	margin: 10px auto;
+	margin-left: 10px;
+}
+
+div.msg {
+	display: inline-block;
+	margin-top: 10px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+div.cross{
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	top: -15px;
+	right: -12px;
+}
+
+div.main {
+	width: calc(100% - 250px - 10px);
+	display: inline-block;
+	vertical-align: top;
+	font-size: 1rem;
+}
+
+div.rheader {
+	border: 1px solid black;
+	border-radius: 10px;
+	height: 100px;
+	font-size: 20px;
+	text-align: center;
+}
+
+button#bigOne {
+	display: inline-block;
+	position: relative;
+	right: 250px;
+	top: -10px;
+	border-radius: 10px;
+	height: 30px;
+	padding: 1px 6px;
+	cursor: pointer;
+}
+
+button#smallOne {
+	display: none;
+	padding: 1px 6px;
+}
+
+
+h1 {
+	margin: 0px auto;
+}
+
+div.title {
+	display: inline-block;
+}
+
+div.content {
+	height: 920px;
+}
+
+
+div.bottom {
+	padding: 10px;
+}
+
+div.me div, div.manager div {
+	margin-top: 5px;
+	border: 1px solid red;
+	border-radius: 5px;
+	background-color: red;
+	margin-bottom: 10px;
+	padding: 5px;
+	color: white;
+	text-align: center;
+	font-weight: 1000;
+}
+
+@media screen and (max-width: 1200px) {
+	div.aside {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+	div.aside, div.main, div.rheader {
+		width: 100%;
+		display: block;
+	}
+	div.main_content {
+		width: 100%;
+		display: block;
+		margin: auto;
+	}
+	div.r1, div.msg {
+		margin: 10px auto;
+		margin-left: 50px;
+	}
+	button#bigOne {
+		display: none;
+	}
+	button#smallOne {
+		display: inline-block;
+		position: absolute;
+		top: 45px;
+		right: 40px;
+		border-radius: 10px;
+		height: 30px;		
+		cursor: pointer;
+	}
+	div.cross{
+		display: none;
+	}
+}

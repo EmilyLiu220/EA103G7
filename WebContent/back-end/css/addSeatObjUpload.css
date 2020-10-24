@@ -1,0 +1,47 @@
+.container {
+	padding: 10px;
+	width: 900px;
+}
+
+.row {
+	padding: 4px
+}
+
+.row label {
+	font-weight: 500;
+}
+
+.row textarea {
+	width: 97%;
+	height: 500px;
+	color: blue;
+}
+
+.row span {
+	color: blue;
+}
+
+.row #preview {
+	width: 100%;
+	height: 100%;
+}
+
+.hidden {
+	display: none;
+}
+
+img {
+	height: 190px;
+	width: 190px;
+}
+
+.div_img {
+	height: 240px;
+	width: 190px;
+	margin: 5px 5px;
+	float: left;
+}
+.seat_people {
+	width: 30px;
+	text-align: center
+}
