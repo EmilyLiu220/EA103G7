@@ -114,31 +114,75 @@
 <!-- 	</table> -->
 	
 	<ul>
-		<li>會員姓名:<font color=red><b>*</b></font><input type="text" name="mem_name" size="45" value="" required/></li>
+		<li>會員姓名:<font color=red><b>*</b></font><input type="text" id="mem_name2" name="mem_name" size="45" required/></li>
 		
-		<li>帳號:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" name="mem_act" size="45" value="" required/></li>
-		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" name="mem_psw1" size="45" value="" required/></li>
-		<li>密碼確認:<font color=red><b>*</b></font><input type="password" name="mem_psw2" size="45" value="" required/></li>
-		<li>性別:&emsp;&emsp;&emsp;<label><input type="radio" name="mem_gen" size="45" value="男" />男</label>
- 				<label><input type="radio" name="mem_gen" size="45" value="女" />女</label>
- 				<label><input type="radio" name="mem_gen" size="45" value="其他" checked/>其他</label></li>
-		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" name="mem_bir" size="45" value="" required/></li>
-		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" name="mem_tel" size="45" value="" required/></li>
-		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" name="mem_mail" size="45" value="" required/></li>
+		<li>帳號:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_act2" name="mem_act" size="45" required/></li>
+		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" id="mem_psw1" name="mem_psw1" size="45" value="" required/></li>
+		<li>密碼確認:<font color=red><b>*</b></font><input type="password" id="mem_psw2"  name="mem_psw2" size="45" value="" required/></li>
+		<li>性別:&emsp;&emsp;&emsp;<label><input type="radio" name="mem_gen2" size="45" value="男" />男</label>
+ 				<label><input type="radio" name="mem_gen2" size="45" value="女" />女</label>
+ 				<label><input type="radio" name="mem_gen2" size="45" value="其他" checked/>其他</label></li>
+		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" id="mem_bir2" name="mem_bir" size="45" value="" required/></li>
+		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_tel2" name="mem_tel" size="45" value="" required/></li>
+		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" id="mem_mail2" name="mem_mail" size="45" value="" required/></li>
 		<li>地址:
 			<div id="zipcode3" style="width: 800px">
  			<div class="f4" data-role="county" name="city"></div>
 			<div class="f5" data-role="district" name="town"></div>
 			</div>
 			<br><br>
-			<input name="address" type="text" size="50px">
+			<input id="address2" name="address" type="text" size="50px">
 		</li>
 	</ul>
 	
 	<input type="hidden" name="action" value="insert">
 	<input type="submit" id="ok" value="註冊會員" style="margin-left:250px">
 	</FORM>
+	
+	<input type="button" id="button2" value="按我" style="margin-left:265px">
+	
 	</div>
+	
+<script type="text/javascript">
+
+	var button2 = document.getElementById("button2");
+	var mem_name2 = document.getElementById("mem_name2");
+	var mem_act2 = document.getElementById("mem_act2");
+	var mem_psw1 = document.getElementById("mem_psw1");
+	var mem_psw2 = document.getElementById("mem_psw2");
+	var mem_gen2 = document.getElementsByName("mem_gen2");
+	var mem_bir2 = document.getElementById("mem_bir2");
+	var mem_tel2 = document.getElementById("mem_tel2");
+	var mem_mail2 = document.getElementById("mem_mail2");
+	var address2 = document.getElementById("address2");
+	
+	console.log(button2);
+	console.log(mem_name2);
+	console.log(mem_act2);
+	console.log(mem_psw1);
+	console.log(mem_psw2);
+	console.log(mem_gen2);
+	console.log(mem_bir2);
+	console.log(mem_tel2);
+	console.log(mem_mail2);
+	console.log(address2);
+	
+	button2.addEventListener("click", function(e) {
+		
+		mem_name2.value = "吳永志";
+		mem_act2.value = "zzz111";
+		mem_psw1.value = "zzz111";
+		mem_psw2.value = "zzz111";
+		mem_gen2[0].checked = true;
+		mem_bir2.value = "1990-08-08";
+		mem_tel2.value = "0988168168";
+		mem_mail2.value = "steve199203@gmail.com";
+		address2.value = "中大路300號";
+		
+	});
+
+</script>
+	
 	
 <script>
 	$("#zipcode3").twzipcode({
@@ -157,7 +201,6 @@
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
 
 	<jsp:include page="/front-end/footer.jsp" />
-
 	
 </body>
 </html>
