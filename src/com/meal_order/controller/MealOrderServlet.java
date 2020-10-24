@@ -23,8 +23,10 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.google.gson.Gson;
 import com.meal.model.*;
 import com.meal_order.model.*;
+import com.meal_order_detail.model.MealOrderDetailService;
 import com.meal_order_detail.model.MealOrderDetailVO;
 import com.meal_set.model.*;
 
@@ -77,6 +79,7 @@ public class MealOrderServlet extends HttpServlet {
 					mealOrderDetailVO.setMeal_no(mealVO.getMeal_no());
 					mealOrderDetailVO.setQty(mealVO.getMeal_qty());
 					mealOrderDetailVO.setDetail_amount(mealVO.getMeal_price() * mealVO.getMeal_qty());
+					mealOrderDetailVO.setMeal_name(mealVO.getMeal_name());
 					detailList.add(mealOrderDetailVO);
 				}
 			}
@@ -86,6 +89,7 @@ public class MealOrderServlet extends HttpServlet {
 					mealOrderDetailVO.setMeal_set_no(mealSetVO.getMeal_set_no());
 					mealOrderDetailVO.setQty(mealSetVO.getMeal_set_qty());
 					mealOrderDetailVO.setDetail_amount(mealSetVO.getMeal_set_price() * mealSetVO.getMeal_set_qty());
+					mealOrderDetailVO.setMeal_name(mealSetVO.getMeal_set_name());
 					detailList.add(mealOrderDetailVO);
 				}
 			}
@@ -113,7 +117,14 @@ public class MealOrderServlet extends HttpServlet {
 			mealOrderVO = (MealOrderVO) (mealOrderSrv.addOrder(memNo, empNo, mealOrderSts, amount, notiSts, paySts,
 					pickupTime, detailList)).get("mealOrderVO");
 
-//			sendMessage();
+			MealOrderWebSocket webSocket = new MealOrderWebSocket();
+			Gson gson = new Gson();
+			Map<String,Object> pushMsg = new HashMap<>();
+			pushMsg.put("action", "insert");
+			pushMsg.put("mealOrderVO", mealOrderVO);
+			String jsonMap = gson.toJson(pushMsg);
+			webSocket.onMessage(jsonMap);
+			
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "front-end/shopping/mealOrderOne.jsp";
@@ -143,6 +154,7 @@ public class MealOrderServlet extends HttpServlet {
 					mealOrderDetailVO.setMeal_no(mealVO.getMeal_no());
 					mealOrderDetailVO.setQty(mealVO.getMeal_qty());
 					mealOrderDetailVO.setDetail_amount(mealVO.getMeal_price() * mealVO.getMeal_qty());
+					mealOrderDetailVO.setMeal_name(mealVO.getMeal_name());
 					detailList.add(mealOrderDetailVO);
 				}
 			}
@@ -152,6 +164,7 @@ public class MealOrderServlet extends HttpServlet {
 					mealOrderDetailVO.setMeal_set_no(mealSetVO.getMeal_set_no());
 					mealOrderDetailVO.setQty(mealSetVO.getMeal_set_qty());
 					mealOrderDetailVO.setDetail_amount(mealSetVO.getMeal_set_price() * mealSetVO.getMeal_set_qty());
+					mealOrderDetailVO.setMeal_name(mealSetVO.getMeal_set_name());
 					detailList.add(mealOrderDetailVO);
 				}
 			}
@@ -185,7 +198,7 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			if (mealOrderVO.getMeal_order_sts() >= 2) {
-				errormsgs.put("orderUpdate", "閮撌脫晷撌�,�瘜���!");
+				errormsgs.put("orderUpdate", "已派工，無法取消訂單!");
 				req.setAttribute("errormsgs", errormsgs);
 				req.setAttribute("mealOrderVO", mealOrderVO);
 				String url = "front-end/shopping/mealOrderOne.jsp";
@@ -213,6 +226,20 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
+			
+			MealOrderWebSocket webSocket = new MealOrderWebSocket();
+			Gson gson = new Gson();
+			MealOrderDetailService detailSrv = new MealOrderDetailService();
+			List <MealOrderDetailVO> detailList = detailSrv.searchByOrderNo(mealOrderNo);
+			
+			Map<String,Object> pushMsg = new HashMap<>();
+			pushMsg.put("mealOrderNo", mealOrderNo);
+			pushMsg.put("action", "update");
+			pushMsg.put("detailList", detailList);
+			String jsonMap = gson.toJson(pushMsg);
+			webSocket.onMessage(jsonMap);
+			
+			
 			if (whichPage != null) {
 				returnPath = reqURL + "?whichPage=" + whichPage;
 			}

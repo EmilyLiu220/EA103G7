@@ -26,7 +26,7 @@ public class MealOrderDetailDAO implements MealOrderDetailDAO_interface {
 
 	}
 
-	private static final String INSERT = "INSERT INTO MEAL_ORDER_DETAIL(MEAL_ORDER_DETAIL_NO,MEAL_ORDER_NO,MEAL_NO,MEAL_SET_NO,QTY,DETAIL_AMOUNT) VALUES ('MOD' || LPAD(SEQ_MEAL_ORDER_DETAIL_NO.NEXTVAL,4,0),?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO MEAL_ORDER_DETAIL(MEAL_ORDER_DETAIL_NO,MEAL_ORDER_NO,MEAL_NO,MEAL_SET_NO,QTY,DETAIL_AMOUNT,MEAL_NAME) VALUES ('MOD' || LPAD(SEQ_MEAL_ORDER_DETAIL_NO.NEXTVAL,4,0),?,?,?,?,?,?)";
 	private static final String UPDATE = "UPDATE MEAL_ORDER_DETAIL SET ASGN_STS=? WHERE MEAL_ORDER_DETAIL_NO=?";
 	private static final String SEARCHBYORDERNO = "SELECT * FROM MEAL_ORDER_DETAIL WHERE MEAL_ORDER_NO=?";
 	private static final String SEARCHBYASGNSTS = "SELECT * FROM MEAL_ORDER_DETAIL WHERE ASGN_STS=?";
@@ -42,6 +42,7 @@ public class MealOrderDetailDAO implements MealOrderDetailDAO_interface {
 			pstmt.setString(3, mealOrderDetailVO.getMeal_set_no());
 			pstmt.setInt(4, mealOrderDetailVO.getQty());
 			pstmt.setInt(5, mealOrderDetailVO.getDetail_amount());
+			pstmt.setString(6, mealOrderDetailVO.getMeal_name());
 
 			pstmt.execute();
 

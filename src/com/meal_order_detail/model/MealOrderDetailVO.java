@@ -11,8 +11,15 @@ public class MealOrderDetailVO implements Serializable{
 	private Integer qty;
 	private Integer detail_amount;
 	private Integer asgn_sts;
+	private String meal_name;
 	
 	
+	public String getMeal_name() {
+		return meal_name;
+	}
+	public void setMeal_name(String meal_name) {
+		this.meal_name = meal_name;
+	}
 	public String getMeal_order_detail_no() {
 		return meal_order_detail_no;
 	}

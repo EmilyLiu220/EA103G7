@@ -296,6 +296,77 @@ margin-right: auto;
 		
 	});
 	
+	var webSocket =null;
+	var MyPoint = "/MealOrderWebSocket";
+	var host = window.location.host;
+	var path = window.location.pathname;
+	var webCtx = path.substring(0, path.indexOf('/', 1));
+	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+	if('WebSocket' in window){
+		webSocket = new WebSocket(endPointURL);
+	}else{
+		alert('browser not support websocket');
+	}
+	webSocket.onopen = function (e){
+		console.log('websocket onopen');
+	}
+	
+	webSocket.onmessage = function (e){
+		var jsonObj = JSON.parse(e.data);
+		if(jsonObj.action === 'update'){
+			jsonObj.detailList.forEach(function(detailVO){
+				if(detaliVO.meal_no!=null){
+					$("#content").append(" <table id='table-1' class='jsonObj.mealOrderNo'>
+					<tr><td><h3 style='margin-bottom:0;'>訂餐編號："+jsonObj.mealOrderNo+"</h3>
+					</td>
+				</tr>
+			</table>
+			
+			<table id="jsonObj.mealOrderNo" class="table table-hover jsonObj.mealOrderNo" style="width: 60%; font-size: 90%;">
+			<input type="hidden" name="pay_sts" value="${mealOrderVO.pay_sts}"/>
+			<input type="hidden" name="noti_sts" value="${mealOrderVO.noti_sts}"/>
+			<thead style="text-align: center;">
+				<tr>
+					<th style="width: 10%;">check</th>
+					<th style="width: 25%;">餐點名稱</th>
+					<th style="width: 25%;">餐點數量</th>
+				</tr>
+			</thead>
+			<tbody>
+	<tr>
+		<td style="text-align: center;"><input class="checkbox" type="checkbox"/>
+		<input type="hidden" value="${mealOrderVO.meal_order_no}"/></td>
+		<td style="text-align: center;">${mealSrv.searchByNo(detailVO.meal_no).meal_name}</td>
+		<td style="text-align: center;">${detailVO.qty}</td>
+	</tr>
+		 
+	<tr>
+		<td style="text-align: center;"><input class="checkbox" type="checkbox"/>
+		<input type="hidden" value="${mealOrderVO.meal_order_no}"/></td>
+		<td style="text-align: center;">${mealSetSrv.searchByNo(detailVO.meal_set_no).meal_set_name}</td>
+		<td style="text-align: center;">${detailVO.qty}</td>
+		
+	</tr>
+			</tbody>
+		</table>");
+				}
+					
+			})	
+		}
+		console.log('websocket onmessage=' + e.data);
+		console.log('orderno= ' + jsonObj.mealOrderVO.meal_order_no);
+	}
+	
+	window.onbeforeunload = function (e) {
+		webSocket.close();
+	}
+	
+	webSocket.onclose = function(e){
+		console.log('websocket closed');
+	}
+	
+	
+	
 	
 	
 	
