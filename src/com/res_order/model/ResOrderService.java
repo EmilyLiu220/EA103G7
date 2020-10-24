@@ -56,8 +56,8 @@ public class ResOrderService {
 		return dao.findByPrimaryKey(res_no);
 	}
 
-	public List<ResOrderVO> getOneMemberResOrder(String mem_no) {
-		return dao.findByMEM_NO_getAll(mem_no);
+	public List<ResOrderVO> getOneMemberResOrder(String mem_no, String sts) {
+		return dao.findByMEM_NO_getAll(mem_no, sts);
 	}
 
 	public List<ResOrderVO> getResDate_And_TimePeri_getAll(String res_date, String time_peri_no) {

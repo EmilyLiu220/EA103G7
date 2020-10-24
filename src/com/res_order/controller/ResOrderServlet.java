@@ -73,7 +73,6 @@ public class ResOrderServlet extends HttpServlet {
 			if ("".equals(people)) {
 				errorMsgs.add("請輸入訂位人數");
 			}
-			
 
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/orderSeat.jsp");
@@ -93,7 +92,6 @@ public class ResOrderServlet extends HttpServlet {
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 			req.setAttribute("res_no", next_res_no);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
-
 			failureView.forward(req, res);
 			return;
 		}
@@ -148,7 +146,10 @@ public class ResOrderServlet extends HttpServlet {
 		}
 		/********************** 去訂餐 **********************/
 		if ("go_res_meal".equals(action)) {
-			System.out.println("go_res_meal");
+			String res_no = req.getParameter("res_no");
+			req.setAttribute("res_no", res_no);
+			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/shopping/mealMenu2.jsp");
+			failureView.forward(req, res);
 			return;
 		}
 
@@ -181,7 +182,8 @@ public class ResOrderServlet extends HttpServlet {
 			out.close();
 			return;
 		}
-
+		
+		/********************** 取得所有桌位，可容納之人數 **********************/
 		if ("getAllSeatPeople".equals(action)) {
 
 			PrintWriter out = res.getWriter();
@@ -236,21 +238,28 @@ public class ResOrderServlet extends HttpServlet {
 			out.close();
 			return;
 		}
-		
+
 		/********************** 取消訂位 **********************/
-		if ("cancelSeatResOrder".equals(action)) {
-			System.out.println("cancelSeatResOrder");
+		if ("cancel_Seat_Res_Order".equals(action)) {
+			String res_no = req.getParameter("res_no");
+			ResOrderService resOrderSve = new ResOrderService();
+
+			ResOrderVO resOrderVO = resOrderSve.getOneResOrder(res_no);
+
+			resOrderSve.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
+					resOrderVO.getEmp_no(), resOrderVO.getRes_time(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
+					resOrderVO.getTime_peri_no(), new Integer(3), resOrderVO.getSeat_sts());
+			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
+			failureView.forward(req, res);
 			return;
 		}
-		
+
 		/********************** 修改訂位 **********************/
-		if ("modifySeatPosition".equals(action)) {
-			System.out.println("modifySeatPosition");
+		if ("modify_Seat_Position".equals(action)) {
+			System.out.println("modify_Seat_Position");
 			return;
 		}
-		
-		
-		
+
 		// not do anything, go to the this page
 		res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 	}

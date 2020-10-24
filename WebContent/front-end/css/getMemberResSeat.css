@@ -16,7 +16,7 @@ th, td {
 	text-align: center;
 }
 
-button.btn {
+button.btn, input.btn {
 	padding: 5px 5px;
 	border: 0 none;
 	cursor: pointer;

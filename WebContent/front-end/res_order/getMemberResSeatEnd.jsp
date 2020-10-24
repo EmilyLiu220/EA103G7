@@ -6,14 +6,14 @@
 <%@ page import="com.res_order.model.*"%>
 <%
 	ResOrderService resOrderSvc = new ResOrderService();
-	List<ResOrderVO> list = resOrderSvc.getOneMemberResOrder("MEM0010", "ing");
+	List<ResOrderVO> list = resOrderSvc.getOneMemberResOrder("MEM0010", "end");
 	pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>會員訂位紀錄</title>
+<title>會員訂位歷史紀錄</title>
 <link rel=stylesheet type="text/css" href="<%=request.getContextPath()%>/front-end/css/getMemberResSeat.css">
 <jsp:include page="/front-end/headfinish.jsp"></jsp:include>
 
@@ -47,10 +47,6 @@
 		<th>預約訂位日期</th>
 		<th>用餐時段</th>
 		<th>人數</th>
-		<th>訊息狀態</th>
-		<th>入座狀態</th>
-		<th>修改座位</th>
-		<th>取消訂位</th>
 	</tr>
 	<%@ include file="pages/page1.file"%>
 	<jsp:useBean id="map_info_sts" class="java.util.HashMap"/>
@@ -65,7 +61,7 @@
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<c:forEach var="resOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-	<c:if test="${resOrderVO.info_sts lt 2}">
+	<c:if test="${resOrderVO.info_sts gt 1}">
 		<tr>
 			<td>
 				<c:forEach var="resDetailVO" items="${resDetailSvc.getAllResNO(resOrderVO.res_no)}">
@@ -114,54 +110,6 @@
 			</td>
 			<td>
 				${resOrderVO.people}
-			</td>
-			<td>
-				<c:forEach  var="item" items="${map_info_sts}">
-					<c:if test="${item.key eq resOrderVO.info_sts}">
-						<c:if test="${item.key eq 3}">
-							<font style="color: red" >${item.value}</font>
-						</c:if>
-						<c:if test="${item.key ne 3}">
-							<font style="color: blue" >${item.value}</font>
-						</c:if>
-					</c:if>
-				</c:forEach>
-			</td>
-			<td>
-				<c:forEach  var="item" items="${map_seat_sts}">
-					<c:if test="${item.key eq resOrderVO.seat_sts}">
-						<c:choose>
-							<c:when test= "${item.key eq 0}" >${item.value}</c:when>
-							<c:otherwise>${item.value}</c:otherwise>
-						</c:choose>
-					</c:if>
-				</c:forEach>
-			</td>
-			<td>
-				<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-					<c:choose>    
-						<c:when test="${resOrderVO.info_sts ne 3}">  
-								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-								<button type="submit" id="modify_Seat_Position" class="btn btn-warning" onclick='return false;'>修改座位</button>
-						</c:when>
-						<c:otherwise>
-							<button type="submit" class="btn btn-warning" disabled="disabled" style="cursor: not-allowed;">修改座位</button>
-						</c:otherwise>
-					</c:choose>
-				</form>
-			</td>
-			<td>
-				<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-					<c:choose>    
-						<c:when test="${resOrderVO.info_sts ne 3}">  
-								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-								<button type="submit" id="cancel_Seat_Res_Order" class="btn btn-danger" onclick='return false;' >取消訂位</button>
-						</c:when>
-						<c:otherwise>
-							<button type="submit" class="btn btn-danger" disabled="disabled" style="cursor: not-allowed;">取消訂位</button>
-						</c:otherwise>
-					</c:choose>
-				</form>
 			</td>
 		</tr>
 		</c:if>

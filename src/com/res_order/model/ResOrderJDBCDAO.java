@@ -254,7 +254,7 @@ public class ResOrderJDBCDAO implements ResOrderDAO_interface {
 	}
 
 	@Override
-	public List<ResOrderVO> findByMEM_NO_getAll(String mem_no) {
+	public List<ResOrderVO> findByMEM_NO_getAll(String mem_no, String sts) {
 		List<ResOrderVO> list = new ArrayList<ResOrderVO>();
 		ResOrderVO resOrderVO = null;
 
