@@ -37,11 +37,6 @@
 
 <style>
 
-.modal-open .top,
-.modal-open .msg {
-padding-right: 17px;
-}
-
 .unshow {
 	display: none;
 }
@@ -106,17 +101,15 @@ padding-right: 17px;
 	
 	
 	<%-- 客服聊天室開始 --%>
-	<div class="msg">
-		<a href="#" class="open-btn" id="addClass">
-			<button type="button" class="btn" style="box-shadow: 0 0 0; padding:0px" onclick="message()">
-				<img id="custSvc" src="<%=request.getContextPath()%>/front-end/images/msg.png">
-			</button>
-		</a>
+	<div class="msg" >
+		<div id="addClass">
+			<img id="custSvc" src="<%=request.getContextPath()%>/front-end/images/msg.png">
+		</div>
 		<div class="container">
         	<div>
             	<aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar">
                 	<div class="popup-head">
-                    	<div class="popup-head-right pull-right">
+                    	<div class="popup-head-right pull-right row justify-content-end">
                         	<button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><img id="chatClose" src="<%=request.getContextPath()%>/front-end/images/x.png"></button>
               	      </div>
               	  </div>
@@ -182,7 +175,7 @@ padding-right: 17px;
                             	<input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input">
                         	</div>
                         	<span class="uk-input-group-addon">
-                            	<a href="#"><img id="sendMsg" src="<%=request.getContextPath()%>/front-end/images/send.png"></a>
+                            	<img id="sendMsg" src="<%=request.getContextPath()%>/front-end/images/send.png">
                         	</span>
                     	</div>
                 	</div>

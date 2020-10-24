@@ -9,8 +9,12 @@
 	right: 5%;
 }
 
+#addClass{
+	cursor: pointer;
+}
+
 .chat_box_wrapper.chat_box_small.chat_box_active {
-	height: 342px;
+	height: 346px;
 	overflow-y: scroll;
 	width: 316px;
 }
@@ -60,7 +64,7 @@ aside {
 	border: 1px solid #fff;
 	border-radius: 7px;
 	font-size: 15px;
-	height: 26px;
+	height: 28px;
 	opacity: 0.9;
 	padding: 0;
 	text-align: center;
@@ -68,7 +72,7 @@ aside {
 }
 
 .popup-head-right {
-	margin: 9px 0 0;
+	margin: 4px 0 4px 0;
 }
 
 .chat_box .chat_message_wrapper .chat_user_avatar {
@@ -269,7 +273,7 @@ img {
 	border-radius: 5px;
 	float: left;
 	padding: 3px;
-	width: 230px;
+	width: 250px;
 }
 
 .uk-input-group-addon .glyphicon {
@@ -298,7 +302,11 @@ img {
 	background: transparent none repeat scroll 0 0;
 	border: 0px;
 	padding: 4px;
-	width: 220px;
+	width: 240px;
+}
+#submit_message:focus{
+	outline: none !important;
+    border:0px solid transparent;
 }
 
 /* 以下為小鈴鐺的 CSS  */
@@ -328,4 +336,13 @@ th, td {
 
 #fi_cont {
 	color: #000;
+}
+
+.modal-open .top,
+.modal-open .msg{
+	padding-right: 17px;
+}
+
+.modal-open #custSvc{
+	margin-right:16px;
 }
