@@ -215,7 +215,7 @@ public class MemServlet extends HttpServlet {
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				req.setAttribute("memVO", memVO);
 				
-				String url = "/front-end/mem/showMemInfo.jsp";
+				String url = "/front-end/mem/login_mem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listOneEmp.jsp
 				successView.forward(req, res);				
 				
@@ -511,7 +511,7 @@ public class MemServlet extends HttpServlet {
 			
 			ForgetPswMail fpm = new ForgetPswMail();
 			String messageText = "請使用此密碼進行登入：" + mem_psw + "\n"
-					+ "點此連結進行登入，並修改密碼:" + "http://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/front-end/mem/update_mem_info.jsp";
+					+ "點此連結進行登入，並修改密碼:" + "http://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/front-end/mem/login_mem.jsp";
 			fpm.sendMail(mem_mail, "忘記密碼", messageText);
 			
 			res.sendRedirect(req.getContextPath() + "/front-end/mem/login_mem.jsp");
