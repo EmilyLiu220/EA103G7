@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
@@ -19,35 +21,36 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/MealOrderWebSocket")
 public class MealOrderWebSocket {
 
-//	private javax.websocket.Session session = null;
+	private javax.websocket.Session session = null;
 //	private static final Set<Session> connectedSessions = Collections.synchronizedSet(new HashSet<>());
-//	
-//	@OnOpen
-//	public void onOpen(Session session) throws IOException {
-////	this.session=session;
-////	connectedSessions.add(session);
-//	}
-//
-//	@OnMessage
-//		public void onMessage() {
-////		try {
-////			sendMessage();
-////		} catch (IOException e) {
-////			e.printStackTrace();
-////		}
-////		
-//		
-//	}
-//
-//	@OnClose
-//	public void onClose(Session userSession, CloseReason reason) {
-//	}
-//	
-////	public void sendMessage() throws IOException{
-////        //群發訊息
-////        for(Session item: connectedSessions){
-////            item.getBasicRemote().sendText("reload");
-////        }
-////    }
+	private static CopyOnWriteArraySet<MealOrderWebSocket> webSocketSet = new CopyOnWriteArraySet<MealOrderWebSocket>();
+
+	@OnOpen
+	public void onOpen(Session session) throws IOException {
+		this.session = session;
+		webSocketSet.add(this);
+//	connectedSessions.add(this);
+	}
+
+	@OnMessage
+	public void onMessage(String jsonMap) {
+		try {
+			sendMessage(jsonMap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@OnClose
+	public void onClose(Session userSession, CloseReason reason) {
+		webSocketSet.remove(this);
+	}
+
+	public void sendMessage(String jsonMap) throws IOException {
+		for (MealOrderWebSocket wbsc : webSocketSet) {
+			wbsc.session.getBasicRemote().sendText(jsonMap);
+		}
+	}
 
 }

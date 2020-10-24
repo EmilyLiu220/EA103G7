@@ -271,7 +271,10 @@ margin-right: auto;
 		});
 	});
 	
-	$(".checkbox").change(function(e){
+	
+	$(".checkbox").change(sendOrder);
+	
+	function sendOrder(){
 		var mealOrderNo = $(this).next().val();
 		var notiSts = $("#"+mealOrderNo).find('input[name="noti_sts"]').val();
 		var paySts = $("#"+mealOrderNo).find('input[name="pay_sts"]').val();
@@ -294,7 +297,63 @@ margin-right: auto;
             });
 		}
 		
-	});
+	};
+	
+	var webSocket =null;
+	var MyPoint = "/MealOrderWebSocket";
+	var host = window.location.host;
+	var path = window.location.pathname;
+	var webCtx = path.substring(0, path.indexOf('/', 1));
+	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+	if('WebSocket' in window){
+		webSocket = new WebSocket(endPointURL);
+	}else{
+		alert('browser not support websocket');
+	}
+	webSocket.onopen = function (e){
+		console.log('websocket onopen');
+	}
+	
+	webSocket.onmessage = function (e){
+		var jsonObj = JSON.parse(e.data);
+		if(jsonObj.action === 'update'){
+				var div = document.createElement("div");
+				div.innerHTML =
+					 '<table id="table-1" class="' + jsonObj.mealOrderVO.meal_order_no +'">'
+				+ '<tr><td><h3 style="margin-bottom:0;">訂餐編號：'+ jsonObj.mealOrderVO.meal_order_no+'</h3></td></tr></table>'
+				+ '<table id="'+jsonObj.mealOrderVO.meal_order_no+'" class="table table-hover '+ jsonObj.mealOrderVO.meal_order_no +'" style="width: 60%; font-size: 90%;">'
+				+ '<input type="hidden" name="pay_sts" value="'+jsonObj.mealOrderVO.pay_sts +'"/>'
+				+ '<input type="hidden" name="noti_sts" value="'+jsonObj.mealOrderVO.noti_sts +'"/>'
+				+ '<thead style="text-align: center;"><tr><th style="width: 10%;">check</th><th style="width: 25%;">餐點名稱</th>	<th style="width: 25%;">餐點數量</th></tr></thead>'
+				+ '<tbody class="'+jsonObj.mealOrderVO.meal_order_no+'body">';
+				$("#content").append(div);
+				
+				jsonObj.detailList.forEach(function(detailVO){
+				var name;
+				if(detailVO.meal_no!=null){
+					name = detailVO.meal_name;
+				}else{
+					name = detailVO.meal_set_name;
+				}
+					var row ='<tr><td style="text-align: center;"><input class="checkbox" type="checkbox"/><input type="hidden" value="'+jsonObj.mealOrderVO.meal_order_no+'"/></td>'
+					+	'<td style="text-align: center;">'+ name +'</td>'
+					+ '	<td style="text-align: center;">'+detailVO.qty+'</td></tr>';
+					$("."+jsonObj.mealOrderVO.meal_order_no+"body").append(row);
+			});
+				$(".checkbox").change(sendOrder);
+		}
+		
+	}
+	
+	window.onbeforeunload = function (e) {
+		webSocket.close();
+	}
+	
+	webSocket.onclose = function(e){
+		console.log('websocket closed');
+	}
+	
+	
 	
 	
 	
