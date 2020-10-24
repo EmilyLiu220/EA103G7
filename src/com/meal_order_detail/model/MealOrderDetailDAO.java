@@ -120,6 +120,7 @@ public class MealOrderDetailDAO implements MealOrderDetailDAO_interface {
 				mealOrderDetailVO.setQty(rs.getInt("qty"));
 				mealOrderDetailVO.setDetail_amount(rs.getInt("detail_amount"));
 				mealOrderDetailVO.setAsgn_sts(rs.getInt("asgn_sts"));
+				mealOrderDetailVO.setMeal_name(rs.getString("meal_name"));
 				list.add(mealOrderDetailVO);
 			}
 

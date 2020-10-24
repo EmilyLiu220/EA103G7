@@ -224,16 +224,16 @@ public class MealOrderServlet extends HttpServlet {
 			Integer notiSts = new Integer(req.getParameter("noti_sts"));
 			Integer paySts = new Integer(req.getParameter("pay_sts"));
 			MealOrderService mealOrderSrv = new MealOrderService();
-			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
-			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 			
+			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
+			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
 			Gson gson = new Gson();
 			MealOrderDetailService detailSrv = new MealOrderDetailService();
 			List <MealOrderDetailVO> detailList = detailSrv.searchByOrderNo(mealOrderNo);
 			
 			Map<String,Object> pushMsg = new HashMap<>();
-			pushMsg.put("mealOrderNo", mealOrderNo);
+			pushMsg.put("mealOrderVO", mealOrderVO);
 			pushMsg.put("action", "update");
 			pushMsg.put("detailList", detailList);
 			String jsonMap = gson.toJson(pushMsg);
