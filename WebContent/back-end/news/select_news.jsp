@@ -26,44 +26,39 @@
 <!-- Scrollbar Custom CSS -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-<!-- Font Awesome JS -->
-<script defer
-	src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
-	integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-	crossorigin="anonymous"></script>
-<script defer
-	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
-	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-	crossorigin="anonymous"></script>
-
-
 <style>
 #table-1, #table-1 td {
-	background: #7386D5;
+	background: #555;
 	color: #fff;
 	border: 0;
 	width: 100%;
-	height: 70;
 	border-radius: 5px;
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+#logout {
+	width: 212px
 }
 </style>
 
 </head>
 <body>
-
 	<div class="wrapper">
-
 		<!-- Sidebar  -->
 		<nav id="sidebar">
 			<div class="sidebar-header" style="cursor: default;">
 				<h3>
-					<span>EMP0009</span><br>詹詠祺，您好！
+					<c:choose>
+						<c:when test="${empVO2.emp_no==null}">
+							嗨
+						</c:when>
+						<c:otherwise>
+							 ${empVO2.emp_no}<br>${empVO2.emp_name}
+						</c:otherwise>
+					</c:choose>
+					，您好！
 				</h3>
-				<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
 			</div>
-
 			<ul class="list-unstyled components">
 				<li><a href="#">現場點餐</a></li>
 				<li><a href="#">現場劃位</a></li>
@@ -75,13 +70,16 @@
 					<ul class="collapse list-unstyled" id="pageSubmenu">
 						<li><a href="#">員工管理</a></li>
 						<li><a href="#">會員管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
+						<li><a
+							href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
+						<li><a
+							href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">>最新消息管理</a></li>
 						<li><a
 							href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知設定管理</a></li>
 						<li><a href="#">評價管理</a></li>
 						<li><a href="#">用餐時段管理</a></li>
-						<li><a href="#">桌位管理</a></li>
+						<li><a
+							href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
 						<li><a href="#">菜單管理</a></li>
 						<li><a href="#">食材管理</a></li>
 						<li><a href="#">餐點組成管理</a></li>
@@ -101,143 +99,190 @@
 						<li><a href="#">訂位管理</a></li>
 					</ul></li>
 			</ul>
-
 			<ul class="list-unstyled CTAs">
-				<li><a href="#" id="logIn">Log in</a></li>
-				<li><a href="#" id="logOut">Log out</a></li>
+				<c:choose>
+					<c:when test="${empVO2.emp_no==null}">
+						<li><a
+							href="<%=request.getContextPath()%>/back-end/emp/login.jsp"
+							id="logIn">Log in</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><form method="post"
+								action="<%=request.getContextPath()%>/back-end/emp/emp.do">
+								<input type="hidden" name="action" value="logout"> <label
+									style="cursor: pointer"><a id="logOut">Log out</a> <input
+									type="submit" style="display: none"></label>
+							</form></li>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 		</nav>
 
-		<!-- Page Content  -->
 		<div id="content">
-
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div class="container-fluid">
-
-					<button type="button" id="sidebarCollapse" class="btn btn-info">
-						<i class="fas fa-align-justify"></i>
+					<button type="button" id="sidebarCollapse" class="btn btn-dark">
+						<svg class="svg-inline--fa fa-align-justify fa-w-14"
+							aria-hidden="true" data-prefix="fas" data-icon="align-justify"
+							role="img" xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 448 512" data-fa-i2svg="">
+							<path fill="currentColor"
+								d="M0 84V44c0-8.837 7.163-16 16-16h416c8.837 0 16 7.163 16 16v40c0 8.837-7.163 16-16 16H16c-8.837 0-16-7.163-16-16zm16 144h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 256h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0-128h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"></path></svg>
+						<!-- <i class="fas fa-align-justify"></i> -->
 					</button>
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
-						<a
-							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
-							Pot 吧！員工專區</a>
+						<a href="/EA103G7/back-end/back-index_New.jsp">吃 Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
-						<button type="button" id="topbarCollapse" class="btn btn-info"
+						<button type="button" id="topbarCollapse" class="btn btn-dark"
 							data-toggle="collapse" data-target="#navbarSupportedContent"
 							aria-controls="navbarSupportedContent" aria-expanded="false"
 							aria-label="Toggle navigation">
-							<i class="fas fa-align-justify"></i>
+							<svg class="svg-inline--fa fa-align-justify fa-w-14"
+								aria-hidden="true" data-prefix="fas" data-icon="align-justify"
+								role="img" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 448 512" data-fa-i2svg="">
+								<path fill="currentColor"
+									d="M0 84V44c0-8.837 7.163-16 16-16h416c8.837 0 16 7.163 16 16v40c0 8.837-7.163 16-16 16H16c-8.837 0-16-7.163-16-16zm16 144h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 256h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0-128h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"></path></svg>
+							<!-- <i class="fas fa-align-justify"></i> -->
 						</button>
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
-							<a
-								href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
-								Pot 吧！主管員工專區</a>
+							<a href="/EA103G7/back-end/back-index_New.jsp">吃 Pot 吧！員工專區</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
-								<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
 								<li class="nav-item active"><a class="nav-link" href="#"
-									id="empId" style="cursor: default;"><span>EMP0009
-											詹詠祺</span>，您好！</a></li>
+									id="empId" style="cursor: default;"> <span
+										style="color: red; margin-top: 1rem;">嗨，您好！請記得登入喔！</span>
+								</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">訂單結帳</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">候位管理</a></li>
 								<li class="nav-item active"><a class="nav-link"
-									href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
+									href="/EA103G7/back-end/back-index_m.jsp">主管員工專區</a></li>
 								<li class="nav-item active"><a class="nav-link"
-									href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
-								<li class="nav-item active"><div id="topLogIn"
-										style="display: inline-block; width: 90px; text-align: center; border-radius: 5px; background: #6d7fcc; color: #fff; cursor: pointer;">Log
-										in</div>
-									<div id="topLogOut"
-										style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #6d7fcc; color: #fff; cursor: pointer;">Log
-										out</div></li>
+									href="/EA103G7/back-end/back-index_e.jsp">一般員工專區</a></li>
+								<li class="nav-item active"
+									style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+									<div id="topLogIn"
+										style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
+										onmouseover="this.style.color='#fff'; this.style.background='#000';"
+										onmouseout="this.style.color='#ccc'; this.style.background='#424242';">
+										<a href="/EA103G7/back-end/emp/login.jsp">Log in</a>
+									</div>
+								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</nav>
-	
 
+			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
+			<span> - 店訊管理</span> <a href="/EA103G7/back-end/back-index_New.jsp"
+				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
+				onmouseover="this.style.color='#ffbc5e';"
+				onmouseout="this.style.color='#DEA554;';">返回首頁</a>
+			<p></p>
+			<table id="table-1">
+				<tbody>
+					<tr>
+						<td>
+							<h3 style="margin-bottom: 0;">查詢所有店訊</h3>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-		<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-		<span> - 最新消息管理</span> <a
-			href="<%=request.getContextPath()%>/back-end/back-index_New.jsp"
-			style="display: inline-block; font-size: 8px; font-weight: 900; color: #6d7fcc; text-decoration: none; margin-left: 20px;">返回首頁</a>
-		<p>
-		<table id="table-1">
-			<tr>
-				<td>
-					<h3 style="margin-bottom: 0;">最新消息管理</h3>
-				</td>
-			</tr>
-		</table>
-		<br>
-		<%-- 錯誤表列 --%>
-		<c:if test="${not empty errorMsgs}">
-			<font style="color: red">請修正以下錯誤:</font>
+			<%-- 錯誤表列 --%>
+			<c:if test="${not empty errorMsgs}">
+				<font style="color: red">請修正以下錯誤:</font>
+				<ul>
+					<c:forEach var="message" items="${errorMsgs}">
+						<li style="color: red">${message}</li>
+					</c:forEach>
+				</ul>
+			</c:if>
+			
+			<br>
 			<ul>
-				<c:forEach var="message" items="${errorMsgs}">
-					<li style="color: red">${message}</li>
-				</c:forEach>
+				<li><a
+					href='<%=request.getContextPath()%>/back-end/news/listAllnews.jsp'
+					style="color: #dea554; font-weight: 600;"
+					onmouseover="this.style.color='#ffbc5e';"
+					onmouseout="this.style.color='#dea554';">顯示所有店訊</a><br> <br></li>
 			</ul>
-		</c:if>
 
-		<ul>
-			<li><a
-				href='<%=request.getContextPath()%>/back-end/news/listAllnews.jsp'>全部查詢</a>
-				all News. <br> <br></li>
+			<table id="table-1">
+				<tbody>
+					<tr>
+						<td><h3 style="margin-bottom: 0;">動態查詢店訊</h3></td>
+					</tr>
+				</tbody>
+			</table>
+			<br> <span
+				style="position: relative; left: 4%; font-weight: 600;">可自由輸入欲查詢之條件</span><br>
+			<br>
+			<ul>
+				<li>
+					<FORM METHOD="post"
+						ACTION="<%=request.getContextPath()%>/news/news.do">
+						<b>店訊編號(NEWS0001):</b> <input type="text" name="news_no">
+						<input type="hidden" name="action" value="getOne_For_Display">
+						<input type="submit" value="送出1">
+					</FORM>
+				</li>
 
-			<li>
-				<FORM METHOD="post"
-					ACTION="<%=request.getContextPath()%>/news/news.do">
-					<b>消息編號(NEWS0001):</b> <input type="text" name="news_no">
-					<input type="hidden" name="action" value="getOne_For_Display">
-					<input type="submit" value="送出1">
-				</FORM>
-			</li>
+				<jsp:useBean id="newsSvc" scope="page"
+					class="com.news.model.NewsService" />
+					
+				<li>
+					<FORM METHOD="post"
+						ACTION="<%=request.getContextPath()%>/news/news.do">
+						<b>店訊編號:</b> <select size="1" name="news_no">
+							<c:forEach var="newsVO" items="${newsSvc.all}">
+								<option value="${newsVO.news_no}">${newsVO.news_no}
+							</c:forEach>
+						</select> <input type="hidden" name="action" value="getOne_For_Display">
+						<input type="submit" value="送出2">
+					</FORM>
+				</li>
+				<li>
+					<FORM METHOD="post"
+						ACTION="<%=request.getContextPath()%>/news/news.do">
+						<b>選擇員工編號:</b> <select size="1" name="news_no">
+							<c:forEach var="newsVO" items="${newsSvc.all}">
+								<option value="${newsVO.news_no}">${newsVO.emp_no}
+							</c:forEach>
+						</select> <input type="hidden" name="action" value="getOne_For_Display">
+						<input type="submit" value="送出3">
+					</FORM>
+				</li>
+			</ul>
+			<br>
+			<table id="table-1">
+				<tbody>
+					<tr>
+						<td>
+							<h3 style="margin-bottom: 0;">新增店訊通知</h3>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<ul>
+				<li><a
+					href='<%=request.getContextPath()%>/back-end/news/addNews.jsp'
+					style="color: #dea554; font-weight: 600;"
+					onmouseover="this.style.color='#ffbc5e';"
+					onmouseout="this.style.color='#dea554';">店訊新增</a></li>
+			</ul>
+		</div>
+	</div>
 
-			<jsp:useBean id="newsSvc" scope="page"
-				class="com.news.model.NewsService" />
-
-
-			<li>
-				<FORM METHOD="post"
-					ACTION="<%=request.getContextPath()%>/news/news.do">
-					<b>消息編號:</b> <select size="1" name="news_no">
-						<c:forEach var="newsVO" items="${newsSvc.all}">
-							<option value="${newsVO.news_no}">${newsVO.news_no}
-						</c:forEach>
-					</select> <input type="hidden" name="action" value="getOne_For_Display">
-					<input type="submit" value="送出2">
-				</FORM>
-			</li>
-
-			<li>
-				<FORM METHOD="post"
-					ACTION="<%=request.getContextPath()%>/news/news.do">
-					<b>選擇員工編號:</b> <select size="1" name="news_no">
-						<c:forEach var="newsVO" items="${newsSvc.all}">
-							<option value="${newsVO.news_no}">${newsVO.emp_no}
-						</c:forEach>
-					</select> <input type="hidden" name="action" value="getOne_For_Display">
-					<input type="submit" value="送出3">
-				</FORM>
-			</li>
-		</ul>
-
-
-		<ul>
-			<li><a
-				href='<%=request.getContextPath()%>/back-end/news/addNews.jsp'>新增</a>
-				a new News.</li>
-		</ul>
-</body>
-<!-- jQuery CDN - Slim version (=without AJAX) -->
+	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>
@@ -268,4 +313,14 @@
 			});
 		});
 	</script>
+<!-- Font Awesome JS -->
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+		integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+		crossorigin="anonymous"></script>
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+		integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+		crossorigin="anonymous"></script>
+</body>
 </html>

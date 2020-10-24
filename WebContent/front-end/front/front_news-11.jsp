@@ -38,20 +38,11 @@
 </head>
 
 <style>
-body {
-	font-family: "Poppins", Arial, sans-serif;
-	background: #e0d8ce;
-	font-size: 17px;
-	line-height: 2;
-	font-weight: 700;
-	color: #1f1e1e;
-	background-image: url('images/pageBg.jpg')
-}
+
 
 element.style {
 	width: 1250px;
 }
-
 .container-fluid {
 	width: 70%;
 	padding-right: 15px;
@@ -60,29 +51,18 @@ element.style {
 	margin-left: auto;
 }
 
-.a {
-	-webkit-transition: .3s all ease;
-	-o-transition: .3s all ease;
-	transition: .3s all ease;
-	color: #3e2605;
-	margin-left: 20px;
-}
-
 table#table-1 {
 	border: 2px solid black;
 	text-align: center;
 }
-
 table#table-1 h4 {
 	display: block;
 	margin-bottom: 1px;
 }
-
 h4 {
 	color: blue;
 	display: inline;
 }
-
 table {
 	width: 1000px;
 	background-color: white;
@@ -104,33 +84,22 @@ th, td {
 	bottom: 30px;
 }
 
-/* .ul { */
-/* 	border-top: 1px solid #cacaca; */
-/* 	border-bottom: 1px solid #cacaca; */
-/* } */
-hr {
-	border-top: 0px solid rgba(0, 0, 0, 0.1);
+
+
+pageMainArea {
+	position: relative;
+	z-index: 1;
+	padding-top: 100px;
 }
 
-hd {
-	margin-bottom: 40px;
-}
+.data{
+ text-align:left;
 
-.hd a, .hd span {
-	display: inline-block;
-	font-size: 14px;
-	letter-spacing: .5px;
-	color: #767676;
-	text-transform: uppercase;
-	height: 10px;
-	border-top-width: 50px;
-	margin-top: 80px;
-	margin-bottom: -30px;
 }
-
-container {
-	height: 100%;
-	width: 100%;
+#date{
+    width: 120px;
+    text-align:center;
+   
 }
 </style>
 
@@ -154,10 +123,10 @@ container {
 												<%@ include file="page1.file"%>
 												<tbody>
 													<c:forEach var="newsVO" items="${list}"
-														begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+														begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-	1%>">
 														<tr>
-															<td>${newsVO.news_cont}</td>
-															<td>${newsVO.news_date}</td>
+															<td class="data">${newsVO.news_cont}</td>
+															<td class="data" id="date" style=" padding-left: 0px;padding-right: 0px">${newsVO.news_date}</td>
 														</tr>
 													</c:forEach>
 												</tbody>

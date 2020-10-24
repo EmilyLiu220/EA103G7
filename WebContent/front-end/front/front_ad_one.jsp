@@ -34,15 +34,7 @@
 	rel="stylesheet">
 </head>
 <style>
-body {
-	font-family: "Poppins", Arial, sans-serif;
-	background: #e0d8ce;
-	font-size: 17px;
-	line-height: 2;
-	font-weight: 700;
-	color: #1f1e1e;
-	background-image: url('images/pageBg.jpg')
-}
+
 
 element.style {
 	width: 1250px;
