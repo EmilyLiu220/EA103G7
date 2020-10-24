@@ -11,7 +11,7 @@ public interface ResOrderDAO_interface {
 	
 	public ResOrderVO findByMEM_NO(String mem_no);
 	
-	public List<ResOrderVO> findByMEM_NO_getAll(String mem_no);
+	public List<ResOrderVO> findByMEM_NO_getAll(String mem_no, String sts);
 	
 	public List<ResOrderVO> findByResDate_And_TimePeri_getAll(String res_date, String time_peri_no);
 	
