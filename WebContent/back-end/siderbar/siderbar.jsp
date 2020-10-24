@@ -94,8 +94,8 @@
 					<ul class="collapse list-unstyled" id="pageSubmenu">
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
-						<li class="fun2"><a href="#">廣告管理</a></li>
-						<li class="fun2"><a href="#">最新消息管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
 						<li class="fun2"><a href="#">通知管理</a></li>
 						<li class="fun2"><a href="#">評價管理</a></li>
 						<li class="fun2"><a href="#">用餐時段管理</a></li>

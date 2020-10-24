@@ -31,15 +31,7 @@
 	rel="stylesheet">
 </head>
 <style>
-body {
-	font-family: "Poppins", Arial, sans-serif;
-	background: #e0d8ce;
-	font-size: 17px;
-	line-height: 2;
-	font-weight: 700;
-	color: #1f1e1e;
-	background-image: url('images/pageBg.jpg')
-}
+
 
 element.style {
 	width: 1250px;
@@ -51,14 +43,6 @@ element.style {
 	padding-left: 15px;
 	margin-right: auto;
 	margin-left: auto;
-}
-
-.a {
-	-webkit-transition: .3s all ease;
-	-o-transition: .3s all ease;
-	transition: .3s all ease;
-	color: #3e2605;
-	margin-left: 20px;
 }
 
 table#table-1 {
@@ -97,10 +81,6 @@ th, td {
 	bottom: 30px;
 }
 
-/* .ul { */
-/* 	border-top: 1px solid #cacaca; */
-/* 	border-bottom: 1px solid #cacaca; */
-/* } */
 hr {
 	border-top: 0px solid rgba(0, 0, 0, 0.1);
 }
@@ -125,19 +105,29 @@ container {
 	height: 100%;
 	width: 100%;
 }
-#title{
+#ad_title{
 color: #3e2605
+}
+#classLink {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    color: #3e2605
 }
 </style>
 <%@ include  file="/front-end/headfinish.jsp"%>
 <div class="container">
-	<div class="hd" style="margin-bottom: -30px;">
+	<div class="hd" style="margin-bottom: -20px;">
 		<a href="">首頁</a> <span>最新消息</span>
 	</div>
 	<div class="font-weight-light text-center text-lg-left mt-4 mb-0">
-		<ul class="classLink"
-			style="border-top: 1px solid #cacaca; border-bottom: 1px solid #cacaca;">cccc
-		</ul>
+		<a id="classLink" class="classLink" href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp"
+			style="border-top: 1px solid #cacaca; border-bottom: 1px solid #cacaca;">所有新訊
+		</a>
 	</div>
 
 	<hr class="mt-2 mb-5" style="border-top:none">
@@ -149,7 +139,7 @@ color: #3e2605
 		<c:forEach var="adVO" items="${list}" begin="<%=pageIndex%>"
 			end="<%=pageIndex+rowsPerPage-1%>">
 			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
+				<a href="<%=request.getContextPath() %>/front-end/front/front_ad_one.jsp" class="d-block mb-4 h-100"> <img
 					class="img-fluid img-thumbnail"
 					src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"
 					alt="">
@@ -160,20 +150,24 @@ color: #3e2605
 				<div>${adVO.ad_add_date}</div>
 				
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
-					<a href="#" class="d-block mb-4 h-100 " style="font-size: 20px" id="title">${adVO.ad_title}<br>
+					<label for="ad_one" class="d-block mb-4 h-100 " style="font-size: 20px" 
+					id="ad_title">${adVO.ad_title}<br>
+					<input type="submit" id="ad_one">
+						<input type="hidden" name="action" value="getFrontOne_For_Display">
 						<button type="submit" class="btn btn-outline-dark"
 							style="border-radius: 100%" name="action"
 							value="getFrontOne_For_Display">詳</button>
-					</a>
+					</label>
 					<input type="hidden" name="ad_no" value="${adVO.ad_no}">
 					</FORM>
 			</div>
 			
 		</c:forEach>
-
+	
 	</div>
+	<%@ include file="page2.file"%>	
 </div>
 
 <!-- /.container -->
-<%@ include file="footer.jsp"%>
+<%@ include file="/front-end/footer.jsp"%>
 </html>
