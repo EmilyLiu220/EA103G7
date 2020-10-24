@@ -31,7 +31,7 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 	private static final String GET_ALL_STMT = "SELECT RES_NO ,MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER ORDER BY RES_NO";
 	private static final String GET_ONE_STMT = "SELECT MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_NO = ?";
 	private static final String UPDATE = "UPDATE RES_ORDER SET MEAL_ORDER_NO=? ,MEM_NO=? ,EMP_NO=? ,RES_DATE=? ,PEOPLE=? ,TIME_PERI_NO=? ,INFO_STS=? ,SEAT_STS=? WHERE RES_NO = ?";
-	private static final String GET_ONE_MEM_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEM_NO = ?";
+	private static final String GET_ONE_MEM_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEM_NO = ? ORDER BY RES_TIME DESC";
 	private static final String GET_RES_DATE_AND_TIME_PERI_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = ? AND TIME_PERI_NO = ?";
 
 	@Override
@@ -72,15 +72,14 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 			for (String seat_no : seats_no) {
 				resDetailSvc.addResDetail(seat_no, next_res_no, con);
 			}
-			
-			
+
 			// 交易完成
 			con.commit();
 			con.setAutoCommit(true);
 //			System.out.println("list.size()-B="+seats_no.length);
 //			System.out.println("新增訂位訂單編號" + next_res_no + "時,共有" + seats_no.length
 //					+ "筆訂位明細被新增");
-			
+
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			if (con != null) {
@@ -276,9 +275,9 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 		}
 		return resOrderVO;
 	}
-	
+
 	@Override
-	public List<ResOrderVO> findByMEM_NO_getAll(String mem_no) {
+	public List<ResOrderVO> findByMEM_NO_getAll(String mem_no, String sts) {
 		List<ResOrderVO> list = new ArrayList<ResOrderVO>();
 		ResOrderVO resOrderVO = null;
 
@@ -295,22 +294,37 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-//				if (new Integer(rs.getInt("SEAT_ISDEL")) == 0) {
-				resOrderVO = new ResOrderVO();
+				if ("end".equals(sts) && new Integer(rs.getInt("INFO_STS")) > 1) {
+					resOrderVO = new ResOrderVO();
 
-				resOrderVO.setRes_no(rs.getString("RES_NO"));
-				resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
-				resOrderVO.setMem_no(mem_no);
-				resOrderVO.setEmp_no(rs.getString("EMP_NO"));
-				resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
-				resOrderVO.setRes_date(rs.getDate("RES_DATE"));
-				resOrderVO.setPeople(rs.getInt("PEOPLE"));
-				resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
-				resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
-				resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+					resOrderVO.setRes_no(rs.getString("RES_NO"));
+					resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
+					resOrderVO.setMem_no(mem_no);
+					resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+					resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+					resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+					resOrderVO.setPeople(rs.getInt("PEOPLE"));
+					resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+					resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+					resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
 
-				list.add(resOrderVO); // Store the row in the list
-//				}
+					list.add(resOrderVO); // Store the row in the list
+				} else if ("ing".equals(sts) && new Integer(rs.getInt("INFO_STS")) < 2) {
+					resOrderVO = new ResOrderVO();
+
+					resOrderVO.setRes_no(rs.getString("RES_NO"));
+					resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
+					resOrderVO.setMem_no(mem_no);
+					resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+					resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+					resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+					resOrderVO.setPeople(rs.getInt("PEOPLE"));
+					resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+					resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+					resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+
+					list.add(resOrderVO); // Store the row in the list
+				}
 			}
 
 			// Handle any SQL errors
@@ -345,7 +359,7 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 		}
 		return list;
 	}
-	
+
 	@Override
 	public List<ResOrderVO> findByResDate_And_TimePeri_getAll(String res_date, String time_peri_no) {
 		List<ResOrderVO> list = new ArrayList<ResOrderVO>();
@@ -415,7 +429,7 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 		}
 		return list;
 	}
-	
+
 	@Override
 	public List<ResOrderVO> getAll() {
 		List<ResOrderVO> list = new ArrayList<ResOrderVO>();
