@@ -158,7 +158,7 @@ public class Front_informServlet extends HttpServlet {
 				req.setAttribute("front_informVOs", front_informVOs);
 				HttpSession session = req.getSession();
 				session.setAttribute("front_informVOs", front_informVOs);
-				String url = "/front-end/front_inform/fiNmsg.jsp";
+				String url = "/front-end/headfinish.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);		
 				

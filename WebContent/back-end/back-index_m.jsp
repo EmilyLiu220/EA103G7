@@ -87,7 +87,7 @@
 				</li>
 				<li><a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform_New.jsp">查看通知</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform.jsp">查看通知</a></li>
 						<li><a href="#">訂單派工</a></li>
 						<li><a href="#">出餐管理</a></li>
 						<li><a href="#">訂餐訂單處理</a></li>
