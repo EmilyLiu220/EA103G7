@@ -15,6 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.res_detail.model.ResDetailService;
+import com.res_detail.model.ResDetailVO;
+import com.res_order.model.ResOrderService;
+import com.res_order.model.ResOrderVO;
 import com.seat.model.SeatService;
 import com.seat.model.SeatVO;
 
@@ -169,14 +175,42 @@ public class SeatServlet extends HttpServlet {
 			}
 			return;
 		}
-		
+
+		if ("get_seatVO".equals(action)) {
+
+			String res_no = req.getParameter("res_no");
+
+			ResDetailService resDetailSvc = new ResDetailService();
+			SeatService seatSvc = new SeatService();
+
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+			List<SeatVO> seatVOList = new ArrayList<SeatVO>();
+
+			List<ResDetailVO> resDetailVOList = resDetailSvc.getAllResNO(res_no);
+			for (ResDetailVO resDetailVO : resDetailVOList) {
+				seatVOList.add(seatSvc.getOneSeat(resDetailVO.getSeat_no()));
+			}
+			
+			String jsonStr = gson.toJson(seatVOList);
+			PrintWriter out = res.getWriter();
+			res.setContentType("text/plain");
+			res.setCharacterEncoding("UTF-8");
+
+			out.write(jsonStr);
+			out.flush();
+			out.close();
+			return;
+
+		}
+
 		/*********** 座位編輯換頁 ***********/
 		if ("floor_load".equals(action)) {
 			if (req.getParameter("floor") == null) {
 				return;
 			}
 			PrintWriter out = res.getWriter();
-			String floor1 =req.getParameter("floor");
+			String floor1 = req.getParameter("floor");
 			SeatService seatSvc = new SeatService();
 			List<SeatVO> seatVOList = seatSvc.getAll();
 			List<JSONObject> jsonObjectList = new ArrayList<JSONObject>();

@@ -287,7 +287,7 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/time_peri/TimePeriServlet.do?action=getTimePeri",
+			url: ajaxURL + "/time_peri/TimePeriServlet.do?action=get_TimePeri",
 			type: "post",
 			// synchronize is false
 			async: false,

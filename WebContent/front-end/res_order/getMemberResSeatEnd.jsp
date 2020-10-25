@@ -27,11 +27,12 @@
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 </style>
 
 </head>
 <body>
-<div class="container">
+<div class="container get_member_res_seat" >
 <table id="table-1">
 	<tr>
 		<td><h3 style="margin-bottom:0;">訂位歷史紀錄</h3></td>
@@ -41,22 +42,15 @@
 	<tr>
 		<th>桌位</th>
 		<th>訂餐編號</th>
-<!-- 		<th>會員編號</th> -->
-<!-- 		<th>員工編號</th> -->
-<!-- 		<th>訂單成立時間</th> -->
 		<th>預約訂位日期</th>
 		<th>用餐時段</th>
 		<th>人數</th>
+		<th>訂位狀態</th>
 	</tr>
 	<%@ include file="pages/page1.file"%>
 	<jsp:useBean id="map_info_sts" class="java.util.HashMap"/>
-		<c:set target="${map_info_sts}" property="0" value="未發送"/>
-		<c:set target="${map_info_sts}" property="1" value="已發送未確認"/>
-		<c:set target="${map_info_sts}" property="2" value="已發送已確認"/>
+		<c:set target="${map_info_sts}" property="2" value="完成"/>
 		<c:set target="${map_info_sts}" property="3" value="取消訂位"/>
-	<jsp:useBean id="map_seat_sts" class="java.util.HashMap"/>
-		<c:set target="${map_seat_sts}" property="0" value="未入座"/>
-		<c:set target="${map_seat_sts}" property="1" value="已入座"/>
 	<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" />
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
@@ -73,19 +67,10 @@
 					${resOrderVO.meal_order_no}
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">
-					<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-						<c:choose>    
-							<c:when test="${resOrderVO.info_sts ne 3}">  
-									<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-									<font color="red">未訂餐</font><br>
-									<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
-							</c:when>
-							<c:otherwise>
-								<font color="red">未訂餐</font><br>
-								<button type="submit" class="btn btn-primary" disabled="disabled" style="cursor: not-allowed;">我要訂餐</button>
-							</c:otherwise>
-						</c:choose>
-					</form>
+					<c:if test="${resOrderVO.info_sts gt 1}">  
+						<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
+						<font color="red">未訂餐</font><br>
+					</c:if>
 				</c:if>
 			</td>
 <!-- 			<td> -->
@@ -111,6 +96,18 @@
 			<td>
 				${resOrderVO.people}
 			</td>
+			<td>
+				<c:forEach  var="item" items="${map_info_sts}">
+					<c:if test="${item.key eq resOrderVO.info_sts}">
+						<c:if test="${item.key eq 3}">
+							<font style="color: red" >${item.value}</font>
+						</c:if>
+						<c:if test="${item.key ne 3}">
+							<font style="color: blue" >${item.value}</font>
+						</c:if>
+					</c:if>
+				</c:forEach>
+			</td>
 		</tr>
 		</c:if>
 	</c:forEach>
@@ -125,6 +122,6 @@
 </footer>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery-1.12.4.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/sweetalert.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/getMemberResSeat.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/getMemberResSeatEnd.js"></script>
 </body>
 </html>
