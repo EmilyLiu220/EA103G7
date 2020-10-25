@@ -36,6 +36,7 @@
 <style>
 
 
+
 element.style {
 	width: 1250px;
 }
@@ -46,14 +47,6 @@ element.style {
 	padding-left: 15px;
 	margin-right: auto;
 	margin-left: auto;
-}
-
-a {
-	-webkit-transition: .3s all ease;
-	-o-transition: .3s all ease;
-	transition: .3s all ease;
-	color: #3e2605;
-	margin-left: 20px;
 }
 
 table#table-1 {
@@ -92,13 +85,9 @@ th, td {
 	bottom: 30px;
 }
 
-/* .ul { */
-/* 	border-top: 1px solid #cacaca; */
-/* 	border-bottom: 1px solid #cacaca; */
-/* } */
-/* hr { */
-/* 	border-top: 10px solid rgba(0, 0, 0, 0.1); */
-/* } */
+hr {
+	border-top: 0px solid rgba(0, 0, 0, 0.1);
+}
 
 hd {
 	margin-bottom: 40px;
@@ -120,7 +109,19 @@ container {
 	height: 100%;
 	width: 100%;
 }
-
+#ad_title{
+color: #3e2605
+}
+#classLink {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    color: #3e2605
+}
 div {
 	width: 100%;
 	margin: 0px auto;
@@ -137,9 +138,9 @@ font-size: 10px;
 	text-align: center;
 }
 </style>
-<%@ include file="head_ad.jsp"%>
+<%@ include file="/front-end/headfinish.jsp"%>
 <div class="container">
-	<div class="hd" style="margin-bottom: -30px;">
+	<div class="hd" style="margin-bottom: -20px;">
 		<a href="">首頁</a> <span>最新消息</span>
 	</div>
 	<div class="font-weight-light text-center text-lg-left mt-4 mb-0">
@@ -162,7 +163,7 @@ font-size: 10px;
 		</div>
 
 		<div
-			style="text-align: center; margin-bottom: 40px; margin-top: 40px;">${adVO.ad_cont}</div>
+			style="align-left:0px; margin-bottom: 40px; margin-top: 40px;">${adVO.ad_cont}</div>
 		<div class="btn" >
 			<a  class="btn btn-outline-dark" style="font-size:5px"
 				href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp">上一頁</a>

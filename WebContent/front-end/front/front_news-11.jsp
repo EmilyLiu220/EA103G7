@@ -40,9 +40,11 @@
 <style>
 
 
+
 element.style {
 	width: 1250px;
 }
+
 .container-fluid {
 	width: 70%;
 	padding-right: 15px;
@@ -55,14 +57,17 @@ table#table-1 {
 	border: 2px solid black;
 	text-align: center;
 }
+
 table#table-1 h4 {
 	display: block;
 	margin-bottom: 1px;
 }
+
 h4 {
 	color: blue;
 	display: inline;
 }
+
 table {
 	width: 1000px;
 	background-color: white;
@@ -84,6 +89,47 @@ th, td {
 	bottom: 30px;
 }
 
+hr {
+	border-top: 0px solid rgba(0, 0, 0, 0.1);
+}
+
+hd {
+	margin-bottom: 40px;
+}
+
+.hd a, .hd span {
+	display: inline-block;
+	font-size: 14px;
+	letter-spacing: .5px;
+	color: #767676;
+	text-transform: uppercase;
+	height: 10px;
+	border-top-width: 50px;
+	margin-top: 80px;
+	margin-bottom: -30px;
+}
+
+container {
+	height: 100%;
+	width: 100%;
+}
+#ad_title{
+color: #3e2605
+}
+#classLink {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    color: #3e2605
+}
+div {
+	width: 100%;
+	margin: 0px auto;
+}
 
 
 pageMainArea {
