@@ -329,7 +329,7 @@ text-decoration: underline;
 			<tr>
 				<td style="text-align: center;">${mealSetSrv.searchByNo(mealOrderDetailVO.meal_set_no).meal_set_name}</td>
 				<td style="text-align: center;">${mealOrderDetailVO.qty}</td>
-				<td style="text-align: center;">${mealSrv.searchByNo(mealOrderDetailVO.meal_set_no).meal_set_price} 元</td>
+				<td style="text-align: center;">${mealSetSrv.searchByNo(mealOrderDetailVO.meal_set_no).meal_set_price} 元</td>
 				<td style="text-align: center;">${mealOrderDetailVO.detail_amount} 元</td>
 				<td style="text-align: center;"></td>
 				<td style="text-align: center;"></td>

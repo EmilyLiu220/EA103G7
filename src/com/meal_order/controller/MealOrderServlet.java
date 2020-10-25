@@ -30,7 +30,6 @@ import com.meal_order_detail.model.MealOrderDetailService;
 import com.meal_order_detail.model.MealOrderDetailVO;
 import com.meal_set.model.*;
 
-//@ServerEndpoint("/MealOrderWebSocket")
 @WebServlet("/MealOrderServlet.do")
 public class MealOrderServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -59,15 +58,16 @@ public class MealOrderServlet extends HttpServlet {
 
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);
-			Integer paySts = resNo != null ? new Integer(0) : new Integer(1);
+			Integer paySts = (resNo != null ? new Integer(0) : new Integer(1));
 			Integer amount = new Integer(req.getParameter("amount"));
-			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Timestamp pickupTime = null;
+			System.out.println(req.getParameter("pickup_time"));
 			if (req.getParameter("res_no") == null) {
 
 				try {
-					pickupTime = Timestamp.valueOf(req.getParameter("pickup_time").trim());
-				} catch (IllegalArgumentException e) {
+					pickupTime = new Timestamp (ft.parse(req.getParameter("pickup_time")).getTime());
+				} catch (IllegalArgumentException | ParseException e) {
 					long min = 60 * 30 * 1000;
 					pickupTime = new Timestamp(System.currentTimeMillis() + min);
 				}
@@ -107,11 +107,11 @@ public class MealOrderServlet extends HttpServlet {
 			if (true) {
 //				(結帳 錯誤驗證?)
 			}
-			if(mealList!=null) {
-			mealList.removeAllElements();
+			if (mealList != null) {
+				mealList.removeAllElements();
 			}
-			if(setList!=null) {
-			setList.removeAllElements();
+			if (setList != null) {
+				setList.removeAllElements();
 			}
 			MealOrderService mealOrderSrv = new MealOrderService();
 			mealOrderVO = (MealOrderVO) (mealOrderSrv.addOrder(memNo, empNo, mealOrderSts, amount, notiSts, paySts,
@@ -119,12 +119,15 @@ public class MealOrderServlet extends HttpServlet {
 
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
 			Gson gson = new Gson();
-			Map<String,Object> pushMsg = new HashMap<>();
+			Map<String, Object> pushMsg = new HashMap<>();
+			if (pickupTime.getMonth() == new Date().getMonth() && pickupTime.getDate() == new Date().getDate()) {
+				pushMsg.put("reload","reload");
+			}
 			pushMsg.put("action", "insert");
 			pushMsg.put("mealOrderVO", mealOrderVO);
 			String jsonMap = gson.toJson(pushMsg);
 			webSocket.onMessage(jsonMap);
-			
+
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "front-end/shopping/mealOrderOne.jsp";
@@ -145,7 +148,7 @@ public class MealOrderServlet extends HttpServlet {
 			Integer notiSts = new Integer(0);
 			Integer paySts = resNo != null ? new Integer(0) : new Integer(1);
 			Integer amount = new Integer(req.getParameter("amount"));
-			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Timestamp pickupTime = null;
 			List<MealOrderDetailVO> detailList = new ArrayList<>();
 			if (rsvMealList != null) {
@@ -224,22 +227,21 @@ public class MealOrderServlet extends HttpServlet {
 			Integer notiSts = new Integer(req.getParameter("noti_sts"));
 			Integer paySts = new Integer(req.getParameter("pay_sts"));
 			MealOrderService mealOrderSrv = new MealOrderService();
-			
+
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
 			Gson gson = new Gson();
 			MealOrderDetailService detailSrv = new MealOrderDetailService();
-			List <MealOrderDetailVO> detailList = detailSrv.searchByOrderNo(mealOrderNo);
-			
-			Map<String,Object> pushMsg = new HashMap<>();
+			List<MealOrderDetailVO> detailList = detailSrv.searchByOrderNo(mealOrderNo);
+
+			Map<String, Object> pushMsg = new HashMap<>();
 			pushMsg.put("mealOrderVO", mealOrderVO);
 			pushMsg.put("action", "update");
 			pushMsg.put("detailList", detailList);
 			String jsonMap = gson.toJson(pushMsg);
 			webSocket.onMessage(jsonMap);
-			
-			
+
 			if (whichPage != null) {
 				returnPath = reqURL + "?whichPage=" + whichPage;
 			}
@@ -250,9 +252,9 @@ public class MealOrderServlet extends HttpServlet {
 			success.forward(req, res);
 
 		}
-		
+
 		if ("prepared".equals(action)) {
-			
+
 			String mealOrderNo = (String) req.getParameter("meal_order_no");
 			Integer mealOrderSts = new Integer(3);
 			Integer notiSts = new Integer(req.getParameter("noti_sts"));
@@ -280,8 +282,10 @@ public class MealOrderServlet extends HttpServlet {
 			if (whichPage != null) {
 				returnPath = reqURL + "?whichPage=" + whichPage;
 			}
-			if((reqURL == null || req.getParameter("queryString")!=null)&&!(req.getParameter("queryString").equals("null"))) {
-				returnPath = req.getServletPath() +"?whichPage=" +whichPage +"&action=" +req.getParameter("queryString");
+			if ((reqURL == null || req.getParameter("queryString") != null)
+					&& !(req.getParameter("queryString").equals("null"))) {
+				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+						+ req.getParameter("queryString");
 			}
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
@@ -328,37 +332,4 @@ public class MealOrderServlet extends HttpServlet {
 		}
 
 	}
-
-//	private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
-//
-//	@OnOpen
-//	public void onOpen(Session session) throws IOException {
-//		sessionsMap.put("mealOrdersc", session);
-//
-//	}
-//
-//	@OnMessage
-//	public void onMessage() throws IOException {
-//		sendMessage();
-//
-//	}
-//
-//	@OnClose
-//	public void onClose(Session session) throws IOException {
-//		sessionsMap.remove("mealOrdersc");
-//	}
-//
-//	@OnError
-//	public void onError(Session Session, Throwable e) {
-//		System.out.println("Error: " + e.toString());
-//	}
-//
-//	public void sendMessage() throws IOException {
-//		try {
-//			sessionsMap.get("mealOrdersc").getBasicRemote().sendText("reload");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
 }

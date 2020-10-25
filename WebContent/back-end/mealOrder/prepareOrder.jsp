@@ -54,13 +54,33 @@
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .table a{
-color:blue;
-text-decoration: underline;
+	color:blue;
+	text-decoration: underline;
 }
 .table {
-margin-left: auto;
-margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
+.hightlight {
+	animation: blink 0.3s linear;
+	background-color:darkgray;
+	color: black;
+        }
+         @keyframes blink {
+            0% {
+                background-color: #abc;
+            }
+            60% {
+                background-color: yellow;
+            }
+            80% {
+                background-color: white;
+            }
+            100% {
+                background-color: darkgray;
+                color: black;
+            }
+        }
 </style>
 
 </head>
@@ -195,7 +215,7 @@ margin-right: auto;
 					</tr>
 				</table>
 				<br>
-					<%@ include file="page1.file"%>
+<%-- 					<%@ include file="page1.file"%> --%>
 				<c:forEach var="mealOrderVO" items="${list}">
 				 <table id="table-1" class="${mealOrderVO.meal_order_no}">
 					<tr>
@@ -205,14 +225,14 @@ margin-right: auto;
 					</tr>
 				</table>
 				
-				<table id="${mealOrderVO.meal_order_no}" class="table table-hover ${mealOrderVO.meal_order_no}" style="width: 60%; font-size: 90%;">
+				<table id="${mealOrderVO.meal_order_no}" class="table table-hover ${mealOrderVO.meal_order_no}" style="width: 40%; font-size: 90%;">
 					<input type="hidden" name="pay_sts" value="${mealOrderVO.pay_sts}"/>
 					<input type="hidden" name="noti_sts" value="${mealOrderVO.noti_sts}"/>
 					<thead style="text-align: center;">
 						<tr>
 							<th style="width: 10%;">check</th>
-							<th style="width: 25%;">餐點名稱</th>
-							<th style="width: 25%;">餐點數量</th>
+							<th style="width: 20%;">餐點名稱</th>
+							<th style="width: 10%;">餐點數量</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -271,7 +291,6 @@ margin-right: auto;
 		});
 	});
 	
-	
 	$(".checkbox").change(sendOrder);
 	
 	function sendOrder(){
@@ -280,6 +299,7 @@ margin-right: auto;
 		var paySts = $("#"+mealOrderNo).find('input[name="pay_sts"]').val();
 		var len = $("#"+mealOrderNo).find('input[class="checkbox"]').length;
 		var checklen = $("#"+mealOrderNo).find('input[class="checkbox"]:checked').length;
+		$(this).parent().parent().toggleClass("hightlight");
 		if(len === checklen){
 			$.ajax({
                 url: "${pageContext.request.contextPath}/MealOrderServlet.do",
@@ -329,14 +349,8 @@ margin-right: auto;
 				$("#content").append(div);
 				
 				jsonObj.detailList.forEach(function(detailVO){
-				var name;
-				if(detailVO.meal_no!=null){
-					name = detailVO.meal_name;
-				}else{
-					name = detailVO.meal_set_name;
-				}
 					var row ='<tr><td style="text-align: center;"><input class="checkbox" type="checkbox"/><input type="hidden" value="'+jsonObj.mealOrderVO.meal_order_no+'"/></td>'
-					+	'<td style="text-align: center;">'+ name +'</td>'
+					+	'<td style="text-align: center;">'+ detailVO.meal_name +'</td>'
 					+ '	<td style="text-align: center;">'+detailVO.qty+'</td></tr>';
 					$("."+jsonObj.mealOrderVO.meal_order_no+"body").append(row);
 			});
