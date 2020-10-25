@@ -33,7 +33,7 @@ public class Mem_stsFilter implements Filter {
 		
 		MemVO memVO = (MemVO) session.getAttribute("memVO2");
 		
-		String reser = req.getContextPath() + "";
+		String reserve = req.getContextPath() + "";
 		String meal = req.getContextPath() + "";
 		String review = req.getContextPath() + "";
 		String repo = req.getContextPath() + "";
@@ -43,7 +43,7 @@ public class Mem_stsFilter implements Filter {
 		Integer mem_review = memVO.getMem_review();
 		Integer mem_repo = memVO.getMem_repo();
 		
-		if (mem_od_r.equals(1) && reser.equals(path)) {
+		if (mem_od_r.equals(1) && reserve.equals(path)) {
 			chain.doFilter(request, response);
 		} else if (mem_od_m.equals(1) && meal.equals(path)) {
 			chain.doFilter(request, response);

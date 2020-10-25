@@ -143,8 +143,9 @@
 	
 	</div>
 	
-<script type="text/javascript">
+<script>
 
+	<!--小按鈕-->
 	var button2 = document.getElementById("button2");
 	var mem_name2 = document.getElementById("mem_name2");
 	var mem_act2 = document.getElementById("mem_act2");
@@ -156,19 +157,7 @@
 	var mem_mail2 = document.getElementById("mem_mail2");
 	var address2 = document.getElementById("address2");
 	
-	console.log(button2);
-	console.log(mem_name2);
-	console.log(mem_act2);
-	console.log(mem_psw1);
-	console.log(mem_psw2);
-	console.log(mem_gen2);
-	console.log(mem_bir2);
-	console.log(mem_tel2);
-	console.log(mem_mail2);
-	console.log(address2);
-	
-	button2.addEventListener("click", function(e) {
-		
+	button2.addEventListener("click", function(e) {	
 		mem_name2.value = "吳永志";
 		mem_act2.value = "zzz111";
 		mem_psw1.value = "zzz111";
@@ -178,9 +167,19 @@
 		mem_tel2.value = "0988168168";
 		mem_mail2.value = "steve199203@gmail.com";
 		address2.value = "中大路300號";
-		
 	});
-
+	
+	<!--註冊成功訊息-->
+	var mem_psw1 = document.getElementsByName("mem_psw1");
+	var mem_psw2 = document.getElementsByName("mem_psw2");
+	var ok = document.getElementById("ok");
+	
+	ok.addEventListener("click", function(e) {
+		if (mem_psw1[0].value !== "" && mem_psw2[0].value !== "" && mem_psw1[0].value === mem_psw2[0].value) {
+			alert("註冊成功");
+		}
+	});
+	
 </script>
 	
 	

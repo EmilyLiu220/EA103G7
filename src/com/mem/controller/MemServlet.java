@@ -124,7 +124,6 @@ public class MemServlet extends HttpServlet {
 				} else if(!mem_act.trim().matches(mem_actReg)) { 
 					errorMsgs.add("會員帳號: 只能是英文字母、數字和_ , 且長度必需在2到10之間");
 	            }
-				
 				MemService memSvc = new MemService();
 				List<MemVO> list = memSvc.getAll();
 				for (int i = 0; i < list.size(); i++) {
@@ -180,7 +179,6 @@ public class MemServlet extends HttpServlet {
 				if (mem_mail == null || mem_mail.trim().length() == 0) {
 					errorMsgs.add("e-mail: 請勿空白");
 				}
-				
 				List<MemVO> list2 = memSvc.getAll();
 				for (int i = 0; i < list2.size(); i++) {
 					if (mem_mail.equals(list2.get(i).getMem_mail())) {

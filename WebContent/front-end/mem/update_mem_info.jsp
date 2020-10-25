@@ -135,7 +135,7 @@
 		</li>
 	</ul>
 	
-	<input type="submit" value="送出修改" style="margin-left:250px">
+	<input type="submit" id="ok" value="送出修改" style="margin-left:250px">
 	<input type="hidden" name="mem_no" value="${memVO.mem_no}">
 	<input type="hidden" name="action" value="update_i">
 	</FORM>
@@ -180,6 +180,17 @@
 			break;
 		}
 	}
+	
+	// 修改成功訊息
+	var mem_psw1 = document.getElementsByName("mem_psw1");
+	var mem_psw2 = document.getElementsByName("mem_psw2");
+	var ok = document.getElementById("ok");
+	
+	ok.addEventListener("click", function(e) {
+		if (mem_psw1[0].value !== "" && mem_psw2[0].value !== "" && mem_psw1[0].value === mem_psw2[0].value) {
+			alert("修改成功");
+		}
+	});
 	
 </script>
 

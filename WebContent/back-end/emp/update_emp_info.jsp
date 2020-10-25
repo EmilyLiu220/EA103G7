@@ -10,6 +10,7 @@
 <html>
 <head>
 <script src="https://kit.fontawesome.com/d6c1e36c40.js" crossorigin="anonymous"></script>
+
 <title>員工個資修改</title>
 
 <style>
@@ -79,6 +80,20 @@
 	</div>
 	</div>
 </div>
+
+<script>
+
+	var emp_psw1 = document.getElementsByName("emp_psw1");
+	var emp_psw2 = document.getElementsByName("emp_psw2");
+	var ok = document.getElementById("ok");
+	
+	ok.addEventListener("click", function(e) {
+		if (emp_psw1[0].value !== "" && emp_psw2[0].value !== "" && emp_psw1[0].value === emp_psw2[0].value) {
+			alert("修改成功");
+		}
+	});
+
+</script>
 	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
