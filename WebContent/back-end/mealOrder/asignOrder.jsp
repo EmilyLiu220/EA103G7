@@ -55,6 +55,10 @@
 color:blue;
 text-decoration: underline;
 }
+.table {
+margin-left: auto;
+margin-right: auto;
+}
 </style>
 
 </head>
@@ -233,17 +237,8 @@ text-decoration: underline;
 				</table>
 				</form>
 				<br>
-				<%-- 錯誤表列 --%>
-				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
-						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
 
-				<table class="table table-hover" style="width: 100%; font-size: 90%;">
+				<table class="table table-hover" style="width: 45%; font-size: 90%;">
 					<thead style="text-align: center;">
 						<tr>
 							<th style="width: 10%;">訂餐編號</th>
@@ -255,6 +250,7 @@ text-decoration: underline;
 <!-- 							<th style="width: 10%;">通知狀態</th> -->
 <!-- 							<th style="width: 10%;">付款狀態</th> -->
 							<th style="width: 10%;">訂單狀態</th>
+							<th style="width: 10%;"></th>
 						</tr>
 					</thead>
 					<%@ include file="asignPage1.file"%>
@@ -338,6 +334,43 @@ text-decoration: underline;
 //            minDate:               new Date(), // 去除今日(不含)之前
 //            maxDate:               new Date(now.getFullYear(),(now.getMonth()+1),now.getDate())  // 去除今日(不含)之後
         });
+        
+        var webSocket = null;
+    	var MyPoint = "/MealOrderWebSocket";
+    	var host = window.location.host;
+    	var path = window.location.pathname;
+    	var webCtx = path.substring(0, path.indexOf('/', 1));
+    	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+    	if('WebSocket' in window){
+    		webSocket = new WebSocket(endPointURL);
+    	}else{
+    		alert('browser not support websocket');
+    	}
+    	webSocket.onopen = function (e){
+    		console.log('websocket onopen');
+    	}
+    	
+    	webSocket.onmessage = function (e){
+    		var jsonObj = JSON.parse(e.data);
+    		if(jsonObj.reload!=null)
+    		window.location.reload();
+    		if(jsonObj.action === 'insert'){
+//     			var now = new Date();
+				console.log(new Date().getMonth());
+    			console.log(jsonObj.mealOrderVO.pickup_time);
+    		}
+    		
+    	}
+    	
+    	window.onbeforeunload = function (e) {
+    		webSocket.close();
+    	}
+    	
+    	webSocket.onclose = function(e){
+    		console.log('websocket closed');
+    	}
+    	
+    	
 	</script>
 </body>
 </html>
