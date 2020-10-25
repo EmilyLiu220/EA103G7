@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>吃胖吧～訂位</title>
+<title>吃胖吧～修改訂位</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/css/orderSeat.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
@@ -27,6 +27,8 @@ input, select {
 <jsp:include page="/front-end/headfinish.jsp"></jsp:include>
 </head>
 <body>
+	<input type="hidden" id="res_no" name="res_no" value="${res_no}">
+	<input type="hidden" id="res_people" value="${res_people}">
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<%
 		List<SeatVO> list = seatSvc.getAll();
@@ -58,7 +60,7 @@ input, select {
 				<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 			</label>
 			<input type="hidden" name="action" value="order_seat">
-			<button id="orderSeat" name="action" value="order_seat" onclick='return false;'>訂位</button>
+			<button id="orderSeat" name="action" value="order_seat" onclick='return false;'>修改訂位</button>
 		</div>
 		<div id="container" class="container">
 			<c:forEach var="seatVO" items="${seatSvc.all}">
@@ -81,6 +83,6 @@ input, select {
 	</footer>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/sweetalert.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/orderSeat.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/modifySeat.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+<%@page import="com.mem.model.MemVO"%>
 <%@page import="com.time_peri.model.TimePeriService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -5,8 +6,9 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.res_order.model.*"%>
 <%
-	ResOrderService resOrderSvc = new ResOrderService();
-	List<ResOrderVO> list = resOrderSvc.getOneMemberResOrder("MEM0010", "ing");
+	MemVO memVO = (MemVO) session.getAttribute("memVO2");
+ 	ResOrderService resOrderSvc = new ResOrderService();
+	List<ResOrderVO> list = resOrderSvc.getOneMemberResOrder(memVO.getMem_no(), "ing");
 	pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
@@ -38,6 +40,11 @@
 	</tr>
 </table>
 <table class="table table-striped table-hover mx-auto w-auto">
+<c:choose>
+	 <c:when test="${list.size() eq 0}">
+	 	<font style="font-size: 40px;" color="red">查無資料</font><br>
+    </c:when>
+    <c:otherwise>
 	<tr>
 		<th>桌位</th>
 		<th>訂餐編號</th>
@@ -52,7 +59,9 @@
 		<th>修改座位</th>
 		<th>取消訂位</th>
 	</tr>
+
 	<%@ include file="pages/page1.file"%>
+
 	<jsp:useBean id="map_info_sts" class="java.util.HashMap"/>
 		<c:set target="${map_info_sts}" property="0" value="未發送"/>
 		<c:set target="${map_info_sts}" property="1" value="已發送未確認"/>
@@ -142,7 +151,8 @@
 					<c:choose>    
 						<c:when test="${resOrderVO.info_sts ne 3}">  
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-								<button type="submit" id="modify_Seat_Position" class="btn btn-warning" onclick='return false;'>修改座位</button>
+								<input type="hidden" name="res_people" value="${resOrderVO.people}">
+								<button type="submit" id="modify_Seat_Order" class="btn btn-warning" onclick='return false;'>修改座位</button>
 						</c:when>
 						<c:otherwise>
 							<button type="submit" class="btn btn-warning" disabled="disabled" style="cursor: not-allowed;">修改座位</button>
@@ -171,12 +181,15 @@
 </table>
 
 <%@ include file="pages/page2.file"%>
+	    </c:otherwise>
+</c:choose>
 <input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/back-end/seat_obj/addSeatObj.jsp'">
 <input class="btn btn-secondary" type="button" value="回桌訂位畫面" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp'">
+
 </div>
-<footer>
+
 <jsp:include page="/front-end/footer.jsp"></jsp:include>
-</footer>
+
 <script src="<%=request.getContextPath()%>/front-end/js/jquery-1.12.4.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/sweetalert.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/getMemberResSeatIng.js"></script>

@@ -191,7 +191,7 @@ $(document).ready(function() {
 	});
 	
 	// 修改座位按鈕
-	$("button#modify_Seat_Position.btn.btn-warning").click(function(){
+	$("button#modify_Seat_Order.btn.btn-warning").click(function(){
 		var form = $(this).parents('form');
 		swal({
 			title: "您想要變更訂位嗎?",
@@ -206,7 +206,7 @@ $(document).ready(function() {
 					$("<input>").attr({
 						type: "hidden",
 						name: "action",
-						value: "modify_Seat_Position",
+						value: "modify_Seat_Order",
 					}).appendTo(form);
 					form.submit();
 				});
