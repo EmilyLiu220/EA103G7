@@ -1,6 +1,7 @@
 package com.front_inform.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,15 +132,18 @@ public class Front_informServlet extends HttpServlet {
 			}
 		}
 		
+		// ajax
 		if ("getMyInform".equals(action)) { // 會員以其身分登入網站頁面後要直接執行此動作一次
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
-				String mem_no = req.getParameter("mem_no");
+				HttpSession session = req.getSession();
+				MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
+				String mem_no = memVO2.getMem_no();
 				if (mem_no == null || (mem_no.trim()).length() == 0) {
-					errorMsgs.add("請先登入頁面，或確實在 URL 上輸入 mem_no");
+					errorMsgs.add("沒有會員編號");
 				}
 				MemService memSvc = new MemService();
 				MemVO memVO = memSvc.getOneMem(mem_no);
@@ -147,38 +151,34 @@ public class Front_informServlet extends HttpServlet {
 					errorMsgs.add("查無會員資料");
 				}
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/front_inform/errorPage.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
+					System.out.println("getMyInformMsgs:"+ errorMsgs);
+					return ;//程式中斷
 				}
-				
 				Front_InformService front_informSvc = new Front_InformService();
 				List<Front_InformVO> front_informVOs = front_informSvc.getMyInform(mem_no);
-
-				req.setAttribute("front_informVOs", front_informVOs);
-				HttpSession session = req.getSession();
 				session.setAttribute("front_informVOs", front_informVOs);
-				String url = "/front-end/headfinish.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); 
-				successView.forward(req, res);		
 				
 			} catch (Exception e) {
-				errorMsgs.add("查無資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/front_inform/errorPage.jsp");
-				failureView.forward(req, res);
+				errorMsgs.add(e.getMessage());
+				System.out.println("getMyInform errorMsgs:"+ errorMsgs);
+
 			}
 			
 		}
 		
+		// ajax
 		if("updateReadSts".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
+			res.setContentType("text/plain");
+			res.setCharacterEncoding("UTF-8");
+			PrintWriter out = res.getWriter();
 			try {
 				String mem_no = req.getParameter("mem_no");
 				if(mem_no==null || mem_no=="" ||(mem_no.trim().length()==0)) {
-					errorMsgs.add("請先登入頁面，或確實在 URL 上輸入 mem_no");
+					errorMsgs.add("尚未登入");
 				}
 				MemService memSvc = new MemService();
 				MemVO memVO = memSvc.getOneMem(mem_no);
@@ -186,8 +186,9 @@ public class Front_informServlet extends HttpServlet {
 					errorMsgs.add("查無會員資料");
 				}
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/front_inform/errorPage.jsp");
-					failureView.forward(req, res);
+					out.write("error");
+					out.flush();
+					out.close();
 					return; // 此區塊代表有錯誤，會導回去，程式中斷
 				}
 				
@@ -196,8 +197,10 @@ public class Front_informServlet extends HttpServlet {
 				
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/front_inform/errorPage.jsp");
-				failureView.forward(req, res);
+				System.out.println("errorMsgs:"+ errorMsgs);
+				out.write("error");
+				out.flush();
+				out.close();
 			}
 			
 		}

@@ -195,8 +195,9 @@
 <script>
 	$("#twzipcode").twzipcode();
 </script>
-	
+<!-- 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+-->
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
 
 	<jsp:include page="/front-end/footer.jsp" />

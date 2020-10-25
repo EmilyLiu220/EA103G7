@@ -205,93 +205,94 @@
 	
 		var messagesArea = document.getElementsByClassName("msg_history")[0];
 		var emp_no = "${empVO2.emp_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
-		var webSocket;	
 		
-		$(function() {
-			// create a websocket
-			webSocket = new WebSocket(endPointURL);
+		var	webSocket = new WebSocket(endPointURL);
 			
-			webSocket.onopen = function(event) {
-				console.log("Connect Success!");
-			};
-			
-			webSocket.onmessage = function(event) {
-				var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
-				if ("open" === jsonObj.type) {
-					refreshMemList(jsonObj);
-				}else if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
-					messagesArea.innerHTML = '';
-						
-						var messages = JSON.parse(jsonObj.msgJson);
-						for (var i = 0; i < messages.length; i++) {
-							var from_msg = document.createElement('div');
-							var historyData = JSON.parse(messages[i]);
-							var content_msg = document.createElement('div');
-							
-							if( historyData.sender !== "emp" ) {
-								from_msg.setAttribute("class", "incoming_msg");
-								var incoming_msg_img = document.createElement('div');
-								incoming_msg_img.classList.add("incoming_msg_img");
-								var img = document.createElement('img');
-								img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
-								img.setAttribute("alt","sunil");
-								incoming_msg_img.appendChild(img);
-								
-								var received_msg = document.createElement('div');
-								received_msg.classList.add("received_msg");
-								content_msg.classList.add("received_withd_msg");
-								
-								
-								var p = document.createElement('p');
-								var span = document.createElement('span');
-								span.classList.add("time_date");
-								var showMsg = historyData.message;
-								var timestamp = historyData.timestamp;
-								var readSts = historyData.readSts;
-								p.innerHTML = showMsg;
-								var dayTime = timestamp.substring(0,10);
-								p.setAttribute("title",dayTime);
-								var shortTime = timestamp.substring(11,18);
-								shortTime = shortTime.replace(/:$/, '');
-								span.innerHTML = shortTime;
-								
-								content_msg.appendChild(p);
-								content_msg.appendChild(span);
-								received_msg.appendChild(content_msg);
-								from_msg.appendChild(incoming_msg_img);
-								from_msg.appendChild(received_msg);
-
-							}else{
-								from_msg.setAttribute("class", "outgoing_msg");
-								var sent_msg = document.createElement('div');
-								content_msg.classList.add("sent_msg");
-								
-								var p = document.createElement('p');
-								var span = document.createElement('span');
-								span.classList.add("time_date");
-								var showMsg = historyData.message;
-								var timestamp = historyData.timestamp;
-								var readSts = historyData.readSts == 0 ? " 未讀" : " 已讀";
-								p.innerHTML = showMsg;
-								var dayTime = timestamp.substring(0,10);
-								p.setAttribute("title",dayTime);
-								var shortTime = timestamp.substring(11,18);
-								shortTime = shortTime.replace(/:$/, '');
-								span.innerHTML = shortTime + " | " + readSts;
-								
-								content_msg.appendChild(p);
-								content_msg.appendChild(span);
-								from_msg.appendChild(content_msg);
-							}
-							
-							messagesArea.appendChild(from_msg); // 將新增的歷史訊息區塊加進 chat 區塊
-						}
-						messagesArea.scrollTop = messagesArea.scrollHeight;
-				} else if ("chat" === jsonObj.type) {
-					var from_msg = document.createElement('div');
-					var content_msg = document.createElement('div');
+		webSocket.onopen = function(event) {
+			console.log("Connect Success!");
+		};
+		
+		webSocket.onmessage = function(event) {
+			var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+			if ("open" === jsonObj.type) {
+				refreshMemList(jsonObj);
+			}else if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
+				messagesArea.innerHTML = '';
 					
-					if( jsonObj.sender !== "emp" ) {
+					var messages = JSON.parse(jsonObj.msgJson);
+					for (var i = 0; i < messages.length; i++) {
+						var from_msg = document.createElement('div');
+						var historyData = JSON.parse(messages[i]);
+						var content_msg = document.createElement('div');
+						
+						if( historyData.sender !== "emp" ) {
+							from_msg.setAttribute("class", "incoming_msg");
+							var incoming_msg_img = document.createElement('div');
+							incoming_msg_img.classList.add("incoming_msg_img");
+							var img = document.createElement('img');
+							img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
+							img.setAttribute("alt","sunil");
+							incoming_msg_img.appendChild(img);
+							
+							var received_msg = document.createElement('div');
+							received_msg.classList.add("received_msg");
+							content_msg.classList.add("received_withd_msg");
+							
+							
+							var p = document.createElement('p');
+							var span = document.createElement('span');
+							span.classList.add("time_date");
+							var showMsg = historyData.message;
+							var timestamp = historyData.timestamp;
+							var readSts = historyData.readSts;
+							p.innerHTML = showMsg;
+							var dayTime = timestamp.substring(0,10);
+							p.setAttribute("title",dayTime);
+							var shortTime = timestamp.substring(11,18);
+							shortTime = shortTime.replace(/:$/, '');
+							span.innerHTML = shortTime;
+							
+							content_msg.appendChild(p);
+							content_msg.appendChild(span);
+							received_msg.appendChild(content_msg);
+							from_msg.appendChild(incoming_msg_img);
+							from_msg.appendChild(received_msg);
+
+						}else{
+							from_msg.setAttribute("class", "outgoing_msg");
+							var sent_msg = document.createElement('div');
+							content_msg.classList.add("sent_msg");
+							
+							var p = document.createElement('p');
+							var span = document.createElement('span');
+							span.classList.add("time_date");
+							var showMsg = historyData.message;
+							var timestamp = historyData.timestamp;
+							var readSts = historyData.readSts == 0 ? " 未讀" : " 已讀";
+							p.innerHTML = showMsg;
+							var dayTime = timestamp.substring(0,10);
+							p.setAttribute("title",dayTime + "--" + historyData.emp_no);
+							var shortTime = timestamp.substring(11,18);
+							shortTime = shortTime.replace(/:$/, '');
+							span.innerHTML = shortTime + " | " + readSts;
+							
+							content_msg.appendChild(p);
+							content_msg.appendChild(span);
+							from_msg.appendChild(content_msg);
+						}
+						
+						messagesArea.appendChild(from_msg); // 將新增的歷史訊息區塊加進 chat 區塊
+					}
+					messagesArea.scrollTop = messagesArea.scrollHeight;
+			} else if ("chat" === jsonObj.type) {
+				var from_msg = document.createElement('div');
+				var content_msg = document.createElement('div');
+
+				var sender = document.querySelector('#'+jsonObj.sender);
+				var receiver = document.querySelector('#'+jsonObj.receiver);
+				var dom = sender==null ? receiver : sender;
+				if( dom.classList.contains("active_chat")){
+					if( jsonObj.sender !== "emp") {
 						from_msg.setAttribute("class", "incoming_msg");
 						
 						var incoming_msg_img = document.createElement('div');
@@ -337,7 +338,7 @@
 						var readSts = jsonObj.readSts == 0 ? " 未讀" : " 已讀";
 						p.innerHTML = showMsg;
 						var dayTime = timestamp.substring(0,10);
-						p.setAttribute("title",dayTime);
+						p.setAttribute("title",dayTime + "--" + jsonObj.emp_no);
 						var shortTime = timestamp.substring(11,18);
 						shortTime = shortTime.replace(/:$/, '');
 						span.innerHTML = shortTime + " | " + readSts;
@@ -346,103 +347,101 @@
 						content_msg.appendChild(span);
 						from_msg.appendChild(content_msg);
 					}
-					messagesArea.appendChild(from_msg); // 將新增的訊息區塊加進 chat 區塊
-					messagesArea.scrollTop = messagesArea.scrollHeight;
 				}
-			};
-			
-			webSocket.onclose = function(event) {
-				console.log("Disconnected!");
-			};
+				messagesArea.appendChild(from_msg); // 將新增的訊息區塊加進 chat 區塊
+				messagesArea.scrollTop = messagesArea.scrollHeight;
+			}
+		};
+		
+		webSocket.onclose = function(event) {
+			console.log("Disconnected!");
+		};
 			
 
 			
-			function refreshMemList(jsonObj) {
-				var mems = jsonObj.mems; // 取得所有上線中的會員
-				var inbox_chat = document.getElementsByClassName("inbox_chat")[0];
-				inbox_chat.innerHTML = ''; 
-				for (var i = 0; i < mems.length; i++) {
-					
-					var chat_list = document.createElement('div');
-					chat_list.classList.add("chat_list");
-					chat_list.setAttribute("id", mems[i]);
-					var chat_people = document.createElement('div');
-					chat_people.classList.add("chat_people");
-					var chat_img = document.createElement('img');
-					chat_img.classList.add("chat_img");
-					chat_img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
-					chat_img.setAttribute("alt","sunil");
-					var chat_ib = document.createElement('div');
-					chat_ib.classList.add("chat_ib");
-					var h5 = document.createElement('h5');
-					h5.innerHTML = mems[i];
-					
-					chat_ib.appendChild(h5);
-					chat_people.appendChild(chat_img);
-					chat_people.appendChild(chat_ib);
-					chat_list.appendChild(chat_people);
-					inbox_chat.appendChild(chat_list);
-				}
+		function refreshMemList(jsonObj) {
+			var mems = jsonObj.mems; // 取得所有上線中的會員
+			var inbox_chat = document.getElementsByClassName("inbox_chat")[0];
+			inbox_chat.innerHTML = ''; 
+			for (var i = 0; i < mems.length; i++) {
 				
-				let chat_lists = document.querySelectorAll('.chat_list');
+				var chat_list = document.createElement('div');
+				chat_list.classList.add("chat_list");
+				chat_list.setAttribute("id", mems[i]);
+				var chat_people = document.createElement('div');
+				chat_people.classList.add("chat_people");
+				var chat_img = document.createElement('img');
+				chat_img.classList.add("chat_img");
+				chat_img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
+				chat_img.setAttribute("alt","sunil");
+				var chat_ib = document.createElement('div');
+				chat_ib.classList.add("chat_ib");
+				var h5 = document.createElement('h5');
+				h5.innerHTML = mems[i];
 				
-				// 開啟關閉聊天室 
-				$(".chat_list").click(function(e) {
-					let target = e.currentTarget;
-					
-					chat_lists.forEach( (e)=>{
-						if( e.classList.contains("active_chat")){
-							e.classList.toggle("active_chat");
-						}
-					})
-					target.classList.add('active_chat');
-					// 抓出聊天紀錄
-					var jsonObj = { // 這裡要對應原本的 VO 內容
-						"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
-						"sender" : "emp",
-						"receiver" : target.id,
-						"message" : "",
-						"timestamp" : "",
-						"emp_no" : emp_no,
-						"readSts" : 0
-					};
-					webSocket.send(JSON.stringify(jsonObj));
-				});
-				
-				// 發送訊息
-				$("#sendMsg").click(function() {
-					var inputMessage = document.getElementById("submit_message");
-					var message = inputMessage.value.trim();
-					var mem_no = "";
-					chat_lists.forEach( (e)=>{
-						if( e.classList.contains("active_chat")){
-							mem_no = e.id;
-							if (message === "") {
-								alert("Input a message");
-								inputMessage.focus();
-							} else {
-								var jsonObj = {
-									"type" : "chat",
-									"sender" : "emp",
-									"receiver" : mem_no,
-									"message" : message,
-									"timestamp" : new Date().toLocaleString(),
-									"emp_no" : emp_no,
-									"readSts" : 0
-								};
-								webSocket.send(JSON.stringify(jsonObj));
-								inputMessage.value = "";
-								inputMessage.focus();
-							}
-						}
-					})
-				});
-				
+				chat_ib.appendChild(h5);
+				chat_people.appendChild(chat_img);
+				chat_people.appendChild(chat_ib);
+				chat_list.appendChild(chat_people);
+				inbox_chat.appendChild(chat_list);
 			}
 			
-		})
-		
-
+			let chat_lists = document.querySelectorAll('.chat_list');
+			
+			// 開啟關閉聊天室 
+			$(".chat_list").click(function(e) {
+				let target = e.currentTarget;
+				
+				chat_lists.forEach( (e)=>{
+					if( e.classList.contains("active_chat")){
+						e.classList.toggle("active_chat");
+					}
+				})
+				target.classList.add('active_chat');
+				// 抓出聊天紀錄
+				var jsonObj = { // 這裡要對應原本的 VO 內容
+					"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+					"sender" : "emp",
+					"receiver" : target.id,
+					"message" : "",
+					"timestamp" : "",
+					"emp_no" : emp_no,
+					"readSts" : 0
+				};
+				webSocket.send(JSON.stringify(jsonObj));
+			});
+			
+			// 發送訊息
+			$("#sendMsg").click(function() {
+				var inputMessage = document.getElementById("submit_message");
+				var message = inputMessage.value.trim();
+				var mem_no = "";
+				chat_lists.forEach( (e)=>{
+					if( e.classList.contains("active_chat")){
+						mem_no = e.id;
+						if (message === "") {
+							alert("Input a message");
+							inputMessage.focus();
+						} else {
+							var jsonObj = {
+								"type" : "chat",
+								"sender" : "emp",
+								"receiver" : mem_no,
+								"message" : message,
+								"timestamp" : new Date().toLocaleString(),
+								"emp_no" : emp_no,
+								"readSts" : 0
+							};
+							webSocket.send(JSON.stringify(jsonObj));
+							inputMessage.value = "";
+							inputMessage.focus();
+						}
+					}
+				})
+			});
+			
+		}
+			
 		
 	</script>
 	<!-- Popper.JS -->
