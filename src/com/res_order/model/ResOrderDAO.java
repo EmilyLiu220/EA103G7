@@ -326,7 +326,6 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 					list.add(resOrderVO); // Store the row in the list
 				}
 			}
-
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());

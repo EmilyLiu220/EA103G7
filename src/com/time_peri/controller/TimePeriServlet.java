@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.res_order.model.ResOrderService;
+import com.res_order.model.ResOrderVO;
 import com.time_peri.model.TimePeriService;
 import com.time_peri.model.TimePeriVO;
 
@@ -40,7 +44,7 @@ public class TimePeriServlet extends HttpServlet {
 		/**********************************
 		 **** 依照日期判斷可選擇用餐時段****
 		 **********************************/
-		if ("getTimePeri".equals(action)) {
+		if ("get_TimePeri".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			if (req.getParameter("res_date") != null) {
@@ -77,5 +81,4 @@ public class TimePeriServlet extends HttpServlet {
 			return;
 		}
 	}
-
 }

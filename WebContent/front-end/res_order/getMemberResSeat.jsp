@@ -31,10 +31,10 @@
 
 </head>
 <body>
-<div class="container">
+<div class="container get_member_res_seat">
 <table id="table-1">
 	<tr>
-		<td><h3 style="margin-bottom:0;">訂位歷史紀錄</h3></td>
+		<td><h3 style="margin-bottom:0;">進行中的訂位</h3></td>
 	</tr>
 </table>
 <table class="table table-striped table-hover mx-auto w-auto">
@@ -155,6 +155,8 @@
 					<c:choose>    
 						<c:when test="${resOrderVO.info_sts ne 3}">  
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
+								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+			     				<input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
 								<button type="submit" id="cancel_Seat_Res_Order" class="btn btn-danger" onclick='return false;' >取消訂位</button>
 						</c:when>
 						<c:otherwise>
@@ -177,6 +179,6 @@
 </footer>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery-1.12.4.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/sweetalert.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/getMemberResSeat.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/getMemberResSeatIng.js"></script>
 </body>
 </html>

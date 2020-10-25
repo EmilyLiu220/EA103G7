@@ -4,6 +4,7 @@ h4 {
 }
 
 table, th, td {
+	font-family: monospace;
 	border: 1px solid #CCCCFF;
 }
 
@@ -12,8 +13,9 @@ th, td {
 	text-align: center;
 }
 
-.container {
+div.container.get_member_res_seat {
 	text-align: center;
+	position: relative;
 }
 
 button.btn, input.btn {
@@ -22,4 +24,8 @@ button.btn, input.btn {
 	cursor: pointer;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
+}
+
+.swal-footer {
+	text-align: center;
 }
