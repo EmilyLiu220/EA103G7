@@ -31,7 +31,7 @@
 
 
 <link rel="stylesheet" type="text/css"
-		href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+	href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 
 <style>
 #table-1, #table-1 td {
@@ -62,6 +62,9 @@ img {
 
 #logout {
 	width: 212px;
+}
+.button{
+width:100px;
 }
 </style>
 
@@ -281,17 +284,42 @@ img {
 						</tr>
 					</tbody>
 				</table>
-				<div>
-					廣告圖片:<font color="red"><b>*</b></font><input type="file" name="ad_img" id="img">
-				</div>
-				<div id="preview"></div>
+<!-- 				<div> -->
+<!-- 					廣告圖片:<font color="red"><b>*</b></font> -->
+<!-- 					<input type="file" name="ad_img" id="img"> -->
+<!-- 				</div> -->
+<!-- 				<div id="preview"></div> -->
 
-				<br> <input type="hidden" name="action" value="insert">
-				<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
-				<input type="submit" value="送出新增"
-					style="cursor: pointer; margin-left: 70%; background: rgb(200, 169, 126); color: rgb(255, 255, 255); border: 0px; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;"
-					onmouseover="this.style.background='#ffbc5e'"
-					onmouseout="this.style.background='#c8a97e'">
+<!-- 				<br> <input type="hidden" name="action" value="insert"> -->
+<%-- 				<input type="hidden" name="emp_no" value="${empVO2.emp_no}"> --%>
+<!-- 				<input type="submit" value="送出新增" -->
+<!-- 					style="cursor: pointer; margin-left: 70%; background: rgb(200, 169, 126); color: rgb(255, 255, 255); border: 0px; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;" -->
+<!-- 					onmouseover="this.style.background='#ffbc5e'" -->
+<!-- 					onmouseout="this.style.background='#c8a97e'"> -->
+					
+					
+							<div class="form-group">
+							<label class="btn btn-secondary info btn-icon-split">
+								<span class="icon text-white-50"><i class="fas fa-image"></i></span>
+								<span class="text">請上傳圖片</span>
+				           		<input type="file" id="img" name="adPic" accept="image/gif, image/jpeg, image/png" style="display:none"/>
+				           	</label>
+				           	<div id="pic">
+								<img id="preview" src="">
+							</div>											         
+				       	</div>
+						
+						
+						<br>
+						<button type="button" class="btn btn-secondary button" onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/addAd.jsp'">取消</button>
+ 					    <button type="submit" class="btn btn-primary button">儲存</button>
+						<input type="hidden" name="action" value="insert">
+						<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
+<!-- 						<input type="submit" value="送出新增"> -->
+						<button type="button" id="newad" class="btn btn-info btn-circle btn-sm button">New</button>
+					
+					
+					
 			</form>
 		</div>
 	</div>
@@ -311,7 +339,7 @@ img {
 			getAd_re_date = new java.sql.Date(System.currentTimeMillis());
 		}
 	%>
-	
+</body>
 	<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
@@ -385,7 +413,23 @@ img {
 		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
 		integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
 		crossorigin="anonymous"></script>
-</body>
+	<script>
+		$("#img").change(function() {
+			readURL(this);
+		});
+
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$("#preview").attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	</script>
+
+
 </html>
 
 
