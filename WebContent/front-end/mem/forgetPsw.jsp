@@ -26,9 +26,9 @@
 	
 	<form method="post" action="<%=request.getContextPath()%>/front-end/mem/mem.do">
 		<span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;請輸入email:</span>
-		<input type="email" name="mem_mail">
+		<input type="email" name="mem_mail" value="" required>
 		<p><p>
-		<input type="submit" value="送出" style="margin-left:275px">
+		<input type="submit" id="ok" value="送出" style="margin-left:275px">
 		<input type="hidden" name="action" value="forget_psw">
 	</form>
 	
@@ -38,4 +38,18 @@
 	<jsp:include page="/front-end/front/footer.jsp" />
 	
 </body>
+
+<script>
+
+	var mem_mail = document.getElementsByName("mem_mail");
+	var ok = document.getElementById("ok");
+	
+	ok.addEventListener("click", function() {
+		if (mem_mail[0].value !== "") {
+			alert("臨時密碼已寄出，請至email信箱查收！");
+		}
+	});
+
+</script>
+
 </html>

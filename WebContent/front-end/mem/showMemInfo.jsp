@@ -47,7 +47,7 @@
 	</c:if>
 	
 	<FORM METHOD="post" ACTION="mem.do" name="form1">
-	<table border="1" style="width:600px; margin-left:100px; background-color:#eee;">
+	<table border="1" style="width:600px; margin-left:100px; background-color:#eee;" class="table table-striped">
 		<tr>
 			<td class="t">會員編號:&emsp;</td>
 			<td>&emsp;${memVO.mem_no}</td>
@@ -84,22 +84,22 @@
 			<td class="t">紅利點數:&emsp;</td>
 			<td>&emsp;${(memVO.mem_bns == null) ? 0 : memVO.mem_bns}</td>
 		</tr>
-		<tr>
-			<td class="t">是否可訂餐:&emsp;</td>
-			<td>&emsp;${(memVO.mem_od_m == 0) ? "不可" : "可"}</td>
-		</tr>
-		<tr>
-			<td class="t">是否可訂位:&emsp;</td>
-			<td>&emsp;${(memVO.mem_od_r == 0) ? "不可" : "可"}</td>
-		</tr>
-		<tr>
-			<td class="t">是否可評價:&emsp;</td>
-			<td>&emsp;${(memVO.mem_review == 0) ? "不可" : "可"}</td>
-		</tr>
-		<tr>
-			<td class="t">是否可檢舉:&emsp;</td>
-			<td>&emsp;${(memVO.mem_repo == 0) ? "不可" : "可"}</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td class="t">是否可訂餐:&emsp;</td> -->
+<%-- 			<td>&emsp;${(memVO.mem_od_m == 0) ? "不可" : "可"}</td> --%>
+<!-- 		</tr> -->
+<!-- 		<tr> -->
+<!-- 			<td class="t">是否可訂位:&emsp;</td> -->
+<%-- 			<td>&emsp;${(memVO.mem_od_r == 0) ? "不可" : "可"}</td> --%>
+<!-- 		</tr> -->
+<!-- 		<tr> -->
+<!-- 			<td class="t">是否可評價:&emsp;</td> -->
+<%-- 			<td>&emsp;${(memVO.mem_review == 0) ? "不可" : "可"}</td> --%>
+<!-- 		</tr> -->
+<!-- 		<tr> -->
+<!-- 			<td class="t">是否可檢舉:&emsp;</td> -->
+<%-- 			<td>&emsp;${(memVO.mem_repo == 0) ? "不可" : "可"}</td> --%>
+<!-- 		</tr> -->
 	</table>
 		
 		<p><p>

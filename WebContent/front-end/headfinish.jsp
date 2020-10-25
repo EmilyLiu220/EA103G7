@@ -80,7 +80,7 @@
 
 
 
-<body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');">>
+<body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');" onload="loadInfo(${memVO2.mem_no})">
 
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
@@ -529,6 +529,22 @@
 			title.innerHTML = '會員中心';
 		}
 		
+		<!--登入之後導入會員所有通知-->
+		function loadInfo(mem_no) {
+			$.ajax({
+				url:'fi.do',
+				method:"post",
+				dataType:"text",
+				data:{
+					 action: 'getMyInform',
+					 mem_no: mem_no,
+				},
+				success: function() {	
+				},
+				err: function() {	
+				}
+			});
+		}
 	</script>
 	
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>
