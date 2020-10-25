@@ -42,6 +42,7 @@
 }
 
 </style>
+
 </head>
 
 
@@ -213,7 +214,7 @@
 								</span>
 								<%-- 小鈴鐺圖示結束 --%>
 								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/login_success_mem.jsp" class="myaa"><span id="member">會員中心</span></a></span>
-								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/addMem.jsp" class="myaa"><span id="sign">註冊</span></a></span>
+								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/addMem.jsp" class="myaa"><span id="sign">加入會員</span></a></span>
 								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/login_mem.jsp" class="myaa"><span id="login">登入</span></a></span>
 								
 								<span class="mybb"><span id="mem_name" class="unshow">${memVO2.mem_name}</span></span>
@@ -388,9 +389,6 @@
 			</div>
 		</div>
 	</section>
-
-
-
 	<!-- 		------------------------------ -->
 	<div id="carouselExampleIndicators" class="carousel slide"
 		data-ride="carousel">

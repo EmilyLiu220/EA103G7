@@ -118,6 +118,10 @@ color: #3e2605
     padding-inline-start: 40px;
     color: #3e2605
 }
+div {
+	width: 100%;
+	margin: 0px auto;
+}
 </style>
 <%@ include  file="/front-end/headfinish.jsp"%>
 <div class="container">
@@ -136,31 +140,37 @@ color: #3e2605
 		<%@ include file="page1-1.file"%>
 
 
-		<c:forEach var="adVO" items="${list}" begin="<%=pageIndex%>"
-			end="<%=pageIndex+rowsPerPage-1%>">
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="<%=request.getContextPath() %>/front-end/front/front_ad_one.jsp" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"
-					alt="">
-				</a>
-			</div>
-
+		<c:forEach var="adVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+<%-- 			<label for="${adVO.ad_no}"> --%>
+				<div class="col-lg-3 col-md-4 col-6">
+					<label for="${adVO.ad_no}" class="d-block mb-4 h-100"> <img
+						class="img-fluid img-thumbnail"
+						src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"
+						alt="">
+					</label>
+				</div>
+<!-- 			</label> -->
 			<div class="col-lg-3 col-md-4 col-6" >
 				<div>${adVO.ad_add_date}</div>
 				
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
-					<label for="ad_one" class="d-block mb-4 h-100 " style="font-size: 20px" 
+					<label for="${adVO.ad_no}" class="d-block mb-4 h-100 " style="font-size: 20px" 
 					id="ad_title">${adVO.ad_title}<br>
-					<input type="submit" id="ad_one">
-						<input type="hidden" name="action" value="getFrontOne_For_Display">
-						<button type="submit" class="btn btn-outline-dark"
+<!-- 					*************************************************-->
+<!-- 					<label for="ad_one" class="d-block mb-4 h-100 " style="font-size: 20px" 
+					id="ad_title">${adVO.ad_title}<br>
+<input type="submit" id="ad_one"> -->
+<!-- 						<input type="hidden" name="action" value="getFrontOne_For_Display"> -->
+<!-- *************************************************** -->
+
+						<button type="submit" id="${adVO.ad_no}" class="btn btn-outline-dark"
 							style="border-radius: 100%" name="action"
 							value="getFrontOne_For_Display">詳</button>
 					</label>
 					<input type="hidden" name="ad_no" value="${adVO.ad_no}">
 					</FORM>
 			</div>
+			
 			
 		</c:forEach>
 	
@@ -170,4 +180,11 @@ color: #3e2605
 
 <!-- /.container -->
 <%@ include file="/front-end/footer.jsp"%>
+<script>
+
+$(document).ready(function() {
+    console.log("Hello, World!");
+});
+
+</script>
 </html>
