@@ -56,56 +56,9 @@ $(document).ready(function() {
 			swal("輸入的值超出範圍!", "請輸入1～20的數字!", "info");
 			$("#people").val("");
 		}
-		// get all seat_no
-		var $drag = $(".drag");
-		var jsonDataStr = new Array();
-		$.each($drag, function(_index, item) {
-			var mySeat = new Object();
-			mySeat.seat_no = $(this).find("input").attr("value");
-			mySeat.seat_obj_no = $(item).find("img").attr("src").substr($(item).find("img").attr("src").lastIndexOf("=") + 1);
-			// push data to JSONArray
-			jsonDataStr.push(mySeat);
-		});
-
-		// console.log(jsonDataStr);
-		$.ajax({
-			// url is servlet url, ?archive_seat is tell servlet execute which
-			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_All_Seat_People",
-			type: "post",
-			// synchronize is false
-			async: false,
-			data: {
-				"people": JSON.stringify(jsonDataStr),
-			},
-			success: function(messages) {
-				// console.log(messages);
-				jsonArray_people = JSON.parse(messages);
-				setJSONArray_people(jsonArray_people);
-				$("#container").css("display", "block");
-				$("#orderSeat").css("display", "inline-block");
-				
-				lock_people = true;// 如果業務執行成功，修改鎖狀態
-			},
-			error: function(xhr, ajaxOptions, thrownError) {
-				lock_people = true;// 如果業務執行失敗，修改鎖狀態
-				ajaxSuccessFalse(xhr);
-				swal("儲存失敗", errorText, "warning");
-			},
-		});
 		return false;
 	});
-	var jsonArray_people;
-	function setJSONArray_people(value) {
-		jsonArray_people = value;
-	}
-	var chooseSeatPeople = 0;
-	function addChooseSeatPeople(value) {
-		chooseSeatPeople += value;
-	}
-	function lessChooseSeatPeople(value) {
-		chooseSeatPeople -= value;
-	}
+	
 	/** ***************************** 人數 ****************************** */
 	var lock_checked = true;
 	$(".myCheckbox").change(function() {
@@ -145,12 +98,16 @@ $(document).ready(function() {
 					$.each(nowNotCheckbox, function(i, item){
 						$(item).prop("disabled", false);
 					});
+					console.log("people="+people);
+					console.log("chooseSeatPeople="+chooseSeatPeople);
 				}
 				if (chooseSeatPeople - people == 0) {
 					swal("已經選擇適當的桌位囉！", "", "info");
 					$.each(allNotCheckbox, function(i, item){
 						$(item).prop("disabled", true);
 					});
+					console.log("people="+people);
+					console.log("chooseSeatPeople="+chooseSeatPeople);
 				} else if (chooseSeatPeople >= parseInt(people) + 3) {
 					console.log("people="+people);
 					console.log("chooseSeatPeople="+chooseSeatPeople);
@@ -326,6 +283,44 @@ $(document).ready(function() {
 		lock_time_peri_no = false; // 3.進來後，立馬把鎖鎖住
 		var res_date = $("#res_date").val();
 		var time_peri_no = $("#time_peri_no").val();
+		var res_no = $("#res_no").val();
+		
+		// get all seat_no
+		var $drag = $(".drag");
+		var jsonDataStr = new Array();
+		$.each($drag, function(_index, item) {
+			var mySeat = new Object();
+			mySeat.seat_no = $(this).find("input").attr("value");
+			mySeat.seat_obj_no = $(item).find("img").attr("src").substr($(item).find("img").attr("src").lastIndexOf("=") + 1);
+			// push data to JSONArray
+			jsonDataStr.push(mySeat);
+		});
+		$.ajax({
+			// url is servlet url, ?archive_seat is tell servlet execute which
+			// one judgment
+			url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_All_Seat_People",
+			type: "post",
+			// synchronize is false
+			async: false,
+			data: {
+				"people": JSON.stringify(jsonDataStr),
+			},
+			success: function(messages) {
+// console.log(messages);
+				jsonArray_people = JSON.parse(messages);
+				setJSONArray_people(jsonArray_people);
+				$("#container").css("display", "block");
+				$("#orderSeat").css("display", "inline-block");
+				
+				lock_people = true;// 如果業務執行成功，修改鎖狀態
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				lock_people = true;// 如果業務執行失敗，修改鎖狀態
+				ajaxSuccessFalse(xhr);
+				swal("儲存失敗", errorText, "warning");
+			},
+		});
+		
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
@@ -339,9 +334,7 @@ $(document).ready(function() {
 			},
 			success: function(messages) {
 				var jsonArray = JSON.parse(messages);
-				// console.log(jsonArray);
 				var $myCheckbox = $(".myCheckbox");
-
 				$.each($myCheckbox, function(_index, item) {
 					$(item).closest(".drag").css({
 						filter: "hue-rotate(0deg)",
@@ -349,21 +342,61 @@ $(document).ready(function() {
 					$(item).prop("disabled", false);
 					$(item).prop("checked", false);
 				});
-				$.each($myCheckbox, function(_index, item) {
-					$.each(jsonArray, function(_index, item1) {
-						if ($(item).val() === item1) {
-							$(item).closest(".drag").css({
-								filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+				$.ajax({
+					// url is servlet url, ?archive_seat is tell servlet execute
+					// which
+					// one judgment
+					url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_Modify_Seat_Order_Info",
+					type: "post",
+					// synchronize is false
+					async: false,
+					data: {
+						"res_no": res_no,
+					},
+					success: function(messages) {
+						// 如果這個時段的座位編號出現在訂位訂單同時段同編號，代表已經被別人下訂，要顯示為無法訂位
+						$.each($myCheckbox, function(_index, item) {
+							$.each(jsonArray, function(_index, item1) {
+								if ($(item).val() === item1) {
+									$(item).closest(".drag").css({
+										filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+									});
+									$(item).prop("disabled", true);
+									$(item).prop("checked", true);
+									$(item).css("display", "none");
+								}
 							});
-							$(item).prop("disabled", true);
-							$(item).prop("checked", true);
-							$(item).css("display", "none");
-						}
-					});
+						});
+						if(JSON.parse(messages).res_date == res_date && JSON.parse(messages).time_peri_no == time_peri_no){
+							$.each($myCheckbox, function(_index, item) { // 所有座位
+								$.each(JSON.parse(messages).seat_no, function(_index, item2) { // 訂單的座位
+									if($(item).val() == item2) {
+										$.each(jsonArray_people, function(_index, item3) {
+											console.log(Object.keys(item2));
+										});
+												
+										$(item).closest(".drag").css({
+											filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(252deg) brightness(103%) contrast(118%)",
+										});
+										$(item).prop("disabled", false);
+										$(item).prop("checked", true);
+										$(item).css("display", "inline-block");
+									}
+								});
+							});
+						} 
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
+						ajaxSuccessFalse(xhr);
+						swal("儲存失敗", errorText, "warning");
+					},
 				});
 				lock_time_peri_no = true;// 如果業務執行成功，修改鎖狀態
 				$(".labelTwo").css("display", "inline-block");
-				$("#people").val("");
+				$("#people").val($("#res_people").val());
+				$("div#container.container").css("display", "block");
+				$("#orderSeat").css("display", "inline-block");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
@@ -373,6 +406,19 @@ $(document).ready(function() {
 		});
 		return false;
 	});
+	
+	var jsonArray_people;
+	function setJSONArray_people(value) {
+		jsonArray_people = value;
+	}
+	var chooseSeatPeople = 0;
+	function addChooseSeatPeople(value) {
+		chooseSeatPeople += value;
+	}
+	function lessChooseSeatPeople(value) {
+		chooseSeatPeople -= value;
+	}
+	
 	$("#orderSeat").click(function() {
 		if(chooseSeatPeople < parseInt($("#people").val())){
 			swal("來店人數還大於選擇座位人數唷！", "請在選擇座位，直到座位足夠容納來店人數", "info");

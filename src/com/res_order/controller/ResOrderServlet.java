@@ -27,6 +27,8 @@ import com.seat.model.SeatService;
 import com.seat.model.SeatVO;
 import com.seat_obj.model.SeatObjService;
 import com.seat_obj.model.SeatObjVO;
+import com.time_peri.model.TimePeriService;
+import com.time_peri.model.TimePeriVO;
 
 @WebServlet("/res_order/ResOrderServlet.do")
 public class ResOrderServlet extends HttpServlet {
@@ -46,9 +48,7 @@ public class ResOrderServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		String goMeal = req.getParameter("goMeal");
 		HttpSession hs = req.getSession();
-		
-		
-		
+
 		/********************** 單純訂位 **********************/
 		if ("order_seat".equals(action) && goMeal == null && "insert".equals(hs.getAttribute("insert"))) {
 			hs.removeAttribute("insert");
@@ -100,7 +100,7 @@ public class ResOrderServlet extends HttpServlet {
 			failureView.forward(req, res);
 			return;
 		}
-		
+
 		/********************** 訂位又要訂餐 **********************/
 		if ("carry_on_res_meal".equals(goMeal) && "order_seat".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
@@ -161,7 +161,7 @@ public class ResOrderServlet extends HttpServlet {
 		}
 
 		/********************** 取得今日此時段，那些位置被訂了 **********************/
-		if ("getResOrderToDay".equals(action)) {
+		if ("get_Res_Order_Today".equals(action)) {
 
 			PrintWriter out = res.getWriter();
 
@@ -192,11 +192,9 @@ public class ResOrderServlet extends HttpServlet {
 			out.close();
 			return;
 		}
-		
-		/********************** 取得所有桌位，可容納之人數 **********************/
-		if ("getAllSeatPeople".equals(action)) {
 
-			
+		/********************** 取得所有桌位，可容納之人數 **********************/
+		if ("get_All_Seat_People".equals(action)) {
 
 			if (req.getParameter("people") != null) {
 
@@ -260,54 +258,81 @@ public class ResOrderServlet extends HttpServlet {
 			String res_no = req.getParameter("res_no");
 			String requestURL = req.getParameter("requestURL");
 			String whichPage = req.getParameter("whichPage");
-			
+
 			ResOrderService resOrderSve = new ResOrderService();
-			
+
 			ResOrderVO resOrderVO = resOrderSve.getOneResOrder(res_no);
 
 			resOrderSve.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 					resOrderVO.getEmp_no(), resOrderVO.getRes_time(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
 					resOrderVO.getTime_peri_no(), new Integer(3), resOrderVO.getSeat_sts());
-			RequestDispatcher failureView = req.getRequestDispatcher(requestURL+"?whichPage="+whichPage);
+			RequestDispatcher failureView = req.getRequestDispatcher(requestURL + "?whichPage=" + whichPage);
 			failureView.forward(req, res);
 			return;
 		}
 
 		/********************** 修改訂位 **********************/
-		if ("modify_Seat_Position".equals(action)) {
-			System.out.println("modify_Seat_Position");
-			return;
-		}
-		
-		if ("get_Member_Res_Seat_Ing".equals(action)) {
-			
+		if ("get_Modify_Seat_Order_Info".equals(action)) {
+			String res_no = req.getParameter("res_no");
+			ResDetailService resDetailSvc = new ResDetailService();
 			ResOrderService resOrderSvc = new ResOrderService();
-			List<ResOrderVO> resOrderVOList = resOrderSvc.getOneMemberResOrder("MEM0010", "ing");
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-			String jsonStr = gson.toJson(resOrderVOList);
+			TimePeriService timePeriSvc = new TimePeriService();
+			
+			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
+			TimePeriVO timePeriVO = timePeriSvc.getOneTimePeri(resOrderVO.getTime_peri_no());
+			List<ResDetailVO> resDetailVOList = resDetailSvc.getAllResNO(res_no);
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("{\"res_date\":" + "\"" + resOrderVO.getRes_date() + "\"" + ", \"time_peri_no\":" + "\""
+					+ timePeriVO.getTime_peri_no() + "\"" + ", \"seat_no\":[");
+
 			PrintWriter out = res.getWriter();
 			res.setContentType("text/plain");
 			res.setCharacterEncoding("UTF-8");
-			out.write(jsonStr);
+			int i = 0;
+			for (ResDetailVO resDetailVO : resDetailVOList) {
+				if (i < resDetailVOList.size() - 1) {
+					sb.append("\""+resDetailVO.getSeat_no() + "\""+",");
+					i++;
+				} else
+					sb.append("\""+resDetailVO.getSeat_no()+"\"");
+			}
+			sb.append("]}");
+			out.print(sb.toString());
 			out.flush();
 			out.close();
+
 			return;
 		}
-		
-		if ("get_Member_Res_Seat_End".equals(action)) {
+
+		if ("modify_Seat_Order".equals(action)) {
+			String res_no = req.getParameter("res_no");
+			String res_people = req.getParameter("res_people");
 			
-			ResOrderService resOrderSvc = new ResOrderService();
-			List<ResOrderVO> resOrderVOList = resOrderSvc.getOneMemberResOrder("MEM0010", "end");
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-			String jsonStr = gson.toJson(resOrderVOList);
-			PrintWriter out = res.getWriter();
-			res.setContentType("text/plain");
-			res.setCharacterEncoding("UTF-8");
-			out.write(jsonStr);
-			out.flush();
-			out.close();
+			req.setAttribute("res_no", res_no);
+			req.setAttribute("res_people", res_people);
+
+			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/modifySeat.jsp");
+			failureView.forward(req, res);
 			return;
 		}
+
+//		if ("get_Member_Res_Seat_Ing".equals(action)) {
+//			
+//			ResOrderService resOrderSvc = new ResOrderService();
+//			List<ResOrderVO> resOrderVOList = resOrderSvc.getOneMemberResOrder("MEM0010", "ing");
+//			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+//			String jsonStr = gson.toJson(resOrderVOList);
+//			PrintWriter out = res.getWriter();
+//			res.setContentType("text/plain");
+//			res.setCharacterEncoding("UTF-8");
+//			out.write(jsonStr);
+//			out.flush();
+//			out.close();
+//			return;
+//		}
+
 		// not do anything, go to the this page
 		res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 	}
