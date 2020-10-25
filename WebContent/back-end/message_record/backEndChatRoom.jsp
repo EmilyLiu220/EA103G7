@@ -79,7 +79,7 @@
 				</li>
 				<li><a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform_New.jsp">查看通知</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform.jsp">查看通知</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">查看聊天室訊息</a></li>
 						<li><a href="#">訂單派工</a></li>
 						<li><a href="#">出餐管理</a></li>
@@ -175,134 +175,13 @@
 								</div>
 							</div>
 							<div class="inbox_chat">
-								<div class="chat_list active_chat">
-									<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="chat_ib">
-											<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-											<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-										</div>
-									</div>
-								</div>
-								<div class="chat_list">
-									<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="chat_ib">
-											<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-											<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-										</div>
-									</div>
-								</div>
-	                        	<div class="chat_list">
-	                            	<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-	                                	<div class="chat_ib">
-	                                   		<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-	                                    	<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-	                                	</div>
-	                            	</div>
-								</div>
-								<div class="chat_list">
-									<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="chat_ib">
-											<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-											<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-										</div>
-									</div>
-								</div>
-								<div class="chat_list">
-									<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="chat_ib">
-											<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-											<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-										</div>
-									</div>
-								</div>
-								<div class="chat_list">
-									<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="chat_ib">
-											<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-											<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-										</div>
-									</div>
-								</div>
-								<div class="chat_list">
-									<div class="chat_people">
-										<div class="chat_img">
-											<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-										</div>
-										<div class="chat_ib">
-											<h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-											<p>Test, which is a new approach to have all solutions astrology under one roof.</p>
-										</div>
-									</div>
-								</div>
 							</div>
 						</div>
 						<div class="mesgs">
-							<div class="msg_history">
-								<div class="incoming_msg">
-									<div class="incoming_msg_img">
-										<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-									</div>
-	                            	<div class="received_msg">
-										<div class="received_withd_msg">
-											<p>Test which is a new approach to have all solutions</p>
-											<span class="time_date"> 11:01 AM | June 9</span>
-										</div>
-									</div>
-								</div>
-								<div class="outgoing_msg">
-									<div class="sent_msg">
-										<p>Test which is a new approach to have all solutions</p>
-										<span class="time_date"> 11:01 AM | June 9</span>
-									</div>
-								</div>
-								<div class="incoming_msg">
-									<div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-			                            <div class="received_msg">
-			                                <div class="received_withd_msg">
-			                                    <p>Test, which is a new approach to have</p>
-			                                    <span class="time_date"> 11:01 AM | Yesterday</span>
-			                                </div>
-			                            </div>
-								</div>
-		                        <div class="outgoing_msg">
-		                            <div class="sent_msg">
-		                                <p>Apollo University, Delhi, India Test</p>
-		                                <span class="time_date"> 11:01 AM | Today</span>
-		                            </div>
-		                        </div>
-		                        <div class="incoming_msg">
-		                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-		                            <div class="received_msg">
-		                                <div class="received_withd_msg">
-		                                    <p>We work directly with our designers and suppliers,
-		                                        and sell direct to you, which means quality, exclusive
-		                                        products, at a price anyone can afford.</p>
-		                                    <span class="time_date"> 11:01 AM | Today</span>
-		                                </div>
-		                            </div>
-		                        </div>
-	                    	</div>
+							<div class="msg_history"></div>
 		                    <div class="type_msg">
 		                        <div class="input_msg_write">
-		                            <input type="text" class="write_msg" placeholder="Type a message" />
+		                            <input type="text" id="submit_message" class="write_msg" placeholder="Type a message" />
 		                            <button class="msg_send_btn" type="button"><img id="sendMsg" src="<%=request.getContextPath()%>/front-end/images/send.png"></button>
 		                        </div>
 		                    </div>
@@ -313,9 +192,259 @@
 			<%-- 後台聊天室結束 --%>
 		</div>
 	</div>
-
+	
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		<%-- 聊天室 --%>
+		var MyPoint = "/Message_RecordWS/emp"; // Java 會先執行 → 所以到 JS 這裡的時候就可以直接用 EL 取值
+		var host = window.location.host;
+		var path = window.location.pathname;
+		var webCtx = path.substring(0, path.indexOf('/', 1));
+		var endPointURL = "ws://" + host + webCtx + MyPoint;
+	
+		var messagesArea = document.getElementsByClassName("msg_history")[0];
+		var emp_no = "${empVO2.emp_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
+		var webSocket;	
+		
+		$(function() {
+			// create a websocket
+			webSocket = new WebSocket(endPointURL);
+			
+			webSocket.onopen = function(event) {
+				console.log("Connect Success!");
+			};
+			
+			webSocket.onmessage = function(event) {
+				var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+				if ("open" === jsonObj.type) {
+					refreshMemList(jsonObj);
+				}else if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
+					messagesArea.innerHTML = '';
+						
+						var messages = JSON.parse(jsonObj.msgJson);
+						for (var i = 0; i < messages.length; i++) {
+							var from_msg = document.createElement('div');
+							var historyData = JSON.parse(messages[i]);
+							var content_msg = document.createElement('div');
+							
+							if( historyData.sender !== "emp" ) {
+								from_msg.setAttribute("class", "incoming_msg");
+								var incoming_msg_img = document.createElement('div');
+								incoming_msg_img.classList.add("incoming_msg_img");
+								var img = document.createElement('img');
+								img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
+								img.setAttribute("alt","sunil");
+								incoming_msg_img.appendChild(img);
+								
+								var received_msg = document.createElement('div');
+								received_msg.classList.add("received_msg");
+								content_msg.classList.add("received_withd_msg");
+								
+								
+								var p = document.createElement('p');
+								var span = document.createElement('span');
+								span.classList.add("time_date");
+								var showMsg = historyData.message;
+								var timestamp = historyData.timestamp;
+								var readSts = historyData.readSts;
+								p.innerHTML = showMsg;
+								var dayTime = timestamp.substring(0,10);
+								p.setAttribute("title",dayTime);
+								var shortTime = timestamp.substring(11,18);
+								shortTime = shortTime.replace(/:$/, '');
+								span.innerHTML = shortTime;
+								
+								content_msg.appendChild(p);
+								content_msg.appendChild(span);
+								received_msg.appendChild(content_msg);
+								from_msg.appendChild(incoming_msg_img);
+								from_msg.appendChild(received_msg);
+
+							}else{
+								from_msg.setAttribute("class", "outgoing_msg");
+								var sent_msg = document.createElement('div');
+								content_msg.classList.add("sent_msg");
+								
+								var p = document.createElement('p');
+								var span = document.createElement('span');
+								span.classList.add("time_date");
+								var showMsg = historyData.message;
+								var timestamp = historyData.timestamp;
+								var readSts = historyData.readSts == 0 ? " 未讀" : " 已讀";
+								p.innerHTML = showMsg;
+								var dayTime = timestamp.substring(0,10);
+								p.setAttribute("title",dayTime);
+								var shortTime = timestamp.substring(11,18);
+								shortTime = shortTime.replace(/:$/, '');
+								span.innerHTML = shortTime + " | " + readSts;
+								
+								content_msg.appendChild(p);
+								content_msg.appendChild(span);
+								from_msg.appendChild(content_msg);
+							}
+							
+							messagesArea.appendChild(from_msg); // 將新增的歷史訊息區塊加進 chat 區塊
+						}
+						messagesArea.scrollTop = messagesArea.scrollHeight;
+				} else if ("chat" === jsonObj.type) {
+					var from_msg = document.createElement('div');
+					var content_msg = document.createElement('div');
+					
+					if( jsonObj.sender !== "emp" ) {
+						from_msg.setAttribute("class", "incoming_msg");
+						
+						var incoming_msg_img = document.createElement('div');
+						incoming_msg_img.classList.add("incoming_msg_img");
+						var img = document.createElement('img');
+						img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
+						img.setAttribute("alt","sunil");
+						incoming_msg_img.appendChild(img);
+						
+						var received_msg = document.createElement('div');
+						received_msg.classList.add("received_msg");
+						content_msg.classList.add("received_withd_msg");
+						
+						
+						var p = document.createElement('p');
+						var span = document.createElement('span');
+						span.classList.add("time_date");
+						var showMsg = jsonObj.message;
+						var timestamp = jsonObj.timestamp;
+						var readSts = jsonObj.readSts;
+						p.innerHTML = showMsg;
+						var dayTime = timestamp.substring(0,10);
+						p.setAttribute("title",dayTime);
+						var shortTime = timestamp.substring(11,18);
+						shortTime = shortTime.replace(/:$/, '');
+						span.innerHTML = shortTime;
+						
+						content_msg.appendChild(p);
+						content_msg.appendChild(span);
+						received_msg.appendChild(content_msg);
+						from_msg.appendChild(incoming_msg_img);
+						from_msg.appendChild(received_msg);
+					} else {
+						from_msg.setAttribute("class", "outgoing_msg");
+						var sent_msg = document.createElement('div');
+						content_msg.classList.add("sent_msg");
+						
+						var p = document.createElement('p');
+						var span = document.createElement('span');
+						span.classList.add("time_date");
+						var showMsg = jsonObj.message;
+						var timestamp = jsonObj.timestamp;
+						var readSts = jsonObj.readSts == 0 ? " 未讀" : " 已讀";
+						p.innerHTML = showMsg;
+						var dayTime = timestamp.substring(0,10);
+						p.setAttribute("title",dayTime);
+						var shortTime = timestamp.substring(11,18);
+						shortTime = shortTime.replace(/:$/, '');
+						span.innerHTML = shortTime + " | " + readSts;
+						
+						content_msg.appendChild(p);
+						content_msg.appendChild(span);
+						from_msg.appendChild(content_msg);
+					}
+					messagesArea.appendChild(from_msg); // 將新增的訊息區塊加進 chat 區塊
+					messagesArea.scrollTop = messagesArea.scrollHeight;
+				}
+			};
+			
+			webSocket.onclose = function(event) {
+				console.log("Disconnected!");
+			};
+			
+
+			
+			function refreshMemList(jsonObj) {
+				var mems = jsonObj.mems; // 取得所有上線中的會員
+				var inbox_chat = document.getElementsByClassName("inbox_chat")[0];
+				inbox_chat.innerHTML = ''; 
+				for (var i = 0; i < mems.length; i++) {
+					
+					var chat_list = document.createElement('div');
+					chat_list.classList.add("chat_list");
+					chat_list.setAttribute("id", mems[i]);
+					var chat_people = document.createElement('div');
+					chat_people.classList.add("chat_people");
+					var chat_img = document.createElement('img');
+					chat_img.classList.add("chat_img");
+					chat_img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
+					chat_img.setAttribute("alt","sunil");
+					var chat_ib = document.createElement('div');
+					chat_ib.classList.add("chat_ib");
+					var h5 = document.createElement('h5');
+					h5.innerHTML = mems[i];
+					
+					chat_ib.appendChild(h5);
+					chat_people.appendChild(chat_img);
+					chat_people.appendChild(chat_ib);
+					chat_list.appendChild(chat_people);
+					inbox_chat.appendChild(chat_list);
+				}
+				
+				let chat_lists = document.querySelectorAll('.chat_list');
+				
+				// 開啟關閉聊天室 
+				$(".chat_list").click(function(e) {
+					let target = e.currentTarget;
+					
+					chat_lists.forEach( (e)=>{
+						if( e.classList.contains("active_chat")){
+							e.classList.toggle("active_chat");
+						}
+					})
+					target.classList.add('active_chat');
+					// 抓出聊天紀錄
+					var jsonObj = { // 這裡要對應原本的 VO 內容
+						"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+						"sender" : "emp",
+						"receiver" : target.id,
+						"message" : "",
+						"timestamp" : "",
+						"emp_no" : emp_no,
+						"readSts" : 0
+					};
+					webSocket.send(JSON.stringify(jsonObj));
+				});
+				
+				// 發送訊息
+				$("#sendMsg").click(function() {
+					var inputMessage = document.getElementById("submit_message");
+					var message = inputMessage.value.trim();
+					var mem_no = "";
+					chat_lists.forEach( (e)=>{
+						if( e.classList.contains("active_chat")){
+							mem_no = e.id;
+							if (message === "") {
+								alert("Input a message");
+								inputMessage.focus();
+							} else {
+								var jsonObj = {
+									"type" : "chat",
+									"sender" : "emp",
+									"receiver" : mem_no,
+									"message" : message,
+									"timestamp" : new Date().toLocaleString(),
+									"emp_no" : emp_no,
+									"readSts" : 0
+								};
+								webSocket.send(JSON.stringify(jsonObj));
+								inputMessage.value = "";
+								inputMessage.focus();
+							}
+						}
+					})
+				});
+				
+			}
+			
+		})
+		
+
+		
+	</script>
 	<!-- Popper.JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<!-- Bootstrap JS -->

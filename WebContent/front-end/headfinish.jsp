@@ -80,7 +80,7 @@
 
 
 
-<body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');" onload="loadInfo(${memVO2.mem_no})">
+<body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');">>
 
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
@@ -152,61 +152,7 @@
               	      </div>
               	  </div>
               	  <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px); background: #d6fdff;">
-                 	   <div class="chat_box touchscroll chat_box_colors_a">
-                     	   <div class="chat_message_wrapper">
-                        	    <div class="chat_user_avatar">
-                            	    <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                           		</div>
-                            	<ul class="chat_message">
-                                	<li>
-                                    	<p> 您好，請問有什麼能為您服務的嗎？ </p>
-                                	</li>
-                            	</ul>
-                        	</div>
-                        	<div class="chat_message_wrapper chat_message_right">
-                            	<div class="chat_user_avatar">
-                               		<img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                            	</div>
-                            	<ul class="chat_message">
-                                	<li>
-                                    	<p>
-                                        	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem delectus distinctio dolor earum est hic id impedit ipsum minima mollitia natus nulla perspiciatis quae quasi, quis recusandae, saepe, sunt totam.
-                                        	<span class="chat_message_time">13:34</span>
-                                    	</p>
-                                	</li>
-                            	</ul>
-                        	</div>
-                        	<div class="chat_message_wrapper">
-                            	<div class="chat_user_avatar">
-                               		<img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                            	</div>
-                            	<ul class="chat_message">
-                                	<li>
-                                    	<p>
-                                        	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque ea mollitia pariatur porro quae sed sequi sint tenetur ut veritatis.https://www.facebook.com/iamgurdeeposahan
-                                        	<span class="chat_message_time">23 Jun 1:10am</span>
-                                    	</p>
-                                	</li>
-                            	</ul>
-                        	</div>
-                        	<div class="chat_message_wrapper chat_message_right">
-                            	<div class="chat_user_avatar">
-                                	<img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                            	</div>
-                            	<ul class="chat_message">
-                                	<li>
-                                   	 <p> Lorem ipsum dolor sit amet, consectetur. </p>
-                                	</li>
-                               		<li>
-                                    	<p>
-                                        	Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        	<span class="chat_message_time">Friday 13:34</span>
-                                    	</p>
-                                	</li>
-                            	</ul>
-                        	</div>
-                    	</div>
-                	</div>
+                  </div>
                 	<div class="chat_submit_box">
                     	<div class="uk-input-group">
                         	<div class="gurdeep-chat-box">
@@ -251,7 +197,7 @@
 								</span>
 								<%-- 小鈴鐺圖示結束 --%>
 								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/login_success_mem.jsp" class="myaa"><span id="member">會員中心</span></a></span>
-								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/addMem.jsp" class="myaa"><span id="sign">加入會員</span></a></span>
+								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/addMem.jsp" class="myaa"><span id="sign">註冊</span></a></span>
 								<span class="mybb"><a href="<%=request.getContextPath() %>/front-end/mem/login_mem.jsp" class="myaa"><span id="login">登入</span></a></span>
 								
 								<span class="mybb"><span id="mem_name" class="unshow">${memVO2.mem_name}</span></span>
@@ -358,19 +304,184 @@
 	<%-- script 開始 --%>
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript">
+		<%-- 聊天室 --%>
+		var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; // Java 會先執行 → 所以到 JS 這裡的時候就可以直接用 EL 取值
+		var host = window.location.host;
+		var path = window.location.pathname;
+		var webCtx = path.substring(0, path.indexOf('/', 1));
+		var endPointURL = "ws://" + host + webCtx + MyPoint;
+	
+		var messagesArea = document.getElementById("chat");
+		var mem_no = "${memVO2.mem_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
+		var webSocket;	
+		
 		$(function() {
+			// create a websocket
+			webSocket = new WebSocket(endPointURL);
+			
+			webSocket.onopen = function(event) {
+				console.log("Connect Success!");
+			};
+			
+			webSocket.onmessage = function(event) {
+				var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+				if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
+					messagesArea.innerHTML = '';
+					var chat_box = document.createElement('div');
+					chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
+					messagesArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
+					// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
+					var messages = JSON.parse(jsonObj.msgJson);
+					for (var i = 0; i < messages.length; i++) {
+						var historyData = JSON.parse(messages[i]);
+						var chat_message_wrapper = document.createElement('div');
+						chat_message_wrapper.classList.add("chat_message_wrapper");
+						
+						var chat_user_avatar = document.createElement('div');
+						chat_user_avatar.classList.add("chat_user_avatar");
+						
+						var img = document.createElement('img');
+						img.classList.add("md-user-image");
+						img.setAttribute("src","https://bootdey.com/img/Content/avatar/avatar1.png");
+						chat_user_avatar.appendChild(img);
+						
+						var ul = document.createElement('ul');
+						ul.classList.add("chat_message");
+						var li = document.createElement('li');
+						var p = document.createElement('p');
+						var span = document.createElement('span');
+						span.classList.add("chat_message_time");
+						var spanReadSts = document.createElement('span');
+						
+						var showMsg = historyData.message;
+						var timestamp = historyData.timestamp;
+						var readSts = historyData.readSts;
+						p.innerHTML = showMsg;
+						var dayTime = timestamp.substring(0,10);
+						p.setAttribute("title",dayTime);
+						var shortTime = timestamp.substring(11,18);
+						shortTime = shortTime.replace(/:$/, '');
+						span.innerHTML = shortTime;
+						// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+						if( historyData.sender === mem_no ){
+							li.className += 'mem';
+							chat_message_wrapper.classList.add("chat_message_right");
+							var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
+							spanReadSts.innerHTML = readStsText;
+							span.appendChild(spanReadSts);
+						}else{
+							li.className += 'emp';
+						}
+						p.appendChild(span);
+						li.appendChild(p);
+						ul.appendChild(li);
+						chat_message_wrapper.appendChild(chat_user_avatar);
+						chat_message_wrapper.appendChild(ul);
+						chat_box.appendChild(chat_message_wrapper);
+					}
+					messagesArea.scrollTop = messagesArea.scrollHeight;
+				} else if ("chat" === jsonObj.type) {
+					var chat_message_wrapper = document.createElement('div');
+					chat_message_wrapper.classList.add("chat_message_wrapper");
+					
+					var chat_user_avatar = document.createElement('div');
+					chat_user_avatar.classList.add("chat_user_avatar");
+					
+					var img = document.createElement('img');
+					img.classList.add("md-user-image");
+					img.setAttribute("src","https://bootdey.com/img/Content/avatar/avatar1.png");
+					chat_user_avatar.appendChild(img);
+					
+					var ul = document.createElement('ul');
+					ul.classList.add("chat_message");
+					var li = document.createElement('li');
+					var p = document.createElement('p');
+					var span = document.createElement('span');
+					span.classList.add("chat_message_time");
+					var spanReadSts = document.createElement('span');
+					
+					var showMsg = jsonObj.message;
+					var timestamp = jsonObj.timestamp;
+					var readSts = jsonObj.readSts;
+					p.innerHTML = showMsg;
+					var dayTime = timestamp.substring(0,10);
+					p.setAttribute("title",dayTime);
+					var shortTime = timestamp.substring(11,18);
+					shortTime = shortTime.replace(/:$/, '');
+					span.innerHTML = shortTime;
+					// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+					if( jsonObj.sender === mem_no ){
+						li.className += 'mem';
+						chat_message_wrapper.classList.add("chat_message_right");
+						var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
+						spanReadSts.innerHTML = readStsText;
+						span.appendChild(spanReadSts);
+					}else{
+						li.className += 'emp';
+					}
+					p.appendChild(span);
+					li.appendChild(p);
+					ul.appendChild(li);
+					chat_message_wrapper.appendChild(chat_user_avatar);
+					chat_message_wrapper.appendChild(ul);
+					document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
+					messagesArea.scrollTop = messagesArea.scrollHeight;
+				}
+			};
+			
+			webSocket.onclose = function(event) {
+				console.log("Disconnected!");
+			};
+			
+			// 開啟聊天室 display
 			$("#addClass").click(function() {
 				$('#sidebar_secondary').addClass('popup-box-on');
+				// 抓出聊天紀錄
+				var jsonObj = { // 這裡要對應原本的 VO 內容
+					"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+					"sender" : mem_no,
+					"receiver" : "emp",
+					"message" : "",
+					"timestamp" : "",
+					"readSts" : 0
+				};
+				webSocket.send(JSON.stringify(jsonObj));
 			});
-
+			
+			// 關閉聊天室 
 			$("#removeClass").click(function() {
 				$('#sidebar_secondary').removeClass('popup-box-on');
 			});
 		})
+		
+		// 發送訊息
+		$("#sendMsg").click(function() {
+			var inputMessage = document.getElementById("submit_message");
+			var message = inputMessage.value.trim();
+
+			if (message === "") {
+				alert("Input a message");
+				inputMessage.focus();
+			} else {
+				var jsonObj = {
+					"type" : "chat",
+					"sender" : mem_no,
+					"receiver" : "emp",
+					"message" : message,
+					"timestamp" : new Date().toLocaleString(),
+					"readSts" : 0
+				};
+				webSocket.send(JSON.stringify(jsonObj));
+				inputMessage.value = "";
+				inputMessage.focus();
+			}
+		});
+		
 	</script>
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
-	<script>
+	<script>	
+	
 		<%-- 可在 modal 處自由加入想要擋住的內容 --%>
 		var nb = $('nav.navbar-fixed-top');
 		$('.modal')
@@ -384,7 +495,6 @@
 		
 		
 		<%-- 小鈴鐺點擊後會產生的動作 --%>
-		var mem_no="<%=request.getParameter("mem_no")%>"
 		if(document.getElementsByName("unread").length > 0){
 			document.getElementsByClassName("badge")[0].style.display = "inline-block";
 		}else{
@@ -410,7 +520,7 @@
 			
 			// 已讀未讀狀態修改
 			$.ajax({
-				 url:'fi.do',
+				 url:'<%=request.getContextPath() %>/front_inform/fi.do',
 				 method:"POST",
 				 dataType:"text",
 				 data:{
@@ -443,7 +553,7 @@
 		}		
 		function confirm(info_no, res_no){
 			$.ajax({
-				 url:'fi.do',
+				 url:'<%=request.getContextPath() %>/front_inform/fi.do',
 				 method:"POST",
 				 dataType:"text",
 				 data:{
@@ -461,7 +571,7 @@
 		}
 		function cancel(info_no, res_no){
 			$.ajax({
-				 url:'fi.do',
+				 url:'<%=request.getContextPath() %>/front_inform/fi.do',
 				 method:"POST",
 				 dataType:"text",
 				 data:{
@@ -529,22 +639,6 @@
 			title.innerHTML = '會員中心';
 		}
 		
-		<!--登入之後導入會員所有通知-->
-		function loadInfo(mem_no) {
-			$.ajax({
-				url:'fi.do',
-				method:"post",
-				dataType:"text",
-				data:{
-					 action: 'getMyInform',
-					 mem_no: mem_no,
-				},
-				success: function() {	
-				},
-				err: function() {	
-				}
-			});
-		}
 	</script>
 	
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>

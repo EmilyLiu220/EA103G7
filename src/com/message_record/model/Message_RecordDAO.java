@@ -1,217 +1,62 @@
 package com.message_record.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-public class Message_RecordDAO implements Message_RecordDAO_interface {
-	private static DataSource ds = null;
-	static {
-		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/EA103G7");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static final String INSERT_MSG = "INSERT INTO MESSAGE_RECORD (MSG_NO,EMP_NO,MEM_NO,MSG_CONT,MSG_STS) VALUES ('MSG'||LPAD(to_char(SEQ_MSG_NO.nextval), 4, '0'), ?, ?, ?, ?)"; 
-	private static final String GET_BY_MEMNO = "SELECT EMP_NO, MSG_CONT, MSG_TIME, MSG_STS FROM MESSAGE_RECORD WHERE MEM_NO=? ORDER BY MSG_NO";
-	private static final String GET_BY_EMPNO = "SELECT MEM_NO, MSG_CONT, MSG_TIME, MSG_STS FROM MESSAGE_RECORD WHERE EMP_NO=? ORDER BY MSG_NO";
-	private static final String UPDATE_MEM_READ_STS = "UPDATE MESSAGE_RECORD SET READ_STS='1' WHERE MSG_STS='0' AND MEM_NO=?";
-	private static final String UPDATE_EMP_READ_STS = "UPDATE MESSAGE_RECORD SET READ_STS='1' WHERE MSG_STS='1' AND EMP_NO=?";
-	
-	@Override
-	public void insert(Message_RecordVO message_recordVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_MSG);
-			pstmt.setString(1, message_recordVO.getEmp_no());
-			pstmt.setString(2, message_recordVO.getMem_no());
-			pstmt.setString(3, message_recordVO.getMsg_cont());
-			pstmt.setInt(4, message_recordVO.getMsg_sts());
-			pstmt.executeUpdate();
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "+ se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
+public class Message_RecordDAO {
+	// 此範例key的設計為(發送者名稱:接收者名稱)，實際應採用(發送者會員編號:接收者會員編號)
+
+	private static JedisPool pool = JedisPoolUtil.getJedisPool(); // 類似取得 DataSource
+
+	public static List<String> getHistoryMsg(String sender, String receiver) { // 取得歷史訊息
+		String key = new StringBuilder(sender).append(":").append(receiver).toString();
+		Jedis jedis = null;
+		jedis = pool.getResource();
+		jedis.auth("123456");
+		List<String> historyData = jedis.lrange(key, 0, -1); // 從最左邊拿到最右邊的歷史紀錄
+		jedis.close();
+		return historyData; // 回傳歷史紀錄
 	}
 
-	@Override
-	public List<Message_RecordVO> findByMemNo(String mem_no) {
-		List<Message_RecordVO> list = new ArrayList<Message_RecordVO>();
-		Message_RecordVO message_recordVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_BY_MEMNO);
-			pstmt.setString(1, mem_no);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				message_recordVO = new Message_RecordVO();
-				message_recordVO.setEmp_no(rs.getString("EMP_NO"));
-				message_recordVO.setMsg_cont(rs.getString("MSG_CONT"));
-				message_recordVO.setMsg_time(rs.getDate("MSG_TIME"));
-				message_recordVO.setMsg_sts(rs.getInt("MSG_STS"));
-				list.add(message_recordVO);
-			}
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "+ se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return list;
+	public static void saveChatMessage(String sender, String receiver, String msgJson) { // 存入訊息
+		// 對雙方來說，都要各存著歷史聊天記錄 (身分對調、各存一次)
+		String senderKey = new StringBuilder(sender).append(":").append(receiver).toString();
+		String receiverKey = new StringBuilder(receiver).append(":").append(sender).toString();
+		Jedis jedis = pool.getResource();
+		jedis.auth("123456");
+		// 必須是右邊加入、先進先出，較新的訊息會最先出現
+		jedis.rpush(senderKey, msgJson);
+		jedis.rpush(receiverKey, msgJson);
+
+		jedis.close();
 	}
 
-	@Override
-	public List<Message_RecordVO> findByEmpNo(String emp_no) {
-		List<Message_RecordVO> list = new ArrayList<Message_RecordVO>();
-		Message_RecordVO message_recordVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_BY_EMPNO);
-			pstmt.setString(1, emp_no);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				message_recordVO = new Message_RecordVO();
-				message_recordVO.setMem_no(rs.getString("MEM_NO"));
-				message_recordVO.setMsg_cont(rs.getString("MSG_CONT"));
-				message_recordVO.setMsg_time(rs.getDate("MSG_TIME"));
-				message_recordVO.setMsg_sts(rs.getInt("MSG_STS"));
-				list.add(message_recordVO);
-			}
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "+ se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+	public static void updMsgReadSts(String sender, String receiver) { // 取得歷史訊息
+		String key = new StringBuilder(receiver).append(":").append(sender).toString();
+		Jedis jedis = null;
+		jedis = pool.getResource();
+		jedis.auth("123456");
+		
+		List<String> allData = jedis.lrange(key, 0, -1); // 從最左邊拿到最右邊的歷史紀錄
+		//更新讀取訊息狀態
+		for(int i=0; i<allData.size(); i++) {
+			String data = jedis.lindex(key, i);
+			data = data.substring(0,data.length()-2) + "1}";
+			jedis.lset(key, i, data);
 		}
-		return list;
-	}
-	
-	@Override
-	public void updateMemReadSts(String mem_no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_MEM_READ_STS);
-			pstmt.setString(1, mem_no);
-			pstmt.executeUpdate();
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "+ se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
+		jedis.close();
 	}
 
-	@Override
-	public void updateEmpReadSts(String emp_no) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_EMP_READ_STS);
-			pstmt.setString(1, emp_no);
-			pstmt.executeUpdate();
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "+ se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
+
+	public static Set<String> getKeys() {
+		Jedis jedis = null;
+		jedis = pool.getResource();
+		jedis.auth("123456");
+		Set<String> allKey = jedis.keys("emp*");
+		jedis.close();
+		return allKey;
 	}
 }
