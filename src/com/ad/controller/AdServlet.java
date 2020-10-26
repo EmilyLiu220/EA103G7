@@ -335,6 +335,33 @@ public class AdServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		/********************************************************************/
+		if("getADByEmpNo".equals(action)) {
+			try {
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+				HttpSession session = req.getSession();
+				String str = req.getParameter("emp_no");
+				
+				/*************************** 2.開始查詢資料 *****************************************/
+//				AdService adSvc = new AdService();
+//				List<AdVO> list = adSvc.getadno(str);
+				
+				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+				session.setAttribute("str", str);
+				String url = "/back-end/ad/listEmpNoAd.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {
+				e.printStackTrace();
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/ad/select_ad.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		
+		
 		/*************************** 前台頁面 *************************************/
 		if("getFrontOne_For_Display".equals(action)) {
 			

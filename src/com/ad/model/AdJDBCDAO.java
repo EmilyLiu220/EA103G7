@@ -27,7 +27,67 @@ public class AdJDBCDAO implements AdDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT * FROM AD WHERE AD_NO =?";
 	private static final String DELETE = "DELETE FROM AD WHERE AD_NO = ?";
 	private static final String UPDATE = "UPDATE AD SET EMP_NO=? , AD_TITLE=? ,AD_CONT=? ,AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_IMG=? WHERE AD_NO=?";
+	private static final String GET_AD_STMT = "SELECT * FROM AD WHERE emp_NO =? order by ad_NO";
+	
+	@Override
+	public List<AdVO> getadno(String emp_no) {
 
+			List<AdVO> list = new ArrayList<AdVO>();
+
+			AdVO adVO = null;
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			try {
+				Class.forName(driver);
+				con = DriverManager.getConnection(url, userid, passwd);
+				pstmt = con.prepareStatement(GET_AD_STMT);
+				pstmt.setString(1, emp_no);
+				rs = pstmt.executeQuery();
+				
+
+				while (rs.next()) {
+					adVO = new AdVO();
+					adVO.setAd_no(rs.getString("ad_no"));
+					adVO.setEmp_no(rs.getString("emp_no"));
+					adVO.setAd_title(rs.getString("ad_title"));
+					adVO.setAd_cont(rs.getString("ad_cont"));
+					adVO.setAd_add_date(rs.getDate("ad_add_date"));
+					adVO.setAd_re_date(rs.getDate("ad_re_date"));
+					adVO.setAd_img(rs.getBytes("ad_img"));
+					list.add(adVO);
+				}
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. " + se.getMessage());
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+			return list;
+		}
+	
 	// 新增
 	@Override
 	public void insert(AdVO adVO) {
@@ -318,17 +378,17 @@ public class AdJDBCDAO implements AdDAO_interface {
 //		System.out.print(AdVO4.getAd_img() + ",");
 
 		// 查詢
-//		List<AdVO> list = dao.getAll();
-//		for (AdVO aAd : list) {
-//			System.out.print(aAd.getAd_no() + ",");
-//			System.out.print(aAd.getEmp_no() + ",");
-//			System.out.print(aAd.getAd_title() + ",");
-//			System.out.print(aAd.getAd_cont() + ",");
-//			System.out.print(aAd.getAd_add_date() + ",");
-//			System.out.print(aAd.getAd_re_date() + ",");
-//			System.out.print(aAd.getAd_img() + ",");
-//			System.out.println();
-//		}
+		List<AdVO> list = dao.getAll();
+		for (AdVO aAd : list) {
+			System.out.print(aAd.getAd_no() + ",");
+			System.out.print(aAd.getEmp_no() + ",");
+			System.out.print(aAd.getAd_title() + ",");
+			System.out.print(aAd.getAd_cont() + ",");
+			System.out.print(aAd.getAd_add_date() + ",");
+			System.out.print(aAd.getAd_re_date() + ",");
+			System.out.print(aAd.getAd_img() + ",");
+			System.out.println();
+		}
 	}
 
 	public static byte[] getPictureByteArray(String path) throws IOException {

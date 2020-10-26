@@ -53,4 +53,7 @@ public class AdService {
 	public List<AdVO> getAll() {
 		return dao.getAll();
 	}
+	public List<AdVO> getadno(String emp_no) {
+		return dao.getadno(emp_no);
+	}
 }
