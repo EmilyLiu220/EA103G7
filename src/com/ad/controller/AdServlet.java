@@ -349,7 +349,7 @@ public class AdServlet extends HttpServlet {
 				
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 				session.setAttribute("str", str);
-				String url = "/back-end/ad/listEmpNonews.jsp";
+				String url = "/back-end/ad/listEmpNoAd.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 				/*************************** 其他可能的錯誤處理 *************************************/
