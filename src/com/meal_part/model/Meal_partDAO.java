@@ -257,7 +257,7 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			map.put("prot", rs.getDouble(2));
 			map.put("carb", rs.getDouble(3));
 			map.put("fat", rs.getDouble(4));
-			System.out.println(map.get("fat"));
+//			System.out.println(map.get("fat"));
 			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "

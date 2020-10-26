@@ -42,6 +42,7 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/front-end/css/bootstrap.min.css">
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  <title>會員所有訂餐訂單</title>
+ <jsp:useBean id="mealPartSrv" class="com.meal_part.model.Meal_partService"/>
  <style>
  body{
 /*  background-color:black; */
@@ -260,7 +261,7 @@ transition: all 0.5s;
 			     </c:if>
       </div>
       <div id="card-img" class="col-8"><figure><img name="meal_img" src="<%= request.getContextPath() %>/meal/meal.showPic?meal_img=${mealVO.meal_no}"/>
-      <figcaption>碳水化合物:XX克<br>熱量:XX克<br>脂肪:XX克<br>脂肪:XX克</figcaption></figure></div>
+      <figcaption> 🥩&nbsp;&nbsp; 脂肪：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("fat")}</font> 克<br>🥚&nbsp;&nbsp; 蛋白質：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("prot")}</font> 克<br>🍚&nbsp;&nbsp;碳水化合物：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("carb")}</font> 克<br>㎉ &nbsp;&nbsp;熱量：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("cal")}</font> 大卡</figcaption></figure></div>
       </div>
       </div>
         </c:forEach>
