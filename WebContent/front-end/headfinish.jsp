@@ -7,7 +7,7 @@
 <%@ page import="com.mem.model.*"%>
 
 <%
-	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");	
+	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
 %>
 
 <!DOCTYPE html>

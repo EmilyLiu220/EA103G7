@@ -7,7 +7,7 @@
 <head>
 <title>會員登入</title>
 
-    <title>Feliciano - Free Bootstrap 4 Template by Colorlib</title>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -87,7 +87,7 @@ td {
 			<tr>
 				<td colspan=2 align=center>
 					
-					<input type=submit value="登入">
+					<input type=submit value="登入" >
 					<input type="hidden" name="action" value="login">
 					
 				</td>
@@ -98,6 +98,8 @@ td {
 			
 	</FORM>
 	</div>
+		
+		
 		
 		<jsp:include page="/front-end/front/footer.jsp" />
         

@@ -149,8 +149,8 @@
 	var button2 = document.getElementById("button2");
 	var mem_name2 = document.getElementById("mem_name2");
 	var mem_act2 = document.getElementById("mem_act2");
-	var mem_psw1 = document.getElementById("mem_psw1");
-	var mem_psw2 = document.getElementById("mem_psw2");
+	var mem_psw1_2 = document.getElementById("mem_psw1");
+	var mem_psw2_2 = document.getElementById("mem_psw2");
 	var mem_gen2 = document.getElementsByName("mem_gen2");
 	var mem_bir2 = document.getElementById("mem_bir2");
 	var mem_tel2 = document.getElementById("mem_tel2");
@@ -160,8 +160,8 @@
 	button2.addEventListener("click", function(e) {	
 		mem_name2.value = "§d¥Ã§Ó";
 		mem_act2.value = "zzz111";
-		mem_psw1.value = "zzz111";
-		mem_psw2.value = "zzz111";
+		mem_psw1_2.value = "zzz111";
+		mem_psw2_2.value = "zzz111";
 		mem_gen2[0].checked = true;
 		mem_bir2.value = "1990-08-08";
 		mem_tel2.value = "0988168168";

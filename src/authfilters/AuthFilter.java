@@ -35,7 +35,7 @@ public class AuthFilter implements Filter {
 		for (int i = 0; i < emp_authVO.size(); i++) {
 			funs.add(emp_authVO.get(i).getFun_no());
 		}
-		// 各項權限所包含的全部路徑
+		// 各項權限所包含的全部路徑 (之後新增全部的權限)
 		List<String> fa0001 = new ArrayList<>();
 		fa0001.add(req.getContextPath() + "/back-end/emp/emp.do");
 		fa0001.add(req.getContextPath() + "/back-end/emp/select_page.jsp");
@@ -54,7 +54,7 @@ public class AuthFilter implements Filter {
 		fa0002.add(req.getContextPath() + "/back-end/mem/listOneMem.jsp");
 		fa0002.add(req.getContextPath() + "/back-end/mem/update_mem_sts.jsp");
 		
-		
+		// 比對員工權限和請求的路徑 (之後新增全部的權限)
 		if (funs.contains("FA0001") && fa0001.contains(path)) {
 			chain.doFilter(request, response);
 		} else if (funs.contains("FA0002") && fa0002.contains(path)) {
