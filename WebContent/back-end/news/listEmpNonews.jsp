@@ -1,9 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.news.model.*"%>
+
+<!-- 	NewsService newsSvc = new NewsService(); -->
+<!-- 	List<NewsVO> list = newsSvc.getAll(); -->
+<!-- 	pageContext.setAttribute("list", list); -->
 
 
+<%
+	String str = (String) session.getAttribute("str");
+	NewsService newsSvc = new NewsService();
+	List<NewsVO> list = newsSvc.getnewsno(str);
+	pageContext.setAttribute("list", list);
+%>
 <html>
 <head>
 
@@ -26,16 +38,20 @@
 <!-- Scrollbar Custom CSS -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+
 <style>
 #table-1, #table-1 td {
 	background: #555;
 	color: #fff;
 	border: 0;
 	width: 100%;
+	height: 70;
 	border-radius: 5px;
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 #logout {
 	width: 212px
 }
@@ -43,6 +59,7 @@
 
 </head>
 <body>
+
 	<div class="wrapper">
 		<!-- Sidebar  -->
 		<nav id="sidebar">
@@ -99,6 +116,7 @@
 						<li><a href="#">訂位管理</a></li>
 					</ul></li>
 			</ul>
+
 			<ul class="list-unstyled CTAs">
 				<c:choose>
 					<c:when test="${empVO2.emp_no==null}">
@@ -119,8 +137,10 @@
 		</nav>
 
 		<div id="content">
+
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div class="container-fluid">
+
 					<button type="button" id="sidebarCollapse" class="btn btn-dark">
 						<svg class="svg-inline--fa fa-align-justify fa-w-14"
 							aria-hidden="true" data-prefix="fas" data-icon="align-justify"
@@ -167,6 +187,7 @@
 									href="/EA103G7/back-end/back-index_e.jsp">一般員工專區</a></li>
 								<li class="nav-item active"
 									style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+
 									<div id="topLogIn"
 										style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
 										onmouseover="this.style.color='#fff'; this.style.background='#000';"
@@ -181,21 +202,18 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 店訊管理</span> <a href="/EA103G7/back-end/back-index_New.jsp"
-				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
-				onmouseover="this.style.color='#ffbc5e';"
-				onmouseout="this.style.color='#DEA554;';">返回首頁</a>
-			<p></p>
+			<span> - 全部搜索</span> <a
+				href="<%=request.getContextPath()%>/back-end/news/select_news.jsp"
+				style="display: inline-block; font-size: 8px; font-weight: 900; color: #DEA554;; text-decoration: none; margin-left: 20px;">返回首頁</a>
+			<p>
 			<table id="table-1">
-				<tbody>
-					<tr>
-						<td>
-							<h3 style="margin-bottom: 0;">查詢所有店訊</h3>
-						</td>
-					</tr>
-				</tbody>
+				<tr>
+					<td>
+						<h3 style="margin-bottom: 0;">全部搜索</h3>
+					</td>
+				</tr>
 			</table>
-
+			<br>
 			<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<font style="color: red">請修正以下錯誤:</font>
@@ -205,84 +223,51 @@
 					</c:forEach>
 				</ul>
 			</c:if>
-			
-			<br>
-			<ul>
-				<li><a
-					href='<%=request.getContextPath()%>/back-end/news/listAllnews.jsp'
-					style="color: #dea554; font-weight: 600;"
-					onmouseover="this.style.color='#ffbc5e';"
-					onmouseout="this.style.color='#dea554';">顯示所有店訊</a><br> <br></li>
-			</ul>
 
-			<table id="table-1">
-				<tbody>
+			<table class="table table-hover" style="width: 100%; font-size: 70%;">
+				<thead style="text-align: center;">
 					<tr>
-						<td><h3 style="margin-bottom: 0;">動態查詢店訊</h3></td>
+						<th>消息編號</th>
+						<th>員工編號</th>
+						<th>消息內容</th>
+						<th>發布日期</th>
 					</tr>
-				</tbody>
-			</table>
-			<br> <span
-				style="position: relative; left: 4%; font-weight: 600;">可自由輸入欲查詢之條件</span><br>
-			<br>
-			<ul>
-				<li>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/news/news.do">
-						<b>店訊編號(NEWS0001):</b> <input type="text" name="news_no">
-						<input type="hidden" name="action" value="getOne_For_Display">
-						<input type="submit" value="送出1">
-					</FORM>
-				</li>
+				</thead>
 
-				<jsp:useBean id="newsSvc" scope="page"
-					class="com.news.model.NewsService" />
-					
-				<li>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/news/news.do">
-						<b>店訊編號:</b> <select size="1" name="news_no">
-							<c:forEach var="newsVO" items="${newsSvc.all}">
-								<option value="${newsVO.news_no}">${newsVO.news_no}
-							</c:forEach>
-						</select> <input type="hidden" name="action" value="getOne_For_Display">
-						<input type="submit" value="送出2">
-					</FORM>
-				</li>
-				<li>
-				<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/news/news.do">
-						<b>選擇員工編號:</b> <select size="1" name="emp_no">
-							<c:forEach var="empVO" items="${empSvc.all}">
-								<option value="${empVO.emp_no}">${empVO.emp_no}
-							</c:forEach>
-						</select> <input type="hidden" name="action" value="getNewsByEmpno">
-						<input type="submit" value="送出3">
-					</FORM>
-				</li>
-			</ul>
-			<br>
-			<table id="table-1">
-				<tbody>
+				<%@ include file="page1.file"%>
+				<c:forEach var="newsVO" items="${list}" begin="<%=pageIndex%>"
+					end="<%=pageIndex+rowsPerPage-1%>">
+
 					<tr>
+						<td style="width: 100px;">${newsVO.news_no}</td>
+						<td style="width: 100px;">${newsVO.emp_no}</td>
+						<td style="width: 1200px;">${newsVO.news_cont}</td>
+						<td style="width: 100px;">${newsVO.news_date}</td>
+
 						<td>
-							<h3 style="margin-bottom: 0;">新增店訊通知</h3>
+							<FORM METHOD="post"
+								ACTION="<%=request.getContextPath()%>/news/news.do"
+								style="margin-bottom: 0px;">
+								<input type="hidden" name="news_no" value="${newsVO.news_no}">
+								<input type="hidden" name="action" value="getOne_For_Update">
+								<input type="submit" value="修改">
+							</FORM>
+						</td>
+						<td>
+							<FORM METHOD="post"
+								ACTION="<%=request.getContextPath()%>/news/news.do"
+								style="margin-bottom: 0px;">
+								<input type="submit" value="刪除"> <input type="hidden"
+									name="news_no" value="${newsVO.news_no}"> <input
+									type="hidden" name="action" value="delete">
+							</FORM>
 						</td>
 					</tr>
-				</tbody>
+				</c:forEach>
 			</table>
-			<br>
-			<ul>
-				<li><a
-					href='<%=request.getContextPath()%>/back-end/news/addNews.jsp'
-					style="color: #dea554; font-weight: 600;"
-					onmouseover="this.style.color='#ffbc5e';"
-					onmouseout="this.style.color='#dea554';">店訊新增</a></li>
-			</ul>
+			<%@ include file="page2.file"%>
 		</div>
 	</div>
-
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -315,13 +300,14 @@
 		});
 	</script>
 <!-- Font Awesome JS -->
-	<script defer
-		src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
-		integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-		crossorigin="anonymous"></script>
-	<script defer
-		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
-		integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-		crossorigin="anonymous"></script>
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+	integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+	crossorigin="anonymous"></script>
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+	crossorigin="anonymous"></script>
+
 </body>
 </html>

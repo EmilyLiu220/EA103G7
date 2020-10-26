@@ -52,12 +52,12 @@ public class AdServlet extends HttpServlet {
 				String ad_title = req.getParameter("ad_title").trim();
 
 				if (ad_title == null || ad_title.trim().length() == 0) {
-					errorMsgs.add("請勿空白");
+					errorMsgs.add("ad_title請勿空白");
 				}
 				String ad_cont = req.getParameter("ad_cont").trim();
 
 				if (ad_cont == null || ad_cont.trim().length() == 0) {
-					errorMsgs.add("請勿空白");
+					errorMsgs.add("ad_cont請勿空白");
 				}
 
 				java.sql.Date ad_add_date = null;
@@ -349,7 +349,7 @@ public class AdServlet extends HttpServlet {
 				
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 				session.setAttribute("str", str);
-				String url = "/back-end/ad/listEmpNoAd.jsp";
+				String url = "/back-end/ad/listEmpNonews.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 				/*************************** 其他可能的錯誤處理 *************************************/

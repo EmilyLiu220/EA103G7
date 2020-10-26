@@ -302,7 +302,7 @@ width:100px;
 							<label class="btn btn-secondary info btn-icon-split">
 								<span class="icon text-white-50"><i class="fas fa-image"></i></span>
 								<span class="text">請上傳圖片</span>
-				           		<input type="file" id="img" name="adPic" accept="image/gif, image/jpeg, image/png" style="display:none"/>
+				           		<input type="file" id="img" name=ad_img accept="image/gif, image/jpeg, image/png" style="display:none"/>
 				           	</label>
 				           	<div id="pic">
 								<img id="preview" src="">
@@ -317,9 +317,6 @@ width:100px;
 						<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
 <!-- 						<input type="submit" value="送出新增"> -->
 						<button type="button" id="newad" class="btn btn-info btn-circle btn-sm button">New</button>
-					
-					
-					
 			</form>
 		</div>
 	</div>
