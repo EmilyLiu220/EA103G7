@@ -5,10 +5,11 @@
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.meal_order.model.*"%>
+<%@ page import="com.meal_order_detail.model.*"%>
 
 <% 
 	MealOrderService mealOrderSrv = new MealOrderService();
-	List<MealOrderVO> list = mealOrderSrv.getAll();
+	List<MealOrderVO> list = mealOrderSrv.searchByOrderSts(3);
 	pageContext.setAttribute("list", list);
 
 %>
@@ -20,9 +21,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>訂單管理-listAll</title>
-
-<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
-<jsp:useBean id="mealOrderSrv2" scope="page" class="com.meal_order.model.MealOrderService"/>
+<jsp:useBean id="mealOrderSrv2" class="com.meal_order.model.MealOrderService"/>
+<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"/>
+<%-- <jsp:useBean id="detailSrv" scope="page" class="com.meal_order_detail.model.MealOrderDetailService"/> --%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.css" />
 <!-- Bootstrap CSS CDN -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -44,9 +45,33 @@
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .table a{
-color:blue;
-text-decoration: underline;
+	color:blue;
+	text-decoration: underline;
 }
+.table {
+	margin-left: auto;
+	margin-right: auto;
+}
+.hightlight {
+	animation: blink 0.3s linear;
+	background-color:darkgray;
+	color: black;
+        }
+         @keyframes blink {
+            0% {
+                background-color: #abc;
+            }
+            60% {
+                background-color: yellow;
+            }
+            80% {
+                background-color: white;
+            }
+            100% {
+                background-color: darkgray;
+                color: black;
+            }
+        }
 </style>
 
 </head>
@@ -176,65 +201,21 @@ text-decoration: underline;
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查看所有訂餐訂單</h3>
+							<h3 style="margin-bottom:0;">收銀台 - 待確認訂單</h3>
 						</td>
 					</tr>
+					<tr><td><span></span></td></tr>
 				</table>
 				<br>
-				<form action="<%= request.getContextPath()%>/MealOrderServlet.do" method="POST">
-				<table id="table-2">
-				<tr class="row query">
-					<td class="col">訂單編號：<input type="text" name="meal_order_no" size="10"/></td>
-					<td class="col">員工編號：<input type="text" name="emp_no" size="10"/></td>
-					<td class="col">會員編號：<input type="text" name="mem_no" size="10"/></td>
-				</tr>
-				<tr class="row query">
-					<td class="col">通知狀態：<select name="noti_sts">
-			 			<option value=''>請選擇
-			 			<option value=0>未通知
-			 			<option value=1>已通知
-						</select></td>
-				<td class="col">付款狀態：<select name="pay_sts">
-			 			<option value=''>請選擇
-			 			<option value=0>未付款
-			 			<option value=1>已付款
-						</select></td>
-				<td class="col">訂單狀態：<select name="meal_order_sts">
-			 			<option value=''>請選擇
-			 			<option value=0>已取消
-			 			<option value=1>未派工
-			 			<option value=2>已派工
-			 			<option value=3>已出餐
-			 			<option value=4>已完成
-						</select></td>
-						</tr>
-	<tr class="row query">
-				<td class="col">
-				訂餐時間：<input type="text" name="order_time" class="f_date1"/>
-				至 <input type="text" name="order_time" class="f_date1"/> 之間</td>
-				</tr>
-	<tr class="row query">			
-				<td class="col">
-				取餐時間：<input type="text" name="pickup_time" class="f_date1"/>
-				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td>
-				<td>
-				<input type="submit" value="查詢結果"/>
-				<input type="hidden" name="action" value="queryAll"/></td>
-				</tr>
+<%-- 					<%@ include file="page1.file"%> --%>
+<%-- 				 <table id="table-1" class="${mealOrderVO.meal_order_no}"> --%>
+<!-- 					<tr> -->
+<!-- 						<td> -->
+<%-- 							<h3 style="margin-bottom:0;">訂餐編號：${mealOrderVO.meal_order_no}</h3> --%>
+<!-- 						</td> -->
+<!-- 					</tr> -->
+<!-- 				</table> -->
 				
-				</table>
-				</form>
-				<br>
-				<%-- 錯誤表列 --%>
-				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
-						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
-
 				<table class="table table-hover" style="width: 100%; font-size: 90%;">
 					<thead style="text-align: center;">
 						<tr>
@@ -243,15 +224,17 @@ text-decoration: underline;
 							<th style="width: 10%;">會員編號</th>
 							<th style="width: 15%;">訂餐時間</th>
 							<th style="width: 15%;">預計取餐時間</th>
-							<th style="width: 10%;">訂單金額</th>
+							<th style="width: 5%;">訂單金額</th>
 							<th style="width: 10%;">通知狀態</th>
 							<th style="width: 10%;">付款狀態</th>
 							<th style="width: 10%;">訂單狀態</th>
+							<th style="width: 5%;"></th>
 						</tr>
 					</thead>
 					<%@ include file="page1.file"%>
 					<tbody>
 					<c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+					<form action="<%= request.getContextPath()%>/MealOrderServlet.do" method="POST">
 						<tr>
 							<td style="text-align: center;"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></td>
 							<td style="text-align: center;">${mealOrderVO.emp_no}</td>
@@ -266,7 +249,20 @@ text-decoration: underline;
    														 	<c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
     														<c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
     														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td>
+    						
+    						<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 3 and (mealOrderVO.pay_sts == 1 or mealOrderVO.pay_sts ==0)}">
+    														<input type="submit" value="完成訂單"/>
+    														<input type="hidden" name="action" value="update"/>
+<!--     														<input type="hidden" name="queryString" value="asignQuery"/> -->
+    														<input type="hidden" name="reqURL" value="<%= request.getServletPath()%>"/>
+    														<input type="hidden" name="whichPage" value="<%= whichPage%>"/>
+    														<input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>
+    														<input type="hidden" name="meal_order_sts" value="4"/>
+    														<input type="hidden" name="noti_sts" value="${mealOrderVO.noti_sts}"/>
+    														<input type="hidden" name="pay_sts" value="${mealOrderVO.pay_sts}"/></c:if></td>
 						</tr>
+						</form>
+						
 					</c:forEach>
 					</tbody>
 				</table>
@@ -274,18 +270,18 @@ text-decoration: underline;
 			</p>
 		</div>
 	</div>
-
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 	<!-- Popper.JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<!-- Bootstrap JS -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	<!-- jQuery Custom Scroller CDN -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-	
 <%-- <script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.js"></script> --%>
-<script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.full.js"></script>
+<%-- 	<script src="<%= request.getContextPath() %>/front-end/js/jquery-3.4.1.min.js"></script> --%>
+	<script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.full.js"></script>
 	
 	
 <script type="text/javascript">
@@ -300,25 +296,49 @@ text-decoration: underline;
 			$('a[aria-expanded=true]').attr('aria-expanded', 'false');
 		});
 	});
+	
+	$('input[type="submit"]').click(function (){
+		if($(this).parent().find('input[name="pay_sts"]').val() == 0)
+		confirm('此訂單尚未付款，確定要完成訂單嗎?');
+	});
+	
+	
+	var webSocket =null;
+	var MyPoint = "/MealOrderWebSocket";
+	var host = window.location.host;
+	var path = window.location.pathname;
+	var webCtx = path.substring(0, path.indexOf('/', 1));
+	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+	if('WebSocket' in window){
+		webSocket = new WebSocket(endPointURL);
+	}else{
+		alert('browser not support websocket');
+	}
+	webSocket.onopen = function (e){
+		console.log('websocket onopen');
+	}
+	
+	webSocket.onmessage = function (e){
+		var jsonObj = JSON.parse(e.data);
+		if(jsonObj.reload === 'orderDone'){
+				window.location.reload();
+		}
 		
-		var now = new Date();
-// 		var expiry = new Date(now.getFullYear(),(now.getMonth()+1),now.getDay());
-        $.datetimepicker.setLocale('zh');
-        $('.f_date1').datetimepicker({
-           todayHighlight: true,
-	       theme: 'dark',              //theme: 'dark',
-	       timepicker:true,       //timepicker:true,
-	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d H:i',         //format:'Y-m-d H:i:s',
-// 	       showApplyButton: true,
-		   value: 0,  // value:   new Date(),
-           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-           //startDate:	            '2017/07/10',  // 起始日
-//            roundTime: 'round',
-//            minTime:new Date(now.getFullYear(),(now.getMonth()+1),now.getDate(),now.getHours,(now.getMinutes()+30)),
-//            minDate:               new Date(), // 去除今日(不含)之前
-//            maxDate:               new Date(now.getFullYear(),(now.getMonth()+1),now.getDate())  // 去除今日(不含)之後
-        });
+	}
+	
+	window.onbeforeunload = function (e) {
+		webSocket.close();
+	}
+	
+	webSocket.onclose = function(e){
+		console.log('websocket closed');
+	}
+	
+	
+	
+	
+	
+	
 	</script>
 </body>
 </html>

@@ -216,7 +216,7 @@ margin-right: auto;
 			 			<option value=0>已取消
 			 			<option value=1>未派工
 			 			<option value=2>已派工
-			 			<option value=3>出餐未取
+			 			<option value=3>已出餐
 			 			<option value=4>已完成
 						</select></td>
 						</tr>
@@ -275,6 +275,7 @@ margin-right: auto;
     						<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 1}">
     														<input type="submit" value="派工製作"/>
     														<input type="hidden" name="action" value="update"/>
+    														<input type="hidden" name="queryString" value="asignQuery"/>
     														<input type="hidden" name="reqURL" value="<%= request.getServletPath()%>"/>
     														<input type="hidden" name="whichPage" value="<%= whichPage%>"/>
     														<input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>
@@ -326,6 +327,7 @@ margin-right: auto;
 	       timepicker:true,       //timepicker:true,
 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
 	       format:'Y-m-d H:i',         //format:'Y-m-d H:i:s',
+// 	       showApplyButton: true,
 		   value: 0,  // value:   new Date(),
            //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
            //startDate:	            '2017/07/10',  // 起始日
@@ -352,7 +354,7 @@ margin-right: auto;
     	
     	webSocket.onmessage = function (e){
     		var jsonObj = JSON.parse(e.data);
-    		if(jsonObj.reload!=null)
+    		if(jsonObj.reload === 'asignOrder')
     		window.location.reload();
     		if(jsonObj.action === 'insert'){
 //     			var now = new Date();

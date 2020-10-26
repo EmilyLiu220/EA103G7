@@ -21,45 +21,49 @@ public class CompositeQuery {
 	}
 
 	public static String getWhereCondition(Map<String, String[]> map) {
-		Set<String> keys = map.keySet();
-		StringBuffer whereCondition = new StringBuffer();
-		int count = 0;
-		for (String key : keys) {
+		if (map == null) {
+			return "";
+		}
+			Set<String> keys = map.keySet();
+			StringBuffer whereCondition = new StringBuffer();
+			int count = 0;
+			for (String key : keys) {
 
-			if (map.get(key).length > 1) {
+				if (map.get(key).length > 1) {
 //				System.out.println(key);
-				String value = map.get(key)[0];
-				String value2 = map.get(key)[1];
+					String value = map.get(key)[0];
+					String value2 = map.get(key)[1];
 
-				if (value != null && value2 != null && value.length() != 0 && value2.length() != 0) {
+					if (value != null && value2 != null && value.length() != 0 && value2.length() != 0) {
 //				System.out.println("value1" + value);
 //				System.out.println("value2" + value2);
-					count++;
-					String aCondition = getCondition(key, value.trim(), value2.trim());
+						count++;
+						String aCondition = getCondition(key, value.trim(), value2.trim());
 
-					if (count == 1)
-						whereCondition.append(" where " + aCondition);
-					else
-						whereCondition.append(" and " + aCondition);
-				}
+						if (count == 1)
+							whereCondition.append(" where " + aCondition);
+						else
+							whereCondition.append(" and " + aCondition);
+					}
 
-			} else {
-				String value = map.get(key)[0];
+				} else {
+					String value = map.get(key)[0];
 //				System.out.println(key);
 //				System.out.println(value);
-				if (value != null && value.trim().length() != 0 && !"action".equals(key)) {
-					count++;
-					String aCondition = getCondition(key, value.trim());
+					if (value != null && value.trim().length() != 0 && !"action".equals(key)) {
+						count++;
+						String aCondition = getCondition(key, value.trim());
 
-					if (count == 1)
-						whereCondition.append(" where " + aCondition);
-					else
-						whereCondition.append(" and " + aCondition);
+						if (count == 1)
+							whereCondition.append(" where " + aCondition);
+						else
+							whereCondition.append(" and " + aCondition);
 
+					}
 				}
 			}
-		}
 
-		return whereCondition.toString();
-	}
+			return whereCondition.toString();
+		}
+	
 }
