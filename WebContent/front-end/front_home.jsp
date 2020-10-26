@@ -793,28 +793,33 @@
 			inputMessage.focus();
 		}
 	});
-			
+	
 	// 開啟聊天室 display
 	$("#addClass").click(function() {
-		$('#sidebar_secondary').addClass('popup-box-on');
-		// 抓出聊天紀錄
-		var jsonObj = { // 這裡要對應原本的 VO 內容
-			"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
-			"sender" : mem_no,
-			"receiver" : "emp",
-			"message" : "",
-			"timestamp" : "",
-			"readSts" : 0
-		};
-		webSocket.send(JSON.stringify(jsonObj));
+		// 下面這段偶爾會有冒出紅線，但小育測試過...確定可以動OAO
+		// 讓未登入者無法使用客服聊天室
+		if(${memVO2==null}){
+			$('#loginModal').modal('show');
+		} else {
+			$('#sidebar_secondary').addClass('popup-box-on');
+			// 抓出聊天紀錄
+			var jsonObj = { // 這裡要對應原本的 VO 內容
+				"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+				"sender" : mem_no,
+				"receiver" : "emp",
+				"message" : "",
+				"timestamp" : "",
+				"readSts" : 0
+			};
+			webSocket.send(JSON.stringify(jsonObj));
+		}
 	});
-			
+		
 	// 關閉聊天室 
 	$("#removeClass").click(function() {
 		$('#sidebar_secondary').removeClass('popup-box-on');
 	});
 </script>
-
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
 <script>
