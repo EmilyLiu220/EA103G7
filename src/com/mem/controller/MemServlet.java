@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.front_inform.model.Front_InformService;
+import com.front_inform.model.Front_InformVO;
 import com.mem.model.MemService;
 import com.mem.model.MemVO;
 
@@ -565,7 +567,10 @@ public class MemServlet extends HttpServlet {
 //			       String url = "/back-end/siderbar/siderbar.jsp";
 //			       RequestDispatcher successView = req.getRequestDispatcher(url);
 //			       successView.forward(req, res);
-			       
+			       // 把 get 到的通知訊息從這裡開始放入ㄎsession 裡，就可以直接再 load 進來的時候取到了...看來是順序問題
+			       Front_InformService front_informSvc = new Front_InformService();
+			       List<Front_InformVO> front_informVOs = front_informSvc.getMyInform(mem_no);
+			       session.setAttribute("front_informVOs", front_informVOs);
 			       res.sendRedirect(req.getContextPath() + "/front-end/mem/login_success_mem.jsp");  //*工作3: (-->如無來源網頁:則重導至backindex.jsp)
 			    }
 			    

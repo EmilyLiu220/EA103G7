@@ -7,7 +7,7 @@
 <%@ page import="com.mem.model.*"%>
 
 <%
-	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");	
+	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
 %>
 
 <!DOCTYPE html>
@@ -80,7 +80,7 @@
 
 
 
-<body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');">>
+<body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');">
 
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
@@ -96,6 +96,7 @@
 	
 	<%-- 小鈴鐺 table 開始 --%>
 	<table id="fi_cont" style="border:0;display:none;">
+	${front_informVOs.size()}
 		<c:forEach var="front_informVO" items="${front_informVOs}">
 			<tr name="${(front_informVO.read_sts == 0) ? 'unread':'read'}" >
 				<c:choose>
@@ -302,6 +303,25 @@
 	<%-- script 開始 --%>
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript">
+		<%-- 取得通知訊息 --%>	
+		$(document).ready(function() {
+			getInform();
+			
+			function getInform(){
+				$.ajax({
+					 url:'<%=request.getContextPath() %>/front_inform/fi.do',
+					 method:"POST",
+					 dataType:"text",
+					 data:{
+						 action: 'getMyInform',
+					 },
+					 success:function(res){ },
+					 error:function(err){},	
+				});
+			}
+		});
+
+		
 	
 		<%-- 聊天室  webSocket --%>
 		var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
@@ -509,7 +529,7 @@
 		}
 		function popFrontInform(){
 			// getMyInform 
-			$.ajax({
+			<%--$.ajax({
 				 url:'<%=request.getContextPath() %>/front_inform/fi.do',
 				 method:"POST",
 				 dataType:"text",
@@ -519,7 +539,7 @@
 				 success:function(res){ },
 				 error:function(err){},	
 			});
-			
+			--%>
 			let fi_cont = document.getElementById("fi_cont");
 			
 			// 已讀未讀顯示顏色
