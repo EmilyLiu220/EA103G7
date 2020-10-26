@@ -55,6 +55,9 @@ public class NewsService {
 	public List<NewsVO> getAll() {
 		return dao.getAll();
 	}
+	public List<NewsVO> getnewsno(String emp_no) {
+		return dao.getnewsno(emp_no);
+	}
 }
 	
 	

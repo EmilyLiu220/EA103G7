@@ -119,7 +119,7 @@ public class NewsServlet extends HttpServlet {
 
 				String emp_no = req.getParameter("emp_no").trim();
 //				String emp_noReg = "^[(EMP)[0-9]{4}]$";
-				
+
 				if (emp_no == null || emp_no.trim().length() == 0) {
 					errorMsgs.add("emp_no: 請勿空白");
 				}
@@ -157,13 +157,13 @@ public class NewsServlet extends HttpServlet {
 				/*************************** 2.開始修改資料 *****************************************/
 				NewsService newsSvc = new NewsService();
 				newsVO = newsSvc.updateNews(news_no, emp_no, news_cont, news_date);
-			
+
 				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("newsVO", newsVO); // 資料庫update成功後,正確的的newsVO物件,存入req
 				String url = "/back-end/news/listOneNews.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneNews.jsp
 				successView.forward(req, res);
-				
+
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:" + e.getMessage());
@@ -184,7 +184,7 @@ public class NewsServlet extends HttpServlet {
 
 			try {
 
-				String emp_no = req.getParameter("emp_no");
+				String emp_no = req.getParameter("emp_no_news");
 //				String emp_noReg = "^[(EMP)[0-9]{4}]$";
 				if (emp_no == null || emp_no.trim().length() == 0) {
 					errorMsgs.add("emp_no: 請勿空白");
@@ -207,12 +207,12 @@ public class NewsServlet extends HttpServlet {
 				}
 
 //				----------------------
-				
-				//抓取登入員工
+
+				// 抓取登入員工
 //				HttpSession session = req.getSession();
 //				EmpVO empVO = (EmpVO)session.getAttribute("EmpVO");
 //				String emp_no = empVO.getEmp_no();
-				
+
 //				------------------------
 				NewsVO newsVO = new NewsVO();
 				newsVO.setEmp_no(emp_no);
@@ -267,6 +267,29 @@ public class NewsServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("刪除資料失敗:" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/news/listAllnews.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		/******************************************************************/
+		if ("getNewsByEmpno".equals(action)) {
+			try {
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+				HttpSession session = req.getSession();
+				String str = req.getParameter("emp_no");
+
+				/*************************** 2.開始查詢資料 *****************************************/
+//				AdService adSvc = new AdService();
+//				List<AdVO> list = adSvc.getadno(str);
+
+				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+				session.setAttribute("str", str);
+				String url = "/back-end/news/listEmpNonews.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {
+				e.printStackTrace();
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/news/select_ad.jsp");
 				failureView.forward(req, res);
 			}
 		}

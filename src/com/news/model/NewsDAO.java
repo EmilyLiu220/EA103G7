@@ -30,7 +30,7 @@ public class NewsDAO implements NewsDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT NEWS_NO ,EMP_NO ,NEWS_CONT ,to_char(NEWS_DATE,'yyyy-mm-dd') NEWS_DATE FROM news where NEWS_NO =?";
 	private static final String DELETE = "DELETE FROM NEWS where NEWS_NO = ?";
 	private static final String UPDATE = "UPDATE NEWS SET EMP_NO=? ,NEWS_CONT=? ,NEWS_DATE=? WHERE NEWS_NO=?";
-
+	private static final String GET_NEWS_STMT = "SELECT * FROM news where emp_NO =?order by NEWS_NO";
 	@Override
 	public void insert(NewsVO newsVO) {
 
@@ -231,4 +231,55 @@ public class NewsDAO implements NewsDAO_interface {
 		return list;
 	}
 
+	@Override
+	public List<NewsVO> getnewsno(String emp_no) {
+		List<NewsVO> list = new ArrayList<NewsVO>();
+
+		NewsVO newsVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_NEWS_STMT);
+			pstmt.setString(1, emp_no);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				newsVO = new NewsVO();
+				newsVO.setNews_no(rs.getString("news_no"));
+				newsVO.setEmp_no(rs.getString("emp_no"));
+				newsVO.setNews_cont(rs.getString("news_cont"));
+				newsVO.setNews_date(rs.getDate("news_date"));
+				list.add(newsVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 }
