@@ -17,45 +17,25 @@
 
 <title>front_home.jsp</title>
 
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
 
-<link
-	href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap"
-	rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="<%=request.getContextPath()%>/images/pot.png">
 
-<link rel="icon" type="image/png" sizes="32x32"
-	href="<%=request.getContextPath()%>/images/pot.png">
-
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/open-iconic-bootstrap.min.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/animate.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/owl.carousel.min.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/owl.theme.default.min.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/magnific-popup.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/aos.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/ionicons.min.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/bootstrap-datepicker.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/jquery.timepicker.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/flaticon.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/icomoon.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/style.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/front-end/css/fiNmsg.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/open-iconic-bootstrap.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/animate.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/owl.carousel.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/magnific-popup.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/aos.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/ionicons.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/jquery.timepicker.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/flaticon.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/icomoon.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/fiNmsg.css">
 
 <style>
 .unshow {
@@ -66,7 +46,7 @@
 </head>
 
 <body>
-
+	<%-- 小鈴鐺 table 開始 --%>
 	<table id="fi_cont" style="border: 0; display: none;">
 		<c:forEach var="front_informVO" items="${front_informVOs}">
 			<tr name="${(front_informVO.read_sts == 0) ? 'unread':'read'}">
@@ -106,7 +86,7 @@
 			</tr>
 		</c:forEach>
 	</table>
-
+	<%-- 小鈴鐺 table 結束 --%>
 
 
 	<%-- 客服聊天室開始 --%>
@@ -234,7 +214,8 @@
 		</div>
 	</nav>
 	<!-- END nav -->
-
+	
+	<%-- 以下為輪播的地方 --%>
 	<section class="home-slider owl-carousel js-fullheight">
 		<div class="slider-item js-fullheight"
 			style="background-image: url(<%=request.getContextPath()%>/front-end/images/carousel_1.jpg);">
@@ -594,7 +575,7 @@
 		</div>
 	</footer>
 
-	<!-- loader -->
+	<%-- loader ( 網頁尚在 loading 中時會出現的一個小圈圈 ) 開始 --%>
 	<div id="ftco-loader" class="show fullscreen">
 		<svg class="circular" width="48px" height="48px">
             <circle class="path-bg" cx="24" cy="24" r="22" fill="none"
@@ -604,7 +585,7 @@
 	</div>
 	<%-- loader 結束 --%>
 	
-		<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 開始 --%>
+	<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 開始 --%>
 	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -626,113 +607,56 @@
 			</div>
 		</div>
 	</div>
-		<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 結束 --%>
+	<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 結束 --%>
 </body>
 <%-- script 開始 --%>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
-<%-- 取得通知訊息 --%>	
-$(document).ready(function() {
-	getInform();
-	
-	function getInform(){
-		$.ajax({
-			 url:'<%=request.getContextPath() %>/front_inform/fi.do',
-			 method:"POST",
-			 dataType:"text",
-			 data:{
-				 action: 'getMyInform',
-			 },
-			 success:function(res){ },
-			 error:function(err){},	
-		});
-	}
-});
-// 		$(function() {
-// 			$("#addClass").click(function() {
-// 				$('#sidebar_secondary').addClass('popup-box-on');
-// 			});
-
-// 			$("#removeClass").click(function() {
-// 				$('#sidebar_secondary').removeClass('popup-box-on');
-// 			});
-// 		})
-	
-	
-	<%-- 聊天室  webSocket --%>
-		var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
-		var host = window.location.host;
-		var path = window.location.pathname;
-		var webCtx = path.substring(0, path.indexOf('/', 1));
-		var endPointURL = "ws://" + host + webCtx + MyPoint;
-	
-		var mem_no = "${memVO2.mem_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
-		var messagesArea = document.getElementById("chat");
+	<%-- 取得通知訊息 --%>	
+	$(document).ready(function() {
+		getInform();
 		
-		var webSocket = new WebSocket(endPointURL);
-			
-		webSocket.onopen = function(event) {
-			console.log("Connect Success!");
-		};
-			
-		webSocket.onmessage = function(event) {
-			var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
-			if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
-				messagesArea.innerHTML = '';
-				var chat_box = document.createElement('div');
-				chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
-				messagesArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
-				// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
-				var messages = JSON.parse(jsonObj.msgJson);
-				for (var i = 0; i < messages.length; i++) {
-					var historyData = JSON.parse(messages[i]);
-					var chat_message_wrapper = document.createElement('div');
-					chat_message_wrapper.classList.add("chat_message_wrapper");
-					
-					var chat_user_avatar = document.createElement('div');
-					chat_user_avatar.classList.add("chat_user_avatar");
-					
-					var img = document.createElement('img');
-					img.classList.add("md-user-image");
-					img.setAttribute("src","https://bootdey.com/img/Content/avatar/avatar1.png");
-					chat_user_avatar.appendChild(img);
-					
-					var ul = document.createElement('ul');
-					ul.classList.add("chat_message");
-					var li = document.createElement('li');
-					var p = document.createElement('p');
-					var span = document.createElement('span');
-					span.classList.add("chat_message_time");
-					var spanReadSts = document.createElement('span');
-					
-					var showMsg = historyData.message;
-					var timestamp = historyData.timestamp;
-					var readSts = historyData.readSts;
-					p.innerHTML = showMsg;
-					var dayTime = timestamp.substring(0,10);
-					p.setAttribute("title",dayTime);
-					var shortTime = timestamp.substring(11,18);
-					shortTime = shortTime.replace(/:$/, '');
-					span.innerHTML = shortTime;
-					// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
-					if( historyData.sender === mem_no ){
-						li.className += 'mem';
-						chat_message_wrapper.classList.add("chat_message_right");
-						var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
-						spanReadSts.innerHTML = readStsText;
-						span.appendChild(spanReadSts);
-					}else{
-						li.className += 'emp';
-					}
-					p.appendChild(span);
-					li.appendChild(p);
-					ul.appendChild(li);
-					chat_message_wrapper.appendChild(chat_user_avatar);
-					chat_message_wrapper.appendChild(ul);
-					chat_box.appendChild(chat_message_wrapper);
-				}
-				messagesArea.scrollTop = messagesArea.scrollHeight;
-			} else if ("chat" === jsonObj.type) {
+		function getInform(){
+			$.ajax({
+				 url:'<%=request.getContextPath() %>/front_inform/fi.do',
+				 method:"POST",
+				 dataType:"text",
+				 data:{
+					 action: 'getMyInform',
+				 },
+				 success:function(res){ },
+				 error:function(err){},	
+			});
+		}
+	});
+		
+	<%-- 聊天室  webSocket --%>
+	var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
+	var host = window.location.host;
+	var path = window.location.pathname;
+	var webCtx = path.substring(0, path.indexOf('/', 1));
+	var endPointURL = "ws://" + host + webCtx + MyPoint;
+	
+	var mem_no = "${memVO2.mem_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
+	var messagesArea = document.getElementById("chat");
+	
+	var webSocket = new WebSocket(endPointURL);
+		
+	webSocket.onopen = function(event) {
+		console.log("Connect Success!");
+	};
+				
+	webSocket.onmessage = function(event) {
+		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+		if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
+			messagesArea.innerHTML = '';
+			var chat_box = document.createElement('div');
+			chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
+			messagesArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
+			// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
+			var messages = JSON.parse(jsonObj.msgJson);
+			for (var i = 0; i < messages.length; i++) {
+				var historyData = JSON.parse(messages[i]);
 				var chat_message_wrapper = document.createElement('div');
 				chat_message_wrapper.classList.add("chat_message_wrapper");
 				
@@ -751,10 +675,10 @@ $(document).ready(function() {
 				var span = document.createElement('span');
 				span.classList.add("chat_message_time");
 				var spanReadSts = document.createElement('span');
-				
-				var showMsg = jsonObj.message;
-				var timestamp = jsonObj.timestamp;
-				var readSts = jsonObj.readSts;
+						
+				var showMsg = historyData.message;
+				var timestamp = historyData.timestamp;
+				var readSts = historyData.readSts;
 				p.innerHTML = showMsg;
 				var dayTime = timestamp.substring(0,10);
 				p.setAttribute("title",dayTime);
@@ -762,7 +686,7 @@ $(document).ready(function() {
 				shortTime = shortTime.replace(/:$/, '');
 				span.innerHTML = shortTime;
 				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
-				if( jsonObj.sender === mem_no ){
+				if( historyData.sender === mem_no ){
 					li.className += 'mem';
 					chat_message_wrapper.classList.add("chat_message_right");
 					var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
@@ -776,98 +700,130 @@ $(document).ready(function() {
 				ul.appendChild(li);
 				chat_message_wrapper.appendChild(chat_user_avatar);
 				chat_message_wrapper.appendChild(ul);
-				document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
-				messagesArea.scrollTop = messagesArea.scrollHeight;
+				chat_box.appendChild(chat_message_wrapper);
 			}
-		};
+			messagesArea.scrollTop = messagesArea.scrollHeight;
+		} else if ("chat" === jsonObj.type) {
+			var chat_message_wrapper = document.createElement('div');
+			chat_message_wrapper.classList.add("chat_message_wrapper");
 			
-		webSocket.onclose = function(event) {
-			console.log("Disconnected!");
-		};
-		
-		// 發送訊息
-		$("#sendMsg").click(function() {
-			var inputMessage = document.getElementById("submit_message");
-			var message = inputMessage.value.trim();
-
-			if (message === "") {
-				alert("Input a message");
-				inputMessage.focus();
-			} else {
-				var jsonObj = {
-					"type" : "chat",
-					"sender" : mem_no,
-					"receiver" : "emp",
-					"message" : message,
-					"timestamp" : new Date().toLocaleString(),
-					"readSts" : 0
-				};
-				webSocket.send(JSON.stringify(jsonObj));
-				inputMessage.value = "";
-				inputMessage.focus();
+			var chat_user_avatar = document.createElement('div');
+			chat_user_avatar.classList.add("chat_user_avatar");
+			
+			var img = document.createElement('img');
+			img.classList.add("md-user-image");
+			img.setAttribute("src","https://bootdey.com/img/Content/avatar/avatar1.png");
+			chat_user_avatar.appendChild(img);
+			
+			var ul = document.createElement('ul');
+			ul.classList.add("chat_message");
+			var li = document.createElement('li');
+			var p = document.createElement('p');
+			var span = document.createElement('span');
+			span.classList.add("chat_message_time");
+			var spanReadSts = document.createElement('span');
+			
+			var showMsg = jsonObj.message;
+			var timestamp = jsonObj.timestamp;
+			var readSts = jsonObj.readSts;
+			p.innerHTML = showMsg;
+			var dayTime = timestamp.substring(0,10);
+			p.setAttribute("title",dayTime);
+			var shortTime = timestamp.substring(11,18);
+			shortTime = shortTime.replace(/:$/, '');
+			span.innerHTML = shortTime;
+			// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+			if( jsonObj.sender === mem_no ){
+				li.className += 'mem';
+				chat_message_wrapper.classList.add("chat_message_right");
+				var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
+				spanReadSts.innerHTML = readStsText;
+				span.appendChild(spanReadSts);
+			}else{
+				li.className += 'emp';
 			}
-		});
-		
-		
-		// 開啟聊天室 display
-		$("#addClass").click(function() {
-			$('#sidebar_secondary').addClass('popup-box-on');
-			// 抓出聊天紀錄
-			var jsonObj = { // 這裡要對應原本的 VO 內容
-				"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+			p.appendChild(span);
+			li.appendChild(p);
+			ul.appendChild(li);
+			chat_message_wrapper.appendChild(chat_user_avatar);
+			chat_message_wrapper.appendChild(ul);
+			document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
+			messagesArea.scrollTop = messagesArea.scrollHeight;
+		}
+	};
+				
+	webSocket.onclose = function(event) {
+		console.log("Disconnected!");
+	};
+	
+	// 發送訊息
+	$("#sendMsg").click(function() {
+		var inputMessage = document.getElementById("submit_message");
+		var message = inputMessage.value.trim();
+	
+		if (message === "") {
+			alert("Input a message");
+			inputMessage.focus();
+		} else {
+			var jsonObj = {
+				"type" : "chat",
 				"sender" : mem_no,
 				"receiver" : "emp",
-				"message" : "",
-				"timestamp" : "",
+				"message" : message,
+				"timestamp" : new Date().toLocaleString(),
 				"readSts" : 0
 			};
 			webSocket.send(JSON.stringify(jsonObj));
-		});
-		
-		// 關閉聊天室 
-		$("#removeClass").click(function() {
-			$('#sidebar_secondary').removeClass('popup-box-on');
-		});
-		</script>
+			inputMessage.value = "";
+			inputMessage.focus();
+		}
+	});
+			
+	// 開啟聊天室 display
+	$("#addClass").click(function() {
+		$('#sidebar_secondary').addClass('popup-box-on');
+		// 抓出聊天紀錄
+		var jsonObj = { // 這裡要對應原本的 VO 內容
+			"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+			"sender" : mem_no,
+			"receiver" : "emp",
+			"message" : "",
+			"timestamp" : "",
+			"readSts" : 0
+		};
+		webSocket.send(JSON.stringify(jsonObj));
+	});
+			
+	// 關閉聊天室 
+	$("#removeClass").click(function() {
+		$('#sidebar_secondary').removeClass('popup-box-on');
+	});
+</script>
 
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
 <script>
-<%-- 可在 modal 處自由加入想要擋住的內容 --%>
-var nb = $('nav.navbar-fixed-top');
-$('.modal')
-.on('show.bs.modal', function () {
-    nb.width(nb.width());
-})
-.on('hidden.bs.modal', function () {
-    nb.width(nb.width('auto'));
-});
-
-
-<%-- 小鈴鐺點擊後會產生的動作 --%>
-if(document.getElementsByName("unread").length > 0){
-	document.getElementsByClassName("badge")[0].style.display = "inline-block";
-}else{
-	document.getElementsByClassName("badge")[0].style.display = 'none';
-}
-function popFrontInform(){
-	// getMyInform 
-// 	$.ajax({
-<%-- 		 url:'<%=request.getContextPath()%>/front_inform/fi.do', --%>
-// 		 method:"POST",
-// 		 dataType:"text",
-// 		 data:{
-// 			 action: 'getMyInform',
-// 		 },
-// 		 success:function(res){ },
-// 		 error:function(err){},	
-// 	});
+	<%-- 可在 modal 處自由加入想要擋住的內容 --%>
+	var nb = $('nav.navbar-fixed-top');
+	$('.modal')
+	.on('show.bs.modal', function () {
+	    nb.width(nb.width());
+	})
+	.on('hidden.bs.modal', function () {
+	    nb.width(nb.width('auto'));
+	});
 	
-	let fi_cont = document.getElementById("fi_cont");
-
+	
+	<%-- 小鈴鐺點擊後會產生的動作 --%>
+	if(document.getElementsByName("unread").length > 0){
+		document.getElementsByClassName("badge")[0].style.display = "inline-block";
+	}else{
+		document.getElementsByClassName("badge")[0].style.display = 'none';
+	}
+	function popFrontInform(){
+		let fi_cont = document.getElementById("fi_cont");
+	
 		// 已讀未讀顯示顏色
-
 		let readColor = document.querySelectorAll('[name="	read"]');
 		for (let i = 0; i < readColor.length; i++) {
 			readColor[i].style.backgroundColor = "#fff";
@@ -877,20 +833,20 @@ function popFrontInform(){
 			unreadColor[i].style.backgroundColor = "#e6f9ff";
 			unreadColor[i].setAttribute('name', 'read');
 		}
-
+	
 		// 紅點已讀消失
 		document.getElementsByClassName("badge")[0].style.display = "none";
-
+	
 		// 已讀未讀狀態修改
 		$.ajax({
-			 url:'<%=request.getContextPath()%>/front_inform/fi.do',
-			 method:"POST",
-			 dataType:"text",
-			 data:{
-				 action: 'updateReadSts',
-				 mem_no: mem_no,
-			 },
-			 success:function(res){
+			url:'<%=request.getContextPath()%>/front_inform/fi.do',
+			method:"POST",
+			dataType:"text",
+			data:{
+				action: 'updateReadSts',
+				mem_no: mem_no,
+			},
+			success:function(res){
 				if(res == "error"){
 					fi_cont.style.display = "none";
 					$('#loginModal').modal('show');
@@ -917,8 +873,10 @@ function popFrontInform(){
 				$('#loginModal').modal('show');
 			 },	
 		});
-		
+			
 	};
+	
+	//  須回覆的通知被按下確認鍵
 	function confirm(info_no, res_no){
 		$.ajax({
 			 url:'<%=request.getContextPath()%>/front_inform/fi.do',
@@ -937,6 +895,8 @@ function popFrontInform(){
 		});
 		document.getElementById(info_no+"no").disabled="disabled";
 	};
+	
+	// 須回覆的通知被按下取消鍵
 	function cancel(info_no, res_no){
 		$.ajax({
 			 url:'<%=request.getContextPath()%>/front_inform/fi.do',
@@ -958,7 +918,7 @@ function popFrontInform(){
 </script>
 
 <script>
-<!--判斷現在是登入或登出的狀態 -->
+	<!--判斷現在是登入或登出的狀態 -->
 	var sign = document.getElementById("sign");
 	var login = document.getElementById("login");
 	var mem_name = document.getElementById("mem_name");
@@ -1008,34 +968,23 @@ function popFrontInform(){
 	
 </script>
 
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/popper.min.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.easing.1.3.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.waypoints.min.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.stellar.min.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/owl.carousel.min.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.magnific-popup.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.easing.1.3.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.waypoints.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.stellar.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/owl.carousel.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.magnific-popup.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/aos.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.animateNumber.min.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/bootstrap-datepicker.js"></script>
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.timepicker.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.animateNumber.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/bootstrap-datepicker.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.timepicker.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/scrollax.min.js"></script>
-<script
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/google-map.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/main.js"></script>
 
 <!--為了顯示地址選單用 -->
-<script
-	src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
 <%-- script 結束 --%>
 </html>
