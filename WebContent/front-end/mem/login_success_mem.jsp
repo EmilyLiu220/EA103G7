@@ -19,7 +19,7 @@
 </style>
     
 </head>
-<body>
+<body onload="getInfo()">
 
 	<%@ include file="/front-end/headfinish.jsp"%>
 
@@ -56,6 +56,24 @@
 	</div>
 
 	</div>
+	
+<script>
+
+	//getMyInform 
+	function getInfo() {
+		$.ajax({
+		     url:'<%=request.getContextPath() %>/front_inform/fi.do',
+		     method:"POST",
+		     dataType:"text",
+		     data:{
+		         action: 'getMyInform',
+		     },
+		     success:function(res){ },
+		     error:function(err){},
+		});
+	}
+	
+</script>
 	
 	<jsp:include page="/front-end/front/footer.jsp" />
 	
