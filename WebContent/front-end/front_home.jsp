@@ -36,6 +36,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/icomoon.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/style.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/fiNmsg.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/toastr.min.css">
 
 <style>
 .unshow {
@@ -611,6 +612,7 @@
 </body>
 <%-- script 開始 --%>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="<%=request.getContextPath()%>/front-end/js/toastr.min.js"></script>
 <script type="text/javascript">
 	<%-- 取得通知訊息 --%>	
 	$(document).ready(function() {
@@ -645,9 +647,30 @@
 	webSocket.onopen = function(event) {
 		console.log("Connect Success!");
 	};
-				
+	
+// 	function callToast(){
+// 		// 當有新訊息時，在客服小姐旁邊跳出 toast
+// 		toastr.info("您有新訊息！");
+// 		toastr.options = {
+// 			"positionClass": "toast-bottom-right",
+// 			"newestOnTop": true,
+// 			"closeButton": true,
+// 			"progressBar": true,
+// 			"onclick": null,
+// 			"showDuration": "500",
+// 			"hideDuration": "1000",
+// 			"timeOut": "5000",
+// 			"extendedTimeOut": "1000",
+// 			"showEasing": "swing",
+// 			"hideEasing": "linear",
+// 			"showMethod": "fadeIn",
+// 			"hideMethod": "fadeOut"
+// 		}
+// 	}
+	
 	webSocket.onmessage = function(event) {
 		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+		
 		if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
 			messagesArea.innerHTML = '';
 			var chat_box = document.createElement('div');
@@ -766,7 +789,7 @@
 	
 	// 發送訊息
 	var inputMsg = document.getElementById("submit_message");
-		inputMsg.addEventListener("keyup", function(event) {
+	inputMsg.addEventListener("keyup", function(event) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
 			document.getElementById("sendMsg").click();
