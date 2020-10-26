@@ -795,10 +795,10 @@
 	});
 	
 	// 開啟聊天室 display
+	var memVO_js = '${memVO2}';
 	$("#addClass").click(function() {
-		// 下面這段偶爾會有冒出紅線，但小育測試過...確定可以動OAO
 		// 讓未登入者無法使用客服聊天室
-		if(${memVO2==null}){
+		if(memVO_js==''){
 			$('#loginModal').modal('show');
 		} else {
 			$('#sidebar_secondary').addClass('popup-box-on');
