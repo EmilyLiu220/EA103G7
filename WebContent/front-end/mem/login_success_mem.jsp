@@ -58,7 +58,7 @@
 	</div>
 	
 <script>
-
+	// 放在這邊不會有任何作用，小育已測試過...可以刪掉QQ
 	//getMyInform 
 	function getInfo() {
 		$.ajax({
