@@ -59,7 +59,7 @@ font-weight: bolder;
 <div id="top" class="row">
   <div class="col">
   <span>我的訂單</span>
-  <c:if test="${mealOrderVO.meal_order_sts != 0}">
+  <c:if test="${mealOrderVO.meal_order_sts == 1}">
   <form method="POST" action="<%= request.getContextPath()%>/MealOrderServlet.do">
   <input type="hidden" name="action" value="update"/>
   <input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>

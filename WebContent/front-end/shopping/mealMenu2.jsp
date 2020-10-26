@@ -137,10 +137,17 @@
   cursor:pointer;
     }
  #card-img img{
- 	width:285px;
-	height:191px; 
+ 	width:100%;
+	height:100%; 
 /*   	width:200px; */
 /*   	height:110px; */
+transition: all 0.5s;
+  }
+  figure{
+  width:285px;
+	height:191px; 
+  overflow: hidden;
+  display: inline-block;
   }
   .increaseBtn ,.decreaseBtn,.decreaseBtn2,.increaseBtn2,.increaseRsvbtn,.increaseRsvbtn2,.decreaseRsvbtn,.decreaseRsvbtn2{
  text-align:center;
@@ -182,6 +189,28 @@
  .card-margin{
    margin: 25px auto;  
  }
+ figure figcaption {
+            width: 100%;
+            height: 100%;
+/*             display:inline-block; */
+            /*background-color: yellow;*/
+            text-align:justify;
+            /*line-height: 250px;*/
+            color: #dea554;
+            font-weight:bolder;
+            text-shadow: 2px 2px 2px #333;
+            margin: 0;
+            opacity: 0;
+            transition: all 1s;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        figure:hover figcaption {
+            margin-top: -120px;
+            position: relative;
+            opacity: 1;
+            cursor: pointer;
+        }
  
   </style>
  </head>
@@ -230,7 +259,8 @@
 			     <input type="hidden" name="meal_no"  value="${mealVO.meal_no}">
 			     </c:if>
       </div>
-      <div id="card-img" class="col-8"><img name="meal_img" src="<%= request.getContextPath() %>/meal/meal.showPic?meal_img=${mealVO.meal_no}"/></div>
+      <div id="card-img" class="col-8"><figure><img name="meal_img" src="<%= request.getContextPath() %>/meal/meal.showPic?meal_img=${mealVO.meal_no}"/>
+      <figcaption>碳水化合物:XX克<br>熱量:XX克<br>脂肪:XX克<br>脂肪:XX克</figcaption></figure></div>
       </div>
       </div>
         </c:forEach>

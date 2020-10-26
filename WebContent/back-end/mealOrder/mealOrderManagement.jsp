@@ -6,13 +6,6 @@
 <%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.meal_order.model.*"%>
 
-<% 
-	MealOrderService mealOrderSrv = new MealOrderService();
-	List<MealOrderVO> list = mealOrderSrv.getAll();
-	pageContext.setAttribute("list", list);
-
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +40,45 @@
 color:blue;
 text-decoration: underline;
 }
+.icon{
+margin: 10px auto;
+}
+figure{
+width:260px;
+height: 260px;
+margin: auto 50px;
+display: inline-block;
+ overflow: hidden;
+
+}
+.icon img {
+           max-width: 100%;
+            max-height: 100%;
+            transition: all 0.5s;
+
+        }
+figure figcaption {
+            width: 100%;
+            height: 100%;
+/*             display:inline-block; */
+            /*background-color: yellow;*/
+            text-align: center;
+            /*line-height: 250px;*/
+            color: #dea554;
+            font-weight:bolder;
+            text-shadow: 2px 2px 2px #333;
+            margin: 0;
+            opacity: 0;
+            transition: all 1s;
+            font-size: 22px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        figure:hover figcaption {
+            margin-top: -120px;
+            position: relative;
+            opacity: 1;
+            cursor: pointer;
+        }
 </style>
 
 </head>
@@ -176,7 +208,7 @@ text-decoration: underline;
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查看所有訂餐訂單</h3>
+							<h3 style="margin-bottom:0;">訂餐訂單管理</h3>
 						</td>
 					</tr>
 				</table>
@@ -218,62 +250,24 @@ text-decoration: underline;
 				取餐時間：<input type="text" name="pickup_time" class="f_date1"/>
 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td>
 				<td>
-				<input type="submit" value="查詢結果"/>
+				<input type="submit" value="快速查詢"/>
 				<input type="hidden" name="action" value="queryAll"/></td>
 				</tr>
 				
 				</table>
 				</form>
-				<br>
-				<%-- 錯誤表列 --%>
-				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
-						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
-
-				<table class="table table-hover" style="width: 100%; font-size: 90%;">
-					<thead style="text-align: center;">
-						<tr>
-							<th style="width: 10%;">訂餐編號</th>
-							<th style="width: 10%;">員工編號</th>
-							<th style="width: 10%;">會員編號</th>
-							<th style="width: 15%;">訂餐時間</th>
-							<th style="width: 15%;">預計取餐時間</th>
-							<th style="width: 10%;">訂單金額</th>
-							<th style="width: 10%;">通知狀態</th>
-							<th style="width: 10%;">付款狀態</th>
-							<th style="width: 10%;">訂單狀態</th>
-						</tr>
-					</thead>
-					<%@ include file="page1.file"%>
-					<tbody>
-					<c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-						<tr>
-							<td style="text-align: center;"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></td>
-							<td style="text-align: center;">${mealOrderVO.emp_no}</td>
-							<td style="text-align: center;">${mealOrderVO.mem_no!=null ? mealOrderVO.mem_no :'非會員顧客'}</td>
-							<td style="text-align: center;">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</td>
-							<td style="text-align: center;">${mealOrderVO.pickup_time !=null ? mealOrderSrv2.dateFormat(mealOrderVO.pickup_time) : '現場用餐'}</td>
-							<td style="text-align: center;">${mealOrderVO.amount}</td>
-							<td style="text-align: center;">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</td>
-							<td style="text-align: center;">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</td>
-							<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 0}"><font color="red">已取消</font></c:if>
-   														 	<c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if>
-   														 	<c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
-    														<c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
-    														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
-				<%@ include file="page2.file"%>
+				
+				<br><br><br>
+				
+				<div class="icon">
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/listAllOrder2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/2.png"/></a><figcaption>查看所有訂餐</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/asignOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/3.png"/></a><figcaption>派工管理</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/prepareOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/7.png"/></a><figcaption>出餐管理</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/prepareOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/9.png"/></a><figcaption>待完成訂單</figcaption></figure>
+				</div>
 			</p>
-		</div>
-	</div>
+		</div> <!-- content -->
+	</div> <!-- wrapper -->
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

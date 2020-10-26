@@ -39,8 +39,8 @@ public class MealOrderService {
 		MealOrderVO mealOrderVO = new MealOrderVO();
 		mealOrderVO.setMeal_order_no(mealOrderNo);
 		mealOrderVO.setMeal_order_sts(mealOrderSts);
-		mealOrderVO.setNoti_sts(mealOrderSts);
-		mealOrderVO.setPay_sts(mealOrderSts);
+		mealOrderVO.setNoti_sts(notiSts);
+		mealOrderVO.setPay_sts(paySts);
 		dao.update(mealOrderVO);
 		return mealOrderVO;
 	}

@@ -121,7 +121,7 @@ public class MealOrderServlet extends HttpServlet {
 			Gson gson = new Gson();
 			Map<String, Object> pushMsg = new HashMap<>();
 			if (pickupTime.getMonth() == new Date().getMonth() && pickupTime.getDate() == new Date().getDate()) {
-				pushMsg.put("reload","reload");
+				pushMsg.put("reload","asignOrder");
 			}
 			pushMsg.put("action", "insert");
 			pushMsg.put("mealOrderVO", mealOrderVO);
@@ -200,8 +200,8 @@ public class MealOrderServlet extends HttpServlet {
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
-			if (mealOrderVO.getMeal_order_sts() >= 2) {
-				errormsgs.put("orderUpdate", "已派工，無法取消訂單!");
+			if (mealOrderVO.getMeal_order_sts() >= 2 || mealOrderVO.getMeal_order_sts() == 0) {
+				errormsgs.put("orderUpdate", "餐點已派工或已取消，無法取消訂單!");
 				req.setAttribute("errormsgs", errormsgs);
 				req.setAttribute("mealOrderVO", mealOrderVO);
 				String url = "front-end/shopping/mealOrderOne.jsp";
@@ -226,8 +226,9 @@ public class MealOrderServlet extends HttpServlet {
 			Integer mealOrderSts = new Integer(req.getParameter("meal_order_sts"));
 			Integer notiSts = new Integer(req.getParameter("noti_sts"));
 			Integer paySts = new Integer(req.getParameter("pay_sts"));
+			
+			
 			MealOrderService mealOrderSrv = new MealOrderService();
-
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
@@ -245,6 +246,13 @@ public class MealOrderServlet extends HttpServlet {
 			if (whichPage != null) {
 				returnPath = reqURL + "?whichPage=" + whichPage;
 			}
+			
+			if ((reqURL == null || req.getParameter("queryString") != null)
+					&& !(req.getParameter("queryString").equals("null"))) {
+				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+						+ req.getParameter("queryString");
+			}
+			
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = returnPath;
@@ -262,7 +270,13 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
-
+			
+			MealOrderWebSocket webSocket = new MealOrderWebSocket();
+			Gson gson = new Gson();
+			Map<String, Object> pushMsg = new HashMap<>();
+			pushMsg.put("reload", "orderDone");
+			String jsonMap = gson.toJson(pushMsg);
+			webSocket.onMessage(jsonMap);
 		}
 
 		if ("search".equals(action)) {

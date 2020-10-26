@@ -422,8 +422,6 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			String begin = ft.format(today);
 			String end = ft.format(now);
-//			System.out.println(begin);
-//			System.out.println(end);
 			String sql = "SELECT * FROM MEAL_ORDER WHERE PICKUP_TIME >= TO_DATE('"+ begin +"','YYYY-MM-DD hh24:mi') AND PICKUP_TIME <= TO_DATE('"+ end +"','YYYY-MM-DD hh24:mi') ORDER BY PICKUP_TIME";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
