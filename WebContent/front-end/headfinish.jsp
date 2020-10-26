@@ -81,22 +81,8 @@
 
 
 <body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');">
-
-	<%-- 錯誤表列 --%>
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請修正以下錯誤:</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-				<li style="color: red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
-	
-	
-	
 	<%-- 小鈴鐺 table 開始 --%>
 	<table id="fi_cont" style="border:0;display:none;">
-	${front_informVOs.size()}
 		<c:forEach var="front_informVO" items="${front_informVOs}">
 			<tr name="${(front_informVO.read_sts == 0) ? 'unread':'read'}" >
 				<c:choose>
@@ -543,7 +529,6 @@
 			let fi_cont = document.getElementById("fi_cont");
 			
 			// 已讀未讀顯示顏色
-			
 			let readColor = document.querySelectorAll('[name="	read"]');
 			for(let i=0; i<readColor.length ;i++){
 				readColor[i].style.backgroundColor = "#fff"; 

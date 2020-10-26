@@ -67,16 +67,6 @@
 
 <body>
 
-	<%-- 錯誤表列 --%>
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請修正以下錯誤:</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-				<li style="color: red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
-
 	<table id="fi_cont" style="border: 0; display: none;">
 		<c:forEach var="front_informVO" items="${front_informVOs}">
 			<tr name="${(front_informVO.read_sts == 0) ? 'unread':'read'}">
@@ -138,80 +128,7 @@
 							</button>
 						</div>
 					</div>
-					<div id="chat"
-						class="chat_box_wrapper chat_box_small chat_box_active"
-						style="opacity: 1; display: block; transform: translateX(0px); background: #d6fdff;">
-						<div class="chat_box touchscroll chat_box_colors_a">
-							<div class="chat_message_wrapper">
-								<div class="chat_user_avatar">
-									<img alt="Gurdeep Osahan (Web Designer)"
-										title="Gurdeep Osahan (Web Designer)"
-										src="https://bootdey.com/img/Content/avatar/avatar1.png"
-										class="md-user-image">
-								</div>
-								<ul class="chat_message">
-									<li>
-										<p>您好，請問有什麼能為您服務的嗎？</p>
-									</li>
-								</ul>
-							</div>
-							<div class="chat_message_wrapper chat_message_right">
-								<div class="chat_user_avatar">
-									<img alt="Gurdeep Osahan (Web Designer)"
-										title="Gurdeep Osahan (Web Designer)"
-										src="https://bootdey.com/img/Content/avatar/avatar1.png"
-										class="md-user-image">
-								</div>
-								<ul class="chat_message">
-									<li>
-										<p>
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-											Autem delectus distinctio dolor earum est hic id impedit
-											ipsum minima mollitia natus nulla perspiciatis quae quasi,
-											quis recusandae, saepe, sunt totam. <span
-												class="chat_message_time">13:34</span>
-										</p>
-									</li>
-								</ul>
-							</div>
-							<div class="chat_message_wrapper">
-								<div class="chat_user_avatar">
-									<img alt="Gurdeep Osahan (Web Designer)"
-										title="Gurdeep Osahan (Web Designer)"
-										src="https://bootdey.com/img/Content/avatar/avatar1.png"
-										class="md-user-image">
-								</div>
-								<ul class="chat_message">
-									<li>
-										<p>
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-											Atque ea mollitia pariatur porro quae sed sequi sint tenetur
-											ut veritatis.https://www.facebook.com/iamgurdeeposahan <span
-												class="chat_message_time">23 Jun 1:10am</span>
-										</p>
-									</li>
-								</ul>
-							</div>
-							<div class="chat_message_wrapper chat_message_right">
-								<div class="chat_user_avatar">
-									<img alt="Gurdeep Osahan (Web Designer)"
-										title="Gurdeep Osahan (Web Designer)"
-										src="https://bootdey.com/img/Content/avatar/avatar1.png"
-										class="md-user-image">
-								</div>
-								<ul class="chat_message">
-									<li>
-										<p>Lorem ipsum dolor sit amet, consectetur.</p>
-									</li>
-									<li>
-										<p>
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit. <span
-												class="chat_message_time">Friday 13:34</span>
-										</p>
-									</li>
-								</ul>
-							</div>
-						</div>
+					<div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px); background: #d6fdff;">
 					</div>
 					<div class="chat_submit_box">
 						<div class="uk-input-group">
@@ -1001,7 +918,7 @@ function popFrontInform(){
 			 },	
 		});
 		
-	}		
+	};
 	function confirm(info_no, res_no){
 		$.ajax({
 			 url:'<%=request.getContextPath()%>/front_inform/fi.do',
@@ -1019,7 +936,7 @@ function popFrontInform(){
 			 error:function(err){console.log(err)},	
 		});
 		document.getElementById(info_no+"no").disabled="disabled";
-	}
+	};
 	function cancel(info_no, res_no){
 		$.ajax({
 			 url:'<%=request.getContextPath()%>/front_inform/fi.do',
@@ -1037,7 +954,7 @@ function popFrontInform(){
 			 error:function(err){console.log(err)},	
 		});			
 		document.getElementById(info_no+"yes").disabled="disabled";
-	}
+	};
 </script>
 
 <script>
