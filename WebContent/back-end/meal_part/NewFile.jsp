@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.meal_part.model.*"%>
 <%@ page import="com.food.model.*"%>
 <%@ page import="com.meal.model.*"%>
@@ -13,9 +14,6 @@
 <jsp:useBean id="meal_partSvt" scope="page" class="com.meal_part.model.Meal_partService" />
 <jsp:useBean id="foodSvt" scope="page" class="com.food.model.FoodService" />
 
-<c:forEach var="mealVO" items="${list}" >
-	${foodSvt.get_cal_by_VO(meal_partSvt.getNut(mealVO.meal_no))}
-</c:forEach> 
               
 <!DOCTYPE html>
 <html>
@@ -24,5 +22,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:forEach var="mealVO" items="${list}" >
+	<p>${meal_partSvt.getNut(mealVO.meal_no).get("fat")}</p>
+</c:forEach> 
+
 </body>
 </html>

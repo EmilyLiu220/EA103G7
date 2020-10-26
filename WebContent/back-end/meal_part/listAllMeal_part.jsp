@@ -260,7 +260,7 @@
 		            		<tbody>                  							
 	                  			<c:forEach var="meal_partVO" items="${list}" >			
 	                    			<tr class="fd_tr text-right">                    	
-										<td style="width: 7%"><input type="checkbox" name="fd_no" value=${foodVO.fd_no} /></td>
+										<td style="width: 7%"><input type="checkbox" name="fdMeal_no" value=${meal_partVO.meal_no}+${meal_partVO.fd_no} /></td>
 										<td class="meal_part_td_mealno" style="width: 20%">${mealSvt.searchByNo(meal_partVO.meal_no).meal_name}</td>
 										<td class="meal_part_td_fdno" style="width: 20%">${foodSvt.getOneFood(meal_partVO.fd_no).fd_name}</td>
 										<td class="meal_part_td_fdgw" style="width: 19%">${meal_partVO.fd_gw}</td>
@@ -355,8 +355,12 @@
 		});
 
 		$("#dataTable").on("click",".fd_btn_delete",function() {
-			var fdno=$(this).parents(".fd_tr").children(".fd_td_fdno").text();
-			$(this).parents(".fd_tr").children(".fd_td_fdno").append("<input type='hidden' name='fd_no' value='"+fdno+"'>");
+// 			$(this).parents(".fd_tr").find("input[name='fdMeal_no']").attr("checked","checked");
+
+			var meal_no=$(this).parents(".fd_tr").children(".meal_part_td_mealno").text();
+			var fd_no=$(this).parents(".fd_tr").children(".meal_part_td_fdno").text();
+			$(this).after("<input type='hidden' name='fdMeal_no' value="+meal_no+"+"+fd_no+">");
+			
 			$("#tabledata").submit();
 			//按下delete按鈕後，取得該食材的食材編號，在食材編號的欄位中增加一個tpye="hidden",value為食材的編號的input標籤，submit
 		});

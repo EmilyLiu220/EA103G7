@@ -18,11 +18,9 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT FD_GW FROM MEAL_PART WHERE MEAL_NO=? AND FD_NO=?";
 	private static final String UPDATE = "UPDATE MEAL_PART SET FD_GW=? WHERE MEAL_NO=? AND FD_NO=?";
 	private static final String GET_NUT_ByMealno_STMT =
-			"select n.nut_name,sum(mp.fd_gw*nv.nut_per100/100) as nuts from meal_part mp " +
-			"join nut_value nv on nv.fd_no=mp.fd_no " +
-			"join nut n on n.nut_no=nv.nut_no " +
-			"where mp.meal_no=? " +
-			"group by n.nut_name";
+			"select sum(fd_gw*cal)/100 cal, sum(fd_gw*prot)/100 prot,sum(fd_gw*carb)/100 carb,sum(fd_gw*fat)/100 fat from food f " + 
+			"join meal_part m on m.fd_no=f.fd_no " + 
+			"where m.meal_no=?";
 	
 	@Override
 	public void insert(Meal_partVO meal_partVO) {
@@ -266,22 +264,18 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 		ResultSet rs = null;
 		Map<String,Double> map=null;
 		try {
-			map=new HashMap<String,Double>();
-			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
+			map=new HashMap<String,Double>();
 			pstmt = con.prepareStatement(GET_NUT_ByMealno_STMT);
-			
-			pstmt.setString(1, meal_no);		
-			rs = pstmt.executeQuery();		
-			while(rs.next()) {
-				map.put(rs.getString(1), rs.getDouble(2));
-			}
-			
+			pstmt.setString(1, meal_no);
+			rs = pstmt.executeQuery();
+			rs.next(); 
+			map.put("cal", rs.getDouble(1));
+			map.put("prot", rs.getDouble(2));
+			map.put("carb", rs.getDouble(3));
+			map.put("fat", rs.getDouble(4));
+			System.out.println(map.get("fat"));
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -309,7 +303,7 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 			}
 		}
 		return map;
-	}	
+	}
 
 	public static void main(String[] args) {
 
@@ -351,13 +345,12 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 		
 		//查詢
 		Map<String,Double> map=dao.get_NUT_ByMealno("MEAL0001");
-		Set set=map.keySet();
-		Iterator it=set.iterator();
-		while(it.hasNext()) {		
-			String key=(String)it.next();
-			Double value=map.get(key);
-			System.out.println(key+":"+value+"g");
-		}
+		System.out.println();
+		System.out.println();
+		System.out.println(map.get("cal"));
+		System.out.println(map.get("prot"));
+		System.out.println(map.get("carb"));
+		System.out.println(map.get("fat"));
 	}
 
 	@Override

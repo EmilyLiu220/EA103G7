@@ -163,13 +163,15 @@ public class Meal_partServlet extends HttpServlet {
 
 			try {
 				/*************************** 1.接收請求參數 ***************************************/
-				String[] meal_no=req.getParameterValues("meal_no");
-				String[] fd_no=req.getParameterValues("fd_no");
+				String[] fdMeal_no=req.getParameterValues("fdMeal_no");
 				
 				/*************************** 2.開始刪除資料 ***************************************/
 				Meal_partService meal_partSvc = new Meal_partService();
-				for(int i=0;i<fd_no.length;i++) {
-					meal_partSvc.deleteMeal_part(meal_no[i], fd_no[i]);
+				for(int i=0;i<fdMeal_no.length;i++) {
+					String meal_no=fdMeal_no[i].substring(0,fdMeal_no[i].lastIndexOf("+"));
+					String fd_no=fdMeal_no[i].substring(fdMeal_no[i].lastIndexOf("+")+1);					meal_partSvc.deleteMeal_part(meal_no, fd_no);
+					System.out.println("meal_no="+meal_no);
+					System.out.println("fd_no="+fd_no);
 				}	
 
 				/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/

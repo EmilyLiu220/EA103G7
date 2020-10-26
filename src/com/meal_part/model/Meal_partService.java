@@ -48,11 +48,16 @@ public class Meal_partService {
 	}	
 	
 	public Map<String,Double> getNut(String meal_no) {
+		System.out.println(meal_no);
+		System.out.println(123);
+		System.out.println(dao.get_NUT_ByMealno(meal_no).get("cal"));
+		System.out.println(dao.get_NUT_ByMealno(meal_no).get("prot"));
+		System.out.println(dao.get_NUT_ByMealno(meal_no).get("carb"));
+		System.out.println(dao.get_NUT_ByMealno(meal_no).get("fat"));
 		return dao.get_NUT_ByMealno(meal_no);
 	}	
 	
 //	public Double getCal(String meal_no) {
 //		return dao.get_cal_by_mealno(meal_no);
 //	}
-	
 }
