@@ -343,7 +343,11 @@
 						
 				var img = document.createElement('img');
 				img.classList.add("md-user-image");
-				img.setAttribute("src","https://bootdey.com/img/Content/avatar/avatar1.png");
+				if( historyData.sender === mem_no ){
+					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
+				}else{
+					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
+				}
 				chat_user_avatar.appendChild(img);
 				
 				var ul = document.createElement('ul');
@@ -390,7 +394,11 @@
 			
 			var img = document.createElement('img');
 			img.classList.add("md-user-image");
-			img.setAttribute("src","https://bootdey.com/img/Content/avatar/avatar1.png");
+			if( jsonObj.sender === mem_no ){
+				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
+			}else{
+				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
+			}
 			chat_user_avatar.appendChild(img);
 			
 			var ul = document.createElement('ul');
@@ -435,6 +443,13 @@
 	};
 			
 	// 發送訊息
+	var inputMsg = document.getElementById("submit_message");
+		inputMsg.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("sendMsg").click();
+		}
+	});
 	$("#sendMsg").click(function() {
 		var inputMessage = document.getElementById("submit_message");
 		var message = inputMessage.value.trim();

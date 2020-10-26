@@ -7,6 +7,10 @@ img {
 	max-width: 100%;
 }
 
+.chatImg{
+	border-radius: 50%;
+}
+
 .inbox_people {
 	background: #f8f8f8 none repeat scroll 0 0;
 	float: left;
@@ -89,6 +93,7 @@ img {
 .chat_img {
 	float: left;
 	width: 11%;
+	border-radius: 50%;
 }
 
 .chat_ib {

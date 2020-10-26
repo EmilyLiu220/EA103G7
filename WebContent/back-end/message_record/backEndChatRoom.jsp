@@ -202,6 +202,7 @@
 		var path = window.location.pathname;
 		var webCtx = path.substring(0, path.indexOf('/', 1));
 		var endPointURL = "ws://" + host + webCtx + MyPoint;
+		var chatPic = "<%=request.getContextPath()%>/back-end/images/kou.jpg";
 	
 		var messagesArea = document.getElementsByClassName("msg_history")[0];
 		var emp_no = "${empVO2.emp_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
@@ -230,8 +231,9 @@
 							var incoming_msg_img = document.createElement('div');
 							incoming_msg_img.classList.add("incoming_msg_img");
 							var img = document.createElement('img');
-							img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
-							img.setAttribute("alt","sunil");
+							img.setAttribute("src",chatPic);
+							img.setAttribute("class","chatImg");
+							//img.setAttribute("alt","sunil");
 							incoming_msg_img.appendChild(img);
 							
 							var received_msg = document.createElement('div');
@@ -298,8 +300,9 @@
 						var incoming_msg_img = document.createElement('div');
 						incoming_msg_img.classList.add("incoming_msg_img");
 						var img = document.createElement('img');
-						img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
-						img.setAttribute("alt","sunil");
+						img.setAttribute("src",chatPic);
+						img.setAttribute("class","chatImg");
+						//img.setAttribute("alt","sunil");
 						incoming_msg_img.appendChild(img);
 						
 						var received_msg = document.createElement('div');
@@ -372,8 +375,8 @@
 				chat_people.classList.add("chat_people");
 				var chat_img = document.createElement('img');
 				chat_img.classList.add("chat_img");
-				chat_img.setAttribute("src","https://ptetutorials.com/images/user-profile.png");
-				chat_img.setAttribute("alt","sunil");
+				chat_img.setAttribute("src",chatPic);
+				//chat_img.setAttribute("alt","sunil");
 				var chat_ib = document.createElement('div');
 				chat_ib.classList.add("chat_ib");
 				var h5 = document.createElement('h5');
@@ -412,6 +415,13 @@
 			});
 			
 			// 發送訊息
+			var inputMsg = document.getElementById("submit_message");
+			inputMsg.addEventListener("keyup", function(event) {
+				if (event.keyCode === 13) {
+					event.preventDefault();
+					document.getElementById("sendMsg").click();
+				}
+			});
 			$("#sendMsg").click(function() {
 				var inputMessage = document.getElementById("submit_message");
 				var message = inputMessage.value.trim();
