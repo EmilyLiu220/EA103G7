@@ -162,7 +162,7 @@ public class FoodServlet extends HttpServlet {
 					
 					Integer fd_isdel=1;//修改不會給他設定是否刪除		
 
-					String fd_stkReg = "^[1-9][0-9]{0,4}$"; //只給輸入五位數
+					String fd_stkReg = "^[0-9]{0,5}$"; //只給輸入五位數
 					if (fd_stk_str[i] == null || fd_stk_str[i].trim().length() == 0) {
 						errorMsgs.add("順序"+(i+1)+"新增失敗，庫存數量請勿空白");
 					} else if (!fd_stk_str[i].trim().matches(fd_stkReg)) { 
@@ -179,7 +179,7 @@ public class FoodServlet extends HttpServlet {
 						stk_ll = new Integer(stk_ll_str[i].trim()); //已經檢查了，直接轉型
 					}
 					
-					String calReg = "^[0-9]{5}[.]?[0-9]?$"; //只給輸入五位數+小數點+小數點後一位數
+					String calReg = "^[0-9]{1,5}[.]?[0-9]?$"; //只給輸入五位數+小數點+小數點後一位數
 					if (cal_str[i] == null || cal_str[i].trim().length() == 0) {
 						errorMsgs.add("順序"+(i+1)+"新增失敗，熱量請勿空白");
 					} else if (!cal_str[i].trim().matches(calReg)) { 
@@ -203,7 +203,6 @@ public class FoodServlet extends HttpServlet {
 					} else {
 						carb = new Double(carb_str[i].trim()); //已經檢查了，直接轉型
 					}
-
 					if (fat_str[i] == null || fat_str[i].trim().length() == 0) {
 						errorMsgs.add("順序"+(i+1)+"新增失敗，脂肪請勿空白");
 					} else if (!fat_str[i].trim().matches(calReg)) { 

@@ -51,4 +51,8 @@ public class Meal_partService {
 		return dao.get_NUT_ByMealno(meal_no);
 	}	
 	
+//	public Double getCal(String meal_no) {
+//		return dao.get_cal_by_mealno(meal_no);
+//	}
+	
 }

@@ -57,4 +57,8 @@ public class FoodService {
 	public List<FoodVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public Double get_cal_by_VO(FoodVO foodVO) {
+		return foodVO.getCal();
+	}
 }

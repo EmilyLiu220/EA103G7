@@ -3,6 +3,7 @@ package com.meal_part.model;
 import java.util.*;
 
 import javax.naming.Context;
+import com.food.model.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -20,11 +21,9 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT FD_GW FROM MEAL_PART WHERE MEAL_NO=? AND FD_NO=?";
 	private static final String UPDATE = "UPDATE MEAL_PART SET FD_GW=? WHERE MEAL_NO=? AND FD_NO=?";
 	private static final String GET_NUT_ByMealno_STMT =
-			"select n.nut_name,sum(mp.fd_gw*nv.nut_per100/100) as nuts from meal_part mp " +
-			"join nut_value nv on nv.fd_no=mp.fd_no " +
-			"join nut n on n.nut_no=nv.nut_no " +
-			"where mp.meal_no=? " +
-			"group by n.nut_name";
+			"select sum(fd_gw*cal)/100, sum(fd_gw*prot)/100,sum(fd_gw*carb)/100,sum(fd_gw*fat)/100 from food f" +
+			"join meal_part m on m.fd_no=f.fd_no" +
+			"where m.meal_no=?";
 	
 	private static DataSource ds = null;
 	static {
@@ -96,6 +95,13 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 						pstmt.close();
 					} catch (SQLException se) {
 						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
 					}
 				}
 			}
@@ -322,4 +328,189 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 		}
 		return map;
 	}
+	
+	
+	public FoodVO get_nut_by_mealno(String meal_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		FoodVO foodVO=null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_NUT_ByMealno_STMT);
+			
+			pstmt.setString(1, meal_no);		
+			rs = pstmt.executeQuery();	
+			rs.next();	
+			foodVO=new FoodVO();
+			foodVO.setCal(rs.getDouble("cal"));
+			foodVO.setCal(rs.getDouble("prot"));
+			foodVO.setCal(rs.getDouble("carb"));
+			foodVO.setCal(rs.getDouble("fat"));
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return foodVO;
+	}
+	
+//	public Map<String,Double> get_NUT_ByMealno(String meal_no) {
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		Map<String,Double> map=null;
+//		try {
+//			map=new HashMap<String,Double>();
+//			con = ds.getConnection();
+//			pstmt = con.prepareStatement(GET_NUT_ByMealno_STMT);
+//			
+//			pstmt.setString(1, meal_no);		
+//			rs = pstmt.executeQuery();		
+//			while(rs.next()) {
+//				map.put(rs.getString(1), rs.getDouble(2));
+//			}
+//			
+//			// Handle any driver errors
+//		} catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//		return map;
+//	}
+//	
+//	public Map<String,Double> get_NUT_ByMealno(String meal_no) {
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		Map<String,Double> map=null;
+//		try {
+//			map=new HashMap<String,Double>();
+//			con = ds.getConnection();
+//			pstmt = con.prepareStatement(GET_NUT_ByMealno_STMT);
+//			
+//			pstmt.setString(1, meal_no);		
+//			rs = pstmt.executeQuery();		
+//			while(rs.next()) {
+//				map.put(rs.getString(1), rs.getDouble(2));
+//			}
+//			
+//			// Handle any driver errors
+//		} catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//		return map;
+//	}
+//	
+//	public Map<String,Double> get_NUT_ByMealno(String meal_no) {
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		Map<String,Double> map=null;
+//		try {
+//			map=new HashMap<String,Double>();
+//			con = ds.getConnection();
+//			pstmt = con.prepareStatement(GET_NUT_ByMealno_STMT);
+//			
+//			pstmt.setString(1, meal_no);		
+//			rs = pstmt.executeQuery();		
+//			while(rs.next()) {
+//				map.put(rs.getString(1), rs.getDouble(2));
+//			}
+//			
+//			// Handle any driver errors
+//		} catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//		return map;
+//	}
 }
