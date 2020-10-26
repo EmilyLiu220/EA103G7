@@ -10,6 +10,7 @@ public interface AdDAO_interface {
 	public void delete(String ad_no);
 	public AdVO findByPrimaryKey(String ad_no);
 	public List<AdVO> getAll();
+	public List<AdVO> getadno(String emp_no);
 }
 
 

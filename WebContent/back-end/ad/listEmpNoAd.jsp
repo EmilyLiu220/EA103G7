@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.ad.model.*"%>
+
+
+<%
+	String str = (String) session.getAttribute("str");
+	AdService adSvc = new AdService();
+	List<AdVO> list = adSvc.getadno(str);
+	pageContext.setAttribute("list", list);
+%>
 
 <html>
 <head>
@@ -26,20 +37,29 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
 
+
+
 <style>
 #table-1, #table-1 td {
 	background: #555;
 	color: #fff;
 	border: 0;
 	width: 100%;
+	height: 70;
 	border-radius: 5px;
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+img {
+	vertical-align: middle;
+	border-style: none;
+	max-width: 100%;
+	max-height: 100%;
+}
+
 #logout {
 	width: 212px;
-	
 }
 </style>
 
@@ -47,6 +67,7 @@
 <body>
 
 	<div class="wrapper">
+
 		<!-- Sidebar  -->
 		<nav id="sidebar">
 			<div class="sidebar-header" style="cursor: default;">
@@ -77,7 +98,7 @@
 						<li><a
 							href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
 						<li><a
-							href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">>最新消息管理</a></li>
+							href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
 						<li><a
 							href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知設定管理</a></li>
 						<li><a href="#">評價管理</a></li>
@@ -107,12 +128,12 @@
 			<ul class="list-unstyled CTAs">
 				<c:choose>
 					<c:when test="${empVO2.emp_no==null}">
-						<li><a 
+						<li><a
 							href="<%=request.getContextPath()%>/back-end/emp/login.jsp"
 							id="logIn">Log in</a></li>
 					</c:when>
 					<c:otherwise>
-						<li ><form method="post"
+						<li><form method="post"
 								action="<%=request.getContextPath()%>/back-end/emp/emp.do">
 								<input type="hidden" name="action" value="logout"> <label
 									style="cursor: pointer"><a id="logOut">Log out</a> <input
@@ -120,8 +141,6 @@
 							</form></li>
 					</c:otherwise>
 				</c:choose>
-				<li style="text-align: center; font-size: 30px" id="out"
-					class="unshow"></li>
 			</ul>
 		</nav>
 
@@ -142,9 +161,7 @@
 					</button>
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
-						<a
-							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
-							Pot 吧！員工專區</a>
+						<a href="/EA103G7/back-end/back-index_New.jsp">吃 Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
 						<button type="button" id="topbarCollapse" class="btn btn-dark"
@@ -179,7 +196,6 @@
 									href="/EA103G7/back-end/back-index_e.jsp">一般員工專區</a></li>
 								<li class="nav-item active"
 									style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
-
 									<div id="topLogIn"
 										style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
 										onmouseover="this.style.color='#fff'; this.style.background='#000';"
@@ -192,93 +208,75 @@
 					</div>
 				</div>
 			</nav>
-
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 廣告管理</span> <a href="/EA103G7/back-end/back-index_New.jsp"
-				style="display: inline-block; font-size: 8px; font-weight: 900; color: #DEA554; text-decoration: none; margin-left: 20px;"
-				onmouseover="this.style.color='#ffbc5e';"
-				onmouseout="this.style.color='#dea554';">返回首頁</a>
-			<p></p>
+			<span> - 廣告管理</span> <a
+				href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp"
+				style="display: inline-block; font-size: 8px; font-weight: 900; color: #DEA554; text-decoration: none; margin-left: 20px;">返回首頁</a>
+			<p>
 			<table id="table-1">
-				<tbody>
+				<tr>
+					<td>
+						<h3 style="margin-bottom: 0;">廣告管理</h3>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<%-- 錯誤表列 --%>
+			<c:if test="${not empty errorMsgs}">
+				<font style="color: red">請修正以下錯誤:</font>
+				<ul>
+					<c:forEach var="message" items="${errorMsgs}">
+						<li style="color: red">${message}</li>
+					</c:forEach>
+				</ul>
+			</c:if>
+			<table>
+				<tr>
+					<th>廣告編號</th>
+					<th>員工編號</th>
+					<th>廣告標題</th>
+					<th>廣告內容</th>
+					<th>起始日期</th>
+					<th>結束日期</th>
+					<th>廣告圖片</th>
+				</tr>
+
+				<%@ include file="page1.file"%>
+				<c:forEach var="adVO" items="${list}" begin="<%=pageIndex%>"
+					end="<%=pageIndex+rowsPerPage-1%>">
+
 					<tr>
+						<td style="width: 100px;">${adVO.ad_no}</td>
+						<td style="width: 100px;">${adVO.emp_no}</td>
+						<td style="width: 100px;">${adVO.ad_title}</td>
+						<td style="width: 800px;">${adVO.ad_cont}</td>
+						<td style="width: 100px;">${adVO.ad_add_date}</td>
+						<td style="width: 100px;">${adVO.ad_re_date}</td>
+						<td><img
+							src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"></td>
+
 						<td>
-							<h3 style="margin-bottom: 0;">查詢所有廣告</h3>
+							<FORM METHOD="post"
+								ACTION="<%=request.getContextPath()%>/ad/ad.do"
+								style="margin-bottom: 0px;">
+								<input type="hidden" name="ad_no" value="${adVO.ad_no}">
+								<input type="hidden" name="action" value="getOne_For_Update">
+								<input type="submit" value="修改">
+							</FORM>
+						</td>
+						<td>
+							<FORM METHOD="post"
+								ACTION="<%=request.getContextPath()%>/ad/ad.do"
+								style="margin-bottom: 0px;">
+								<input type="submit" value="刪除"> <input type="hidden"
+									name="ad_no" value="${adVO.ad_no}"> <input
+									type="hidden" name="action" value="delete">
+							</FORM>
 						</td>
 					</tr>
-				</tbody>
+				</c:forEach>
 			</table>
-			<br>
-			<ul>
-				<li><a
-					href='<%=request.getContextPath()%>/back-end/ad/listAllAd.jsp'
-					style="color: #dea554; font-weight: 600;"
-					onmouseover="this.style.color='#ffbc5e';"
-					onmouseout="this.style.color='#dea554';">顯示所有廣告</a><br> <br></li>
-			</ul>
-
-			<table id="table-1">
-				<tbody>
-					<tr>
-						<td><h3 style="margin-bottom: 0;">動態查詢廣告</h3></td>
-					</tr>
-				</tbody>
-			</table>
-			<br> <span
-				style="position: relative; left: 4%; font-weight: 600;">可自由輸入欲查詢之條件</span><br>
-			<br>
-			<ul>
-				<li>
-					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
-						<b>廣告編號 (AD0001):</b> <input type="text" name="ad_no"> <input
-							type="hidden" name="action" value="getOne_For_Display"> <input
-							type="submit" value="送出1">
-					</FORM>
-				</li>
-				<jsp:useBean id="adSvc" scope="page" class="com.ad.model.AdService" />
-
-				<li>
-					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
-						<b>廣告編號:</b> <select size="1" name="ad_no">
-							<c:forEach var="adVO" items="${adSvc.all}">
-								<option value="${adVO.ad_no}">${adVO.ad_no}
-							</c:forEach>
-						</select> <input type="hidden" name="action" value="getOne_For_Display">
-						<input type="submit" value="送出2">
-					</FORM>
-				</li>
-				<li>
-				<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
-					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
-						<b>選擇員工編號:</b> 
-						<select size="1" name="emp_no">
-							<c:forEach var="empVO" items="${empSvc.all}">
-								<option value="${empVO.emp_no}">${empVO.emp_no}
-							</c:forEach>
-						</select> 
-						<input type="hidden" name="action" value="getADByEmpNo">
-						<input type="submit" value="送出3">
-					</FORM>
-				</li>
-			</ul>
-			<br>
-			<table id="table-1">
-				<tbody>
-					<tr>
-						<td>
-							<h3 style="margin-bottom: 0;">新增廣告通知</h3>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<br>
-			<ul>
-				<li><a
-					href='<%=request.getContextPath()%>/back-end/ad/addAd.jsp'
-					style="color: #dea554; font-weight: 600;"
-					onmouseover="this.style.color='#ffbc5e';"
-					onmouseout="this.style.color='#dea554';">新增廣告設定</a></li>
-			</ul>
+			<%@ include file="page2.file"%>
 		</div>
 	</div>
 
@@ -323,7 +321,4 @@
 		integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
 		crossorigin="anonymous"></script>
 </body>
-
 </html>
-
-
