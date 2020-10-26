@@ -249,11 +249,13 @@
 				</li>
 				<li>
 					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
-						<b>選擇員工編號:</b> <select size="1" name="ad_no">
+						<b>選擇員工編號:</b> 
+						<select size="1" name="ad_no">
 							<c:forEach var="adVO" items="${adSvc.all}">
 								<option value="${adVO.ad_no}">${adVO.emp_no}
 							</c:forEach>
-						</select> <input type="hidden" name="action" value="getOne_For_Display">
+						</select> 
+						<input type="hidden" name="action" value="getOne_For_Display">
 						<input type="submit" value="送出3">
 					</FORM>
 				</li>
