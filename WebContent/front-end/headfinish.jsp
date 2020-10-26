@@ -474,8 +474,14 @@
 			
 			
 	// 開啟聊天室 display
+	var memVO_js = '${memVO2}';
 	$("#addClass").click(function() {
-		$('#sidebar_secondary').addClass('popup-box-on');
+		// 讓未登入者無法使用客服聊天室
+		if(memVO_js==''){
+			$('#loginModal').modal('show');
+		} else {
+			$('#sidebar_secondary').addClass('popup-box-on');
+		}
 		// 抓出聊天紀錄
 		var jsonObj = { // 這裡要對應原本的 VO 內容
 			"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
