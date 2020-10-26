@@ -709,10 +709,28 @@
 			</div>
 		</div>
 	</div>
+		<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 結束 --%>
 </body>
 <%-- script 開始 --%>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
+<%-- 取得通知訊息 --%>	
+$(document).ready(function() {
+	getInform();
+	
+	function getInform(){
+		$.ajax({
+			 url:'<%=request.getContextPath() %>/front_inform/fi.do',
+			 method:"POST",
+			 dataType:"text",
+			 data:{
+				 action: 'getMyInform',
+			 },
+			 success:function(res){ },
+			 error:function(err){},	
+		});
+	}
+});
 // 		$(function() {
 // 			$("#addClass").click(function() {
 // 				$('#sidebar_secondary').addClass('popup-box-on');
@@ -918,16 +936,16 @@ if(document.getElementsByName("unread").length > 0){
 }
 function popFrontInform(){
 	// getMyInform 
-	$.ajax({
-		 url:'<%=request.getContextPath()%>/front_inform/fi.do',
-		 method:"POST",
-		 dataType:"text",
-		 data:{
-			 action: 'getMyInform',
-		 },
-		 success:function(res){ },
-		 error:function(err){},	
-	});
+// 	$.ajax({
+<%-- 		 url:'<%=request.getContextPath()%>/front_inform/fi.do', --%>
+// 		 method:"POST",
+// 		 dataType:"text",
+// 		 data:{
+// 			 action: 'getMyInform',
+// 		 },
+// 		 success:function(res){ },
+// 		 error:function(err){},	
+// 	});
 	
 	let fi_cont = document.getElementById("fi_cont");
 
