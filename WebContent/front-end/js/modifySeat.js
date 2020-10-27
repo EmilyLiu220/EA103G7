@@ -60,17 +60,31 @@ $(document).ready(function() {
 	});
 	
 	/** ***************************** 人數 ****************************** */
+	var resSeatNo;
+	function setResSeatNo(seatArray){
+		resSeatNo = seatArray;
+	}
+	
 	var lock_checked = true;
 	$(".myCheckbox").change(function() {
-		if ($(this).is(":checked")) {
-			$(this).closest(".drag").css({
-				filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(90deg) brightness(103%) contrast(118%)",
-			});
-		} else {
-			$(this).closest(".drag").css({
-				filter: "hue-rotate(0deg)",
-			});
-		}
+		$.each(resSeatNo , (i, item) =>{
+			if ($(this).is(":checked")) {
+				console.log(item+"+++"+$(this).val());
+				if($(this).val() == item) {
+					$(this).closest(".drag").css({
+						filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(252deg) brightness(103%) contrast(118%)",
+					});
+				} else {
+					$(this).closest(".drag").css({
+						filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(90deg) brightness(103%) contrast(118%)",
+					});
+				}
+			} else {
+				$(this).closest(".drag").css({
+					filter: "hue-rotate(0deg)",
+				});
+			}
+		});
 		// console.log(chooseSeatPeople);
 		var people = $("#people").val();
 		if ($("#people").val().length === 0) {
@@ -367,12 +381,18 @@ $(document).ready(function() {
 								}
 							});
 						});
+						// 設定訂單桌位
+						setResSeatNo(JSON.parse(messages).seat_no);
+						// 設定選取桌位人數初始
+						$.each(JSON.parse(messages).people , (i,people) =>{
+							addChooseSeatPeople(parseInt(people));
+						});
 						if(JSON.parse(messages).res_date == res_date && JSON.parse(messages).time_peri_no == time_peri_no){
 							$.each($myCheckbox, function(_index, item) { // 所有座位
 								$.each(JSON.parse(messages).seat_no, function(_index, item2) { // 訂單的座位
 									if($(item).val() == item2) {
 										$.each(jsonArray_people, function(_index, item3) {
-											console.log(Object.keys(item2));
+											// console.log(Object.keys(item2));
 										});
 												
 										$(item).closest(".drag").css({
