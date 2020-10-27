@@ -309,10 +309,9 @@ width:100px;
 							</div>											         
 				       	</div>
 						
-						
 						<br>
 						<button type="button" class="btn btn-secondary button" onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/addAd.jsp'">取消</button>
- 					    <button type="submit" class="btn btn-primary button">儲存</button>
+ 					    <button type="submit" class="btn btn-primary button" id="sendMsg">儲存</button>
 						<input type="hidden" name="action" value="insert">
 						<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
 <!-- 						<input type="submit" value="送出新增"> -->
