@@ -132,10 +132,8 @@
   cursor:pointer;
     }
  #card-img img{
- 	width:285px;
-	height:191px; 
-/*   	width:200px; */
-/*   	height:110px; */
+ width:100%;
+	height:100%;
   }
   .increaseBtn2 ,.increaseBtn,.decreaseBtn2,.decreaseBtn,.increaseRsvbtn,.increaseRsvbtn2,.decreaseRsvbtn,.decreaseRsvbtn2{
  text-align:center;
@@ -177,6 +175,34 @@
 .card-margin{
    margin: 25px auto;  
  }
+  figure{
+  width:285px;
+	height:191px; 
+  overflow: hidden;
+  display: inline-block;
+  }
+  figure figcaption {
+            width: 100%;
+            height: 100%;
+/*             display:inline-block; */
+            /*background-color: yellow;*/
+            text-align:justify;
+            /*line-height: 250px;*/
+            color: #dea554;
+            font-weight:bolder;
+            text-shadow: 2px 2px 2px #333;
+            margin: 0;
+            opacity: 0;
+            transition: all 1s;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        figure:hover figcaption {
+            margin-top: -120px;
+            position: relative;
+            opacity: 1;
+            cursor: pointer;
+        }
  
   </style>
  </head>
@@ -239,7 +265,8 @@
 			     
 <!-- 			</form> -->
       </div>
-      <div id="card-img" class="col-8"><img name="meal_set_img" src="<%= request.getContextPath() %>/meal_set/mealSet.showPic?meal_set_img=${mealSetVO.meal_set_no}"/></div>
+      <div id="card-img" class="col-8"><figure><img name="meal_set_img" src="<%= request.getContextPath() %>/meal_set/mealSet.showPic?meal_set_img=${mealSetVO.meal_set_no}"/>
+      <figcaption> 🥩&nbsp;&nbsp; 脂肪：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("fat")}</font> 克<br>🥚&nbsp;&nbsp; 蛋白質：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("prot")}</font> 克<br>🍚&nbsp;&nbsp;碳水化合物：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("carb")}</font> 克<br>㎉ &nbsp;&nbsp;熱量：<font color="white">${mealPartSrv.getNut(mealVO.meal_no).get("cal")}</font> 大卡</figcaption></figure></div>
       </div>
       </div>
         </c:forEach>

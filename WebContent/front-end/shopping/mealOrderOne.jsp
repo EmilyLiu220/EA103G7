@@ -51,19 +51,31 @@ font-weight: bolder;
   height:50px;
   
 }
+.title a{
+margin-left:10px;
+font-size:14px;
+color:black;
+font-weight: bolder;
+
+}
+.title a:hover{
+color:white;
+text-decoration: underline;
+
+}
 </style>
 </head>
 <body>
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
 <div class="container">
 <div id="top" class="row">
-  <div class="col">
-  <span>我的訂單</span><a href="<%=request.getContextPath()%><%=request.getAttribute("returnPath") %>" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回</a>
+  <div class="col title">
+  <span>我的訂單</span><c:if test="${not empty returnPath}"><a href="<%=request.getContextPath()%><%=request.getAttribute("returnPath") %>">返回</a></c:if>
   <c:if test="${mealOrderVO.meal_order_sts == 1}">
   <form method="POST" action="<%= request.getContextPath()%>/MealOrderServlet.do">
-  <input type="hidden" name="action" value="update"/>
+  <input type="hidden" name="action" value="cancel"/>
   <input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>
-  <input type="submit" value="取消此訂單"/>
+  <input id="cancelBtn" type="submit" value="取消此訂單"/>
   <c:if test="${not empty errormsgs}"><p>${errormsgs.get("orderUpdate")}</p></c:if>
   </form>
   </c:if>
@@ -139,6 +151,25 @@ font-weight: bolder;
     
     <jsp:include page="/front-end/footer.jsp" flush="true"/>
 
+
+
+
+<script src="<%= request.getContextPath() %>/front-end/js/jquery-3.4.1.min.js"></script>
+	  <script src="<%= request.getContextPath() %>/front-end/js/popper.min.js"></script>
+	  <script src="<%= request.getContextPath() %>/front-end/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		$('input[type="submit"]').click(function(){
+			confirm('確定要取消此訂單嗎?');
+		});
+	});
+
+	
+	
+	
+</script>
 
 
 </body>

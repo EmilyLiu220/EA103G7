@@ -71,7 +71,7 @@ text-decoration: underline;
     <div class="col">付款狀態：</div>
     <div class="col">訂單狀態：</div>
   </div>
-  <%@ include file="page1.file"%>
+  <%@ include file="orderPage1.file"%>
 <c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 <%-- <c:if test="${mealOrderVO.mem_no == mem_no}"> --%>
     
@@ -100,7 +100,7 @@ text-decoration: underline;
   </div>
 <%--   </c:if> --%>
   </c:forEach>
-  <%@ include file="page2.file"%>
+  <%@ include file="orderPage2.file"%>
     
 </div>
 <jsp:include page="/front-end/footer.jsp" flush="true"/>
