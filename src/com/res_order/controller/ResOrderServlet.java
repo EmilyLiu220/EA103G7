@@ -96,7 +96,7 @@ public class ResOrderServlet extends HttpServlet {
 			req.setAttribute("res_no", next_res_no);
 //			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
 //			failureView.forward(req, res);
-			res.sendRedirect(req.getContextPath()+"/front-end/res_order/getMemberResSeat.jsp");
+			res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 			return;
 		}
 
@@ -137,7 +137,7 @@ public class ResOrderServlet extends HttpServlet {
 			ResOrderService resOrderSvc = new ResOrderService();
 			String next_res_no = resOrderSvc.addResOrder(null, mem_no, emp_no, java.sql.Date.valueOf(res_date),
 					new Integer(people), time_peri_no, new Integer(0), new Integer(0), seats_no);
-			
+
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
 			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
@@ -275,8 +275,11 @@ public class ResOrderServlet extends HttpServlet {
 			String res_no = req.getParameter("res_no");
 			ResDetailService resDetailSvc = new ResDetailService();
 			ResOrderService resOrderSvc = new ResOrderService();
+			SeatService seatSvc = new SeatService();
+			SeatObjService seatObjSvc = new SeatObjService();
+
 			TimePeriService timePeriSvc = new TimePeriService();
-			
+
 			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
 			TimePeriVO timePeriVO = timePeriSvc.getOneTimePeri(resOrderVO.getTime_peri_no());
 			List<ResDetailVO> resDetailVOList = resDetailSvc.getAllResNO(res_no);
@@ -292,10 +295,21 @@ public class ResOrderServlet extends HttpServlet {
 			int i = 0;
 			for (ResDetailVO resDetailVO : resDetailVOList) {
 				if (i < resDetailVOList.size() - 1) {
-					sb.append("\""+resDetailVO.getSeat_no() + "\""+",");
+					sb.append("\"" + resDetailVO.getSeat_no() + "\"" + ",");
 					i++;
 				} else
-					sb.append("\""+resDetailVO.getSeat_no()+"\"");
+					sb.append("\"" + resDetailVO.getSeat_no() + "\"");
+			}
+			sb.append("], \"people\":[");
+			int j = 0;
+			for (ResDetailVO resDetailVO : resDetailVOList) {
+				int people = seatObjSvc.getOneSeatObj(seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_obj_no())
+						.getSeat_people();
+				if (j < resDetailVOList.size() - 1) {
+					sb.append("\"" + people + "\"" + ",");
+					j++;
+				} else
+					sb.append("\"" + people + "\"");
 			}
 			sb.append("]}");
 			out.print(sb.toString());
@@ -308,7 +322,7 @@ public class ResOrderServlet extends HttpServlet {
 		if ("modify_Seat_Order".equals(action)) {
 			String res_no = req.getParameter("res_no");
 			String res_people = req.getParameter("res_people");
-			
+
 			req.setAttribute("res_no", res_no);
 			req.setAttribute("res_people", res_people);
 

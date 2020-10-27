@@ -427,6 +427,7 @@ $(document).ready(function() {
 					});
 					$(item).prop("disabled", false);
 					$(item).prop("checked", false);
+					$(item).css("display", "block");
 				});
 				$.each($myCheckbox, function(_index, item) {
 					$.each(jsonArray, function(_index, item1) {
@@ -437,7 +438,7 @@ $(document).ready(function() {
 							$(item).prop("disabled", true);
 							$(item).prop("checked", true);
 							$(item).css("display", "none");
-						}
+						} 
 					});
 				});
 				lock_time_peri_no = true;// 如果業務執行成功，修改鎖狀態

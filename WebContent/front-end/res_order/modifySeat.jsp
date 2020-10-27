@@ -60,14 +60,14 @@ input, select {
 				<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 			</label>
 			<input type="hidden" name="action" value="order_seat">
-			<button id="orderSeat" name="action" value="order_seat" onclick='return false;'>修改訂位</button>
+			<button id="orderSeat" name="action" value="order_seat" class="btn btn-primary" onclick='return false;'>修改訂位</button>
 		</div>
 		<div id="container" class="container">
 			<c:forEach var="seatVO" items="${seatSvc.all}">
 				<c:if test="${seatVO.seat_f == 1 }">
 					<div class="drag" style="position: absolute; left: ${seatVO.seat_x}px; top: ${seatVO.seat_y}px;" id="drag">
 						<label> 
-							<input type="checkbox" class="myCheckbox" id="myCheckbox" name="seat_checked" value="${seatVO.seat_no}"> 
+							<input type="checkbox" class="myCheckbox" name="seat_checked" value="${seatVO.seat_no}"> 
 							<img src="<%=request.getContextPath()%>/seat/Seat_ObjServlet.do?seat_obj_no=${seatVO.seat_obj_no}">
 						</label> 
 						<label class="seatLabel">

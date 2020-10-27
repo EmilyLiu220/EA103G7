@@ -58,7 +58,7 @@ input, select {
 				<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 			</label>
 			<input type="hidden" name="action" value="order_seat">
-			<button id="orderSeat" name="action" value="order_seat" onclick='return false;'>訂位</button>
+			<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>訂位</button>
 		</div>
 		<div id="container" class="container">
 			<c:forEach var="seatVO" items="${seatSvc.all}">
