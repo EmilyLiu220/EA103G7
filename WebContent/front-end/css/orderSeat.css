@@ -18,7 +18,7 @@ div#orderSeatCondition.container {
 	top: 168px;
 	position: sticky;
 	z-index: 500;
-/* 	background: #FFFFFF; */
+	/* 	background: #FFFFFF; */
 }
 
 .navbar {
@@ -31,9 +31,7 @@ div#container.container {
 	border: 1px solid black;
 	position: relative;
 	display: none;
-	/* 	background: whitesmoke */
-	/* 		url('https://s3.amazonaws.com/com.appgrinders.test/images/grid_20.png') */
-	/* 		repeat; */
+	background-image: url('floor.jpg');
 	/* 	margin: 10px; */
 }
 

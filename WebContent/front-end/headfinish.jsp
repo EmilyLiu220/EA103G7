@@ -19,6 +19,11 @@
 <title>headfinish.jsp</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
 
@@ -82,6 +87,12 @@
 
 
 <body style="background-image: url('<%=request.getContextPath()%>/front-end/front/images/pageBg.jpg');">
+
+	<%    // prevent browser cache jsp     
+		  response.setHeader("Pragma", "No-cache"); // HTTP 1.0
+		  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+		  response.setDateHeader("Expires", -1); // proxies
+	%>
 	<%-- 小鈴鐺 table 開始 --%>
 	<table id="fi_cont" style="border:0;display:none;">
 		<c:forEach var="front_informVO" items="${front_informVOs}">
@@ -123,8 +134,6 @@
 		</c:forEach>
 	</table>
 	<%-- 小鈴鐺 table 結束 --%>
-	
-	
 	
 	<%-- 客服聊天室開始 --%>
 	<div class="msg">
