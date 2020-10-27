@@ -30,11 +30,12 @@ public class Mem_stsFilter implements Filter {
 		HttpSession session = req.getSession();
 		// 取得使用者請求的路徑
 		String path = req.getRequestURI();
+		System.out.println(path);
 		
 		MemVO memVO = (MemVO) session.getAttribute("memVO2");
 		
-		String reserve = req.getContextPath() + "";
-		String meal = req.getContextPath() + "";
+		String reserve = req.getContextPath() + "/front-end/res_order/orderSeat.jsp";
+		String meal = req.getContextPath() + "/front-end/shopping/mealMenu2.jsp";
 		String review = req.getContextPath() + "";
 		String repo = req.getContextPath() + "";
 		

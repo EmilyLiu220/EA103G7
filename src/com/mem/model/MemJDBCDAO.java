@@ -13,7 +13,7 @@ public class MemJDBCDAO implements MemDAO_interface {
 	private static final String INSERT_MEM = 
 		"INSERT INTO MEMBER_TABLE (MEM_NO, MEM_NAME, MEM_ACT, MEM_PSW, MEM_GEN, MEM_BIR, MEM_TEL, MEM_ADRS, MEM_MAIL, MEM_BNS,\r\n" + 
 		"    MEM_OD_M, MEM_OD_R, MEM_REVIEW, MEM_REPO, MEM_STS) \r\n" + 
-		"    VALUES (SEQ_MEM_NO.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, 1, 1, 1, 1)";
+		"    VALUES ('MEM'||LPAD(to_char(SEQ_MEM_NO.nextval), ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, 1, 1, 1, 1)";
 	private static final String UPDATE_BY_MEM = 
 		"UPDATE MEMBER_TABLE SET MEM_NAME = ?, MEM_PSW = ?, MEM_GEN = ?, MEM_BIR = ?, MEM_TEL = ?, MEM_ADRS = ?, MEM_MAIL = ? WHERE MEM_NO = ?";
 	private static final String UPDATE_BY_EMP = 

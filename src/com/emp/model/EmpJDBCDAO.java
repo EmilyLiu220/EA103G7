@@ -11,7 +11,7 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 	String passwd = "123456";
 	
 	private static final String INSERT_EMP = 
-		"INSERT INTO EMPLOYEE (EMP_NO, EMP_PSW, EMP_NAME, EMP_STS) VALUES (SEQ_EMP_NO.nextval, '0000', ?, 1)";
+		"INSERT INTO EMPLOYEE (EMP_NO, EMP_PSW, EMP_NAME, EMP_STS) VALUES ('EMP'||LPAD(to_char(SEQ_EMP_NO.nextval), 4, '0'), '0000', ?, 1)";
 	private static final String UPDATE_BY_EMP = 
 		"UPDATE EMPLOYEE SET EMP_PSW = ?, EMP_NAME = ? WHERE EMP_NO = ?";
 	private static final String UPDATE_BY_SV = 
