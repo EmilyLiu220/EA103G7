@@ -102,6 +102,17 @@
 
 	<!-- 訊息 -->
 	<servlet>
+		<servlet-name>Timer_IsToFiServlet</servlet-name>
+		<servlet-class>com.front_inform.timer.Timer_IsToFiServlet</servlet-class>
+<!-- 		<load-on-startup>10</load-on-startup> -->
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Timer_IsToFiServlet</servlet-name>
+		<url-pattern>/front_inform/Timer_IsToFiServlet</url-pattern>           
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>Front_informServlet</servlet-name>
 		<servlet-class>com.front_inform.controller.Front_informServlet</servlet-class>
 	</servlet>
