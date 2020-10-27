@@ -27,11 +27,11 @@ public class AdDAO implements AdDAO_interface {
 	}
 
 	private static final String INSERT_AD = "INSERT INTO AD(AD_NO ,EMP_NO ,AD_TITLE ,AD_CONT,AD_ADD_DATE,AD_RE_DATE,AD_IMG)VALUES('AD'||LPAD(SEQ_AD_NO.nextval,4,0),?,?,?,?,?,?)";
-	private static final String GET_ALL_AD = "SELECT * FROM AD ORDER BY AD_NO";
+	private static final String GET_ALL_AD = "SELECT * FROM AD ORDER BY AD_NO DESC";
 	private static final String GET_ONE_AD = "SELECT * FROM AD WHERE AD_NO =?";
 	private static final String DELETE = "DELETE FROM AD WHERE AD_NO = ?";
-	private static final String UPDATE = "UPDATE AD SET EMP_NO=? , AD_TITLE=? ,AD_CONT=? ,AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_IMG=? WHERE AD_NO=?";
-	private static final String GET_AD_STMT = "SELECT * FROM AD WHERE emp_NO =? order by ad_NO";
+	private static final String UPDATE = "UPDATE AD SET EMP_NO=? , AD_TITLE=? ,AD_CONT=? ,AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_IMG=? WHERE AD_NO=? ";
+	private static final String GET_AD_STMT = "SELECT * FROM AD WHERE emp_NO =? order by ad_NO DESE";
 	
 	
 	@Override

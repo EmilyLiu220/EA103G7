@@ -26,11 +26,11 @@ public class NewsDAO implements NewsDAO_interface {
 	}
 
 	private static final String INSERT_STMT = "INSERT INTO NEWS(NEWS_NO ,EMP_NO ,NEWS_CONT ,NEWS_DATE)VALUES('NEWS'||LPAD(SEQ_NEWS_NO.nextval,4,0),?,?,?)";
-	private static final String GET_ALL_STMT = "SELECT NEWS_NO ,EMP_NO ,NEWS_CONT ,to_char(NEWS_DATE,'yyyy-mm-dd') NEWS_DATE FROM news order by NEWS_NO";
+	private static final String GET_ALL_STMT = "SELECT NEWS_NO ,EMP_NO ,NEWS_CONT ,to_char(NEWS_DATE,'yyyy-mm-dd') NEWS_DATE FROM news order by NEWS_NO DESC";
 	private static final String GET_ONE_STMT = "SELECT NEWS_NO ,EMP_NO ,NEWS_CONT ,to_char(NEWS_DATE,'yyyy-mm-dd') NEWS_DATE FROM news where NEWS_NO =?";
 	private static final String DELETE = "DELETE FROM NEWS where NEWS_NO = ?";
 	private static final String UPDATE = "UPDATE NEWS SET EMP_NO=? ,NEWS_CONT=? ,NEWS_DATE=? WHERE NEWS_NO=?";
-	private static final String GET_NEWS_STMT = "SELECT * FROM news where emp_NO =?order by NEWS_NO";
+	private static final String GET_NEWS_STMT = "SELECT * FROM news where emp_NO =?order by NEWS_NO DESC";
 	@Override
 	public void insert(NewsVO newsVO) {
 
