@@ -14,7 +14,7 @@
 <head>
 <title>吃胖吧～修改訂位</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/css/orderSeat.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/css/modifySeat.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <style type="text/css">
 input, select {
@@ -39,7 +39,7 @@ input, select {
 		pageContext.setAttribute("ts", ts);
 	%>
 	<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-		<div class="container" id="orderSeatCondition">
+		<div class="container" id="modifySeatCondition">
 			<select id="floor_list" name="floor_list">
 				<c:forEach var="seat_f" items="${ts}">
 					<option class="lt" value="${seat_f}">${seat_f}樓座位區</option>
@@ -60,7 +60,7 @@ input, select {
 				<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 			</label>
 			<input type="hidden" name="action" value="order_seat">
-			<button id="orderSeat" name="action" value="order_seat" class="btn btn-primary" onclick='return false;'>修改訂位</button>
+			<button id="modifySeat" name="action" value="order_seat" class="btn btn-primary" onclick='return false;'>修改訂位</button>
 		</div>
 		<div id="container" class="container">
 			<c:forEach var="seatVO" items="${seatSvc.all}">
