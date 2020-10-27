@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.meal_part.model.*"%>
+<%@ page import="com.meal.model.*"%>
 <%
 	Meal_partService meal_partSvc = new Meal_partService();
 	List<Meal_partVO> list = meal_partSvc.getAll();
@@ -74,7 +75,12 @@
    	.fd_td_fdname_input,.fd_td_fdstk_input,.fd_td_fdstkll_input{
 /*    		width:90%; */
    	}
-
+	.adddiv_original{
+		display:none;
+	}
+	.input_inline{
+		display:inline;
+	}
 </style>
       
 </head>
@@ -175,7 +181,7 @@
 				
         	<div class="card shadow mb-4"> 
         		<div class="card-header py-3 "> 
-        			<h6 style='display:inline' class="m-0 font-weight-bold text-primary">新增食材</h6>
+        			<h6 style='display:inline' class="m-0 font-weight-bold text-primary">新增餐點組成</h6>
         			<button id="fd_btn_addinput" type="button" class="btn btn-sm btn-dark float-right mx-1"><i class="far fa-plus-square"></i></button>
 					<button id="fd_btn_subinput" type="button" class="btn btn-sm btn-dark float-right mx-1"><i class="fas fa-minus"></i></button>
         		</div>
@@ -192,39 +198,43 @@
 				
 				    <FORM id="fd_form_add" METHOD="post" ACTION="<%=request.getContextPath()%>/meal_part/meal_part.do" name="form1">				    
 						<input type="hidden" name="action" value="insert">	
-						
-						<div class="container-fluid">
-  							<div class="row">
-								<div class="col-sm text-center">餐點編號</div>
-		    					<div class="col-sm text-center">食材編號</div>
-		    					<div class="col-sm text-center">食材重量</div>
-							</div>
-							<div class="row adddiv_original">
-								<div class="col-sm text-center">
-									<input class="input-group mb-1 text-center" type="hidden" name="meal_no_original" placeholder="請填入餐點編號" >
-								</div>
-		    					<div class="col-sm text-center">
-		    						<input class="input-group mb-1 text-center" type="hidden" name="fd_no_original" placeholder="請填入食材編號" >
-								</div>
-		    					<div class="col-sm text-center">
-		    						<input class="input-group mb-1 text-center" type="hidden" name="fd_gw_original" placeholder="請填入食材重量" >
-								</div>
-							</div>
-							
-							<div class="row adddiv">
-								<div class="col-sm text-center">
-									<input class="input-group mb-1 text-center" type="text" name="meal_no" placeholder="請填入餐點編號" >
-								</div>
-		    					<div class="col-sm text-center">
-		    						<input class="input-group mb-1 text-center" type="text" name="fd_no" placeholder="請填入食材編號" >
-								</div>
-		    					<div class="col-sm text-center">
-		    						<input class="input-group mb-1 text-center" type="text" name="fd_gw" placeholder="請填入食材重量" >
-								</div>
-							</div>
-							<button class="btn btn-sm btn-dark float-right mx-1 fd_btn_send_addfd">送出新增</button>
-						
-						</div>	
+						<div class="adddiv_original">
+							<div class="meal_name mb-1">
+								餐點名稱
+								<select size="1" name="meal_no_original">
+		         					<c:forEach var="mealVO" items="${mealSvt.all}" > 
+		         						<option value="${mealVO.meal_no}">${mealVO.meal_name}
+		         					</c:forEach>   
+	       						</select>
+       						</div>
+		    				食材名稱
+		    				<select size="1" name="fd_no_original">
+         						<c:forEach var="foodVO" items="${foodSvt.all}" > 
+         							<option value="${foodVO.fd_no}">${foodVO.fd_name}
+         						</c:forEach>   
+       						</select>
+		    				食材重量
+	 		    			<input class="mb-1 text-center input_inline" type="hidden" name="fd_gw_original" placeholder="請填入食材重量" >
+						</div>
+						<div class="adddiv">
+							<div class="meal_name mb-1">
+								餐點名稱
+								<select size="1" name="meal_no">
+		         					<c:forEach var="mealVO" items="${mealSvt.all}" > 
+		         						<option value="${mealVO.meal_no}">${mealVO.meal_name}
+		         					</c:forEach>   
+	       						</select>
+	       					</div>
+		    				食材名稱
+		    				<select size="1" name="fd_no">
+         						<c:forEach var="foodVO" items="${foodSvt.all}" > 
+         							<option value="${foodVO.fd_no}">${foodVO.fd_name}
+         						</c:forEach>   
+       						</select>
+		    				食材重量
+	 		    			<input class="mb-1 text-center input_inline" type="text" name="fd_gw" placeholder="請填入食材重量" >
+	 		    		</div>								
+						<button class="btn btn-sm btn-dark float-right mx-1 fd_btn_send_addfd">送出新增</button>	
 					</FORM>
 				</div>
         	</div>
@@ -334,24 +344,29 @@
 			//新增input
 			$("#fd_form_add").find(".fd_btn_send_addfd").before( $("#fd_form_add").find(".adddiv_original").clone() );
 			//複製一個div放在button前
-			$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='meal_no_original']").attr({
-				"type":"text","name":"meal_no"
-			});
-			$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='fd_no_original']").attr({
+// 			$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='meal_no_original']").attr({
+// 				"type":"text","name":"meal_no"
+// 			});
+			$("#fd_form_add").find(".adddiv_original:last-of-type").find(".meal_name").remove();
+			
+			$("#fd_form_add").find(".adddiv_original:last-of-type").find("select[name='fd_no_original']").attr({
 				"type":"text","name":"fd_no"
 			});
 			$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='fd_gw_original']").attr({
 				"type":"text","name":"fd_gw"
 			});
 			//更改複製div內的input的display和name，原本的name故意取別的，這樣取值的時候才不會把隱藏的input也當資料取出
-			$("#fd_form_add").find(".adddiv_original:last-of-type").attr("class","row adddiv");
+			$("#fd_form_add").find(".adddiv_original:last-of-type").attr("class","adddiv");
 			//更改div，div故意取別的，這樣刪的時候才不會把隱藏的div都刪掉
 			
 		});
 		
 		$("#fd_btn_subinput").click(function(){
 			//刪除input
-			$("#fd_form_add").find(".adddiv:last-of-type").remove();
+			var adddiv=$("#fd_form_add").find(".adddiv");
+			if(adddiv.length!==1){
+				$("#fd_form_add").find(".adddiv:last-of-type").remove();
+			}
 		});
 
 		$("#dataTable").on("click",".fd_btn_delete",function() {

@@ -117,8 +117,6 @@ public class Meal_partServlet extends HttpServlet {
 					} else if (!fd_no[i].trim().matches(fd_noReg)) { // 以下練習正則(規)表示式(regular-expression)
 						errorMsgs.add("餐點編號"+meal_no+"修改錯誤，食材編號只能是MEAL加上長度4的數字，從0000到9999");
 					}
-					System.out.println(meal_no);
-					System.out.println(fd_no[i]);
 					String fd_gwReg = "[0-9]{1,9}";
 					if (fd_gw_str[i] == null || fd_gw_str[i].trim().length() == 0) {
 						errorMsgs.add("第"+(i+1)+"筆的庫存請勿空白");
