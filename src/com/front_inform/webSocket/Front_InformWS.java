@@ -57,6 +57,7 @@ public class Front_InformWS {
 
 	@OnClose // 使用者視窗關閉
 	public void onClose(Session userSession, CloseReason reason) {
+		// 停止輪詢 DB 的執行緒
 		thread1.stopMe();
 		String userNameClose = null;
 		Set<String> userNames = sessionsMap.keySet(); // 取得所有 users
@@ -67,8 +68,7 @@ public class Front_InformWS {
 				break;
 			}
 		}
-		String text = String.format("session ID = %s, disconnected; close code = %d%nusers: %s", userSession.getId(),
-		reason.getCloseCode().getCode(), userNames);
+		String text = String.format("session ID = %s, disconnected; close code = %d%nusers: %s", userSession.getId(), reason.getCloseCode().getCode(), userNames);
 		System.out.println(text);
 	}
 }
