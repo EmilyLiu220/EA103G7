@@ -263,7 +263,7 @@ figure figcaption {
 				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/listAllOrder2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/2.png"/></a><figcaption>查看所有訂餐</figcaption></figure>
 				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/asignOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/3.png"/></a><figcaption>派工管理</figcaption></figure>
 				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/prepareOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/7.png"/></a><figcaption>出餐管理</figcaption></figure>
-				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/prepareOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/9.png"/></a><figcaption>待完成訂單</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/OrderDone.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/9.png"/></a><figcaption>待完成訂單</figcaption></figure>
 				</div>
 			</p>
 		</div> <!-- content -->

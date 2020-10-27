@@ -307,6 +307,33 @@ public class MealOrderServlet extends HttpServlet {
 			RequestDispatcher success = req.getRequestDispatcher(url);
 			success.forward(req, res);
 		}
+		
+		if ("memOrder".equals(action)) {
+			String reqURL = req.getParameter("reqURL");
+			String whichPage = null;
+			if (req.getParameter("whichPage") != null) {
+				whichPage = req.getParameter("whichPage");
+			}
+			String returnPath = reqURL;
+			String mealOrderNo = req.getParameter("meal_order_no");
+
+			MealOrderService mealOrderSrv = new MealOrderService();
+			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
+			if (whichPage != null) {
+				returnPath = reqURL + "?whichPage=" + whichPage;
+			}
+//			if ((reqURL == null || req.getParameter("queryString") != null)
+//					&& !(req.getParameter("queryString").equals("null"))) {
+//				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+//						+ req.getParameter("queryString");
+//			}
+			req.setAttribute("returnPath", returnPath);
+			req.setAttribute("mealOrderVO", mealOrderVO);
+			String url = "/front-end/shopping/mealOrderOne.jsp";
+			RequestDispatcher success = req.getRequestDispatcher(url);
+			success.forward(req, res);
+		}
+		
 		if ("asignQuery".equals(action)) {
 			Map<String, String[]> map = (HashMap) session.getAttribute("asignMap");
 			if (req.getParameter("whichPage") == null) {

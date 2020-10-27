@@ -52,6 +52,11 @@ public class MealOrderService {
 	public List<MealOrderVO> searchToday(Date today){
 		return dao.searchToday(today);
 	}
+	
+	public List<MealOrderVO> searchByMemNo(String memNo) {
+		return dao.searchByMemNo(memNo);
+
+	}
 
 	public MealOrderVO searchByOrderNo(String mealOrderNo) {
 		return dao.searchByOrderNo(mealOrderNo);

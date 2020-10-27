@@ -11,6 +11,7 @@ public interface MealOrderDAO_interface {
 	public void update (MealOrderVO mealOrderVO);
 	public void updatePickupTime (String mealOrderNo);
 	public MealOrderVO searchByOrderNo(String mealOrderNo);
+	public List<MealOrderVO> searchByMemNo(String memNo);
 	public List<MealOrderVO>searchByOrderSts(Integer orderSts);
 	public List<MealOrderVO>searchByNotiSts(Integer orderSts);
 	public List<MealOrderVO>searchByPaySts(Integer orderSts);

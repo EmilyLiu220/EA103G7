@@ -6,13 +6,13 @@
 <%@ page import="java.util.*" %>
 
 <% 
-// 	MealOrderService mealOrderSrv = new MealOrderService();
-// 	List<MealOrderVO> orderList = mealOrderSrv.getAll();
-// 	request.setAttribute("orderList", orderList);
 	String mem_no = "MEM0001";				//模擬假資料
+	MealOrderService mealOrderSrv = new MealOrderService();
+	List<MealOrderVO> list = mealOrderSrv.searchByMemNo(mem_no);
+	request.setAttribute("list", list);
 	request.setAttribute("mem_no",mem_no);	//模擬假資料
 %>
-<jsp:useBean id="mealOrderSrv" scope="page" class="com.meal_order.model.MealOrderService"/>
+<jsp:useBean id="mealOrderSrv2" scope="page" class="com.meal_order.model.MealOrderService"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +21,18 @@
 <title>MealOrder</title>
 <style>
 *{
-font-family:Microsoft JhengHei;
-  box-sizing: border-box;
-  margin:0;
+/* font-family:Microsoft JhengHei; */
+/*   box-sizing: border-box; */
+/*   margin:0; */
 }
 .container{
-  border:2px solid red;
+/*   border:2px solid red; */
 }
 #cate{
 text-align:center;
 }
 .row{
-  border:1px solid green;
+/*   border:1px solid green; */
   height:100px; 
   
 }
@@ -46,9 +46,19 @@ text-align:center;
 background-color: lightgray;
 font-weight: bolder;
 }
+#content a{
+color:black;
+font-weight: bolder;
+}
+#content a:hover{
+color:darkgray;
+font-weight: bolder;
+text-decoration: underline;
+}
 </style>
 </head>
 <body>
+<jsp:include page="/front-end/headfinish.jsp" flush="true"/>
 <div class="container">
 <div class="row">${mem_no} 的訂餐訂單</div>
   <div id="header" class="row">
@@ -61,15 +71,16 @@ font-weight: bolder;
     <div class="col">付款狀態：</div>
     <div class="col">訂單狀態：</div>
   </div>
-<c:forEach var="mealOrderVO" items="${mealOrderSrv.all}">
-<c:if test="${mealOrderVO.mem_no == mem_no}">
+  <%@ include file="page1.file"%>
+<c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+<%-- <c:if test="${mealOrderVO.mem_no == mem_no}"> --%>
     
   
   <div id="content" class="row">
-    <div class="col-2"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search">${mealOrderVO.meal_order_no}</a></div>
+    <div class="col-2"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=memOrder&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></div>
 <%--     <div class="col-2">${mealOrderVO.mem_no}</div> --%>
-    <div class="col-2">${mealOrderSrv.dateFormat(mealOrderVO.order_time)}</div>
-    <div class="col-2">${mealOrderSrv.dateFormat(mealOrderVO.pickup_time)}</div>
+    <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</div>
+    <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.pickup_time)}</div>
     <div class="col">${mealOrderVO.amount}</div>
     <div class="col">${mealOrderVO.noti_sts == 0 ?'未通知':'已通知'}</div>
     <div class="col">${mealOrderVO.pay_sts == 0?'未付款':'已付款'}</div>
@@ -77,7 +88,7 @@ font-weight: bolder;
     <c:if test="${mealOrderVO.meal_order_sts == 0}">已取消</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
-    <c:if test="${mealOrderVO.meal_order_sts == 3}">出餐未取</c:if>
+    <c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 4}">已完成</c:if></div>
 <%--   	<form action="<%= request.getContextPath() %>/MealOrderServlet.do" method="POST"> --%>
 <!--   <div class="col"> -->
@@ -87,10 +98,11 @@ font-weight: bolder;
 <!--   </div> -->
 <!--   	</form> -->
   </div>
-  </c:if>
+<%--   </c:if> --%>
   </c:forEach>
+  <%@ include file="page2.file"%>
     
 </div>
-
+<jsp:include page="/front-end/footer.jsp" flush="true"/>
 </body>
 </html>

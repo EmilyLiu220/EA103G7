@@ -58,7 +58,7 @@ font-weight: bolder;
 <div class="container">
 <div id="top" class="row">
   <div class="col">
-  <span>我的訂單</span>
+  <span>我的訂單</span><a href="<%=request.getContextPath()%><%=request.getAttribute("returnPath") %>" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回</a>
   <c:if test="${mealOrderVO.meal_order_sts == 1}">
   <form method="POST" action="<%= request.getContextPath()%>/MealOrderServlet.do">
   <input type="hidden" name="action" value="update"/>
@@ -106,7 +106,7 @@ font-weight: bolder;
     <c:if test="${mealOrderVO.meal_order_sts == 0}">已取消</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
-    <c:if test="${mealOrderVO.meal_order_sts == 3}">出餐未取</c:if>
+    <c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 4}">已完成</c:if></div>
    
   </div>

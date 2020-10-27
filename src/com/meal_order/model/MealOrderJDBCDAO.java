@@ -26,6 +26,7 @@ public class MealOrderJDBCDAO implements MealOrderDAO_interface{
 	private static final String UPDATE = "UPDATE MEAL_ORDER SET MEAL_ORDER_STS=?,NOTI_STS=?,PAY_STS=? WHERE MEAL_ORDER_NO=?";
 	private static final String UPDATEPICKUPTIME = "UPDATE MEAL_ORDER SET PICKUP_TIME CURRENT_TIMESTAMP WHERE MEAL_ORDER_NO =?";
 	private static final String GETONE = "SELECT * FROM MEAL_ORDER WHERE MEAL_ORDER_NO = ?";
+	private static final String GETBYMEMNO = "SELECT * FROM MEAL_ORDER WHERE MEM_NO = ?";
 	private static final String GETBYORDERSTS = "SELECT * FROM MEAL_ORDER WHERE MEAL_ORDER_STS = ?";
 	private static final String GETBYNOTISTS = "SELECT * FROM MEAL_ORDER WHERE NOTI_STS = ?";
 	private static final String GETBYPAYSTS = "SELECT * FROM MEAL_ORDER WHERE PAY_STS = ?";
@@ -253,6 +254,68 @@ public void updatePickupTime (String mealOrderNo) {
 		}
 		return list;
 	};
+	
+public List<MealOrderVO> searchByMemNo(String memNo) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MealOrderVO mealOrderVO = null;
+		List<MealOrderVO> list = new ArrayList<MealOrderVO>();
+
+		try {
+			Class.forName(DRIVER);
+			con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			pstmt = con.prepareStatement(GETBYMEMNO);
+			pstmt.setString(1, memNo);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				mealOrderVO = new MealOrderVO();
+				mealOrderVO.setMeal_order_no(rs.getString("meal_order_no"));
+				mealOrderVO.setMem_no(rs.getString("mem_no"));
+				mealOrderVO.setEmp_no(rs.getString("emp_no"));
+				mealOrderVO.setMeal_order_sts(rs.getInt("meal_order_sts"));
+				mealOrderVO.setAmount(rs.getInt("amount"));
+				mealOrderVO.setOrder_time(rs.getTimestamp("order_time"));
+				mealOrderVO.setNoti_sts(rs.getInt("noti_sts"));
+				mealOrderVO.setPay_sts(rs.getInt("pay_sts"));
+				mealOrderVO.setPickup_time(rs.getTimestamp("pickup_time"));
+
+			}
+
+		} catch (SQLException | ClassNotFoundException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+		
+		
+		
+	};
+	
+	
 	public MealOrderVO searchByOrderNo(String mealOrderNo) {
 		Connection con = null;
 		PreparedStatement pstmt = null;

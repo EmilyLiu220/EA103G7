@@ -45,6 +45,9 @@
 }
 .table a{
 color:blue;
+}
+.table a:hover{
+color:lightblue;
 text-decoration: underline;
 }
 </style>
