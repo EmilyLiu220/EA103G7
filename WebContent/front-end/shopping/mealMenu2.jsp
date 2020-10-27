@@ -169,18 +169,38 @@ transition: all 0.5s;
  background-color:#ffbc5e;
  	
  }
+ #cartJSP{
+ position: fixed;
+ top:40%;
+ left:1%;
+ width:350px;
+ font-size:14px; 
  
+ 
+ }
+ #meal-row div {
+ text-align: center;}
  #qty{
  width:100px;
  }
  #cartJSP th{
  text-align: center;
  }
+ .cotent div{
+ padding: auto 1px;}
+ #cart-img {
+ position: fixed;
+ top:30%;
+ left:8%;
+ width:80px;
+ height: 80px;
+ }
  #meal-row,#set-row{
  height: 30px;
  background-color:brown;
  color:white;
  font-weight:bold;
+ text-align: center;
  }
  .errormsgs{
  font-weight: bolder;
@@ -233,7 +253,7 @@ transition: all 0.5s;
     
     <c:forEach var="mealVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
       
-      <div class="col-6 card-margin">
+      <div class="col-6">
       <div class="row align-items-center">
       <div id="card-text"class="col-4">
       <h4>${mealVO.meal_name}</h4>
@@ -268,6 +288,7 @@ transition: all 0.5s;
       </div>
         <%@ include file="/front-end/shopping/page2.file" %> 
 	<br> 
+     <img id="cart-img" src="<%= request.getContextPath() %>/front-end/shopping/icon/8.png">
      <div id="cartJSP">
      <div id="cart-header" class="row">
     <div class="col">餐點名稱</div>
@@ -276,7 +297,7 @@ transition: all 0.5s;
     <div class="col">小計</div>
   </div>
      <c:if test="${empty res_no}">
-  <div id="meal-row" class="row">單點項目</div>
+  <div id="meal-row" class="row"><div>單點項目</div></div>
      <c:if test="${not empty mealList}">
    <c:forEach var="mealVO" items="${mealList}">
    <div class="row content ${mealVO.meal_no}">
@@ -758,6 +779,9 @@ transition: all 0.5s;
              });
          };
          
+         $('#cart-img').click(function(e){
+        	 $('#cartJSP').fadeToggle(500);
+         })
          
          
          

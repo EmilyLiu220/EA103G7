@@ -218,6 +218,7 @@ public class MealOrderServlet extends HttpServlet {
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
+			
 			if (mealOrderVO.getMeal_order_sts() >= 2 || mealOrderVO.getMeal_order_sts() == 0) {
 				errormsgs.put("orderUpdate", "餐點已派工或已取消，無法取消訂單!");
 				req.setAttribute("errormsgs", errormsgs);
