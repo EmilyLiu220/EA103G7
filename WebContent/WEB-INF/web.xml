@@ -229,7 +229,24 @@
 	  <dispatcher>ERROR</dispatcher>
 	  <dispatcher>ASYNC</dispatcher>
 	</filter-mapping>  
-	  
+	
+	<!--前台會員狀態濾器 -->
+	<filter>
+	  <filter-name>mem_stsFilter</filter-name>
+	  <filter-class>mem_stsfilters.Mem_stsFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>mem_stsFilter</filter-name>
+	  <url-pattern>/front-end/res_order/orderSeat.jsp</url-pattern>
+	  <url-pattern></url-pattern>
+	  <url-pattern></url-pattern>
+	  <dispatcher>REQUEST</dispatcher>
+	  <dispatcher>FORWARD</dispatcher>
+	  <dispatcher>INCLUDE</dispatcher>
+	  <dispatcher>ERROR</dispatcher>
+	  <dispatcher>ASYNC</dispatcher>
+	</filter-mapping>  
+	
 	<!--後台員工登入濾器 -->
 	<filter>
 	  <filter-name>backLoginFilter</filter-name>
