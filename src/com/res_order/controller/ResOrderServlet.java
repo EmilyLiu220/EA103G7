@@ -273,11 +273,11 @@ public class ResOrderServlet extends HttpServlet {
 		/********************** 修改訂位 **********************/
 		if ("get_Modify_Seat_Order_Info".equals(action)) {
 			String res_no = req.getParameter("res_no");
-			ResDetailService resDetailSvc = new ResDetailService();
+			
 			ResOrderService resOrderSvc = new ResOrderService();
+			ResDetailService resDetailSvc = new ResDetailService();
 			SeatService seatSvc = new SeatService();
 			SeatObjService seatObjSvc = new SeatObjService();
-
 			TimePeriService timePeriSvc = new TimePeriService();
 
 			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
@@ -305,11 +305,22 @@ public class ResOrderServlet extends HttpServlet {
 			for (ResDetailVO resDetailVO : resDetailVOList) {
 				int people = seatObjSvc.getOneSeatObj(seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_obj_no())
 						.getSeat_people();
+				int seat_f = seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f();
 				if (j < resDetailVOList.size() - 1) {
 					sb.append("\"" + people + "\"" + ",");
 					j++;
 				} else
 					sb.append("\"" + people + "\"");
+			}
+			sb.append("], \"seat_f\":[");
+			int k = 0;
+			for (ResDetailVO resDetailVO : resDetailVOList) {
+				int seat_f = seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f();
+				if (k < resDetailVOList.size() - 1) {
+					sb.append("\"" + seat_f + "\"" + ",");
+					k++;
+				} else
+					sb.append("\"" + seat_f + "\"");
 			}
 			sb.append("]}");
 			out.print(sb.toString());

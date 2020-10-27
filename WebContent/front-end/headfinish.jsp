@@ -847,8 +847,9 @@
 <script src="<%=request.getContextPath()%>/front-end/js/bootstrap-datepicker.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.timepicker.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/google-map.js"></script>
+<%-- 以下兩行沒啥用EJ註解，各位有錯 --%>
+<%-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> --%>
+<%-- <script src="<%=request.getContextPath()%>/front-end/js/google-map.js"></script> --%>
 <script src="<%=request.getContextPath()%>/front-end/js/main.js"></script>
 	
 <!--為了顯示地址選單用 -->

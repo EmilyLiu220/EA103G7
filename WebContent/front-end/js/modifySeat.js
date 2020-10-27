@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	// // 控制資料庫拉出物件的checkbox
-	// $(".myCheckbox").click(function() {
+	// $(".myCheckbox").click(function(e) {
+	// e.preventDefault();
+	// e.stopImmediatePropagation();
 	// if ($(this).is(":checked"))
 	// $(this).show();
 	// else
@@ -24,11 +26,12 @@ $(document).ready(function() {
 	// $.ajax({
 	// // url is servlet url, ?archive_seat is tell servlet execute which one
 	// judgment
-	// url: ajaxURL + "/orderSeat/ResOrderServlet.do?action=XXXXXXXXXXX",
+	// url: ajaxURL + "/modifySeat/ResOrderServlet.do?",
 	// type: "post",
 	// // synchronize is false
 	// async: false,
 	// data: {
+	// "action":"XXXXXXXXXXX",
 	// "res_date": res_date,
 	// "time_peri_no": time_peri_no,
 	// },
@@ -45,6 +48,86 @@ $(document).ready(function() {
 	// });
 	// return false;
 	// });
+	$( window ).on( "load", function(e) { 
+		 e.preventDefault();
+		 e.stopImmediatePropagation();
+		 var res_date = $("#res_date").val();
+		 var time_peri_no = $("#time_peri_no").val();
+		 var res_no = $("#res_no").val();
+			$.ajax({
+				// url is servlet url, ?archive_seat is tell servlet execute
+				// which
+				// one judgment
+				url: ajaxURL + "/res_order/ResOrderServlet.do?",
+				type: "post",
+				// synchronize is false
+				async: false,
+				data: {
+					"action":"get_Modify_Seat_Order_Info",
+					"res_no": res_no,
+				},
+				success: function(messages) {
+					$("#modifySeat").css("display", "inline-block");
+					$("#floor_list").val(JSON.parse(messages).seat_f[0]);
+					$("#res_date").val(JSON.parse(messages).res_date);
+					$("#people").val($("#res_people").val());
+					var time_peri_no = JSON.parse(messages).time_peri_no;
+					var res_date = $("#res_date").val();
+					$.ajax({
+						// url is servlet url, ?archive_seat is tell servlet execute which
+						// one judgment
+						url: ajaxURL + "/time_peri/TimePeriServlet.do?",
+						type: "post",
+						// synchronize is false
+						async: false,
+						data: {
+							"action":"get_TimePeri",
+							"res_date": JSON.parse(messages).res_date,
+						},
+						success: function(messages) {
+							// console.log(messages);
+							var jsonArray = JSON.parse(messages);
+							$("#time_peri_no").empty();
+							$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
+							$.each(jsonArray, function(_index, item) {
+								if(time_peri_no == item.time_peri_no){
+									var option = $("<option/>");
+									option.attr({
+										value : item.time_peri_no,
+										selected : true,
+									}).text(item.time_start.replace("-", ":"));
+									$("#time_peri_no").append(option);
+								} else {
+									var option = $("<option/>");
+									option.attr({
+										value: item.time_peri_no,
+									}).text(item.time_start.replace("-", ":"));
+									$("#time_peri_no").append(option);
+								}
+							});
+							$(".labelOne").css("display", "inline-block");
+							$(".labelTwo").css("display", "inline-block");
+							$("div#container.container").css("display", "block");
+							lock_order_date = true;// 如果業務執行成功，修改鎖狀態
+						},
+						error: function(xhr, ajaxOptions, thrownError) {
+							lock_order_date = true;// 如果業務執行失敗，修改鎖狀態
+							ajaxSuccessFalse(xhr);
+							swal("儲存失敗", errorText, "warning");
+						},
+					});
+					return false;
+					console.log(JSON.parse(messages).time_peri_no);
+					console.log(messages);
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
+					ajaxSuccessFalse(xhr);
+					swal("儲存失敗", errorText, "warning");
+				},
+			});
+			return false;
+	})
 	/** ***************************** 人數 ****************************** */
 	var lock_people = true;// 防止重複提交定義鎖
 	$("#people").change(function() {
@@ -161,23 +244,24 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=floor_load",
+			url: ajaxURL + "/res_order/ResOrderServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
-				"floor": $("#floor_list").val()
+				"floor": $("#floor_list").val(),
+				"action":"floor_load",
 			},
 			success: function(messages) {
-				$("body > div#container.container").load(ajaxURL + "/front-end/res_order/orderSeat.jsp div#container.container");
-				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
-				$.getScript(ajaxURL + "/front-end/js/orderSeat.js");
-				$.getScript(ajaxURL + "/js/sweetalert.min.js");
+				$("body > div#container.container").load(ajaxURL + "/front-end/res_order/modifySeat.jsp div#container.container");
+//				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
+				$.getScript(ajaxURL + "/front-end/js/modifySeat.js");
+//				$.getScript(ajaxURL + "/js/sweetalert.min.js");
 				// console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("div#container.container").empty();
-				$("#time_peri_no").empty();
-				$("#people").val("");
+//				$("#time_peri_no").empty();
+//				$("#people").val("");
 				$("#res_date").val("--請選擇日期--");
 				$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請先選擇日期--</option>");
 				$.each(jsonArray, function(_index, item) {
@@ -213,9 +297,9 @@ $(document).ready(function() {
 						value: item.seat_name,
 					}).attr("disabled", true).appendTo($label2);
 				});
-				$(".labelOne").css("display", "none");
-				$(".labelTwo").css("display", "none");
-				$("#container").css("display", "none");
+//				$(".labelOne").css("display", "none");
+//				$(".labelTwo").css("display", "none");
+//				$("#container").css("display", "none");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_floor_list = true;// 如果業務執行失敗，修改鎖狀態
@@ -258,12 +342,13 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/time_peri/TimePeriServlet.do?action=get_TimePeri",
+			url: ajaxURL + "/time_peri/TimePeriServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
-				"res_date": res_date
+				"action":"get_TimePeri",
+				"res_date": res_date,
 			},
 			success: function(messages) {
 				// console.log(messages);
@@ -312,19 +397,20 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_All_Seat_People",
+			url: ajaxURL + "/res_order/ResOrderServlet.do",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
+				"action":"get_All_Seat_People",
 				"people": JSON.stringify(jsonDataStr),
 			},
 			success: function(messages) {
-// console.log(messages);
+				// console.log(messages);
 				jsonArray_people = JSON.parse(messages);
 				setJSONArray_people(jsonArray_people);
 				$("#container").css("display", "block");
-				$("#orderSeat").css("display", "inline-block");
+				$("#modifySeat").css("display", "inline-block");
 				
 				lock_people = true;// 如果業務執行成功，修改鎖狀態
 			},
@@ -338,11 +424,12 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_Res_Order_Today",
+			url: ajaxURL + "/res_order/ResOrderServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
+				"action":"get_Res_Order_Today",
 				"res_date": res_date,
 				"time_peri_no": time_peri_no,
 			},
@@ -360,11 +447,12 @@ $(document).ready(function() {
 					// url is servlet url, ?archive_seat is tell servlet execute
 					// which
 					// one judgment
-					url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_Modify_Seat_Order_Info",
+					url: ajaxURL + "/res_order/ResOrderServlet.do?",
 					type: "post",
 					// synchronize is false
 					async: false,
 					data: {
+						"action":"get_Modify_Seat_Order_Info",
 						"res_no": res_no,
 					},
 					success: function(messages) {
@@ -416,7 +504,7 @@ $(document).ready(function() {
 				$(".labelTwo").css("display", "inline-block");
 				$("#people").val($("#res_people").val());
 				$("div#container.container").css("display", "block");
-				$("#orderSeat").css("display", "inline-block");
+				$("#modifySeat").css("display", "inline-block");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
@@ -439,7 +527,7 @@ $(document).ready(function() {
 		chooseSeatPeople -= value;
 	}
 	
-	$("#orderSeat").click(function() {
+	$("#modifySeat").click(function() {
 		if(chooseSeatPeople < parseInt($("#people").val())){
 			swal("來店人數還大於選擇座位人數唷！", "請在選擇座位，直到座位足夠容納來店人數", "info");
 			return false;
@@ -460,7 +548,7 @@ $(document).ready(function() {
 						type: "hidden",
 						name: "goMeal",
 						value: "carry_on_res_meal",
-					}).appendTo("div#orderSeatCondition.container");
+					}).appendTo("div#modifySeatCondition.container");
 					form.submit();
 				});
 			} else {
