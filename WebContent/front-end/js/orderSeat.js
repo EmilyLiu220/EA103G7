@@ -47,7 +47,8 @@ $(document).ready(function() {
 	// });
 	/** ***************************** 人數 ****************************** */
 	var lock_people = true;// 防止重複提交定義鎖
-	$("#people").change(function() {
+	$("#people").change(function(e) {
+		e.preventDefault();
 		if (!lock_people) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			return false;
 		}
@@ -85,6 +86,69 @@ $(document).ready(function() {
 				$("#container").css("display", "block");
 				$("#orderSeat").css("display", "inline-block");
 				
+				/*
+				 *************** 以下 ***************
+				 ********** 如果人數有變動 **********
+				 ********** 重新刷新座位區 **********
+				 ********** 讓客人重新選擇 **********
+				 ************************************
+				 */
+				let lock_people_change = true;// 防止重複提交定義鎖
+				$("#people").change(function(e) {
+					e.preventDefault();
+					if (!lock_people_change) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
+						return false;
+					}
+					lock_people_change = false; // 3.進來後，立馬把鎖鎖住
+					var res_date = $("#res_date").val();
+					var time_peri_no = $("#time_peri_no").val();
+					$.ajax({
+						// url is servlet url, ?archive_seat is tell servlet execute which
+						// one judgment
+						url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_Res_Order_Today",
+						type: "post",
+						// synchronize is false
+						async: false,
+						data: {
+							"res_date": res_date,
+							"time_peri_no": time_peri_no,
+						},
+						success: function(messages) {
+							var jsonArray = JSON.parse(messages);
+							// console.log(jsonArray);
+							var $myCheckbox = $(".myCheckbox");
+
+							$.each($myCheckbox, function(_index, item) {
+								$(item).closest(".drag").css({
+									filter: "hue-rotate(0deg)",
+								});
+								$(item).prop("disabled", false);
+								$(item).prop("checked", false);
+							});
+							$.each($myCheckbox, function(_index, item) {
+								$.each(jsonArray, function(_index, item1) {
+									if ($(item).val() === item1) {
+										$(item).closest(".drag").css({
+											filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+										});
+										$(item).prop("disabled", true);
+										$(item).prop("checked", true);
+										$(item).css("display", "none");
+									}
+								});
+							});
+							zeroChooseSeatPeople(0);
+							lock_people_change = true;// 如果業務執行成功，修改鎖狀態
+							$(".labelTwo").css("display", "inline-block");
+						},
+						error: function(xhr, ajaxOptions, thrownError) {
+							lock_people_change = true;// 如果業務執行失敗，修改鎖狀態
+							ajaxSuccessFalse(xhr);
+							swal("儲存失敗", errorText, "warning");
+						},
+					});
+					return false;
+				});
 				lock_people = true;// 如果業務執行成功，修改鎖狀態
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -106,20 +170,25 @@ $(document).ready(function() {
 	function lessChooseSeatPeople(value) {
 		chooseSeatPeople -= value;
 	}
+	function zeroChooseSeatPeople(value) {
+		chooseSeatPeople = value;
+	}
 	/** ***************************** 人數 ****************************** */
 	var lock_checked = true;
 	$(".myCheckbox").change(function() {
+		// 如果被選擇，該區塊div套濾鏡
 		if ($(this).is(":checked")) {
 			$(this).closest(".drag").css({
 				filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(90deg) brightness(103%) contrast(118%)",
 			});
+		// 沒被選擇，取消率濾鏡
 		} else {
 			$(this).closest(".drag").css({
 				filter: "hue-rotate(0deg)",
 			});
 		}
-		// console.log(chooseSeatPeople);
 		var people = $("#people").val();
+		// 請使用者輸入來店人數
 		if ($("#people").val().length === 0) {
 			swal("請先輸入來店人數", "", "info");
 			$(this).closest(".drag").css({
@@ -127,33 +196,36 @@ $(document).ready(function() {
 			});
 			$(this).prop("disabled", false);
 			$(this).prop("checked", false);
+			
 		}
 		var thisCheckboxValue = $(this).val();
 		var thisCheckbox = $(this);
 		var allNotCheckbox= $(".myCheckbox").not(":checked");
+		// 畫面上所有位子可容納人數比對選取的位子人數
 		$.each(jsonArray_people, function(_index, item) {
-			var key = Object.keys(item);
-			var value = Object.values(item);
+			let key = Object.keys(item);
+			let value = Object.values(item);
 			if (key[0] === thisCheckboxValue) {
 				if (thisCheckbox.is(":checked")) {
 					addChooseSeatPeople(value[0]);
 				} else if (thisCheckbox.not(":checked")) {
 					lessChooseSeatPeople(value[0]);
 				}
+				// 來店人數大於選擇座位可容納人數
 				if (parseInt(people) - chooseSeatPeople > 0) {
-					const nowNotCheckbox= $(".myCheckbox").not(":checked");
+					let nowNotCheckbox= $(".myCheckbox").not(":checked");
 					$.each(nowNotCheckbox, function(i, item){
 						$(item).prop("disabled", false);
 					});
 				}
-				if (chooseSeatPeople - people == 0) {
+				// 來店人數等於選擇座位人數
+				if (parseInt(chooseSeatPeople) - parseInt(people) == 0) {
 					swal("已經選擇適當的桌位囉！", "", "info");
 					$.each(allNotCheckbox, function(i, item){
 						$(item).prop("disabled", true);
 					});
-				} else if (chooseSeatPeople >= parseInt(people) + 3) {
-					console.log("people="+people);
-					console.log("chooseSeatPeople="+chooseSeatPeople);
+				// 選擇座位人數超過來店人數太多
+				} else if (parseInt(chooseSeatPeople) >= parseInt(people) + 3) {
 					swal("選擇座位人數超過來店人數太多！！", "請重新選擇相符的人數座位～", "info");
 					thisCheckbox.closest(".drag").css({
 						filter: "hue-rotate(0deg)",
@@ -161,16 +233,23 @@ $(document).ready(function() {
 					thisCheckbox.prop("disabled", false);
 					thisCheckbox.prop("checked", false);
 					lessChooseSeatPeople(value[0]);
-				} else if (chooseSeatPeople > parseInt(people) + 5) {
-					swal("123！", "", "info");
-					thisCheckbox.closest(".drag").css({
-						filter: "hue-rotate(0deg)",
+				// 符合來店人數低於選擇最為可容納人數之可接受範圍
+				} else if(parseInt(people) - parseInt(chooseSeatPeople) < 0 ) {
+					swal("已經選擇適當的桌位囉！", "", "info");
+					$.each(allNotCheckbox, function(i, item){
+						$(item).prop("disabled", true);
 					});
-					thisCheckbox.prop("disabled", false);
-					thisCheckbox.prop("checked", false);
-					lessChooseSeatPeople(value[0]);
-					return false;
-				}
+				} 
+//				else if (chooseSeatPeople > parseInt(people) + 5) {
+//					swal("123！", "", "info");
+//					thisCheckbox.closest(".drag").css({
+//						filter: "hue-rotate(0deg)",
+//					});
+//					thisCheckbox.prop("disabled", false);
+//					thisCheckbox.prop("checked", false);
+//					lessChooseSeatPeople(value[0]);
+//					return false;
+//				}
 				return false;
 			}
 		});
@@ -373,7 +452,7 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-	$("#orderSeat").click(function() {
+	$("#orderSeat").click(function(e) {
 		if(chooseSeatPeople < parseInt($("#people").val())){
 			swal("來店人數還大於選擇座位人數唷！", "請在選擇座位，直到座位足夠容納來店人數", "info");
 			return false;
@@ -384,7 +463,6 @@ $(document).ready(function() {
 			text: "訂餐方便又簡單～",
 			icon: "warning",
 			buttons: ["訂位就好", "我要順便訂餐"],
-			dangerMode: true,
 		}).then((willDelete) => {
 			if (willDelete) {
 				swal("來去訂餐吧～", {
@@ -405,5 +483,7 @@ $(document).ready(function() {
 				});
 			}
 		});
+		e.preventDefault();
+		e.stopImmediatePropagation();
 	});
 });

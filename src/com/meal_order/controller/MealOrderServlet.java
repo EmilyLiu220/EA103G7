@@ -29,6 +29,8 @@ import com.meal_order.model.*;
 import com.meal_order_detail.model.MealOrderDetailService;
 import com.meal_order_detail.model.MealOrderDetailVO;
 import com.meal_set.model.*;
+import com.res_order.model.ResOrderService;
+import com.res_order.model.ResOrderVO;
 
 @WebServlet("/MealOrderServlet.do")
 public class MealOrderServlet extends HttpServlet {
@@ -66,7 +68,7 @@ public class MealOrderServlet extends HttpServlet {
 			if (req.getParameter("res_no") == null) {
 
 				try {
-					pickupTime = new Timestamp (ft.parse(req.getParameter("pickup_time")).getTime());
+					pickupTime = new Timestamp(ft.parse(req.getParameter("pickup_time")).getTime());
 				} catch (IllegalArgumentException | ParseException e) {
 					long min = 60 * 30 * 1000;
 					pickupTime = new Timestamp(System.currentTimeMillis() + min);
@@ -121,7 +123,7 @@ public class MealOrderServlet extends HttpServlet {
 			Gson gson = new Gson();
 			Map<String, Object> pushMsg = new HashMap<>();
 			if (pickupTime.getMonth() == new Date().getMonth() && pickupTime.getDate() == new Date().getDate()) {
-				pushMsg.put("reload","asignOrder");
+				pushMsg.put("reload", "asignOrder");
 			}
 			pushMsg.put("action", "insert");
 			pushMsg.put("mealOrderVO", mealOrderVO);
@@ -143,7 +145,7 @@ public class MealOrderServlet extends HttpServlet {
 			if (session.getAttribute("mem_no") != null) {
 				memNo = (String) session.getAttribute("mem_no");
 			}
-
+			
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);
 			Integer paySts = resNo != null ? new Integer(0) : new Integer(1);
@@ -185,9 +187,25 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			mealOrderVO = (MealOrderVO) (mealOrderSrv.addOrder(memNo, empNo, mealOrderSts, amount, notiSts, paySts,
 					pickupTime, detailList)).get("mealOrderVO");
+			
+			if (rsvMealList != null) {
+				rsvMealList.removeAllElements();
+			}
+			if (rsvSetList != null) {
+				rsvSetList.removeAllElements();
+			}
+			
+			// 有訂餐的話，訂位訂單新增訂餐編號
+			ResOrderService resOrderSvc = new ResOrderService();
+			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(resNo);
+			resOrderSvc.updateResOrder(resNo, mealOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
+					resOrderVO.getEmp_no(), resOrderVO.getRes_time(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
+					resOrderVO.getTime_peri_no(), resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts());
+
 			req.setAttribute("res_no", resNo);
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
+
 			String url = "front-end/shopping/mealOrderOne.jsp";
 			RequestDispatcher success = req.getRequestDispatcher(url);
 			success.forward(req, res);
@@ -226,8 +244,7 @@ public class MealOrderServlet extends HttpServlet {
 			Integer mealOrderSts = new Integer(req.getParameter("meal_order_sts"));
 			Integer notiSts = new Integer(req.getParameter("noti_sts"));
 			Integer paySts = new Integer(req.getParameter("pay_sts"));
-			
-			
+
 			MealOrderService mealOrderSrv = new MealOrderService();
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
@@ -246,13 +263,13 @@ public class MealOrderServlet extends HttpServlet {
 			if (whichPage != null) {
 				returnPath = reqURL + "?whichPage=" + whichPage;
 			}
-			
+
 			if ((reqURL == null || req.getParameter("queryString") != null)
 					&& !(req.getParameter("queryString").equals("null"))) {
 				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
 						+ req.getParameter("queryString");
 			}
-			
+
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = returnPath;
@@ -270,7 +287,7 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
-			
+
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
 			Gson gson = new Gson();
 			Map<String, Object> pushMsg = new HashMap<>();

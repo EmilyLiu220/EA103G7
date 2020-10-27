@@ -65,7 +65,7 @@ input, select {
 				<c:if test="${seatVO.seat_f == 1 }">
 					<div class="drag" style="position: absolute; left: ${seatVO.seat_x}px; top: ${seatVO.seat_y}px;" id="drag">
 						<label> 
-							<input type="checkbox" class="myCheckbox" id="myCheckbox" name="seat_checked" value="${seatVO.seat_no}"> 
+							<input type="checkbox" class="myCheckbox" name="seat_checked" value="${seatVO.seat_no}"> 
 							<img src="<%=request.getContextPath()%>/seat/Seat_ObjServlet.do?seat_obj_no=${seatVO.seat_obj_no}">
 						</label> 
 						<label class="seatLabel">

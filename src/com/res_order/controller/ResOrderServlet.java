@@ -17,8 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.front_inform.model.Front_InformService;
 import com.res_detail.model.ResDetailService;
 import com.res_detail.model.ResDetailVO;
 import com.res_order.model.ResOrderService;
@@ -88,16 +87,16 @@ public class ResOrderServlet extends HttpServlet {
 			String next_res_no = resOrderSvc.addResOrder(null, mem_no, emp_no, java.sql.Date.valueOf(res_date),
 					new Integer(people), time_peri_no, new Integer(0), new Integer(0), seats_no);
 
-//			Front_InformService front_InformSvc = new Front_InformService();
-//
-//			// 發送通知
-//			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
+			Front_InformService front_InformSvc = new Front_InformService();
+			// 發送通知
+			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 			req.setAttribute("res_no", next_res_no);
-			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
-			failureView.forward(req, res);
+//			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
+//			failureView.forward(req, res);
+			res.sendRedirect(req.getContextPath()+"/front-end/res_order/getMemberResSeat.jsp");
 			return;
 		}
 
@@ -138,10 +137,10 @@ public class ResOrderServlet extends HttpServlet {
 			ResOrderService resOrderSvc = new ResOrderService();
 			String next_res_no = resOrderSvc.addResOrder(null, mem_no, emp_no, java.sql.Date.valueOf(res_date),
 					new Integer(people), time_peri_no, new Integer(0), new Integer(0), seats_no);
-//			Front_InformService front_InformSvc = new Front_InformService();
-//
-//			// 發送通知
-//			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
+			
+			Front_InformService front_InformSvc = new Front_InformService();
+			// 發送通知
+			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());

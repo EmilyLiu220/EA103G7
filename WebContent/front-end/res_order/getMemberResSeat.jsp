@@ -17,8 +17,7 @@
 <meta charset="UTF-8">
 <title>會員訂位紀錄</title>
 <link rel=stylesheet type="text/css" href="<%=request.getContextPath()%>/front-end/css/getMemberResSeat.css">
-<jsp:include page="/front-end/headfinish.jsp"></jsp:include>
-
+<%@include file="/front-end/headfinish.jsp" %>
 <style>
 #table-1, #table-1 td {
 	background: #555;
