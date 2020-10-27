@@ -82,7 +82,7 @@
 			</td>
 			<td>
 				<c:if test="${not empty resOrderVO.meal_order_no}">
-					${resOrderVO.meal_order_no}
+					<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">${resOrderVO.meal_order_no}</a>
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">
 					<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">

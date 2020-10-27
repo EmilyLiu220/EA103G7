@@ -339,11 +339,11 @@ public class MealOrderServlet extends HttpServlet {
 			if (whichPage != null) {
 				returnPath = reqURL + "?whichPage=" + whichPage;
 			}
-//			if ((reqURL == null || req.getParameter("queryString") != null)
-//					&& !(req.getParameter("queryString").equals("null"))) {
-//				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
-//						+ req.getParameter("queryString");
-//			}
+			if ((reqURL == null || req.getParameter("queryString") != null)
+					&& !(req.getParameter("queryString").equals("null"))) {
+				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+						+ req.getParameter("queryString");
+			}
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "/front-end/shopping/mealOrderOne.jsp";
