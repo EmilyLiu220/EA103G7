@@ -47,24 +47,4 @@ public class Front_InformService {
 		return dao.findAll();
 	}
 	
-//	// 取得通知狀態的列舉子
-//	public InfoSts[] getInfoStsAll() {
-//		return InfoSts.values();
-//	}
-//	
-//	// 得到該狀態的中文內容
-//	public String getInfoStsMsgAll(Integer info_sts) {
-//		return InfoSts.findByInfoSts(info_sts).getInfoStsMsg();
-//	}
-//
-//	// 取得通知讀取狀態的列舉子
-//	public ReadSts[] getReadStsAll() {
-//		return ReadSts.values();
-//	}
-//	
-//	// 得到該狀態的中文內容
-//	public String getReadStsMsgAll(Integer read_sts) {
-//		return ReadSts.findByReadSts(read_sts).getReadStsMsg();
-//	}
-	
 }

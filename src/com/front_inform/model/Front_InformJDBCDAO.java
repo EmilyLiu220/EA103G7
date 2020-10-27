@@ -29,13 +29,13 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	private static final String UPDATE_INFO_STS_STMT = "UPDATE FRONT_INFORM SET INFO_STS=? WHERE INFO_NO=?";
 	
 	// 該名會員登入後，取得其個人的所有通知(降冪)
-	private static final String GET_STMT_BY_MEM = "SELECT INFO_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE MEM_NO=? ORDER BY INFO_NO DESC";
+	private static final String GET_STMT_BY_MEM = "SELECT INFO_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE MEM_NO=? ORDER BY INFO_DATE DESC";
 
 	// 打開通知小鈴鐺後，更新未讀的通知為已讀
 	private static final String UPDATE_READ_STS = "UPDATE FRONT_INFORM SET READ_STS='1' WHERE MEM_NO=?";
 	
 	// 取得所有會員的各種通知
-	private static final String GET_ALL_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO DESC";	
+	private static final String GET_ALL_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_DATE DESC";	
 	
 	@Override
 	public void insertInfo(String mem_no, String info_cont) {

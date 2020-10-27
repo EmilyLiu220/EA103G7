@@ -478,68 +478,68 @@ public class Inform_SetJDBCDAO implements Inform_SetDAO_interface{
 		
 		Inform_SetJDBCDAO dao = new Inform_SetJDBCDAO();
 		
-		// 新增
-		Inform_SetVO inform_setVO1 = new Inform_SetVO();
-		inform_setVO1.setEmp_no("EMP0002");
-		inform_setVO1.setIs_cont("新增測試");
-		inform_setVO1.setIs_date(java.sql.Date.valueOf("2020-10-01"));
-		dao.insert(inform_setVO1);
-		
-		// 修改
-		Inform_SetVO inform_setVO2 = new Inform_SetVO();
-		inform_setVO2.setIs_no("IS0033");
-		inform_setVO2.setIs_cont("修改測試");
-		inform_setVO2.setEmp_no("EMP0001");
-		inform_setVO2.setIs_date(java.sql.Date.valueOf("2020-11-01"));
-		dao.update(inform_setVO2);
-		
-		// 刪除
-		dao.delete("IS0033");
-		
-		// 查詢 by PK
-		Inform_SetVO inform_setVO3 = dao.findByIsNo("IS0002");
-		System.out.print(inform_setVO3.getIs_cont()+", ");
-		System.out.print(inform_setVO3.getIs_date()+", ");
-		System.out.print(inform_setVO3.getEmp_no()+", ");
-		System.out.println();
-		System.out.println("-----------------------------------------------------------------------------------");
-		
-		// 查詢 by empNo
-		List<Inform_SetVO> list1 = dao.findByEmpNo("EMP0002");
-		for(Inform_SetVO aisVO : list1) {
-			System.out.print(aisVO.getIs_no() + ", ");
-			System.out.print(aisVO.getIs_cont() + ", ");
-			System.out.print(aisVO.getIs_date() + ", ");
-			System.out.print(aisVO.getEmp_no() + ", ");
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------------------------------------------------");
-
-		
-		// 查詢 by isCont
-		List<Inform_SetVO> list2 = dao.findByIsCont("豬");
-		for(Inform_SetVO aisVO : list2) {
-			System.out.print(aisVO.getIs_no() + ", ");
-			System.out.print(aisVO.getIs_cont() + ", ");
-			System.out.print(aisVO.getIs_date() + ", ");
-			System.out.print(aisVO.getEmp_no() + ", ");
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------------------------------------------------");
-
-		// 查詢 by Date (test1)
-		List<Inform_SetVO> list3 = dao.findByDate("2020-10-15", "2020-10-31");
-		for(Inform_SetVO aisVO : list3) {
-			System.out.print(aisVO.getIs_no() + ", ");
-			System.out.print(aisVO.getIs_cont() + ", ");
-			System.out.print(aisVO.getIs_date() + ", ");
-			System.out.print(aisVO.getEmp_no() + ", ");
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------------------------------------------------");
+//		// 新增
+//		Inform_SetVO inform_setVO1 = new Inform_SetVO();
+//		inform_setVO1.setEmp_no("EMP0002");
+//		inform_setVO1.setIs_cont("新增測試");
+//		inform_setVO1.setIs_date(java.sql.Date.valueOf("2020-10-01"));
+//		dao.insert(inform_setVO1);
+//		
+//		// 修改
+//		Inform_SetVO inform_setVO2 = new Inform_SetVO();
+//		inform_setVO2.setIs_no("IS0033");
+//		inform_setVO2.setIs_cont("修改測試");
+//		inform_setVO2.setEmp_no("EMP0001");
+//		inform_setVO2.setIs_date(java.sql.Date.valueOf("2020-11-01"));
+//		dao.update(inform_setVO2);
+//		
+//		// 刪除
+//		dao.delete("IS0033");
+//		
+//		// 查詢 by PK
+//		Inform_SetVO inform_setVO3 = dao.findByIsNo("IS0002");
+//		System.out.print(inform_setVO3.getIs_cont()+", ");
+//		System.out.print(inform_setVO3.getIs_date()+", ");
+//		System.out.print(inform_setVO3.getEmp_no()+", ");
+//		System.out.println();
+//		System.out.println("-----------------------------------------------------------------------------------");
+//		
+//		// 查詢 by empNo
+//		List<Inform_SetVO> list1 = dao.findByEmpNo("EMP0002");
+//		for(Inform_SetVO aisVO : list1) {
+//			System.out.print(aisVO.getIs_no() + ", ");
+//			System.out.print(aisVO.getIs_cont() + ", ");
+//			System.out.print(aisVO.getIs_date() + ", ");
+//			System.out.print(aisVO.getEmp_no() + ", ");
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
+//
+//		
+//		// 查詢 by isCont
+//		List<Inform_SetVO> list2 = dao.findByIsCont("豬");
+//		for(Inform_SetVO aisVO : list2) {
+//			System.out.print(aisVO.getIs_no() + ", ");
+//			System.out.print(aisVO.getIs_cont() + ", ");
+//			System.out.print(aisVO.getIs_date() + ", ");
+//			System.out.print(aisVO.getEmp_no() + ", ");
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
+//
+//		// 查詢 by Date (test1)
+//		List<Inform_SetVO> list3 = dao.findByDate("2020-10-15", "2020-10-31");
+//		for(Inform_SetVO aisVO : list3) {
+//			System.out.print(aisVO.getIs_no() + ", ");
+//			System.out.print(aisVO.getIs_cont() + ", ");
+//			System.out.print(aisVO.getIs_date() + ", ");
+//			System.out.print(aisVO.getEmp_no() + ", ");
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
 		
 		// 查詢 by Date (test2)
-		List<Inform_SetVO> list4 = dao.findByDate("2020-10-20", "2020-11-30");
+		List<Inform_SetVO> list4 = dao.findByDate("2020-10-21", "2020-10-21");
 		for(Inform_SetVO aisVO : list4) {
 			System.out.print(aisVO.getIs_no() + ", ");
 			System.out.print(aisVO.getIs_cont() + ", ");
@@ -549,31 +549,31 @@ public class Inform_SetJDBCDAO implements Inform_SetDAO_interface{
 		}
 		System.out.println("-----------------------------------------------------------------------------------");
 		
-		// 動態查詢
-		String is_no = null;
-		String emp_no = null;
-		String[] is_cont = {"88","8/30","蔬菜"};
-		String startDate = null;
-		String stopDate = null;
-		List<Inform_SetVO> list5 = dao.findByComplex(is_no, emp_no, is_cont, startDate, stopDate);
-		for(Inform_SetVO aisVO : list5) {
-			System.out.print(aisVO.getIs_no() + ", ");
-			System.out.print(aisVO.getIs_cont() + ", ");
-			System.out.print(aisVO.getIs_date() + ", ");
-			System.out.print(aisVO.getEmp_no() + ", ");
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------------------------------------------------");
-		
-		// 查詢全部
-		List<Inform_SetVO> list6 = dao.getAll();
-		for(Inform_SetVO aisVO : list6) {
-			System.out.print(aisVO.getIs_no() + ", ");
-			System.out.print(aisVO.getIs_cont() + ", ");
-			System.out.print(aisVO.getIs_date() + ", ");
-			System.out.print(aisVO.getEmp_no() + ", ");
-			System.out.println();
-		}
+//		// 動態查詢
+//		String is_no = null;
+//		String emp_no = null;
+//		String[] is_cont = {"88","8/30","蔬菜"};
+//		String startDate = null;
+//		String stopDate = null;
+//		List<Inform_SetVO> list5 = dao.findByComplex(is_no, emp_no, is_cont, startDate, stopDate);
+//		for(Inform_SetVO aisVO : list5) {
+//			System.out.print(aisVO.getIs_no() + ", ");
+//			System.out.print(aisVO.getIs_cont() + ", ");
+//			System.out.print(aisVO.getIs_date() + ", ");
+//			System.out.print(aisVO.getEmp_no() + ", ");
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
+//		
+//		// 查詢全部
+//		List<Inform_SetVO> list6 = dao.getAll();
+//		for(Inform_SetVO aisVO : list6) {
+//			System.out.print(aisVO.getIs_no() + ", ");
+//			System.out.print(aisVO.getIs_cont() + ", ");
+//			System.out.print(aisVO.getIs_date() + ", ");
+//			System.out.print(aisVO.getEmp_no() + ", ");
+//			System.out.println();
+//		}
 		
 	}
 	

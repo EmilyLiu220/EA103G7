@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimerTask;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,15 +13,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.front_inform.model.Front_InformService;
-import com.front_inform.model.Front_InformVO;
-import com.mem.model.MemService;
-import com.mem.model.MemVO;
+import com.front_inform.model.*;
+import com.front_inform.timer.Timer_IsToFi;
+import com.mem.model.*;
 
 public class Front_informServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     
+	
+	TimerTask task = new Timer_IsToFi();
+	public void init() {
+    	java.util.Timer clock1 = new java.util.Timer();
+//    	java.sql.Date sqlDate = java.sql.Date.valueOf("2020-10-26");
+//    	java.util.Date firstRun = new java.util.Date(sqlDate.getTime());
+//    	// 從 "2020-10-26" 開始，每 24 小時執行一次
+//    	clock1.scheduleAtFixedRate(task, firstRun, period);
+    	long delay1 = 1 * 1000;
+    	long period = 86400000; // 24 小時
+    	// 從現在開始 1 秒鐘之後，每隔 24 小時執行一次 
+    	clock1.schedule(task, delay1, period);
+    }
+	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
@@ -243,4 +255,9 @@ public class Front_informServlet extends HttpServlet {
 			}
 		}
 	}
+
+	public void destroy() {
+		task.cancel();
+	}
+	
 }
