@@ -531,17 +531,140 @@
 	});
 			
 			
-	<%-- 通知  webSocket 
-	var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
+	
+	<%-- 通知  webSocket
+	var MyPoint = "/Front_InformWS/${memVO2.mem_no}"; 
 	var host = window.location.host;
 	var path = window.location.pathname;
 	var webCtx = path.substring(0, path.indexOf('/', 1));
 	var endPointURL = "ws://" + host + webCtx + MyPoint;
 	
-	var mem_no = "${memVO2.mem_no}"; // 宣告自己(用來分辨訊息要套用的 CSS)
-	var messagesArea = document.getElementById("chat");
+	var mem_no = "${memVO2.mem_no}"; // 宣告自己
+	var informArea = document.getElementById("fi_cont"); // 通知 table
 	
-	var webSocket = new WebSocket(endPointURL);--%>
+	var webSocket = new WebSocket(endPointURL);
+	
+	webSocket.onopen = function(event) {
+		console.log("Connect Success!");
+	};
+	
+	webSocket.onmessage = function(event) {
+		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+		if ("history" === jsonObj.type) {
+			messagesArea.innerHTML = '';
+			var chat_box = document.createElement('div');
+			chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
+			messagesArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
+			// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
+			var messages = JSON.parse(jsonObj.msgJson);
+			for (var i = 0; i < messages.length; i++) {
+				var historyData = JSON.parse(messages[i]);
+				var chat_message_wrapper = document.createElement('div');
+				chat_message_wrapper.classList.add("chat_message_wrapper");
+				
+				var chat_user_avatar = document.createElement('div');
+				chat_user_avatar.classList.add("chat_user_avatar");
+						
+				var img = document.createElement('img');
+				img.classList.add("md-user-image");
+				if( historyData.sender === mem_no ){
+					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
+				}else{
+					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
+				}
+				chat_user_avatar.appendChild(img);
+				
+				var ul = document.createElement('ul');
+				ul.classList.add("chat_message");
+				var li = document.createElement('li');
+				var p = document.createElement('p');
+				var span = document.createElement('span');
+				span.classList.add("chat_message_time");
+				var spanReadSts = document.createElement('span');
+						
+				var showMsg = historyData.message;
+				var timestamp = historyData.timestamp;
+				var readSts = historyData.readSts;
+				p.innerHTML = showMsg;
+				var dayTime = timestamp.substring(0,10);
+				p.setAttribute("title",dayTime);
+				var shortTime = timestamp.substring(11,18);
+				shortTime = shortTime.replace(/:$/, '');
+				span.innerHTML = shortTime;
+				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+				if( historyData.sender === mem_no ){
+					li.className += 'mem';
+					chat_message_wrapper.classList.add("chat_message_right");
+					var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
+					spanReadSts.innerHTML = readStsText;
+					span.appendChild(spanReadSts);
+				}else{
+					li.className += 'emp';
+				}
+				p.appendChild(span);
+				li.appendChild(p);
+				ul.appendChild(li);
+				chat_message_wrapper.appendChild(chat_user_avatar);
+				chat_message_wrapper.appendChild(ul);
+				chat_box.appendChild(chat_message_wrapper);
+			}
+			messagesArea.scrollTop = messagesArea.scrollHeight;
+		} else if ("chat" === jsonObj.type) {
+			var chat_message_wrapper = document.createElement('div');
+			chat_message_wrapper.classList.add("chat_message_wrapper");
+			
+			var chat_user_avatar = document.createElement('div');
+			chat_user_avatar.classList.add("chat_user_avatar");
+			
+			var img = document.createElement('img');
+			img.classList.add("md-user-image");
+			if( jsonObj.sender === mem_no ){
+				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
+			}else{
+				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
+			}
+			chat_user_avatar.appendChild(img);
+			
+			var ul = document.createElement('ul');
+			ul.classList.add("chat_message");
+			var li = document.createElement('li');
+			var p = document.createElement('p');
+			var span = document.createElement('span');
+			span.classList.add("chat_message_time");
+			var spanReadSts = document.createElement('span');
+					
+			var showMsg = jsonObj.message;
+			var timestamp = jsonObj.timestamp;
+			var readSts = jsonObj.readSts;
+			p.innerHTML = showMsg;
+			var dayTime = timestamp.substring(0,10);
+			p.setAttribute("title",dayTime);
+			var shortTime = timestamp.substring(11,18);
+			shortTime = shortTime.replace(/:$/, '');
+			span.innerHTML = shortTime;
+			// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+			if( jsonObj.sender === mem_no ){
+				li.className += 'mem';
+				chat_message_wrapper.classList.add("chat_message_right");
+				var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
+				spanReadSts.innerHTML = readStsText;
+				span.appendChild(spanReadSts);
+			}else{
+				li.className += 'emp';
+			}
+			p.appendChild(span);
+			li.appendChild(p);
+			ul.appendChild(li);
+			chat_message_wrapper.appendChild(chat_user_avatar);
+			chat_message_wrapper.appendChild(ul);
+			document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
+			messagesArea.scrollTop = messagesArea.scrollHeight;
+		}
+	};
+				
+	webSocket.onclose = function(event) {
+		console.log("Disconnected!");
+	}; --%>
 	</script>
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>

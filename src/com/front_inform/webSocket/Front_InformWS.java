@@ -17,7 +17,7 @@ import com.front_inform.model.*;
 import com.google.gson.Gson;
 
 
-@ServerEndpoint("/FrontInformWS/{userName}") 
+@ServerEndpoint("/Front_InformWS/{userName}") 
 public class Front_InformWS {
 	
 	pollingThread_FI thread1=new pollingThread_FI();
@@ -35,7 +35,6 @@ public class Front_InformWS {
 		thread.start(); // 開啟一個執行緒對資料庫中的資料進行輪詢
 	}
 
-	@OnMessage
 	public void onMessage(List<Front_InformVO> fiVOs) { // DB 傳來的物件
 		for(Front_InformVO fiVO : fiVOs) {
 			String mem_no = fiVO.getMem_no();
