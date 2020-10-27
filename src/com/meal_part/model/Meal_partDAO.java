@@ -22,6 +22,11 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			"select sum(fd_gw*cal)/100 cal, sum(fd_gw*prot)/100 prot,sum(fd_gw*carb)/100 carb,sum(fd_gw*fat)/100 fat from food f " + 
 			"join meal_part m on m.fd_no=f.fd_no " + 
 			"where m.meal_no=?";
+	private static final String GET_NUT_BY_MEAL_NO_STMT =
+			"select sum(fd_gw*cal*meal_qty)/100 cal, sum(fd_gw*prot*meal_qty)/100 prot,sum(fd_gw*carb*meal_qty)/100 carb,sum(fd_gw*fat*meal_qty)/100 fat from food f" +
+			"join meal_part mp on mp.fd_no=f.fd_no" +
+			"join meal_set_consist m on m.meal_no=mp.meal_no" +
+			"where m.meal_set_no=?";
 	private static DataSource ds = null;
 	static {
 		try {
@@ -46,7 +51,7 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			pstmt.executeUpdate();			
 			// Handle any driver errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
+			throw new RuntimeException("此餐點已有使用選擇的食材 ");
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
@@ -257,7 +262,6 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			map.put("prot", rs.getDouble(2));
 			map.put("carb", rs.getDouble(3));
 			map.put("fat", rs.getDouble(4));
-//			System.out.println(map.get("fat"));
 			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -290,7 +294,74 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 
 	@Override
 	public void insert(List<Meal_partVO> list, Connection con) {
-		// TODO Auto-generated method stub
-		
+		PreparedStatement pstmt = null;
+
+		for(Meal_partVO meal_partVO:list) {
+			try {
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(INSERT_STMT);
+				pstmt.setString(1, meal_partVO.getMeal_no());
+				pstmt.setString(2, meal_partVO.getFd_no());
+				pstmt.setDouble(3, meal_partVO.getFd_gw());
+				pstmt.executeUpdate();
+				con.commit();
+			} catch (SQLException se) {
+				try {
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "+ excep.getMessage());
+				}
+				throw new RuntimeException("A database error occured. " + se.getMessage());
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public Map<String, Double> get_nut_by_meal_set_no(String meal_set_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Map<String,Double> map=null;
+		try {
+			con = ds.getConnection();
+			map=new HashMap<String,Double>();
+			pstmt = con.prepareStatement(GET_NUT_BY_MEAL_NO_STMT);
+			pstmt.setString(1, meal_set_no);
+			rs = pstmt.executeQuery();
+			rs.next(); 
+			map.put("cal", rs.getDouble(1));
+			map.put("prot", rs.getDouble(2));
+			map.put("carb", rs.getDouble(3));
+			map.put("fat", rs.getDouble(4));
+			System.out.println(map.get("fat"));
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		return map;
 	}
 }
