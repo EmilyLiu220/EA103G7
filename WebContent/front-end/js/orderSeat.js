@@ -72,12 +72,13 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_All_Seat_People",
+			url: ajaxURL + "/res_order/ResOrderServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
 				"people": JSON.stringify(jsonDataStr),
+				"action":"get_All_Seat_People",
 			},
 			success: function(messages) {
 				// console.log(messages);
@@ -105,13 +106,14 @@ $(document).ready(function() {
 					$.ajax({
 						// url is servlet url, ?archive_seat is tell servlet execute which
 						// one judgment
-						url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_Res_Order_Today",
+						url: ajaxURL + "/res_order/ResOrderServlet.do?",
 						type: "post",
 						// synchronize is false
 						async: false,
 						data: {
 							"res_date": res_date,
 							"time_peri_no": time_peri_no,
+							"action":"get_Res_Order_Today"
 						},
 						success: function(messages) {
 							var jsonArray = JSON.parse(messages);
@@ -269,18 +271,19 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=floor_load",
+			url: ajaxURL + "/res_order/ResOrderServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
-				"floor": $("#floor_list").val()
+				"floor": $("#floor_list").val(),
+				"action":"floor_load",
 			},
 			success: function(messages) {
 				$("body > div#container.container").load(ajaxURL + "/front-end/res_order/orderSeat.jsp div#container.container");
-				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
+//				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
 				$.getScript(ajaxURL + "/front-end/js/orderSeat.js");
-				$.getScript(ajaxURL + "/js/sweetalert.min.js");
+//				$.getScript(ajaxURL + "/js/sweetalert.min.js");
 				// console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("div#container.container").empty();
@@ -366,12 +369,13 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/time_peri/TimePeriServlet.do?action=get_TimePeri",
+			url: ajaxURL + "/time_peri/TimePeriServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
-				"res_date": res_date
+				"res_date": res_date,
+				"action":"get_TimePeri",
 			},
 			success: function(messages) {
 				// console.log(messages);
@@ -408,13 +412,14 @@ $(document).ready(function() {
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
-			url: ajaxURL + "/res_order/ResOrderServlet.do?action=get_Res_Order_Today",
+			url: ajaxURL + "/res_order/ResOrderServlet.do?",
 			type: "post",
 			// synchronize is false
 			async: false,
 			data: {
 				"res_date": res_date,
 				"time_peri_no": time_peri_no,
+				"action":"get_Res_Order_Today",
 			},
 			success: function(messages) {
 				var jsonArray = JSON.parse(messages);
