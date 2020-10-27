@@ -11,5 +11,7 @@ public interface Front_InformDAO_interface{
 	public List<Front_InformVO> findByMemNo(String mem_no);
 	public void updateReadSts(String mem_no);
 	public List<Front_InformVO> findAll();
+	public Integer countData();
+	public List<Front_InformVO> findNew(Integer count);
 	
 }

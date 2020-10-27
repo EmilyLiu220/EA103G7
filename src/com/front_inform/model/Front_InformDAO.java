@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,13 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	
 	// 取得所有會員的各種通知
 	private static final String GET_ALL_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_DATE DESC";
+	
+	// 取得所有通知筆數
+	private static final String GET_ALL_COUNT = "SELECT COUNT(1) AS COUNT FROM FRONT_INFORM";
+
+	// 取得所有會員的最新通知
+	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_DATE";	
+	
 	
 	@Override
 	public void insertInfo(String mem_no, String info_cont) {
@@ -309,6 +317,97 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public Integer countData() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Integer count = 0 ;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_COUNT);
+			rs = pstmt.executeQuery();
+			rs.next();
+			count = rs.getInt("COUNT");
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public List<Front_InformVO> findNew(Integer count) {
+		List<Front_InformVO> list = new ArrayList<Front_InformVO>();
+		Front_InformVO front_informVO = null;
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = stmt.executeQuery(GET_NEW_STMT);
+			rs.absolute(count);
+			while (rs.next()) {
+				front_informVO = new Front_InformVO();
+				front_informVO.setInfo_no(rs.getString("INFO_NO"));
+				front_informVO.setMem_no(rs.getString("MEM_NO"));
+				front_informVO.setRes_no(rs.getString("RES_NO"));
+				front_informVO.setInfo_cont(rs.getString("INFO_CONT"));
+				front_informVO.setInfo_date(rs.getDate("INFO_DATE"));
+				front_informVO.setInfo_sts(rs.getInt("INFO_STS"));
+				front_informVO.setRead_sts(rs.getInt("READ_STS"));
+				list.add(front_informVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
 				}
