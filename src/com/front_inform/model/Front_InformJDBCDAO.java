@@ -18,6 +18,8 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	private static final String USER = "EA103G7";
 	private static final String PASSWORD = "123456";
 	
+	// 依據通知編號查詢通知
+	private static final String GET_BY_FINO = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE INFO_NO=?";
 	// 新增訂餐相關或停權通知 (一般不須回應的通知)
 	private static final String INFO_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, 0)"; 
 	// 新增訂位相關通知
@@ -40,7 +42,58 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	private static final String GET_ALL_COUNT = "SELECT COUNT(1) AS COUNT FROM FRONT_INFORM";
 	// 取得所有會員的最新通知
 	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO";	
-		
+	
+	@Override
+	public Front_InformVO findByFiNo(String info_no) {
+		Front_InformVO fiVO = new Front_InformVO();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName(DRIVER);
+			con = DriverManager.getConnection(URL, USER, PASSWORD);
+			pstmt = con.prepareStatement(GET_BY_FINO);
+			pstmt.setString(1, info_no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				fiVO.setInfo_no(rs.getString("INFO_NO"));
+				fiVO.setMem_no(rs.getString("MEM_NO"));
+				fiVO.setRes_no(rs.getString("RES_NO"));
+				fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs.getInt("READ_STS"));
+			}
+		} catch(ClassNotFoundException ce) {
+			throw new RuntimeException("Couldn't load database driver. "+ ce.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return fiVO;
+	}
+	
 	@Override
 	public Front_InformVO insertInfo(String mem_no, String info_cont) {
 		Connection con = null;
@@ -628,69 +681,81 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 		
 		Front_InformJDBCDAO dao = new Front_InformJDBCDAO();
 		
-		// 新增一般不須回應的通知
-		dao.insertInfo("MEM0035", "訂餐成功！您尚未付款，點選前往結帳");
-		dao.insertInfo("MEM0025", "訂餐成功！您尚未付款，點選前往結帳");
-		dao.insertInfo("MEM0030", "訂餐成功！您尚未付款，點選前往結帳");
-		
-		// 新增訂位成功通知
-		dao.insertFromRO("MEM0050", "RESO0010", "訂位成功，點選查看訂位明細");
-		
-		// 新增須回覆的通知 insertResCheInform(String res_no)
-		dao.insertResCheInform("RESO0008");
-		
-		// 大量新增 Inform_Set into Front_Inform
-		System.out.println(dao.insertManyIs("IS0001"));
-		
-		// 修改通知狀態
-		Front_InformVO front_informVO2 = new Front_InformVO();
-		front_informVO2.setInfo_no("FI0054");
-		front_informVO2.setInfo_sts(3);
-		dao.updateSts(front_informVO2);
-		
-		// 查詢 by mem_no
-		List<Front_InformVO> list1 = dao.findByMemNo("MEM0032");
-		for(Front_InformVO afiVO : list1) {
-			System.out.print(afiVO.getInfo_cont() + ", ");
-			System.out.print(afiVO.getInfo_date());
-			System.out.println();
-		}
+		// 依據 info_no 查詢通知
+		Front_InformVO fiVO = dao.findByFiNo("FI0004");
+		System.out.print(fiVO.getInfo_no() + ", ");
+		System.out.print(fiVO.getMem_no() + ", ");
+		System.out.print(fiVO.getRes_no() + ", ");
+		System.out.print(fiVO.getInfo_cont() + ", ");
+		System.out.print(fiVO.getInfo_date() + ", ");
+		System.out.print(fiVO.getInfo_sts() + ", ");
+		System.out.print(fiVO.getRead_sts());
+		System.out.println();
 		System.out.println("-----------------------------------------------------------------------------------");
 		
-		// 更新讀取狀態
-		dao.updateReadSts("FI0054");
-		
-		// 取得所有通知
-		List<Front_InformVO> list2 = dao.findAll();
-		for(Front_InformVO afiVO : list2) {
-			System.out.print(afiVO.getInfo_no() + ", ");
-			System.out.print(afiVO.getMem_no() + ", ");
-			System.out.print(afiVO.getRes_no() + ", ");
-			System.out.print(afiVO.getInfo_cont() + ", ");
-			System.out.print(afiVO.getInfo_date() + ", ");
-			System.out.print(afiVO.getInfo_sts() + ", ");
-			System.out.print(afiVO.getRead_sts());
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------------------------------------------------");
-	
-		// 查詢目前資料筆數
-		System.out.println(dao.countData());
-		System.out.println("-----------------------------------------------------------------------------------");
-		
-		// 取得所有新通知
-		List<Front_InformVO> list3 = dao.findNew(217);
-		for(Front_InformVO afiVO : list3) {
-			System.out.print(afiVO.getInfo_no() + ", ");
-			System.out.print(afiVO.getMem_no() + ", ");
-			System.out.print(afiVO.getRes_no() + ", ");
-			System.out.print(afiVO.getInfo_cont() + ", ");
-			System.out.print(afiVO.getInfo_date() + ", ");
-			System.out.print(afiVO.getInfo_sts() + ", ");
-			System.out.print(afiVO.getRead_sts());
-			System.out.println();
-		}
-		System.out.println("-----------------------------------------------------------------------------------");
+//		// 新增一般不須回應的通知
+//		dao.insertInfo("MEM0035", "訂餐成功！您尚未付款，點選前往結帳");
+//		dao.insertInfo("MEM0025", "訂餐成功！您尚未付款，點選前往結帳");
+//		dao.insertInfo("MEM0030", "訂餐成功！您尚未付款，點選前往結帳");
+//		
+//		// 新增訂位成功通知
+//		dao.insertFromRO("MEM0050", "RESO0010", "訂位成功，點選查看訂位明細");
+//		
+//		// 新增須回覆的通知 insertResCheInform(String res_no)
+//		dao.insertResCheInform("RESO0008");
+//		
+//		// 大量新增 Inform_Set into Front_Inform
+//		System.out.println(dao.insertManyIs("IS0001"));
+//		
+//		// 修改通知狀態
+//		Front_InformVO front_informVO2 = new Front_InformVO();
+//		front_informVO2.setInfo_no("FI0054");
+//		front_informVO2.setInfo_sts(3);
+//		dao.updateSts(front_informVO2);
+//		
+//		// 查詢 by mem_no
+//		List<Front_InformVO> list1 = dao.findByMemNo("MEM0032");
+//		for(Front_InformVO afiVO : list1) {
+//			System.out.print(afiVO.getInfo_cont() + ", ");
+//			System.out.print(afiVO.getInfo_date());
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
+//		
+//		// 更新讀取狀態
+//		dao.updateReadSts("FI0054");
+//		
+//		// 取得所有通知
+//		List<Front_InformVO> list2 = dao.findAll();
+//		for(Front_InformVO afiVO : list2) {
+//			System.out.print(afiVO.getInfo_no() + ", ");
+//			System.out.print(afiVO.getMem_no() + ", ");
+//			System.out.print(afiVO.getRes_no() + ", ");
+//			System.out.print(afiVO.getInfo_cont() + ", ");
+//			System.out.print(afiVO.getInfo_date() + ", ");
+//			System.out.print(afiVO.getInfo_sts() + ", ");
+//			System.out.print(afiVO.getRead_sts());
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
+//	
+//		// 查詢目前資料筆數
+//		System.out.println(dao.countData());
+//		System.out.println("-----------------------------------------------------------------------------------");
+//		
+//		// 取得所有新通知
+//		List<Front_InformVO> list3 = dao.findNew(217);
+//		for(Front_InformVO afiVO : list3) {
+//			System.out.print(afiVO.getInfo_no() + ", ");
+//			System.out.print(afiVO.getMem_no() + ", ");
+//			System.out.print(afiVO.getRes_no() + ", ");
+//			System.out.print(afiVO.getInfo_cont() + ", ");
+//			System.out.print(afiVO.getInfo_date() + ", ");
+//			System.out.print(afiVO.getInfo_sts() + ", ");
+//			System.out.print(afiVO.getRead_sts());
+//			System.out.println();
+//		}
+//		System.out.println("-----------------------------------------------------------------------------------");
 	
 	}
 

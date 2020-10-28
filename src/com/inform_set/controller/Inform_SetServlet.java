@@ -15,10 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.emp.model.EmpService;
-import com.emp.model.EmpVO;
-import com.inform_set.model.Inform_SetService;
-import com.inform_set.model.Inform_SetVO;
+import com.emp.model.*;
+import com.front_inform.model.*;
+import com.inform_set.model.*;
 
 public class Inform_SetServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -604,6 +603,14 @@ public class Inform_SetServlet extends HttpServlet {
 				/***************************2.開始新增資料***************************************/
 				Inform_SetService isSvc = new Inform_SetService();
 				isVO = isSvc.addIs(emp_no, is_cont, is_date);
+				
+				// 若使用者輸入的時間為今日，則會直接執行由 Inform_Set table 輸入至 Front_Inform table 的動作
+				java.util.Date today = new java.util.Date();
+				java.sql.Date sqlToday = new java.sql.Date(today.getTime());
+				if(is_date.getTime() == sqlToday.getTime()) {
+					Front_InformService fiSvc = new Front_InformService();
+					fiSvc.addISToAll(isVO.getIs_no());
+				}
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back-end/inform_set/listAll_is.jsp";

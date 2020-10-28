@@ -12,6 +12,10 @@ public class Front_InformService {
 		dao = new Front_InformDAO();
 	}
 	
+	public Front_InformVO getByInfoNo(String info_no) {
+		return dao.findByFiNo(info_no);
+	}
+	
 	public void addNormalFI(String mem_no, String info_cont) { 
 		// 由 res_order 的 controller，在符合的動作區塊內去 new 這支 Service 並使用此方法
 		// info_cont="訂餐成功！您尚未付款，點選前往結帳" 或 "您已成功付款，點選查看訂單明細" 或 "您的餐點已完成，請至本餐廳取餐" 或 "您的訂單已取消"
@@ -49,8 +53,6 @@ public class Front_InformService {
 	}
 	
 	public void addISToAll(String is_no) {
-		// 寫一支額外的排程器，每一個小時掃一次 DB 的訂位訂單表格時間，若時間 +6 為該次掃 DB 的時間，
-		// 則 new Front_InformService 並 call 此方法去新增並發出通知
 		List<Front_InformVO> fiVOs = dao.insertManyIs(is_no);
 		if(!fiVOs.isEmpty()) {
 			Front_InformWS fiWS = new Front_InformWS();
@@ -58,21 +60,29 @@ public class Front_InformService {
 		}
 	}
 	
-	// 動作後如果狀態是取消 → 要 insert 新的通知('您的訂位已取消')到 Front_Inform 表格內
-	public void updateSts(Integer info_sts, String info_no) {
-		List<Front_InformVO> fiVOs = new ArrayList<Front_InformVO>();
+	public boolean updateSts(Integer info_sts, String info_no) {
 		Front_InformVO fiVO = new Front_InformVO();
 		fiVO.setInfo_sts(info_sts);
 		fiVO.setInfo_no(info_no);
-		dao.updateSts(fiVO);
+		int check = dao.updateSts(fiVO);
+		if(check>0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public List<Front_InformVO> getMyInform(String mem_no){
 		return dao.findByMemNo(mem_no);
 	}
 	
-	public void updateReadSts(String mem_no) {
-		dao.updateReadSts(mem_no);
+	public boolean updateReadSts(String mem_no) {
+		int check = dao.updateReadSts(mem_no);
+		if(check>0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public List<Front_InformVO> getAllInform() {

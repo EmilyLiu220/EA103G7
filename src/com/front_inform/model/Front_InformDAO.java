@@ -26,6 +26,8 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 		}
 	}
 	
+	// 依據通知編號查詢通知
+	private static final String GET_BY_FINO = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE INFO_NO=?";
 	// 新增訂餐相關或停權通知 (一般不須回應的通知)
 	private static final String INFO_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, 0)"; 
 	// 新增訂位相關通知
@@ -49,6 +51,54 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	// 取得所有會員的最新通知
 	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO";	
 	
+	@Override
+	public Front_InformVO findByFiNo(String info_no) {
+		Front_InformVO fiVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_BY_FINO);
+			pstmt.setString(1, info_no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				fiVO = new Front_InformVO();
+				fiVO.setInfo_no(rs.getString("INFO_NO"));
+				fiVO.setMem_no(rs.getString("MEM_NO"));
+				fiVO.setRes_no(rs.getString("RES_NO"));
+				fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs.getInt("READ_STS"));
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return fiVO;
+	}
 	
 	@Override
 	public Front_InformVO insertInfo(String mem_no, String info_cont) {
@@ -272,8 +322,8 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_IS_STMT);
 			// 取得該 is_no 的 is_cont
-			Inform_SetDAO isDao = new Inform_SetDAO();
-			Inform_SetVO isVO = isDao.findByIsNo(is_no);
+			Inform_SetService isSvc = new Inform_SetService();
+			Inform_SetVO isVO = isSvc.getOneIs(is_no);
 			// 取得所有 _mem_no
 			MemService memSvc = new MemService();
 			List<MemVO> memVOs = memSvc.getAll();

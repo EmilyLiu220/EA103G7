@@ -110,16 +110,19 @@ public class Front_informServlet extends HttpServlet {
 					return; // 此區塊代表有錯誤，會導回去，程式中斷
 				}
 				
-				Front_InformService front_informSvc = new Front_InformService();
+				Front_InformService fiSvc = new Front_InformService();
 				// 取得該會員回應「需回覆之通知」的結果
 				String checkYes = req.getParameter("checkYes");
 				String checkNo = req.getParameter("checkNo");
 				
 				if(checkYes!=null) { // 勾選確定來吃
-					front_informSvc.updateSts(1, info_no);;
+					fiSvc.updateSts(1, info_no);
 				}
 				if(checkNo!=null) { // 勾選不來吃
-					front_informSvc.updateSts(3, info_no);;
+					boolean check = fiSvc.updateSts(3, info_no);
+					if(check) {
+						fiSvc.addROFI(mem_no, fiSvc.getByInfoNo(info_no).getRes_no(), "您已取消訂位");
+					}
 				}
 				
 			} catch (Exception e) {

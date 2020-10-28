@@ -4,6 +4,8 @@ import java.util.*;
 
 public interface Front_InformDAO_interface{
 	
+	public Front_InformVO findByFiNo(String info_no);
+	
 	// 新增或修改時，會回傳新增或修改的筆數，以此判斷是否呼叫 webSocket 執行推播動作
 	public Front_InformVO insertInfo(String mem_no, String info_cont);
 	public Front_InformVO insertFromRO(String mem_no, String res_no, String info_cont);
