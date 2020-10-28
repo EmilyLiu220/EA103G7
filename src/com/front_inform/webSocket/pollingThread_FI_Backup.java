@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.front_inform.model.*;
 
-public class pollingThread_FI implements Runnable {
+public class pollingThread_FI_Backup implements Runnable {
 	
     private Integer count;
     private Integer new_count;

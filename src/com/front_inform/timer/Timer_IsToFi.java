@@ -23,14 +23,20 @@ public class Timer_IsToFi extends TimerTask {
 		java.util.Date now = new java.util.Date(); // 取得當日日期
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 		String today = fmt.format(now);
-		List<Inform_SetVO> isVOs = isSvc.getAll(); // 取得當日通知 VO
+		List<Inform_SetVO> isVOs = isSvc.getIsByDate(today, today); // 取得當日通知 VO
 		List<MemVO> memVOs = memSvc.getAll(); // 取得所有會員 VO
 		for( Inform_SetVO isVO : isVOs ) { // 其實每天只會有一則
 			if(today.equals(isVO.getIs_date().toString())) {
 				String is_cont = isVO.getIs_cont();
 				for(MemVO memVO : memVOs) {
 					String mem_no = memVO.getMem_no(); // 取得會員編號
+					
+					
+					/***** 待修改成 batch insert 版 *****/
 					fiSvc.addNormalFI(mem_no, is_cont);
+					
+					
+					
 				}
 			}
 		}

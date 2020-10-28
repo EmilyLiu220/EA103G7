@@ -13,6 +13,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.inform_set.model.Inform_SetService;
+import com.inform_set.model.Inform_SetVO;
+import com.mem.model.MemService;
+import com.mem.model.MemVO;
+
 public class Front_InformDAO implements Front_InformDAO_interface {
 	private static DataSource ds = null;
 	static {
@@ -35,6 +40,9 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	// '您預約今日 '+ ? +' 用餐，是否確認今日用餐？'
 	private static final String RCHECK_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,RES_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, ?, 2)"; // 訂位確認
 	
+	// 大量新增 From Inform_Set to Front_Inform
+	private static final String INSERT_IS_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, 0)";
+	
 	// 更新通知狀態
 	private static final String UPDATE_INFO_STS_STMT = "UPDATE FRONT_INFORM SET INFO_STS=? WHERE INFO_NO=?";
 	
@@ -55,9 +63,10 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	
 	
 	@Override
-	public void insertInfo(String mem_no, String info_cont) {
+	public Integer insertInfo(String mem_no, String info_cont) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		Integer insertNum = 0;
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INFO_STMT);
@@ -67,7 +76,7 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 			// '提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉功能將於 7 天後恢復'
 			// or '訂餐成功！您尚未付款，點選前往結帳'、'您已成功付款，點選查看訂單明細'、'您的訂單已取消'、'您的餐點已完成，請至本餐廳取餐'
 			pstmt.setString(2, info_cont); 
-			pstmt.executeUpdate();
+			insertNum += pstmt.executeUpdate();
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
@@ -86,12 +95,14 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
+		return insertNum;
 	}
 
 	@Override
-	public void insertFromRO(String mem_no, String res_no, String info_cont) {
+	public Integer insertFromRO(String mem_no, String res_no, String info_cont) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		Integer insertNum = 0;
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(RO_STMT);
@@ -99,7 +110,7 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 			pstmt.setString(2, res_no);
 			// '訂位成功，點選查看訂位明細'、'您的訂位已取消'
 			pstmt.setString(3, info_cont);
-			pstmt.executeUpdate();
+			insertNum += pstmt.executeUpdate();
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
@@ -118,14 +129,16 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
+		return insertNum;
 	}
 
 	@Override
-	public void insertResCheInform(String res_no) {
+	public Integer insertResCheInform(String res_no) {
 		Connection con = null;
 		PreparedStatement pstmt1 = null;
 		ResultSet rs = null;		
 		PreparedStatement pstmt2 = null;
+		Integer insertNum = 0;
 		try {
 			con = ds.getConnection();
 			pstmt1 = con.prepareStatement(GET_TIME);
@@ -137,7 +150,7 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 				pstmt2.setString(1, rs.getString("MEM_NO"));
 				pstmt2.setString(2, res_no);
 				pstmt2.setString(3, "您預約今日 "+ rs.getString("TIME_START") + " 用餐，是否確認今日用餐？");
-				pstmt2.executeUpdate();
+				insertNum += pstmt2.executeUpdate();
 			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
@@ -171,18 +184,39 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
+		return insertNum;
 	}
 	
 	@Override
-	public void updateSts(Front_InformVO front_informVO) {
+	public Integer insertManyIs(String is_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		Integer insertNum = 0;
 		try {
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_INFO_STS_STMT);
-			pstmt.setInt(1, front_informVO.getInfo_sts());
-			pstmt.setString(2, front_informVO.getInfo_no());
-			pstmt.executeUpdate();
+			pstmt = con.prepareStatement(INSERT_IS_STMT);
+			// 取得該 is_no 的 is_cont
+			Inform_SetService isSvc = new Inform_SetService();
+			Inform_SetVO isVO = isSvc.getOneIs(is_no);
+			// 取得所有 _mem_no
+			MemService memSvc = new MemService();
+			List<MemVO> memVOs = memSvc.getAll();
+			for( MemVO memVO : memVOs ) {
+				pstmt.setString(1, memVO.getMem_no());
+				pstmt.setString(2, isVO.getIs_cont());
+				pstmt.addBatch();
+			}
+			int success = pstmt.executeBatch().length;
+	        if (success == memVOs.size()) {
+	        	insertNum += pstmt.executeUpdate();
+	        }
+	        if (success > 0 && success < memVOs.size()){
+	        	System.err.println("The number of successful { " + success + " }");
+	        	insertNum += success;
+	        }
+	        if (insertNum < 1) {
+	        	throw new SQLException("sql:{} On failure.", pstmt.toString());
+	        }
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
@@ -201,6 +235,39 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
+		return insertNum;
+	}
+	
+	@Override
+	public Integer updateSts(Front_InformVO front_informVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		Integer updateNum = 0;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_INFO_STS_STMT);
+			pstmt.setInt(1, front_informVO.getInfo_sts());
+			pstmt.setString(2, front_informVO.getInfo_no());
+			updateNum += pstmt.executeUpdate();
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "+ se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return updateNum;
 	}
 
 	@Override
@@ -254,14 +321,15 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	}
 
 	@Override
-	public void updateReadSts(String mem_no) {
+	public Integer updateReadSts(String mem_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		Integer updateNum = 0;
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE_READ_STS);
 			pstmt.setString(1, mem_no);
-			pstmt.executeUpdate();
+			updateNum += pstmt.executeUpdate();
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
@@ -280,6 +348,7 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
+		return updateNum;
 	}
 
 	@Override

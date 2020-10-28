@@ -20,8 +20,9 @@ import com.google.gson.Gson;
 @ServerEndpoint("/Front_InformWS/{userName}") 
 public class Front_InformWS {
 	
-	pollingThread_FI thread1=new pollingThread_FI();
-    Thread thread=new Thread(thread1);
+//	pollingThread_FI_Backup thread1=new pollingThread_FI_Backup();
+//    Thread thread=new Thread(thread1);
+	
 	private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
 	Gson gson = new Gson();
 	
@@ -32,7 +33,7 @@ public class Front_InformWS {
 		// 取得所有使用者
 		Set<String> userNames = sessionsMap.keySet();
 		// keySet() 可以把 Map 裡所有 key 的資料取出來，直接取得一個 Set 類別存放取出的資料
-		thread.start(); // 開啟一個執行緒對資料庫中的資料進行輪詢
+//		thread.start(); // 開啟一個執行緒對資料庫中的資料進行輪詢
 	}
 
 	public void onMessage(List<Front_InformVO> fiVOs) { // DB 傳來的物件
@@ -57,7 +58,8 @@ public class Front_InformWS {
 	@OnClose // 使用者視窗關閉
 	public void onClose(Session userSession, CloseReason reason) {
 		// 停止輪詢 DB 的執行緒
-		thread1.stopMe();
+//		thread1.stopMe();
+		
 		String userNameClose = null;
 		Set<String> userNames = sessionsMap.keySet(); // 取得所有 users
 		for (String userName : userNames) {
@@ -67,7 +69,8 @@ public class Front_InformWS {
 				break;
 			}
 		}
-		String text = String.format("session ID = %s, disconnected; close code = %d%nusers: %s", userSession.getId(), reason.getCloseCode().getCode(), userNames);
+		String text = String.format("session ID = %s, disconnected; close code = %d%nusers: %s", 
+				userSession.getId(), reason.getCloseCode().getCode(), userNames);
 		System.out.println(text);
 	}
 }

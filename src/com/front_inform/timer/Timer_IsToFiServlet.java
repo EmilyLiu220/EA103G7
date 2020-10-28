@@ -18,21 +18,19 @@ public class Timer_IsToFiServlet extends HttpServlet {
 	TimerTask task = new Timer_IsToFi();
 	public void init() {
     	java.util.Timer clock1 = new java.util.Timer();
-//    	java.sql.Date sqlDate = java.sql.Date.valueOf("2020-10-26");
-//    	java.util.Date firstRun = new java.util.Date(sqlDate.getTime());
-//    	// 從 "2020-10-26" 開始，每 24 小時執行一次
-//    	clock1.scheduleAtFixedRate(task, firstRun, period);
     	long delay1 = 1 * 1000;
     	long period = 86400000; // 24 小時
-    	// 從現在開始 1 秒鐘之後，每隔 24 小時執行一次 
+    	// 從現在開始的 1 秒後，每 24 小時會執行一次此排程器，將當日的通知設定 insert 進前台通知裡
     	clock1.schedule(task, delay1, period);
     }
     
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
