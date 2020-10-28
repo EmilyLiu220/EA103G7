@@ -4,10 +4,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.ad.model.*"%>
+
+// 	AdService adSvc = new AdService();
+// 	List<AdVO> list = adSvc.getAll();
+// 	pageContext.setAttribute("list", list);
+
+
 <%
-	AdService adSvc = new AdService();
-	List<AdVO> list = adSvc.getAll();
-	pageContext.setAttribute("list", list);
+	AdService adSvc = new AdService(); 
+     List<AdVO> list = adSvc.find_adsts(0); 
+     request.setAttribute("list",list);
+//      String mem_no = "MEM0001";				//模擬假資料
+//      session.setAttribute("mem_no",mem_no);	//模擬假資料
+//      String emp_no = "EMP0002";				//模擬假資料
+//      session.setAttribute("emp_no",emp_no);	//模擬假資料
+//      String res_no = "RESO0001";
+//      request.setAttribute("res_no", res_no);
 %>
 <html>
 

@@ -34,7 +34,8 @@
 <!-- Scrollbar Custom CSS -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.css" />
 
 
 
@@ -238,6 +239,7 @@ img {
 					<th>起始日期</th>
 					<th>結束日期</th>
 					<th>廣告圖片</th>
+					<th>廣告狀態</th>
 				</tr>
 
 				<%@ include file="page1.file"%>
@@ -253,7 +255,12 @@ img {
 						<td style="width: 100px;">${adVO.ad_re_date}</td>
 						<td><img
 							src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"></td>
-
+						<c:if test="${adVO.ad_sts == 0}">
+							<td>已下架</td>
+						</c:if>
+						<c:if test="${adVO.ad_sts == 1}">
+							<td>上架中</td>
+						</c:if>
 						<td>
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/ad/ad.do"
@@ -272,52 +279,172 @@ img {
 									type="hidden" name="action" value="delete">
 							</FORM>
 						</td>
+<!-- 						<td> -->
+<!-- 							<FORM METHOD="post" -->
+<%-- 								ACTION="<%=request.getContextPath()%>/ad/ad.do" --%>
+<!-- 								style="margin-bottom: 0px;"> -->
+<!-- 								<button type="button" class="btn1 btn btn-outline-secondary" -->
+<!-- 									name="up">上架</button> -->
+<%-- 								<input type="hidden" name="ad_no" value="${adVO.ad_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="upad"> -->
+<!-- 							</FORM> -->
+<!-- 						</td> -->
+<!-- 						<td> -->
+<!-- 							<FORM METHOD="post" -->
+<%-- 								ACTION="<%=request.getContextPath()%>/ad/ad.do" --%>
+<!-- 								style="margin-bottom: 0px;"> -->
+<!-- 								<button type="button" class="btn2 btn btn-outline-secondary" -->
+<!-- 									name="down">下架</button> -->
+<%-- 								<input type="hidden" name="ad_no" value="${adVO.ad_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="downad"> -->
+<!-- 							</FORM> -->
+<!-- 						</td> -->
 					</tr>
 				</c:forEach>
 			</table>
 			<%@ include file="page2.file"%>
 		</div>
 	</div>
-
-	<!-- jQuery CDN - Slim version (=without AJAX) -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<!-- Popper.JS -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-		integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-		crossorigin="anonymous"></script>
-	<!-- Bootstrap JS -->
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-		integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-		crossorigin="anonymous"></script>
-	<!-- jQuery Custom Scroller CDN -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#sidebar").mCustomScrollbar({
-				theme : "minimal"
-			});
-
-			$('#sidebarCollapse').on('click', function() {
-				$('#sidebar, #content').toggleClass('active');
-				$('.collapse.in').toggleClass('in');
-				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
-			});
-		});
-	</script>
-	<!-- Font Awesome JS -->
-	<script defer
-		src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
-		integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-		crossorigin="anonymous"></script>
-	<script defer
-		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
-		integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-		crossorigin="anonymous"></script>
 </body>
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+	integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+	crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+	integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+	crossorigin="anonymous"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#sidebar").mCustomScrollbar({
+			theme : "minimal"
+		});
+
+		$('#sidebarCollapse').on('click', function() {
+			$('#sidebar, #content').toggleClass('active');
+			$('.collapse.in').toggleClass('in');
+			$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+		});
+	});
+</script>
+<!-- Font Awesome JS -->
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+	integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+	crossorigin="anonymous"></script>
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+	crossorigin="anonymous"></script>
+
+<script>
+	// 	$.datetimepicker.setLocale('zh'); // kr ko ja en
+	// 	$(function() {
+	// 		$('#uptime').datetimepicker(
+	// 				{
+	// 					format : 'Y-m-d',
+	// 					onShow : function() {
+	// 						this.setOptions({
+	// 							maxDate : $('#downtime').val() ? $('#downtime')
+	// 									.val() : false
+	// 						})
+	// 					},
+	// 					timepicker : false
+	// 				});
+
+	// 		$('#downtime').datetimepicker({
+	// 			format : 'Y-m-d',
+	// 			onShow : function() {
+	// 				this.setOptions({
+	// 					minDate : $('#uptime').val() ? $('#uptime').val() : false
+	// 				})
+	// 			},
+	// 			timepicker : false
+	// 		});
+	// 	});
+
+	//立即上架
+// 	$(".btn1").click(function() {
+// 		var ad_no = $(this).nextAll("[name='ad_no']");
+// 		var ad_sts = $(this).parents("tr").children("#ad_sts");
+// 		var ads = ad_sts.children("[name='ad_sts']").val();
+// 		//		console.log(ads);
+// 		if (ads === '1') {
+
+// 		}
+// 		if (ads === '2') {
+
+// 		}
+// 		if (ads === '0') {
+
+// 			$.ajax({
+// 				type : "POST",
+// 				url : "${pageContext.request.contextPath}/ad/ad.do",
+// 				data : {
+// 					action : "upad",
+// 					ad_no : ad_no.val(),
+// 				},
+// 				success : function() {
+// 				},
+// 				error : function() {
+// 					alert("AJAX-grade發生錯誤囉!")
+// 				}
+// 			});
+// 		}
+// 	});
+
+// 	//立即下架 
+// 	$(".btn2").click(function() {
+// 		var ad_no = $(this).nextAll("[name='ad_no']");
+// 		var ad_sts = $(this).parents("tr").children("#adStatus");
+// 		var ads = ad_sts.children("[name='ad_sts']").val();
+// 		if (ads === '1') {
+// 			$.ajax({
+// 				type : "POST",
+// 				url : "${pageContext.request.contextPath}/ad/ad.do",
+// 				data : {
+// 					action : "downad",
+// 					ad_no : ad_no.val(),
+// 				},
+// 				success : function() {
+// 				},
+// 				error : function() {
+// 					alert("AJAX-grade發生錯誤囉!")
+// 				}
+// 			});
+// 		}
+// 		if (ads === '2') {
+
+// 		}
+// 		if (ads === '0') {
+
+// 			$.ajax({
+// 				type : "POST",
+// 				url : "${pageContext.request.contextPath}/ad/ad.do",
+// 				data : {
+// 					action : "downad",
+// 					ad_no : ad_no.val(),
+// 				},
+// 				success : function() {
+// 				},
+// 				error : function() {
+// 					alert("AJAX-grade發生錯誤囉!")
+// 				}
+// 			});
+// 		}
+// 	});
+</script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.js"
+	type="text/javascript"></script>
 </html>
