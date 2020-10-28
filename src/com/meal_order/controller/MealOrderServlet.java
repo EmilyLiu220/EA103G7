@@ -44,6 +44,18 @@ public class MealOrderServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 
 		String action = req.getParameter("action");
+		String reqURL = req.getParameter("reqURL");
+		String whichPage = req.getParameter("whichPage");
+		String returnPath = reqURL;
+		if (whichPage != null) {
+			returnPath = reqURL + "?whichPage=" + whichPage;
+		}
+
+		if ((reqURL == null || req.getParameter("queryString") != null)
+				&& !("null".equals(req.getParameter("queryString")))) {
+			returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+					+ req.getParameter("queryString");
+		}
 		Vector<MealVO> mealList = (Vector) session.getAttribute("mealList");
 		Vector<MealSetVO> setList = (Vector) session.getAttribute("setList");
 		Vector<MealVO> rsvMealList = (Vector<MealVO>) session.getAttribute("rsvMealList");
@@ -237,9 +249,9 @@ public class MealOrderServlet extends HttpServlet {
 		}
 
 		if ("update".equals(action)) {
-			String reqURL = req.getParameter("reqURL");
-			String whichPage = req.getParameter("whichPage");
-			String returnPath = reqURL;
+//			String reqURL = req.getParameter("reqURL");
+//			String whichPage = req.getParameter("whichPage");
+//			String returnPath = reqURL;
 
 			String mealOrderNo = (String) req.getParameter("meal_order_no");
 			Integer mealOrderSts = new Integer(req.getParameter("meal_order_sts"));
@@ -256,21 +268,23 @@ public class MealOrderServlet extends HttpServlet {
 
 			Map<String, Object> pushMsg = new HashMap<>();
 			pushMsg.put("mealOrderVO", mealOrderVO);
-			pushMsg.put("action", "update");
+			if(mealOrderVO.getMeal_order_sts()==2) {
+			pushMsg.put("action", "prepared");
+			}
 			pushMsg.put("detailList", detailList);
 			String jsonMap = gson.toJson(pushMsg);
 			webSocket.onMessage(jsonMap);
 
-			if (whichPage != null) {
-				returnPath = reqURL + "?whichPage=" + whichPage;
-			}
-
-			if ((reqURL == null || req.getParameter("queryString") != null)
-					&& !(req.getParameter("queryString").equals("null"))) {
-				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
-						+ req.getParameter("queryString");
-			}
-
+//			if (whichPage != null) {
+//				returnPath = reqURL + "?whichPage=" + whichPage;
+//			}
+//
+//			if ((reqURL == null || req.getParameter("queryString") != null)
+//					&& !(req.getParameter("queryString").equals("null"))) {
+//				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+//						+ req.getParameter("queryString");
+//			}
+			req.setAttribute("action", action);
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = returnPath;
@@ -301,24 +315,24 @@ public class MealOrderServlet extends HttpServlet {
 //			System.out.println(req.getParameter("queryString"));
 //			System.out.println(req.getRequestURI());
 //			System.out.println(req.getRequestURL());
-			String reqURL = req.getParameter("reqURL");
-			String whichPage = null;
-			if (req.getParameter("whichPage") != null) {
-				whichPage = req.getParameter("whichPage");
-			}
-			String returnPath = reqURL;
+//			String reqURL = req.getParameter("reqURL");
+//			String whichPage = null;
+//			if (req.getParameter("whichPage") != null) {
+//				whichPage = req.getParameter("whichPage");
+//			}
+//			String returnPath = reqURL;
 			String mealOrderNo = req.getParameter("meal_order_no");
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
-			if (whichPage != null) {
-				returnPath = reqURL + "?whichPage=" + whichPage;
-			}
-			if ((reqURL == null || req.getParameter("queryString") != null)
-					&& !(req.getParameter("queryString").equals("null"))) {
-				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
-						+ req.getParameter("queryString");
-			}
+//			if (whichPage != null) {
+//				returnPath = reqURL + "?whichPage=" + whichPage;
+//			}
+//			if ((reqURL == null || req.getParameter("queryString") != null)
+//					&& !(req.getParameter("queryString").equals("null"))) {
+//				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+//						+ req.getParameter("queryString");
+//			}
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "/back-end/mealOrder/listOneOrder.jsp";
@@ -327,24 +341,24 @@ public class MealOrderServlet extends HttpServlet {
 		}
 		
 		if ("memOrder".equals(action)) {
-			String reqURL = req.getParameter("reqURL");
-			String whichPage = null;
-			if (req.getParameter("whichPage") != null) {
-				whichPage = req.getParameter("whichPage");
-			}
-			String returnPath = reqURL;
+//			String reqURL = req.getParameter("reqURL");
+//			String whichPage = null;
+//			if (req.getParameter("whichPage") != null) {
+//				whichPage = req.getParameter("whichPage");
+//			}
+//			String returnPath = reqURL;
 			String mealOrderNo = req.getParameter("meal_order_no");
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
-			if (whichPage != null) {
-				returnPath = reqURL + "?whichPage=" + whichPage;
-			}
-			if ((reqURL == null || req.getParameter("queryString") != null)
-					&& !(req.getParameter("queryString").equals("null"))) {
-				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
-						+ req.getParameter("queryString");
-			}
+//			if (whichPage != null) {
+//				returnPath = reqURL + "?whichPage=" + whichPage;
+//			}
+//			if ((reqURL == null || req.getParameter("queryString") != null)
+//					&& !(req.getParameter("queryString").equals("null"))) {
+//				returnPath = req.getServletPath() + "?whichPage=" + whichPage + "&action="
+//						+ req.getParameter("queryString");
+//			}
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "/front-end/shopping/mealOrderOne.jsp";

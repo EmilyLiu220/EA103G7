@@ -275,7 +275,7 @@ margin-right: auto;
     						<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 1}">
     														<input type="submit" value="派工製作"/>
     														<input type="hidden" name="action" value="update"/>
-    														<input type="hidden" name="queryString" value="asignQuery"/>
+    														<input type="hidden" name="queryString" value="<%= request.getAttribute("action")%>"/>
     														<input type="hidden" name="reqURL" value="<%= request.getServletPath()%>"/>
     														<input type="hidden" name="whichPage" value="<%= whichPage%>"/>
     														<input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>
