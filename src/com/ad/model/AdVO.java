@@ -10,6 +10,7 @@ public class AdVO implements java.io.Serializable {
 	private Date ad_add_date;
 	private Date ad_re_date;
 	private byte[] ad_img;
+	private Integer ad_sts;
 
 	public String getAd_no() {
 		return ad_no;
@@ -65,6 +66,14 @@ public class AdVO implements java.io.Serializable {
 
 	public void setAd_img(byte[] ad_img) {
 		this.ad_img = ad_img;
+	}
+
+	public Integer getAd_sts() {
+		return ad_sts;
+	}
+
+	public void setAd_sts(Integer ad_sts) {
+		this.ad_sts = ad_sts;
 	}
 
 }
