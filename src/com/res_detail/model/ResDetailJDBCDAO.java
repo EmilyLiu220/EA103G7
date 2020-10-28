@@ -301,6 +301,12 @@ public class ResDetailJDBCDAO implements ResDetailDAO_interface {
 		return list;
 	}
 
+	@Override
+	public void delete(String res_no, String seats_no[], Connection outer_con) {
+		// TODO Auto-generated method stub
+		
+	}
+
 //	public static void main(String[] args) {
 //
 //		ResDetailJDBCDAO dao = new ResDetailJDBCDAO();

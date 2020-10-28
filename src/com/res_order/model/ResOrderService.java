@@ -11,7 +11,7 @@ public class ResOrderService {
 	}
 
 	public String addResOrder(String meal_order_no, String mem_no, String emp_no, java.sql.Date res_date,
-			Integer people, String time_peri_no, Integer info_sts, Integer seat_sts, String seats_no[]) {
+			Integer people, String time_peri_no, Integer info_sts, Integer seat_sts, String[] seats_no) {
 
 		ResOrderVO resOrderVO = new ResOrderVO();
 
@@ -30,8 +30,7 @@ public class ResOrderService {
 	}
 
 	public ResOrderVO updateResOrder(String res_no, String meal_order_no, String mem_no, String emp_no,
-			java.sql.Timestamp res_time, java.sql.Date res_date, Integer people, String time_peri_no, Integer info_sts,
-			Integer seat_sts) {
+			java.sql.Date res_date, Integer people, String time_peri_no, Integer info_sts, Integer seat_sts, String[] seats_no) {
 
 		ResOrderVO resOrderVO = new ResOrderVO();
 
@@ -39,14 +38,13 @@ public class ResOrderService {
 		resOrderVO.setMeal_order_no(meal_order_no);
 		resOrderVO.setMem_no(mem_no);
 		resOrderVO.setEmp_no(emp_no);
-		resOrderVO.setRes_time(res_time);
 		resOrderVO.setRes_date(res_date);
 		resOrderVO.setPeople(people);
 		resOrderVO.setTime_peri_no(time_peri_no);
 		resOrderVO.setInfo_sts(info_sts);
 		resOrderVO.setSeat_sts(seat_sts);
 
-		dao.update(resOrderVO);
+		dao.update(resOrderVO, seats_no);
 
 		return resOrderVO;
 

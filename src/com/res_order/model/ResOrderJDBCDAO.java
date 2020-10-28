@@ -71,7 +71,7 @@ public class ResOrderJDBCDAO implements ResOrderDAO_interface {
 	}
 
 	@Override
-	public void update(ResOrderVO resOrderVO) {
+	public void update(ResOrderVO resOrderVO, String seats_no[]) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 

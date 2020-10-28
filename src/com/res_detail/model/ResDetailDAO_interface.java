@@ -8,6 +8,8 @@ public interface ResDetailDAO_interface {
 
 	public void update(ResDetailVO resDetailVO);
 	
+	public void delete(String res_no, String[]seats_no, Connection outer_con);
+	
 	public ResDetailVO findByPrimaryKey(String res_de_no);
 
 	public List<ResDetailVO> getAll();

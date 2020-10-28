@@ -48,86 +48,93 @@ $(document).ready(function() {
 	// });
 	// return false;
 	// });
-	$( window ).on( "load", function(e) { 
-		 e.preventDefault();
-		 e.stopImmediatePropagation();
-		 var res_date = $("#res_date").val();
-		 var time_peri_no = $("#time_peri_no").val();
-		 var res_no = $("#res_no").val();
-			$.ajax({
-				// url is servlet url, ?archive_seat is tell servlet execute
-				// which
-				// one judgment
-				url: ajaxURL + "/res_order/ResOrderServlet.do?",
-				type: "post",
-				// synchronize is false
-				async: false,
-				data: {
-					"action":"get_Modify_Seat_Order_Info",
-					"res_no": res_no,
-				},
-				success: function(messages) {
-					$("#modifySeat").css("display", "inline-block");
-					$("#floor_list").val(JSON.parse(messages).seat_f[0]);
-					$("#res_date").val(JSON.parse(messages).res_date);
-					$("#people").val($("#res_people").val());
-					var time_peri_no = JSON.parse(messages).time_peri_no;
-					var res_date = $("#res_date").val();
-					$.ajax({
-						// url is servlet url, ?archive_seat is tell servlet execute which
-						// one judgment
-						url: ajaxURL + "/time_peri/TimePeriServlet.do?",
-						type: "post",
-						// synchronize is false
-						async: false,
-						data: {
-							"action":"get_TimePeri",
-							"res_date": JSON.parse(messages).res_date,
-						},
-						success: function(messages) {
-							// console.log(messages);
-							var jsonArray = JSON.parse(messages);
-							$("#time_peri_no").empty();
-							$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
-							$.each(jsonArray, function(_index, item) {
-								if(time_peri_no == item.time_peri_no){
-									var option = $("<option/>");
-									option.attr({
-										value : item.time_peri_no,
-										selected : true,
-									}).text(item.time_start.replace("-", ":"));
-									$("#time_peri_no").append(option);
-								} else {
-									var option = $("<option/>");
-									option.attr({
-										value: item.time_peri_no,
-									}).text(item.time_start.replace("-", ":"));
-									$("#time_peri_no").append(option);
-								}
-							});
-							$(".labelOne").css("display", "inline-block");
-							$(".labelTwo").css("display", "inline-block");
-							$("div#container.container").css("display", "block");
-							lock_order_date = true;// 如果業務執行成功，修改鎖狀態
-						},
-						error: function(xhr, ajaxOptions, thrownError) {
-							lock_order_date = true;// 如果業務執行失敗，修改鎖狀態
-							ajaxSuccessFalse(xhr);
-							swal("儲存失敗", errorText, "warning");
-						},
-					});
-					return false;
-					console.log(JSON.parse(messages).time_peri_no);
-					console.log(messages);
-				},
-				error: function(xhr, ajaxOptions, thrownError) {
-					lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
-					ajaxSuccessFalse(xhr);
-					swal("儲存失敗", errorText, "warning");
-				},
-			});
-			return false;
-	})
+	
+	/*********************************************
+	 *********************************************
+	 ******* 有空再改，修改訂位會直接顯示到 ******
+	 **** 這筆訂單所訂位的畫面，優化使用者體驗 ***
+	 *********************************************
+	 ********************************************* */
+//	$( window ).on( "load", function(e) { 
+//		 e.preventDefault();
+//		 e.stopImmediatePropagation();
+//		 var res_date = $("#res_date").val();
+//		 var time_peri_no = $("#time_peri_no").val();
+//		 var res_no = $("#res_no").val();
+//			$.ajax({
+//				// url is servlet url, ?archive_seat is tell servlet execute
+//				// which
+//				// one judgment
+//				url: ajaxURL + "/res_order/ResOrderServlet.do?",
+//				type: "post",
+//				// synchronize is false
+//				async: false,
+//				data: {
+//					"action":"get_Modify_Seat_Order_Info",
+//					"res_no": res_no,
+//				},
+//				success: function(messages) {
+//					$("#modifySeat").css("display", "inline-block");
+//					$("#floor_list").val(JSON.parse(messages).seat_f[0]);
+//					$("#res_date").val(JSON.parse(messages).res_date);
+//					$("#people").val($("#res_people").val());
+//					var time_peri_no = JSON.parse(messages).time_peri_no;
+//					var res_date = $("#res_date").val();
+//					$.ajax({
+//						// url is servlet url, ?archive_seat is tell servlet execute which
+//						// one judgment
+//						url: ajaxURL + "/time_peri/TimePeriServlet.do?",
+//						type: "post",
+//						// synchronize is false
+//						async: false,
+//						data: {
+//							"action":"get_TimePeri",
+//							"res_date": JSON.parse(messages).res_date,
+//						},
+//						success: function(messages) {
+//							// console.log(messages);
+//							var jsonArray = JSON.parse(messages);
+//							$("#time_peri_no").empty();
+//							$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
+//							$.each(jsonArray, function(_index, item) {
+//								if(time_peri_no == item.time_peri_no){
+//									var option = $("<option/>");
+//									option.attr({
+//										value : item.time_peri_no,
+//										selected : true,
+//									}).text(item.time_start.replace("-", ":"));
+//									$("#time_peri_no").append(option);
+//								} else {
+//									var option = $("<option/>");
+//									option.attr({
+//										value: item.time_peri_no,
+//									}).text(item.time_start.replace("-", ":"));
+//									$("#time_peri_no").append(option);
+//								}
+//							});
+//							$(".labelOne").css("display", "inline-block");
+//							$(".labelTwo").css("display", "inline-block");
+//							$("div#container.container").css("display", "block");
+//							lock_order_date = true;// 如果業務執行成功，修改鎖狀態
+//						},
+//						error: function(xhr, ajaxOptions, thrownError) {
+//							lock_order_date = true;// 如果業務執行失敗，修改鎖狀態
+//							ajaxSuccessFalse(xhr);
+//							swal("儲存失敗", errorText, "warning");
+//						},
+//					});
+//					return false;
+//					console.log(JSON.parse(messages).time_peri_no);
+//					console.log(messages);
+//				},
+//				error: function(xhr, ajaxOptions, thrownError) {
+//					lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
+//					ajaxSuccessFalse(xhr);
+//					swal("儲存失敗", errorText, "warning");
+//				},
+//			});
+//			return false;
+//	});
 	/** ***************************** 人數 ****************************** */
 	var lock_people = true;// 防止重複提交定義鎖
 	$("#people").change(function() {
@@ -534,28 +541,22 @@ $(document).ready(function() {
 		}
 		var form = $(this).parents('form');
 		swal({
-			title: "請問要順便訂餐嗎?",
-			text: "訂餐方便又簡單～",
+			title: "確定修改訂位嗎?",
 			icon: "warning",
-			buttons: ["訂位就好", "我要順便訂餐"],
+			buttons: ["取消", "確定"],
 			dangerMode: true,
 		}).then((willDelete) => {
 			if (willDelete) {
-				swal("來去訂餐吧～", {
+				swal("即將完成修改！", {
 					icon: "success",
 				}).then(function() {
-					$("<input>").attr({
-						type: "hidden",
-						name: "goMeal",
-						value: "carry_on_res_meal",
-					}).appendTo("div#modifySeatCondition.container");
 					form.submit();
 				});
 			} else {
-				swal("即將完成訂位", {
-					icon: "success",
+				swal("您已經取消這次的修改！", {
+					icon: "info",
 				}).then(function() {
-					form.submit();
+					form.attr('action', ajaxURL+"/front-end/res_order/getMemberResSeat.jsp").submit();
 				});
 			}
 		});

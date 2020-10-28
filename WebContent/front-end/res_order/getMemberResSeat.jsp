@@ -151,6 +151,7 @@
 						<c:when test="${resOrderVO.info_sts ne 3}">  
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
 								<input type="hidden" name="res_people" value="${resOrderVO.people}">
+								<input type="hidden" name="action" value="modify_Seat_Order">
 								<button type="submit" id="modify_Seat_Order" class="btn btn-warning" onclick='return false;'>修改座位</button>
 						</c:when>
 						<c:otherwise>

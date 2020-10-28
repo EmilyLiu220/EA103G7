@@ -36,6 +36,10 @@ public class ResDetailService {
 		return resDetailVO;
 
 	}
+	
+	public void deleteResDetail (String res_no, String[] seats_no, Connection outer_con) {
+		dao.delete(res_no, seats_no, outer_con);
+	}
 
 	public ResDetailVO getOneResOrder(String res_de_no) {
 		return dao.findByPrimaryKey(res_de_no);

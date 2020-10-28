@@ -30,7 +30,7 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 	private static final String INSERT_STMT = "INSERT INTO RES_ORDER (RES_NO ,MEAL_ORDER_NO ,MEM_NO ,EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS) VALUES ('RESO'||LPAD(SEQ_RES_NO.NEXTVAL,4,0), ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT RES_NO ,MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER ORDER BY RES_NO";
 	private static final String GET_ONE_STMT = "SELECT MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_NO = ?";
-	private static final String UPDATE = "UPDATE RES_ORDER SET MEAL_ORDER_NO=? ,MEM_NO=? ,EMP_NO=? ,RES_DATE=? ,PEOPLE=? ,TIME_PERI_NO=? ,INFO_STS=? ,SEAT_STS=? WHERE RES_NO = ?";
+	private static final String UPDATE = "UPDATE RES_ORDER SET MEAL_ORDER_NO=? ,MEM_NO=? ,EMP_NO=? ,RES_TIME=CURRENT_TIMESTAMP, RES_DATE=? ,PEOPLE=? ,TIME_PERI_NO=? ,INFO_STS=? ,SEAT_STS=? WHERE RES_NO = ?";
 	private static final String GET_ONE_MEM_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEM_NO = ? ORDER BY RES_TIME DESC";
 	private static final String GET_RES_DATE_AND_TIME_PERI_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = ? AND TIME_PERI_NO = ?";
 
@@ -114,26 +114,54 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 	}
 
 	@Override
-	public void update(ResOrderVO resOrderVO) {
+	public void update(ResOrderVO resOrderVO, String[] seats_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE);
-
-			pstmt.setString(1, resOrderVO.getMeal_order_no());
-			pstmt.setString(2, resOrderVO.getMem_no());
-			pstmt.setString(3, resOrderVO.getEmp_no());
-			pstmt.setDate(4, resOrderVO.getRes_date());
-			pstmt.setInt(5, new Integer(resOrderVO.getPeople()));
-			pstmt.setString(6, resOrderVO.getTime_peri_no());
-			pstmt.setInt(7, new Integer(resOrderVO.getInfo_sts()));
-			pstmt.setInt(8, new Integer(resOrderVO.getSeat_sts()));
-			pstmt.setString(9, resOrderVO.getRes_no());
-
-			pstmt.executeUpdate();
-
+			// seats_no == null 取消訂單
+			if(seats_no == null) {
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(UPDATE);
+	
+				pstmt.setString(1, resOrderVO.getMeal_order_no());
+				pstmt.setString(2, resOrderVO.getMem_no());
+				pstmt.setString(3, resOrderVO.getEmp_no());
+				pstmt.setDate(4, resOrderVO.getRes_date());
+				pstmt.setInt(5, new Integer(resOrderVO.getPeople()));
+				pstmt.setString(6, resOrderVO.getTime_peri_no());
+				pstmt.setInt(7, new Integer(resOrderVO.getInfo_sts()));
+				pstmt.setInt(8, new Integer(resOrderVO.getSeat_sts()));
+				pstmt.setString(9, resOrderVO.getRes_no());
+			
+				pstmt.executeUpdate();
+				
+			// 否則修改是訂單
+			} else {
+				con = ds.getConnection();
+				// 1●設定於 pstm.executeUpdate()之前
+				con.setAutoCommit(false);
+				
+				pstmt = con.prepareStatement(UPDATE);
+	
+				pstmt.setString(1, resOrderVO.getMeal_order_no());
+				pstmt.setString(2, resOrderVO.getMem_no());
+				pstmt.setString(3, resOrderVO.getEmp_no());
+				pstmt.setDate(4, resOrderVO.getRes_date());
+				pstmt.setInt(5, new Integer(resOrderVO.getPeople()));
+				pstmt.setString(6, resOrderVO.getTime_peri_no());
+				pstmt.setInt(7, new Integer(resOrderVO.getInfo_sts()));
+				pstmt.setInt(8, new Integer(resOrderVO.getSeat_sts()));
+				pstmt.setString(9, resOrderVO.getRes_no());
+				
+				pstmt.executeUpdate();
+				ResDetailService resDetailSvc = new ResDetailService();
+				resDetailSvc.deleteResDetail(resOrderVO.getRes_no(), seats_no, con);
+				
+				// 交易完成
+				con.commit();
+				con.setAutoCommit(true);
+			}
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
