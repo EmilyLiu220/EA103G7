@@ -65,27 +65,32 @@
 				<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
 				<hr>
 				
-				<ul class="list-unstyled CTAs">
-					<li style="text-align:center; font-size:30px" id="in">
-						<form method="post" action="<%=request.getContextPath()%>/back-end/emp/login.jsp">
-					        <label style="cursor:pointer"><a id="logIn">Log in</a>
-					        <input type="submit" style="display:none"></label>  
-					    </form>
-					</li>
+<!-- 				<ul class="list-unstyled CTAs"> -->
+<!-- 					<li style="text-align:center; font-size:30px" id="in"> -->
+<%-- 						<form method="post" action="<%=request.getContextPath()%>/back-end/emp/login.jsp"> --%>
+<!-- 					        <label style="cursor:pointer"><a id="logIn">Log in</a> -->
+<!-- 					        <input type="submit" style="display:none"></label>   -->
+<!-- 					    </form> -->
+<!-- 					</li> -->
 	
-					<li style="text-align:center; font-size:30px" id="out" class="unshow">
-						<form method="post" action="<%=request.getContextPath()%>/back-end/emp/emp.do">
-					        <input type="hidden" name="action" value="logout"> 
-					        <label style="cursor:pointer"><a id="logOut">Log out</a>
-					        <input type="submit" style="display:none"></label>  
-					    </form>
-					</li>
+<!-- 					<li style="text-align:center; font-size:30px" id="out" class="unshow"> -->
+<%-- 						<form method="post" action="<%=request.getContextPath()%>/back-end/emp/emp.do"> --%>
+<!-- 					        <input type="hidden" name="action" value="logout">  -->
+<!-- 					        <label style="cursor:pointer"><a id="logOut">Log out</a> -->
+<!-- 					        <input type="submit" style="display:none"></label>   -->
+<!-- 					    </form> -->
+<!-- 					</li> -->
 					
-				</ul>
+<!-- 				</ul> -->
 				
 			</div>
 
 			<ul class="list-unstyled components">
+				<c:choose>
+					<c:when test="${empVO2.emp_no!=null}">
+						<li style="font-size:20px;"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=Update_info&emp_no=${empVO2.emp_no}">員工個資修改</a></li>
+					</c:when>
+				</c:choose>
 				<li class="fun2"><a href="#">現場點餐</a></li>
 				<li class="fun2"><a href="#">現場劃位</a></li>
 				<li class="fun2"><a href="#">訂單結帳</a></li>
@@ -121,14 +126,25 @@
 				</li>
 			</ul>
 			
-			<div style="text-align:center; font-size:30px" id="info2" class="unshow">
-				<form method="post" action="<%=request.getContextPath()%>/back-end/emp/emp.do">
-					<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
-					<input type="hidden" name="action" value="Update_info"> 
-					<label style="cursor:pointer"><a id="info">員工個資修改</a>
-					<input type="submit" style="display:none"></label>  
-				</form>
-			</div>
+			<ul class="list-unstyled CTAs">
+				<c:choose>
+					<c:when test="${empVO2.emp_no==null}">
+						<li><a href="<%=request.getContextPath()%>/back-end/emp/login.jsp" id="logIn">Log in</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout" id="logOut">Log out</a></li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+			
+<!-- 			<div style="text-align:center; font-size:30px" id="info2" class="unshow"> -->
+<%-- 				<form method="post" action="<%=request.getContextPath()%>/back-end/emp/emp.do"> --%>
+<%-- 					<input type="hidden" name="emp_no" value="${empVO2.emp_no}"> --%>
+<!-- 					<input type="hidden" name="action" value="Update_info">  -->
+<!-- 					<label style="cursor:pointer"><a id="info">員工個資修改</a> -->
+<!-- 					<input type="submit" style="display:none"></label>   -->
+<!-- 				</form> -->
+<!-- 			</div> -->
 			
 		</nav>
 		
@@ -158,9 +174,9 @@
 							Pot 吧！員工專區</div>	
 					
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						
-					</div>
 					
+					</div>
+					</div>
 				</div>
 			</nav>
 		</div>
