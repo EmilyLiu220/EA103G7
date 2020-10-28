@@ -27,8 +27,6 @@ input, select {
 <jsp:include page="/front-end/headfinish.jsp"></jsp:include>
 </head>
 <body>
-	<input type="hidden" id="res_no" name="res_no" value="${res_no}">
-	<input type="hidden" id="res_people" value="${res_people}">
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<%
 		List<SeatVO> list = seatSvc.getAll();
@@ -39,6 +37,8 @@ input, select {
 		pageContext.setAttribute("ts", ts);
 	%>
 	<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
+		<input type="hidden" id="res_no" name="res_no" value="${param.res_no}">
+		<input type="hidden" id="res_people" value="${param.res_people}">
 		<div class="container" id="modifySeatCondition">
 			<select id="floor_list" name="floor_list">
 				<c:forEach var="seat_f" items="${ts}">
@@ -59,14 +59,14 @@ input, select {
 				用餐人數: 
 				<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 			</label>
-			<input type="hidden" name="action" value="order_seat">
-			<button id="modifySeat" name="action" value="order_seat" class="btn btn-primary" onclick='return false;'>修改訂位</button>
+			<input type="hidden" name="action" value="modify_seat">
+			<button id="modifySeat" class="btn btn-primary" onclick='return false;'>修改訂位</button>
 		</div>
 		<div id="container" class="container">
 			<c:forEach var="seatVO" items="${seatSvc.all}">
 				<c:if test="${seatVO.seat_f == 1 }">
 					<div class="drag" style="position: absolute; left: ${seatVO.seat_x}px; top: ${seatVO.seat_y}px;" id="drag">
-						<label> 
+						<label>
 							<input type="checkbox" class="myCheckbox" name="seat_checked" value="${seatVO.seat_no}"> 
 							<img src="<%=request.getContextPath()%>/seat/Seat_ObjServlet.do?seat_obj_no=${seatVO.seat_obj_no}">
 						</label> 

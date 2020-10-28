@@ -21,6 +21,6 @@ public class ResDetailServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
+		
 	}
 }

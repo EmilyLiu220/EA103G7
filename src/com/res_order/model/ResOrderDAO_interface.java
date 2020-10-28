@@ -5,7 +5,7 @@ import java.util.List;
 public interface ResOrderDAO_interface {
 	public String insert(ResOrderVO resOrderVO, String seats_no[]);
 
-	public void update(ResOrderVO resOrderVO);
+	public void update(ResOrderVO resOrderVO, String seats_no[]);
 
 	public ResOrderVO findByPrimaryKey(String res_no);
 	

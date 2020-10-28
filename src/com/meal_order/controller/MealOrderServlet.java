@@ -145,7 +145,7 @@ public class MealOrderServlet extends HttpServlet {
 			if (session.getAttribute("mem_no") != null) {
 				memNo = (String) session.getAttribute("mem_no");
 			}
-			
+
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);
 			Integer paySts = resNo != null ? new Integer(0) : new Integer(1);
@@ -187,20 +187,20 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			mealOrderVO = (MealOrderVO) (mealOrderSrv.addOrder(memNo, empNo, mealOrderSts, amount, notiSts, paySts,
 					pickupTime, detailList)).get("mealOrderVO");
-			
+
 			if (rsvMealList != null) {
 				rsvMealList.removeAllElements();
 			}
 			if (rsvSetList != null) {
 				rsvSetList.removeAllElements();
 			}
-			
+
 			// 有訂餐的話，訂位訂單新增訂餐編號
 			ResOrderService resOrderSvc = new ResOrderService();
 			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(resNo);
 			resOrderSvc.updateResOrder(resNo, mealOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
-					resOrderVO.getEmp_no(), resOrderVO.getRes_time(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
-					resOrderVO.getTime_peri_no(), resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts());
+					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
+					resOrderVO.getTime_peri_no(), resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
 
 			req.setAttribute("res_no", resNo);
 			req.setAttribute("amount", amount);
@@ -218,7 +218,7 @@ public class MealOrderServlet extends HttpServlet {
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
-			
+
 			if (mealOrderVO.getMeal_order_sts() >= 2 || mealOrderVO.getMeal_order_sts() == 0) {
 				errormsgs.put("orderUpdate", "餐點已派工或已取消，無法取消訂單!");
 				req.setAttribute("errormsgs", errormsgs);
@@ -325,7 +325,7 @@ public class MealOrderServlet extends HttpServlet {
 			RequestDispatcher success = req.getRequestDispatcher(url);
 			success.forward(req, res);
 		}
-		
+
 		if ("memOrder".equals(action)) {
 			String reqURL = req.getParameter("reqURL");
 			String whichPage = null;
@@ -351,7 +351,7 @@ public class MealOrderServlet extends HttpServlet {
 			RequestDispatcher success = req.getRequestDispatcher(url);
 			success.forward(req, res);
 		}
-		
+
 		if ("asignQuery".equals(action)) {
 			Map<String, String[]> map = (HashMap) session.getAttribute("asignMap");
 			if (req.getParameter("whichPage") == null) {

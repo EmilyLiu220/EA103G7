@@ -223,6 +223,14 @@
 	  <url-pattern>/front-end/mem/login_success_mem.jsp</url-pattern>
 	  <url-pattern>/front-end/mem/showMemInfo.jsp</url-pattern>
 	  <url-pattern>/front-end/mem/update_mem_info.jsp</url-pattern>
+	  <url-pattern>/front-end/res_order/orderSeat.jsp</url-pattern>
+	  <url-pattern>/front-end/res_order/modifySeat.jsp</url-pattern>
+	  <url-pattern>/front-end/res_order/getMemberResSeat.jsp</url-pattern>
+	  <url-pattern>/front-end/res_order/getMemberResSeatEnd.jsp</url-pattern>
+	  <url-pattern></url-pattern>
+	  <url-pattern></url-pattern>
+	  <url-pattern></url-pattern>
+	  <url-pattern></url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>
@@ -238,6 +246,7 @@
 	<filter-mapping>
 	  <filter-name>mem_stsFilter</filter-name>
 	  <url-pattern>/front-end/res_order/orderSeat.jsp</url-pattern>
+	  <url-pattern></url-pattern>
 	  <url-pattern></url-pattern>
 	  <url-pattern></url-pattern>
 	  <dispatcher>REQUEST</dispatcher>

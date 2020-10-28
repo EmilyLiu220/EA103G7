@@ -27,6 +27,7 @@ public class ResDetailDAO implements ResDetailDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT SEAT_NO, RES_NO FROM RES_DETAIL WHERE RES_DE_NO = ?";
 	private static final String UPDATE = "UPDATE RES_DETAIL SET SEAT_NO=? ,RES_NO=? WHERE RES_DE_NO = ?";
 	private static final String GET_RES_NO_ALL_STMT = "SELECT RES_DE_NO, SEAT_NO, RES_NO FROM RES_DETAIL WHERE RES_NO = ?";
+	private static final String DELETE = "DELETE FROM RES_DETAIL WHERE RES_NO = ?";
 
 	@Override
 	public void insert(ResDetailVO resDetailVO, Connection outer_con) {
@@ -79,7 +80,53 @@ public class ResDetailDAO implements ResDetailDAO_interface {
 //			}
 		}
 	}
+	
+	@Override
+	public void delete(String res_no, String[] seats_no, Connection outer_con) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
+		try {
+			if(outer_con == null) {
+				con = ds.getConnection();
+			} else {
+				con = outer_con;
+			}
+			
+			pstmt = con.prepareStatement(DELETE);
+
+			pstmt.setString(1, res_no);
+			
+			pstmt.executeUpdate();
+			
+			// 修改座位編號時段
+			ResDetailService resDetailSvc = new ResDetailService();
+			for (String seat_no : seats_no) {
+				resDetailSvc.addResDetail(seat_no, res_no, con);
+			}
+			
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+		}
+	}
+	
 	@Override
 	public void update(ResDetailVO resDetailVO) {
 		Connection con = null;
