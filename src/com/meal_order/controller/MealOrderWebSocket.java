@@ -49,7 +49,7 @@ public class MealOrderWebSocket {
 
 	public void sendMessage(String jsonMap) throws IOException {
 		for (MealOrderWebSocket wbsc : webSocketSet) {
-			wbsc.session.getBasicRemote().sendText(jsonMap);
+			wbsc.session.getAsyncRemote().sendText(jsonMap);
 		}
 	}
 

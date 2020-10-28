@@ -342,7 +342,7 @@
 	
 	webSocket.onmessage = function (e){
 		var jsonObj = JSON.parse(e.data);
-		if(jsonObj.action === 'update'){
+		if(jsonObj.action === 'prepared'){
 				var table = document.createElement("table");
 				table.setAttribute('id','table-1');
 				table.classList.add(jsonObj.mealOrderVO.meal_order_no);
@@ -351,7 +351,7 @@
 				var table2 = document.createElement("table");
 				table2.setAttribute('id',jsonObj.mealOrderVO.meal_order_no);
 				table2.setAttribute('style','width: 60%;font-size: 90%;');
-				table2.classList.add(jsonObj.mealOrderVO.meal_order_no+"body",'table','table-hover');
+				table2.classList.add(jsonObj.mealOrderVO.meal_order_no+"body",'table','table-hover',jsonObj.mealOrderVO.meal_order_no);
 				table2.innerHTML = 
 				 '<input type="hidden" name="pay_sts" value="'+jsonObj.mealOrderVO.pay_sts +'"/>'
 				+ '<input type="hidden" name="noti_sts" value="'+jsonObj.mealOrderVO.noti_sts +'"/>'
@@ -360,17 +360,6 @@
 				
 				$("#content").append(table);
 				table.after(table2);
-				
-// 				var div = document.createElement("div");
-// 				div.innerHTML =
-// 					 '<table id="table-1" class="' + jsonObj.mealOrderVO.meal_order_no +'">'
-// 				+ '<tr><td><h3 style="margin-bottom:0;">訂餐編號：'+ jsonObj.mealOrderVO.meal_order_no+'</h3></td></tr></table>'
-// 				+ '<table id="'+jsonObj.mealOrderVO.meal_order_no+'" class="table table-hover '+ jsonObj.mealOrderVO.meal_order_no +'" style="width: 60%; font-size: 90%;">'
-// 				+ '<input type="hidden" name="pay_sts" value="'+jsonObj.mealOrderVO.pay_sts +'"/>'
-// 				+ '<input type="hidden" name="noti_sts" value="'+jsonObj.mealOrderVO.noti_sts +'"/>'
-// 				+ '<thead style="text-align: center;"><tr><th style="width: 10%;">check</th><th style="width: 25%;">餐點名稱</th>	<th style="width: 25%;">餐點數量</th></tr></thead>'
-// 				+ '<tbody class="'+jsonObj.mealOrderVO.meal_order_no+'body">';
-// 				$("#content").append(div);
 				
 				jsonObj.detailList.forEach(function(detailVO){
 					var row ='<tr><td style="text-align: center;"><input class="checkbox" type="checkbox"/><input type="hidden" value="'+jsonObj.mealOrderVO.meal_order_no+'"/></td>'
