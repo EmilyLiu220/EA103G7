@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
-import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
@@ -21,7 +20,7 @@ import com.google.gson.Gson;
 public class Front_InformWS {
 	
 //	pollingThread_FI_Backup thread1=new pollingThread_FI_Backup();
-//    Thread thread=new Thread(thread1);
+//	Thread thread=new Thread(thread1);
 	
 	private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
 	Gson gson = new Gson();

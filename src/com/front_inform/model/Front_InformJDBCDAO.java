@@ -1,5 +1,6 @@
 package com.front_inform.model;
 
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,11 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-
-import com.inform_set.model.Inform_SetService;
-import com.inform_set.model.Inform_SetVO;
-import com.mem.model.MemService;
-import com.mem.model.MemVO;
+import com.inform_set.model.*;
+import com.mem.model.*;
 
 public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	
@@ -22,41 +20,34 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	
 	// 新增訂餐相關或停權通知 (一般不須回應的通知)
 	private static final String INFO_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, 0)"; 
-	
 	// 新增訂位相關通知
 	private static final String RO_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,RES_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, ?, 0)";
-	
 	// 新增訂位確認通知
 	private static final String GET_TIME = "SELECT RO.MEM_NO, TP.TIME_START FROM RES_ORDER RO JOIN TIME_PERI TP ON RO.TIME_PERI_NO = TP.TIME_PERI_NO WHERE RO.RES_NO = ?";
 	// '您預約今日 '+ ? +' 用餐，是否確認今日用餐？'
 	private static final String RCHECK_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,RES_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, ?, 2)"; // 訂位確認
-	
 	// 大量新增 From Inform_Set to Front_Inform
 	private static final String INSERT_IS_STMT = "INSERT INTO FRONT_INFORM (INFO_NO,MEM_NO,INFO_CONT,INFO_STS) VALUES ('FI'||LPAD(to_char(SEQ_INFO_NO.nextval), 4, '0'), ?, ?, 0)";
-	
 	// 更新通知狀態
 	private static final String UPDATE_INFO_STS_STMT = "UPDATE FRONT_INFORM SET INFO_STS=? WHERE INFO_NO=?";
-	
 	// 該名會員登入後，取得其個人的所有通知(降冪)
-	private static final String GET_STMT_BY_MEM = "SELECT INFO_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE MEM_NO=? ORDER BY INFO_DATE DESC";
-
+	private static final String GET_STMT_BY_MEM = "SELECT INFO_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE MEM_NO=? ORDER BY INFO_NO DESC";
 	// 打開通知小鈴鐺後，更新未讀的通知為已讀
 	private static final String UPDATE_READ_STS = "UPDATE FRONT_INFORM SET READ_STS='1' WHERE MEM_NO=?";
-	
 	// 取得所有會員的各種通知
-	private static final String GET_ALL_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_DATE DESC";	
-	
+	private static final String GET_ALL_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO DESC";	
 	// 取得所有通知筆數
 	private static final String GET_ALL_COUNT = "SELECT COUNT(1) AS COUNT FROM FRONT_INFORM";
-	
 	// 取得所有會員的最新通知
-	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_DATE";	
+	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO";	
 		
 	@Override
-	public Integer insertInfo(String mem_no, String info_cont) {
+	public Front_InformVO insertInfo(String mem_no, String info_cont) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		Integer insertNum = 0;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Front_InformVO fiVO = new Front_InformVO();
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -67,12 +58,38 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 			// '提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉功能將於 7 天後恢復'
 			// or '訂餐成功！您尚未付款，點選前往結帳'、'您已成功付款，點選查看訂單明細'、'您的餐點已完成，請至本餐廳取餐'、'您的訂單已取消'
 			pstmt.setString(2, info_cont); 
-			insertNum += pstmt.executeUpdate();
+			int insertNum = pstmt.executeUpdate();
+			if(insertNum>0) {
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(GET_ALL_STMT);
+				rs.next();
+				fiVO.setInfo_no(rs.getString("INFO_NO"));
+				fiVO.setMem_no(rs.getString("MEM_NO"));
+				fiVO.setRes_no(rs.getString("RES_NO"));
+				fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs.getInt("READ_STS"));
+			}
 		} catch(ClassNotFoundException ce) {
 			throw new RuntimeException("Couldn't load database driver. "+ ce.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -88,14 +105,16 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
-		return insertNum;
+		return fiVO;
 	}
 
 	@Override
-	public Integer insertFromRO(String mem_no, String res_no, String info_cont) {
+	public Front_InformVO insertFromRO(String mem_no, String res_no, String info_cont) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		Integer insertNum = 0;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Front_InformVO fiVO = new Front_InformVO();
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -104,12 +123,38 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 			pstmt.setString(2, res_no);
 			// '訂位成功，點選查看訂位明細'、'您的訂位已取消'
 			pstmt.setString(3, info_cont);
-			insertNum += pstmt.executeUpdate();
+			int insertNum = pstmt.executeUpdate();
+			if(insertNum>0) {
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(GET_ALL_STMT);
+				rs.next();
+				fiVO.setInfo_no(rs.getString("INFO_NO"));
+				fiVO.setMem_no(rs.getString("MEM_NO"));
+				fiVO.setRes_no(rs.getString("RES_NO"));
+				fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs.getInt("READ_STS"));
+			}
 		} catch(ClassNotFoundException ce) {
 			throw new RuntimeException("Couldn't load database driver. "+ ce.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -125,37 +170,66 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
-		return insertNum;
+		return fiVO;
 	}
 
 	@Override
-	public Integer insertResCheInform(String res_no) { 
+	public Front_InformVO insertResCheInform(String res_no) { 
 		// 寫一支額外的排程器檔，每一個小時掃一次 DB 的訂位訂單表格時間，若時間 +6 為該次掃 DB 的時間，
 		// 則 new Front_InformService、call addRCFI() 方法去新增並發出通知
 		Connection con = null;
 		PreparedStatement pstmt1 = null;
-		ResultSet rs = null;		
+		ResultSet rs1 = null;		
 		PreparedStatement pstmt2 = null;
 		Integer insertNum = 0;
+		Statement stmt = null;
+		ResultSet rs2 = null;
+		Front_InformVO fiVO = new Front_InformVO();
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
 			pstmt1 = con.prepareStatement(GET_TIME);
 			pstmt1.setString(1, res_no);
-			rs = pstmt1.executeQuery();
-			while(rs.next()) {
+			rs1 = pstmt1.executeQuery();
+			while(rs1.next()) {
 				// 新增通知
 				pstmt2 = con.prepareStatement(RCHECK_STMT);
-				pstmt2.setString(1, rs.getString("MEM_NO"));
+				pstmt2.setString(1, rs1.getString("MEM_NO"));
 				pstmt2.setString(2, res_no);
-				pstmt2.setString(3, "您預約今日 "+ rs.getString("TIME_START") + " 用餐，是否確認今日用餐？");
+				pstmt2.setString(3, "您預約今日 "+ rs1.getString("TIME_START") + " 用餐，是否確認今日用餐？");
 				insertNum += pstmt2.executeUpdate();
+			}
+			if(insertNum>0) {
+				stmt = con.createStatement();
+				rs2 = stmt.executeQuery(GET_ALL_STMT);
+				rs2.next();
+				fiVO.setInfo_no(rs2.getString("INFO_NO"));
+				fiVO.setMem_no(rs2.getString("MEM_NO"));
+				fiVO.setRes_no(rs2.getString("RES_NO"));
+				fiVO.setInfo_cont(rs2.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs2.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs2.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs2.getInt("READ_STS"));
 			}
 		} catch(ClassNotFoundException ce) {
 			throw new RuntimeException("Couldn't load database driver. "+ ce.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
+			if (rs2 != null) {
+				try {
+					rs1.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
 			if (pstmt2 != null) {
 				try {
 					pstmt2.close();
@@ -163,9 +237,9 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 					se.printStackTrace(System.err);
 				}
 			}
-			if (rs != null) {
+			if (rs1 != null) {
 				try {
-					rs.close();
+					rs1.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
 				}
@@ -185,14 +259,17 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
-		return insertNum;
+		return fiVO;
 	}
 	
 	@Override
-	public Integer insertManyIs(String is_no) {
+	public List<Front_InformVO> insertManyIs(String is_no) {
+		List<Front_InformVO> list = new ArrayList<Front_InformVO>();
+		Front_InformVO fiVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		Integer insertNum = 0;
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -208,22 +285,53 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 				pstmt.setString(2, isVO.getIs_cont());
 				pstmt.addBatch();
 			}
-			int success = pstmt.executeBatch().length;
+			// 回傳 total 成功新增的筆數
+			int[] successArr = pstmt.executeBatch();
+			int success = successArr.length;
+			if (success < 1) {
+				throw new SQLException("sql:{} On failure.", pstmt.toString());
+			}
 	        if (success == memVOs.size()) {
-	        	insertNum += pstmt.executeUpdate();
+	        	System.out.println("All insert succeeded!");
 	        }
 	        if (success > 0 && success < memVOs.size()){
 	        	System.err.println("The number of successful { " + success + " }");
-	        	insertNum += success;
 	        }
-	        if (insertNum < 1) {
-	        	throw new SQLException("sql:{} On failure.", pstmt.toString());
+	        stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	        rs = stmt.executeQuery(GET_ALL_STMT);
+	        for(int i=1 ; i<=success ; i++) {
+	        	rs.absolute(i);
+	        	fiVO = new Front_InformVO();
+	        	fiVO.setInfo_no(rs.getString("INFO_NO"));
+	        	fiVO.setMem_no(rs.getString("MEM_NO"));
+	        	fiVO.setRes_no(rs.getString("RES_NO"));
+	        	fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+	        	fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+	        	fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+	        	fiVO.setRead_sts(rs.getInt("READ_STS"));
+	        	list.add(fiVO);
 	        }
+		} catch (BatchUpdateException  be) {
+			throw new RuntimeException("A database error occured. "+ be.getUpdateCounts());
 		} catch(ClassNotFoundException ce) {
 			throw new RuntimeException("Couldn't load database driver. "+ ce.getMessage());
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -239,7 +347,7 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 				}
 			}
 		}
-		return insertNum;
+		return list;
 	}
 	
 	@Override
@@ -417,6 +525,7 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 		return list;
 	}
 	
+	// 以下方法 just for backup
 	@Override
 	public Integer countData() {
 		Connection con = null;
@@ -460,10 +569,11 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 		return count;
 	}
 
+	// 以下方法 just for backup
 	@Override
 	public List<Front_InformVO> findNew(Integer count) {
 		List<Front_InformVO> list = new ArrayList<Front_InformVO>();
-		Front_InformVO front_informVO = null;
+		Front_InformVO fiVO = null;
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -474,15 +584,15 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 			rs = stmt.executeQuery(GET_NEW_STMT);
 			rs.absolute(count);
 			while (rs.next()) {
-				front_informVO = new Front_InformVO();
-				front_informVO.setInfo_no(rs.getString("INFO_NO"));
-				front_informVO.setMem_no(rs.getString("MEM_NO"));
-				front_informVO.setRes_no(rs.getString("RES_NO"));
-				front_informVO.setInfo_cont(rs.getString("INFO_CONT"));
-				front_informVO.setInfo_date(rs.getDate("INFO_DATE"));
-				front_informVO.setInfo_sts(rs.getInt("INFO_STS"));
-				front_informVO.setRead_sts(rs.getInt("READ_STS"));
-				list.add(front_informVO);
+				fiVO = new Front_InformVO();
+				fiVO.setInfo_no(rs.getString("INFO_NO"));
+				fiVO.setMem_no(rs.getString("MEM_NO"));
+				fiVO.setRes_no(rs.getString("RES_NO"));
+				fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs.getInt("READ_STS"));
+				list.add(fiVO);
 			}
 		} catch(ClassNotFoundException ce) {
 			throw new RuntimeException("Couldn't load database driver. "+ ce.getMessage());
@@ -528,6 +638,9 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 		
 		// 新增須回覆的通知 insertResCheInform(String res_no)
 		dao.insertResCheInform("RESO0008");
+		
+		// 大量新增 Inform_Set into Front_Inform
+		System.out.println(dao.insertManyIs("IS0001"));
 		
 		// 修改通知狀態
 		Front_InformVO front_informVO2 = new Front_InformVO();
