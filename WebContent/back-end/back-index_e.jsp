@@ -168,7 +168,7 @@
 			<div class="employee">
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform.jsp">查看通知</a></li>
-					<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">查看聊天室訊息</a></li>
+					<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
 					<li><a href="#">訂單派工</a></li>
 					<li><a href="#">出餐管理</a></li>
 					<li><a href="#">訂餐訂單處理</a></li>
