@@ -22,7 +22,7 @@
 	}
 	#container{
 	  	margin:0 auto;
-	  	width: 1200px;
+	  	width: 1300px;
 	}
 	
 </style>
