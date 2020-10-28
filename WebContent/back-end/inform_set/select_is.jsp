@@ -168,20 +168,20 @@
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查詢所有活動通知</h3>
+							<h3 style="margin-bottom:0;">查詢所有群發通知</h3>
 						</td>
 					</tr>
 				</table>
 				<br>
 				<ul>
 					<%-- listAll_is.jsp --%>
-					<li><a href='<%=request.getContextPath()%>/back-end/inform_set/listAll_is.jsp' style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">顯示所有活動通知</a><br><br></li>
+					<li><a href='<%=request.getContextPath()%>/back-end/inform_set/listAll_is.jsp' style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">顯示所有群發通知</a><br><br></li>
 				</ul>
 				
 				<%-- 查詢通知 --%>
 				<table id="table-1">
 					<tr>
-						<td><h3 style="margin-bottom:0;">動態查詢活動通知</h3></td>
+						<td><h3 style="margin-bottom:0;">動態查詢群發通知</h3></td>
 					</tr>
 				</table>
 				<br>
@@ -196,10 +196,10 @@
 					<br>
 				</c:if>
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/inform_set/is.do" >
-					<span style="position: relative; left: 4%; font-weight: 600;">可自由輸入欲查詢之條件</span><br><br>
+					<span style="position: relative; left: 2%; font-weight: 800; color: red;">可自由輸入欲查詢之條件</span><br><br>
 					<ul>
 						<li>
-							<b>輸入活動通知編號 (如IS0001)：</b>
+							<b>輸入群發通知編號 (如IS0001)：</b>
 							<input type="text" name="is_no">
 						<br><br></li>
 						<li>
@@ -214,7 +214,7 @@
 							<b>選擇發送日期：</b>
 							<b>起 </b><input type="text" id="is_date_startDate" name="is_date_startDate" class="hasDatepicker2">
 							<b>訖 </b><input type="text" id="is_date_stopDate" name="is_date_stopDate" class="hasDatepicker2"><br>
-							<br><span> ( 提醒您：若未確實填寫日期，則將查詢由「開店日」至「今日」的活動通知內容 ) </span>
+							<br><span> ( 提醒您：若未確實填寫日期，則將查詢由「<span style="color: red; font-weight: 800;">開張日</span>」至「</span><span style="color: red; font-weight: 800;">今日</span><span>」的群發通知內容 ) </span>
 						<br></li>
 					</ul>
 					<div style="display: inline-block; position: relative; left: 5%;">
@@ -229,7 +229,7 @@
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">新增活動通知</h3>
+							<h3 style="margin-bottom:0;">新增群發通知</h3>
 						</td>
 					</tr>
 				</table>

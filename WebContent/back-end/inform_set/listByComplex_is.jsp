@@ -169,7 +169,7 @@
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查看所有活動通知</h3>
+							<h3 style="margin-bottom:0;">查看所有群發通知</h3>
 						</td>
 					</tr>
 				</table>

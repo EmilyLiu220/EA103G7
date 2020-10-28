@@ -176,7 +176,7 @@
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">新增活動通知設定</h3>
+							<h3 style="margin-bottom:0;">新增群發通知設定</h3>
 						</td>
 					</tr>
 				</table>
