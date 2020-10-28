@@ -75,8 +75,8 @@ public class ShoppingServlet extends HttpServlet {
 		if ("rsvCheckout".equals(action)) {
 			String resNo = req.getParameter("res_no");
 			if ((rsvMealList == null || rsvMealList.size() == 0) && (rsvSetList == null || rsvSetList.size() == 0)) {
-				System.out.println((rsvMealList == null));
-				System.out.println((rsvSetList == null));
+//				System.out.println((rsvMealList == null));
+//				System.out.println((rsvSetList == null));
 				errormsgs.put("rsvCartEmpty", "購物車是空的!!");
 				req.setAttribute("errormsgs", errormsgs);
 				req.setAttribute("res_no", resNo);
