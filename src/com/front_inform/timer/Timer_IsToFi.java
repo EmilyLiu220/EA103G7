@@ -25,6 +25,7 @@ public class Timer_IsToFi extends TimerTask {
 		for( Inform_SetVO isVO : isVOs ) { // 其實每天只會有一則
 			fiSvc.addISToAll(isVO.getIs_no());
 		}
+		isVOs.clear();
 	}
 	
 }
