@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.news.model.*"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	NewsVO newsVO = (NewsVO) request.getAttribute("newsVO"); //NewsServlet.java(Concroller), 存入req的newsVO物件
 %>
+
 
 <html>
 <head>
@@ -40,8 +41,9 @@
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-#logout{
-width:212px
+
+#logout {
+	width: 212px
 }
 </style>
 
@@ -106,9 +108,9 @@ width:212px
 			<ul class="list-unstyled CTAs">
 				<c:choose>
 					<c:when test="${empVO2.emp_no==null}">
-<!-- 						<li><a -->
-<%-- 							href="<%=request.getContextPath()%>/back-end/emp/login.jsp" --%>
-<!-- 							id="logIn">Log in</a></li> -->
+						<!-- 						<li><a -->
+						<%-- 							href="<%=request.getContextPath()%>/back-end/emp/login.jsp" --%>
+						<!-- 							id="logIn">Log in</a></li> -->
 					</c:when>
 					<c:otherwise>
 						<li><form method="post"
@@ -204,12 +206,21 @@ width:212px
 					<th>員工編號</th>
 					<th>消息內容</th>
 					<th>發布日期</th>
+					<th>店訊狀態</th>
 				</tr>
 				<tr>
 					<td style="width: 100px;"><%=newsVO.getNews_no()%></td>
 					<td style="width: 100px;"><%=newsVO.getEmp_no()%></td>
 					<td style="width: 1200px;"><%=newsVO.getNews_cont()%></td>
 					<td style="width: 100px;"><%=newsVO.getNews_date()%></td>
+
+					<c:if test="${newsVO.news_sts == 0}">
+						<td style="width: 100px; text-align: center;">已下架</td>
+					</c:if>
+					<c:if test="${newsVO.news_sts == 1}">
+						<td style="width: 100px; text-align: center;">上架中</td>
+					</c:if>
+
 				</tr>
 			</table>
 		</div>

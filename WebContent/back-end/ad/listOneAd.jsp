@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.ad.model.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
 	AdVO adVO = (AdVO) request.getAttribute("adVO"); //AdServlet.java(Concroller), 存入req的adVO物件
@@ -117,9 +118,9 @@ img {
 			<ul class="list-unstyled CTAs">
 				<c:choose>
 					<c:when test="${empVO2.emp_no==null}">
-<!-- 						<li><a -->
-<%-- 							href="<%=request.getContextPath()%>/back-end/emp/login.jsp" --%>
-<!-- 							id="logIn">Log in</a></li> -->
+						<!-- 						<li><a -->
+						<%-- 							href="<%=request.getContextPath()%>/back-end/emp/login.jsp" --%>
+						<!-- 							id="logIn">Log in</a></li> -->
 					</c:when>
 					<c:otherwise>
 						<li><form method="post"
@@ -224,6 +225,7 @@ img {
 					<th>起始日期</th>
 					<th>結束日期</th>
 					<th>廣告圖片</th>
+					<th>廣告狀態</th>
 				</tr>
 				<tr>
 					<td style="width: 100px;">${adVO.ad_no}</td>
@@ -234,7 +236,15 @@ img {
 					<td style="width: 100px;">${adVO.ad_re_date}</td>
 					<td><img
 						src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"></td>
+
+					<c:if test="${adVO.ad_sts == 0}">
+						<td style="width: 100px; text-align: center;">已下架</td>
+					</c:if>
+					<c:if test="${adVO.ad_sts == 1}">
+						<td style="width: 100px; text-align: center;">上架中</td>
+					</c:if>
 				</tr>
+
 			</table>
 		</div>
 	</div>

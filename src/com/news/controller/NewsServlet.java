@@ -140,12 +140,14 @@ public class NewsServlet extends HttpServlet {
 					errorMsgs.add("請輸入日期!");
 				}
 
+				Integer news_sts =  new Integer(req.getParameter("news_sts"));
+				
 				NewsVO newsVO = new NewsVO();
 				newsVO.setNews_no(news_no);
 				newsVO.setEmp_no(emp_no);
 				newsVO.setNews_cont(news_cont);
 				newsVO.setNews_date(news_date);
-
+				newsVO.setNews_sts(news_sts);
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("newsVO", newsVO); // 含有輸入格式錯誤的newsVO物件,也存入req
@@ -156,7 +158,7 @@ public class NewsServlet extends HttpServlet {
 
 				/*************************** 2.開始修改資料 *****************************************/
 				NewsService newsSvc = new NewsService();
-				newsVO = newsSvc.updateNews(news_no, emp_no, news_cont, news_date);
+				newsVO = newsSvc.updateNews(news_no, emp_no, news_cont, news_date,news_sts);
 
 				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("newsVO", newsVO); // 資料庫update成功後,正確的的newsVO物件,存入req
@@ -214,11 +216,14 @@ public class NewsServlet extends HttpServlet {
 //				String emp_no = empVO.getEmp_no();
 
 //				------------------------
+				
+				Integer news_sts = new Integer(1);				
+				
 				NewsVO newsVO = new NewsVO();
 				newsVO.setEmp_no(emp_no);
 				newsVO.setNews_cont(news_cont);
 				newsVO.setNews_date(news_date);
-
+				newsVO.setNews_sts(news_sts);
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("newsVO", newsVO); // 含有輸入格式錯誤的newsVO物件,也存入req
@@ -228,7 +233,7 @@ public class NewsServlet extends HttpServlet {
 				}
 				/*************************** 2.開始修改資料 *****************************************/
 				NewsService newsSvc = new NewsService();
-				newsVO = newsSvc.addNews(emp_no, news_cont, news_date);
+				newsVO = newsSvc.addNews(emp_no, news_cont, news_date,news_sts);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String url = "/back-end/news/listAllnews.jsp";

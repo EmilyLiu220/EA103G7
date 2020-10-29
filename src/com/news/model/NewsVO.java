@@ -7,6 +7,7 @@ public class NewsVO implements java.io.Serializable {
 	private String emp_no;
 	private String news_cont;
 	private Date news_date;
+	private Integer news_sts;
 
 	public String getNews_no() {
 		return news_no;
@@ -40,4 +41,13 @@ public class NewsVO implements java.io.Serializable {
 		this.news_date = news_date;
 	}
 
+	
+	public Integer getNews_sts() {
+		return news_sts;
+	}
+
+	public void setNews_sts(Integer news_sts) {
+		this.news_sts = news_sts;
+	}
+	
 }

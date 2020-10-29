@@ -11,7 +11,7 @@ public interface AdDAO_interface {
 	public AdVO findByPrimaryKey(String ad_no);
 	public List<AdVO> getAll();
 	public List<AdVO> getadno(String emp_no);
-	public void upad(AdVO adVO);
+//	public void upad(AdVO adVO);
 	public List<AdVO> find_adsts(Integer ad_sts);
 }
 

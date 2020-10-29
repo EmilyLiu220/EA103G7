@@ -225,6 +225,7 @@
 						<th>員工編號</th>
 						<th>消息內容</th>
 						<th>發布日期</th>
+						<th>店訊狀態</th>
 					</tr>
 				</thead>
 
@@ -237,6 +238,13 @@
 						<td style="width: 100px;">${newsVO.emp_no}</td>
 						<td style="width: 1200px;">${newsVO.news_cont}</td>
 						<td style="width: 100px;">${newsVO.news_date}</td>
+
+						<c:if test="${newsVO.news_sts == 0}">
+							<td style="width: 100px; text-align: center;">已下架</td>
+						</c:if>
+						<c:if test="${newsVO.news_sts == 1}">
+							<td style="width: 100px; text-align: center;">上架中</td>
+						</c:if>
 
 						<td>
 							<FORM METHOD="post"
@@ -293,15 +301,15 @@
 			});
 		});
 	</script>
-<!-- Font Awesome JS -->
-<script defer
-	src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
-	integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-	crossorigin="anonymous"></script>
-<script defer
-	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
-	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-	crossorigin="anonymous"></script>
+	<!-- Font Awesome JS -->
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+		integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+		crossorigin="anonymous"></script>
+	<script defer
+		src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+		integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+		crossorigin="anonymous"></script>
 
 </body>
 </html>
