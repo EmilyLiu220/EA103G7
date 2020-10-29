@@ -114,6 +114,18 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>Timer_ResCheFiServlet</servlet-name>
+		<servlet-class>com.front_inform.timer.Timer_ResCheFiServlet</servlet-class>
+<!-- 		<load-on-startup>10</load-on-startup> -->
+	</servlet>
+	<!-- 上線需打開 load-on-startup，直接在 server 開啟後去找 Res_Order 表格內符合條件的，將當日需發送的當日用餐確認通知輸入至 Front_Inform，且每隔 24hr 執行一次 -->
+	
+	<servlet-mapping>
+		<servlet-name>Timer_ResCheFiServlet</servlet-name>
+		<url-pattern>/front_inform/Timer_ResCheFiServlet</url-pattern>           
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>Front_informServlet</servlet-name>
 		<servlet-class>com.front_inform.controller.Front_informServlet</servlet-class>
 	</servlet>
