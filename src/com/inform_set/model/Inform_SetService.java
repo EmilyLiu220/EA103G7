@@ -17,9 +17,8 @@ public class Inform_SetService {
 		inform_setVO.setEmp_no(emp_no);
 		inform_setVO.setIs_cont(is_cont);
 		inform_setVO.setIs_date(is_date);
-		dao.insert(inform_setVO);
 
-		return inform_setVO;
+		return dao.insert(inform_setVO);
 	}
 	
 	public Inform_SetVO updateIs(String is_no, String emp_no, String is_cont, java.sql.Date is_date) {

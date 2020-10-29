@@ -98,12 +98,9 @@ width:100px;
 					<ul class="collapse list-unstyled" id="pageSubmenu">
 						<li><a href="#">員工管理</a></li>
 						<li><a href="#">會員管理</a></li>
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">>最新消息管理</a></li>
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知設定管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
 						<li><a href="#">評價管理</a></li>
 						<li><a href="#">用餐時段管理</a></li>
 						<li><a
@@ -117,8 +114,8 @@ width:100px;
 				<li><a href="#homeSubmenu" data-toggle="collapse"
 					aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform_New.jsp">查看通知</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckAllInform.jsp">查看通知</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
 						<li><a href="#">訂單派工</a></li>
 						<li><a href="#">出餐管理</a></li>
 						<li><a href="#">訂餐訂單處理</a></li>
