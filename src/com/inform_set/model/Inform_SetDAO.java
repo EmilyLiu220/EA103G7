@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,19 +36,45 @@ public class Inform_SetDAO implements Inform_SetDAO_interface {
 	private static final String GET_ALL = "SELECT IS_NO, IS_CONT, IS_DATE, EMP_NO FROM INFORM_SET ORDER BY IS_NO DESC"; 
 	
 	@Override
-	public void insert(Inform_SetVO inform_setVO) {
+	public Inform_SetVO insert(Inform_SetVO inform_setVO) {
+		Inform_SetVO isVO = new Inform_SetVO();
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_IS_STMT);
 			pstmt.setString(1, inform_setVO.getEmp_no());
 			pstmt.setString(2, inform_setVO.getIs_cont()); 
 			pstmt.setDate(3, inform_setVO.getIs_date());
-			pstmt.executeUpdate();
+			int check = pstmt.executeUpdate();
+			if(check!=0) {
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(GET_ALL);
+				rs.next();
+				isVO.setIs_no(rs.getString("IS_NO"));
+				isVO.setIs_cont(rs.getString("IS_CONT"));
+				isVO.setIs_date(rs.getDate("IS_DATE"));
+				isVO.setEmp_no(rs.getString("EMP_NO"));
+			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());
 		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -63,6 +90,7 @@ public class Inform_SetDAO implements Inform_SetDAO_interface {
 				}
 			}
 		}
+		return isVO;
 	}
 
 	@Override

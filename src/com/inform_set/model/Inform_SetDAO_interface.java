@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Inform_SetDAO_interface {
 	
-	public void insert(Inform_SetVO inform_setVO);
+	public Inform_SetVO insert(Inform_SetVO inform_setVO);
 	public void update(Inform_SetVO inform_setVO);
 	public void delete(String is_no);
 	public Inform_SetVO findByIsNo(String is_no);

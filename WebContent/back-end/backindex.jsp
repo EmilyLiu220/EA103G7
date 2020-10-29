@@ -58,7 +58,6 @@
 			<h3 style="font-weight: 900; display: inline-block;">當日領班</h3>
 			<div class="leader" style="cursor: default;">
 				<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>EMP0005</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>楊介安</span></h4>
-				<!-- random 的員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
 			</div>
 			</div>
 		</div>

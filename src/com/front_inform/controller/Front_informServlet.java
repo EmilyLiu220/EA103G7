@@ -269,6 +269,10 @@ public class Front_informServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if("empGetSpecialInform".equals(action)) {
+			
+		}
 	}
 	
 }

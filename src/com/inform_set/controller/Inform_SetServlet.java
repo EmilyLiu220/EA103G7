@@ -606,8 +606,9 @@ public class Inform_SetServlet extends HttpServlet {
 				
 				// 若使用者輸入的時間為今日，則會直接執行由 Inform_Set table 輸入至 Front_Inform table 的動作
 				java.util.Date today = new java.util.Date();
-				java.sql.Date sqlToday = new java.sql.Date(today.getTime());
-				if(is_date.getTime() == sqlToday.getTime()) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String todayStr = sdf.format(today);
+				if(todayStr.equals(is_date.toString())) {
 					Front_InformService fiSvc = new Front_InformService();
 					fiSvc.addISToAll(isVO.getIs_no());
 				}
