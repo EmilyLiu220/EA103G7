@@ -226,6 +226,7 @@
 									<c:when test="${front_informVO.info_cont eq '提醒您，因您有多則評價被檢舉成功，您的評價功能將於 14 天後恢復'}">暫停評價功能通知</c:when>
 									<c:when test="${front_informVO.info_cont eq '提醒您，您將於 1 分鐘後被停權'}">會員停權通知</c:when>
 									<c:when test="${front_informVO.info_cont eq '訂位成功，點選查看訂位明細'}">訂位成功通知</c:when>
+									<c:when test="${front_informVO.info_cont eq '訂位訂單修改成功，點選查看訂位明細'}">訂位修改通知</c:when>
 									<c:when test="${front_informVO.info_cont eq '訂餐成功！您尚未付款，點選前往結帳'}">訂餐成功尚未結帳</c:when>
 									<c:when test="${front_informVO.info_cont eq '您已成功付款，點選查看訂單明細'}">訂單付款成功通知</c:when>
 									<c:when test="${front_informVO.info_cont eq '您的訂單已取消'}">訂單取消通知</c:when>
