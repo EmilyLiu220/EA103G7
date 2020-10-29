@@ -33,7 +33,7 @@ public class Timer_ResCheFiServlet extends HttpServlet {
     	long period = 86400000; // 24 小時，24 * 60 * 60 * 1000
     	ScheduledExecutorService clock2 = Executors.newScheduledThreadPool(10);
     	// 從現在開始 delay 毫秒之後，每隔一星期執行一次 taskResChe
-    	clock2.scheduleAtFixedRate(taskResChe, delay, period,TimeUnit.MILLISECONDS);
+    	clock2.scheduleAtFixedRate(taskResChe, delay, period, TimeUnit.MILLISECONDS);
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 

@@ -43,11 +43,11 @@ public class Front_InformService {
 	}
 	
 	public void addRCFI(String res_no) {
-		// 寫一支額外的排程器，每一個小時掃一次 DB 的訂位訂單表格時間，若時間 +6 為該次掃 DB 的時間，
-		// 則 new Front_InformService 並 call 此方法去新增並發出通知
+		// 寫一支額外的排程器，每天 0900 對 RES_ORDER 抓取當日訂位訂單
+		// new Front_InformService 並 call 此方法去新增並發出通知
 		List<Front_InformVO> fiVOs = new ArrayList<Front_InformVO>();
 		Front_InformVO fiVO = dao.insertResCheInform(res_no);
-		if(fiVO!=null) {
+		if(fiVO!=null) { // WebSocket 需要的前檯通知推播內容
 			Front_InformWS fiWS = new Front_InformWS();
 			fiVOs.add(fiVO);
 			fiWS.onMessage(fiVOs);
@@ -68,6 +68,8 @@ public class Front_InformService {
 		resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 				resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
 				new Integer(1), resOrderVO.getSeat_sts(), seats_no);
+		// 起一個 thread，若 1 小時後沒有回覆則取消訂單
+		
 	}
 	
 	public void addISToAll(String is_no) {
