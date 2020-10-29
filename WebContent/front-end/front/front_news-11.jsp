@@ -4,12 +4,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.news.model.*"%>
-<%
-	NewsService newsSvc = new NewsService();
-	List<NewsVO> list = newsSvc.getAll();
-	pageContext.setAttribute("list", list);
-%>
 
+<%
+ 	NewsService newsSvc = new NewsService(); 
+     List<NewsVO> list = newsSvc.frontNews_sts(1); 
+     request.setAttribute("list",list);
+
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,8 +39,6 @@
 </head>
 
 <style>
-
-
 
 element.style {
 	width: 1250px;

@@ -13,7 +13,7 @@ public class NewsService {
 		dao= new NewsDAO();
 	}
 	
-	public NewsVO addNews(String emp_no ,String news_cont ,java.sql.Date news_date) {
+	public NewsVO addNews(String emp_no ,String news_cont ,java.sql.Date news_date,Integer news_sts) {
 		
 		NewsVO newsVO = new NewsVO();
 		
@@ -21,6 +21,7 @@ public class NewsService {
 		newsVO.setEmp_no(emp_no);
 		newsVO.setNews_cont(news_cont);
 		newsVO.setNews_date(news_date);
+		newsVO.setNews_sts(news_sts);
 		dao.insert(newsVO);
 		
 		return newsVO;
@@ -28,7 +29,7 @@ public class NewsService {
 
 
 	
-	public NewsVO updateNews(String news_no ,String emp_no ,String news_cont ,java.sql.Date news_date) {
+	public NewsVO updateNews(String news_no ,String emp_no ,String news_cont ,java.sql.Date news_date,Integer news_sts) {
 		
 		NewsVO newsVO = new NewsVO();
 		
@@ -36,13 +37,12 @@ public class NewsService {
 		newsVO.setEmp_no(emp_no);
 		newsVO.setNews_cont(news_cont);
 		newsVO.setNews_date(news_date);
+		newsVO.setNews_sts(news_sts);
 		dao.update(newsVO);
 		
 		return newsVO;
 			
 	}
-
-	
 
 	public void deleteNews(String news_no) {
 		dao.delete(news_no);
@@ -57,6 +57,9 @@ public class NewsService {
 	}
 	public List<NewsVO> getnewsno(String emp_no) {
 		return dao.getnewsno(emp_no);
+	}
+	public List<NewsVO> frontNews_sts(Integer news_sts) {
+		return dao.frontNews_sts(news_sts);
 	}
 }
 	

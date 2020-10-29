@@ -13,9 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.meal_set.model.MealSetVO;
-import com.news.model.NewsVO;
-
 public class AdJDBCDAO implements AdDAO_interface {
 
 	String driver = "oracle.jdbc.driver.OracleDriver";
@@ -29,7 +26,7 @@ public class AdJDBCDAO implements AdDAO_interface {
 	private static final String DELETE = "DELETE FROM AD WHERE AD_NO = ?";
 	private static final String UPDATE = "UPDATE AD SET EMP_NO=? , AD_TITLE=? ,AD_CONT=? ,AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_IMG=? ,AD_STS=? WHERE AD_NO=?";
 	private static final String GET_AD_STMT = "SELECT * FROM AD WHERE emp_NO =? order by ad_NO DESE";
-	private static final String UPAD = "UPDATE AD SET EMP_NO=? , AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_STS=? WHERE AD_NO=?";
+//	private static final String UPAD = "UPDATE AD SET EMP_NO=? , AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_STS=? WHERE AD_NO=?";
 	private static final String SEARCH_ADSTS = "select * from ad where ad_sts =?";
 
 	@Override
@@ -412,45 +409,45 @@ public class AdJDBCDAO implements AdDAO_interface {
 		return baos.toByteArray();
 	}
 
-	@Override
-	public void upad(AdVO adVO) {
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(UPAD);
-
-			pstmt.setString(1, adVO.getEmp_no());
-			pstmt.setDate(2, adVO.getAd_add_date());
-			pstmt.setDate(3, adVO.getAd_re_date());
-			pstmt.setInt(4, adVO.getAd_sts());
-			pstmt.setString(5, adVO.getAd_no());
-			pstmt.executeUpdate();
-
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-	}
+//	@Override
+//	public void upad(AdVO adVO) {
+//
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//
+//		try {
+//			Class.forName(driver);
+//			con = DriverManager.getConnection(url, userid, passwd);
+//			pstmt = con.prepareStatement(UPAD);
+//
+//			pstmt.setString(1, adVO.getEmp_no());
+//			pstmt.setDate(2, adVO.getAd_add_date());
+//			pstmt.setDate(3, adVO.getAd_re_date());
+//			pstmt.setInt(4, adVO.getAd_sts());
+//			pstmt.setString(5, adVO.getAd_no());
+//			pstmt.executeUpdate();
+//
+//		} catch (ClassNotFoundException e) {
+//			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+//		} catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. " + se.getMessage());
+//		} finally {
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//	}
 //		public List<AdVO> find_adsts() {
 //
 //			Connection con = null;
@@ -533,6 +530,7 @@ public class AdJDBCDAO implements AdDAO_interface {
 				adVO.setAd_re_date(rs.getDate("ad_re_date"));
 				adVO.setAd_img(rs.getBytes("ad_img"));
 				adVO.setAd_sts(rs.getInt("ad_sts"));
+				list.add(adVO);
 			}
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Conldn't load database driver. " + e.getMessage());

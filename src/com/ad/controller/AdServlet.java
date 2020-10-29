@@ -9,7 +9,9 @@ import javax.servlet.http.*;
 
 import com.ad.model.AdService;
 import com.ad.model.AdVO;
-
+import com.inform_set.model.Inform_SetService;
+import com.meal_set_consist.model.MealSetConVO;
+import com.mem.model.MemVO;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class AdServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -122,6 +124,14 @@ public class AdServlet extends HttpServlet {
 				/*************************** 2.開始修改資料 *****************************************/
 				AdService adSvc = new AdService();
 				adVO = adSvc.addAd(emp_no, ad_title, ad_cont, ad_add_date, ad_re_date, img,ad_sts);
+//				MemService memSvc = new MemService();
+//				while (next()) {
+//					MemVO	MemVO = new MemVO();
+//				}
+//				
+//				Inform_SetService in_set = new Inform_SetService();
+//				in_set.addAd();
+				
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String url = "/back-end/ad/listAllAd.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllAd.jsp
@@ -364,79 +374,79 @@ public class AdServlet extends HttpServlet {
 			}
 		}
 		/********************************************************************/
-		if ("upad".equals(action)) {
-			PrintWriter out = res.getWriter();
-			try {
-				/*************************** 1.接收請求參數 **********************/
-				String ad_no = req.getParameter("ad_no").trim();
-			
-				String str = req.getParameter("emp_no");
-
-				/*************************** 2.開始查詢資料 *****************************************/
-				AdService adSvc = new AdService();
-				AdVO adVO = adSvc.getOneAd(ad_no);
-				java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
-				java.sql.Date todayTemp = java.sql.Date.valueOf(today.toString());
-				java.sql.Date adUpTemp = java.sql.Date.valueOf(adVO.getAd_add_date().toString());
-				java.sql.Date adDownTemp = java.sql.Date.valueOf(adVO.getAd_re_date().toString());
-
-				/*************************** 3.開始修改資料 *****************************************/
-//        	String status;
-				if (adUpTemp.after(todayTemp)) {
-					// 提前上架
-//        		status = "0";
-					adSvc.upad(adVO.getAd_no(), str,  today, adVO.getAd_re_date(),new Integer(1));
-				} else if (adDownTemp.before(todayTemp)) {
-					// 已為下架廣告，請先修改下架時間
-//        		status = "2";
-				} else {
-					// 目前已是上架中
-//        		status = "1";
-				}
-
-				/*************************** 4.修改完成,準備轉交(Send the Success view) *************/
-//        	out.write(status);
-				/*************************** 其他可能的錯誤處理 *************************************/
-			} catch (Exception e) {
-				out.write("error: " + e.getMessage());
-			}
-		}
+//		if ("upad".equals(action)) {
+//			PrintWriter out = res.getWriter();
+//			try {
+//				/*************************** 1.接收請求參數 **********************/
+//				String ad_no = req.getParameter("ad_no").trim();
+//			
+//				String str = req.getParameter("emp_no");
+//
+//				/*************************** 2.開始查詢資料 *****************************************/
+//				AdService adSvc = new AdService();
+//				AdVO adVO = adSvc.getOneAd(ad_no);
+//				java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+//				java.sql.Date todayTemp = java.sql.Date.valueOf(today.toString());
+//				java.sql.Date adUpTemp = java.sql.Date.valueOf(adVO.getAd_add_date().toString());
+//				java.sql.Date adDownTemp = java.sql.Date.valueOf(adVO.getAd_re_date().toString());
+//
+//				/*************************** 3.開始修改資料 *****************************************/
+////        	String status;
+//				if (adUpTemp.after(todayTemp)) {
+//					// 提前上架
+////        		status = "0";
+//					adSvc.upad(adVO.getAd_no(), str,  today, adVO.getAd_re_date(),new Integer(1));
+//				} else if (adDownTemp.before(todayTemp)) {
+//					// 已為下架廣告，請先修改下架時間
+////        		status = "2";
+//				} else {
+//					// 目前已是上架中
+////        		status = "1";
+//				}
+//
+//				/*************************** 4.修改完成,準備轉交(Send the Success view) *************/
+////        	out.write(status);
+//				/*************************** 其他可能的錯誤處理 *************************************/
+//			} catch (Exception e) {
+//				out.write("error: " + e.getMessage());
+//			}
+//		}
 		/********************************************************************/
-		if("downad".equals(action)) {
-			PrintWriter out = res.getWriter();
-			try {
-				/*************************** 1.接收請求參數 **********************/
-				String ad_no = req.getParameter("ad_no").trim();
-				
-				String str = req.getParameter("emp_no");
-
-				/*************************** 2.開始查詢資料 *****************************************/
-				AdService adSvc = new AdService();
-				AdVO adVO = adSvc.getOneAd(ad_no);
-				java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
-				java.sql.Date todayTemp = java.sql.Date.valueOf(today.toString());
-				java.sql.Date adUpTemp = java.sql.Date.valueOf(adVO.getAd_add_date().toString());
-				java.sql.Date adDownTemp = java.sql.Date.valueOf(adVO.getAd_re_date().toString());
-
-				/*************************** 3.開始修改資料 *****************************************/
-            	
-            	if(adUpTemp.after(todayTemp)) {
-            		//還未上架,要下架
-//            		status = "0";
-            		adSvc.downad(adVO.getAd_no(), str, today, today, new Integer(2));
-            	} else if(adDownTemp.before(todayTemp)) {
-            		//已是下架
-//            		status = "2";
-            	} else {
-            		//上架中要下架
-//            		status = "1";
-            		adSvc.downad(adVO.getAd_no(), str, adVO.getAd_add_date(), today, new Integer(2));
-            	}
-		}catch (Exception e) {
-			out.write("error: " + e.getMessage());
-		}
-		
-		}
+//		if("downad".equals(action)) {
+//			PrintWriter out = res.getWriter();
+//			try {
+//				/*************************** 1.接收請求參數 **********************/
+//				String ad_no = req.getParameter("ad_no").trim();
+//				
+//				String str = req.getParameter("emp_no");
+//
+//				/*************************** 2.開始查詢資料 *****************************************/
+//				AdService adSvc = new AdService();
+//				AdVO adVO = adSvc.getOneAd(ad_no);
+//				java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+//				java.sql.Date todayTemp = java.sql.Date.valueOf(today.toString());
+//				java.sql.Date adUpTemp = java.sql.Date.valueOf(adVO.getAd_add_date().toString());
+//				java.sql.Date adDownTemp = java.sql.Date.valueOf(adVO.getAd_re_date().toString());
+//
+//				/*************************** 3.開始修改資料 *****************************************/
+//            	
+//            	if(adUpTemp.after(todayTemp)) {
+//            		//還未上架,要下架
+////            		status = "0";
+//            		adSvc.downad(adVO.getAd_no(), str, today, today, new Integer(2));
+//            	} else if(adDownTemp.before(todayTemp)) {
+//            		//已是下架
+////            		status = "2";
+//            	} else {
+//            		//上架中要下架
+////            		status = "1";
+//            		adSvc.downad(adVO.getAd_no(), str, adVO.getAd_add_date(), today, new Integer(2));
+//            	}
+//		}catch (Exception e) {
+//			out.write("error: " + e.getMessage());
+//		}
+//		
+//		}
 		
 		/*************************** 前台頁面 *************************************/
 		if ("getFrontOne_For_Display".equals(action)) {

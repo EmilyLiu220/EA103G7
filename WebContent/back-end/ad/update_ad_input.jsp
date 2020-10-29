@@ -52,6 +52,10 @@
 #logout {
 	width: 212px;
 }
+
+.button {
+	width: 100px;
+}
 </style>
 
 </head>
@@ -272,10 +276,7 @@
 						<td>結束日期:</td>
 						<td><input name="ad_re_date" id="re_date" type="text"></td>
 					</tr>
-					<tr>
-						<td>廣告圖片:</td>
-						<td><input name="ad_img" id="img" type="file"></td>
-					</tr>
+
 					<tr>
 						<td>上下架狀態:<font color=red><b>*</b></font></td>
 						<td><select size="1" name="ad_sts">
@@ -284,9 +285,32 @@
 						</select></td>
 					</tr>
 				</table>
-				<br> <input type="hidden" name="action" value="update">
+				<!-- 				<br> <input type="hidden" name="action" value="update"> -->
+				<%-- 				<input type="hidden" name="ad_no" value="<%=adVO.getAd_no()%>"> --%>
+				<!-- 				<input type="submit" value="送出修改"> -->
+
+				<div class="form-group">
+					<label class="btn btn-secondary info btn-icon-split"> <span
+						class="icon text-white-50"><i class="fas fa-image"></i></span> <span
+						class="text">請上傳圖片</span> <input type="file" id="img" name=ad_img
+						accept="image/gif, image/jpeg, image/png" style="display: none" />
+					</label>
+					<div id="pic">
+						<img id="preview" src="">
+					</div>
+				</div>
+
+				<br>
+				<button type="button" class="btn btn-secondary button"
+					onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/addAd.jsp'">取消</button>
+				<button type="submit" class="btn btn-primary button" id="sendMsg">儲存</button>
+				<input type="hidden" name="action" value="update">
+				<%-- 						<input type="hidden" name="emp_no" value="${empVO2.emp_no}"> --%>
 				<input type="hidden" name="ad_no" value="<%=adVO.getAd_no()%>">
-				<input type="submit" value="送出修改">
+				<!-- 						<input type="submit" value="送出新增"> -->
+				<button type="button" id="newad"
+					class="btn btn-info btn-circle btn-sm button">New</button>
+
 			</FORM>
 		</div>
 	</div>
@@ -369,4 +393,20 @@
 	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
 	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
 	crossorigin="anonymous"></script>
+
+<script>
+	$("#img").change(function() {
+		readURL(this);
+	});
+
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+</script>
 </html>

@@ -236,9 +236,10 @@ img {
 					<th>員工編號</th>
 					<th>廣告標題</th>
 					<th>廣告內容</th>
-					<th>起始日期</th>
-					<th>結束日期</th>
-					<th>廣告圖片</th>
+					<th style="text-align:center;">起始日期</th>
+					<th style="text-align:center;">結束日期</th>
+					<th style="text-align:center;">廣告圖片</th>
+					<th style="text-align:center;">廣告狀態</th>
 				</tr>
 
 				<%@ include file="page1.file"%>
@@ -250,11 +251,18 @@ img {
 						<td style="width: 100px;">${adVO.emp_no}</td>
 						<td style="width: 100px;">${adVO.ad_title}</td>
 						<td style="width: 800px;">${adVO.ad_cont}</td>
-						<td style="width: 100px;">${adVO.ad_add_date}</td>
-						<td style="width: 100px;">${adVO.ad_re_date}</td>
+						<td style="width: 100px;text-align:center;">${adVO.ad_add_date}</td>
+						<td style="width: 100px;text-align:center;">${adVO.ad_re_date}</td>
 						<td><img
 							src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"></td>
 
+						<c:if test="${adVO.ad_sts == 0}">
+							<td style="width: 100px; text-align:center;">已下架</td>
+						</c:if>
+						<c:if test="${adVO.ad_sts == 1}">
+							<td style="width: 100px; text-align:center;">上架中</td>
+						</c:if>
+						
 						<td>
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/ad/ad.do"

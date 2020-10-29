@@ -9,4 +9,5 @@ public interface NewsDAO_interface {
 	public NewsVO findByPrimaryKey(String news_no);
 	public List<NewsVO> getAll();
 	public List<NewsVO> getnewsno(String emp_no);
+	public List<NewsVO> frontNews_sts(Integer news_sts);
 }

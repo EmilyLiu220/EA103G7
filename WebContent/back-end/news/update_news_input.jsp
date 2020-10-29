@@ -253,6 +253,13 @@ width:212px
 						<td>發布日期:</td>
 						<td><input name="news_date" id="n_date" type="text"></td>
 					</tr>
+					<tr>
+						<td>上下架狀態:<font color=red><b>*</b></font></td>
+						<td><select size="1" name="news_sts">
+								<option value="0">下架
+								<option value="1">上架
+						</select></td>
+					</tr>
 				</table>
 
 				<br> <input type="hidden" name="action" value="update">
