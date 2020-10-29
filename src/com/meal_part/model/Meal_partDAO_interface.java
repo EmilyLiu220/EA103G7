@@ -14,4 +14,5 @@ public interface Meal_partDAO_interface {
 	public List<Meal_partVO> getAll();
 	public Map<String,Double> get_NUT_ByMealno(String meal_no);
 	public Map<String,Double> get_nut_by_meal_set_no(String meal_set_no);
+	public void delete(String meal_no);
 }

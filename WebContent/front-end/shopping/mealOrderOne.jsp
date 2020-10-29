@@ -30,12 +30,19 @@
   box-sizing: border-box;
   margin:0;
 }
-.container{
+.mycontainer{
+background-color: rgba(0, 0, 0, 0.9);
 /*   border:2px solid red; */
 }
-#top,#content{
-background-color: lightgray;
-color:white;
+.content div{
+ background-color: rgba(255, 255, 255, 0.8);
+ color:black;
+/*   border:2px solid red; */
+}
+#top {
+background-color: rgba(255, 255, 255, 0.8);
+/* background-color: lightgray; */
+/* color:white; */
 font-weight: bolder;
 }
 .row{
@@ -45,29 +52,48 @@ font-weight: bolder;
   
 }
 .col,.col-4,.col-2{
-  border:1px dashed black;
+  border:1px solid black;
+}
+.col-4{
+font-weight: bolder;
 }
 #header,#content div,#content{
   height:50px;
   
 }
+#content div{
+background-color: rgba(0, 0, 0, 0.9);
+}
 .title a{
 margin-left:10px;
 font-size:14px;
-color:black;
+color:white;
 font-weight: bolder;
 
 }
 .title a:hover{
-color:white;
+color:darkgray;
 text-decoration: underline;
 
 }
+.title{
+background-color: rgba(0, 0, 0, 0.9);
+}
+.title span{
+color:#fff;
+text-align: center;
+font-size: 26px;
+font-weight: bolder;
+}
+.content-title{
+font-weight: bolder;
+}
+
 </style>
 </head>
 <body>
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
-<div class="container">
+<div class="container mycontainer">
 <div id="top" class="row">
   <div class="col title">
   <span>我的訂單</span><c:if test="${not empty returnPath}"><a href="<%=request.getContextPath()%><%=request.getAttribute("returnPath") %>">返回</a></c:if>
@@ -81,57 +107,57 @@ text-decoration: underline;
   </c:if>
   </div>
   </div>
-  <div class="row">
+  <div class="row content">
     <div class="col-4">訂餐編號：</div>
     <div class="col">${mealOrderVO.meal_order_no}</div>
    
   </div>
-  <div class="row">
+  <div class="row content">
     <div class="col-4">訂餐時間：</div>
     <div class="col">${mealOrderSrv.dateFormat(mealOrderVO.order_time)}</div>
    
   </div>
-  <div class="row">	
+  <div class="row content">	
     <div class="col-4">預計取餐時間：</div>
     <div class="col">
     ${mealOrderVO.pickup_time !=null ? mealOrderSrv.dateFormat(mealOrderVO.pickup_time):'現場用餐'}</div>
    
   </div>
-  <div class="row">
+  <div class="row content">
     <div class="col-4">訂單金額：</div>
     <div class="col">${mealOrderVO.amount} 元</div>
    
   </div>
-  <div class="row">
+  <div class="row content">
     <div class="col-4">通知狀態：</div>
-    <div class="col">${mealOrderVO.noti_sts == 0 ?'未通知':'已通知'}</div>
+    <div class="col">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</div>
    
   </div>
-  <div class="row">
+  <div class="row content">
     <div class="col-4">付款狀態：</div>
-    <div class="col">${mealOrderVO.pay_sts == 0?'未付款':'已付款'}</div>
+    <div class="col">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</div>
    
   </div>
-  <div class="row">
+  <div class="row content">
     <div class="col-4">訂單狀態：</div>
     <div class="col">
-    <c:if test="${mealOrderVO.meal_order_sts == 0}">已取消</c:if>
+    <c:if test="${mealOrderVO.meal_order_sts == 0}"><font color="red">已取消</font></c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
-    <c:if test="${mealOrderVO.meal_order_sts == 4}">已完成</c:if></div>
+    <c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></div>
    
   </div>
-  <div id="content" class="row">
-    <div class="col">訂單內容</div></div>
-      <div class="row">
+  <div id="content" class="row title">
+    <div class="col"><span>訂單內容</span></div></div>
+      <div class="row content content-title">
         <div class="col">餐點名稱</div>
         <div class="col">數量</div>
         <div class="col">價格</div>
       </div>
       <c:forEach var="mealOrderDetailVO" items="${detailList}">
       <c:if test="${not empty mealOrderDetailVO.meal_no}">
-      <div class="row">
+      <div class="row content">
          <div class="col">${mealSrv.searchByNo(mealOrderDetailVO.meal_no).meal_name}</div>
         <div class="col">${mealOrderDetailVO.qty}</div>
         <div class="col">${mealOrderDetailVO.detail_amount} 元</div>
@@ -140,7 +166,7 @@ text-decoration: underline;
       </c:forEach>
       <c:forEach var="mealOrderDetailVO" items="${detailList}">
       <c:if test="${not empty mealOrderDetailVO.meal_set_no}">
-      <div class="row">
+      <div class="row content">
          <div class="col">${mealSetSrv.searchByNo(mealOrderDetailVO.meal_set_no).meal_set_name}</div>
         <div class="col">${mealOrderDetailVO.qty}</div>
         <div class="col">${mealOrderDetailVO.detail_amount} 元</div>

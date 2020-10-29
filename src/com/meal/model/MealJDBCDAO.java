@@ -95,7 +95,7 @@ public class MealJDBCDAO implements MealDAO_interface {
 
 	};
 
-	public void update(MealVO mealVO) {
+	public void update(MealVO mealVO,List<Meal_partVO> partList) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -103,8 +103,9 @@ public class MealJDBCDAO implements MealDAO_interface {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
+			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(UPDATE);
-
+			
 			pstmt.setString(1, mealVO.getMeal_name());
 			pstmt.setString(2, mealVO.getMeal_info());
 			pstmt.setBytes(3, mealVO.getMeal_img());
@@ -114,13 +115,26 @@ public class MealJDBCDAO implements MealDAO_interface {
 			pstmt.setString(7, mealVO.getMeal_no());
 
 			pstmt.executeUpdate();
+			
+			
+			List<Meal_partVO> partList2 = new ArrayList<Meal_partVO>();
+			Meal_partDAO partDAO = new Meal_partDAO();
+			partDAO.delete(mealVO.getMeal_no());
+			for(Meal_partVO partVO:partList) {
+				partVO.setMeal_no(mealVO.getMeal_no());
+				partList2.add(partVO);
+			}
+			partDAO.insert(partList2,con);
+			con.commit();
 
-		} catch (SQLException se) {
+		} catch (SQLException | ClassNotFoundException se) {
+			try {
+				con.rollback();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());}
-		finally {
+		} finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();

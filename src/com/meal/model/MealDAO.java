@@ -102,13 +102,14 @@ public class MealDAO implements MealDAO_interface {
 
 	};
 
-	public void update(MealVO mealVO) {
+	public void update(MealVO mealVO,List<Meal_partVO> partList) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			con = ds.getConnection();
+			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(UPDATE);
 			
 			pstmt.setString(1, mealVO.getMeal_name());
@@ -120,8 +121,24 @@ public class MealDAO implements MealDAO_interface {
 			pstmt.setString(7, mealVO.getMeal_no());
 
 			pstmt.executeUpdate();
+			
+			
+			List<Meal_partVO> partList2 = new ArrayList<Meal_partVO>();
+			Meal_partDAO partDAO = new Meal_partDAO();
+			partDAO.delete(mealVO.getMeal_no());
+			for(Meal_partVO partVO:partList) {
+				partVO.setMeal_no(mealVO.getMeal_no());
+				partList2.add(partVO);
+			}
+			partDAO.insert(partList2,con);
+			con.commit();
 
 		} catch (SQLException se) {
+			try {
+				con.rollback();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
 			if (pstmt != null) {

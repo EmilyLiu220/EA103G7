@@ -44,8 +44,11 @@
  <title>會員所有訂餐訂單</title>
  <jsp:useBean id="mealPartSrv" class="com.meal_part.model.Meal_partService"/>
  <style>
- body{
-/*  background-color:black; */
+ .mycontainer{
+ padding:0;
+/* background-color: rgba(0, 0, 0, 0.9); */
+/* color:white; */
+font-weight: bolder;
  }
  
   div.container {
@@ -78,6 +81,8 @@
     font-weight: bolder;
     font-style: italic;
     font-size: 14px;
+    }
+    #card-text{
     }
 
     #top {
@@ -137,6 +142,10 @@
   color:#fff;
   cursor:pointer;
     }
+     #menu p{
+  color:#black;
+  font-weight: bolder;
+    }
  #card-img img{
  	width:100%;
 	height:100%; 
@@ -186,6 +195,10 @@ transition: all 0.5s;
  #cartJSP th{
  text-align: center;
  }
+ #cartJSP{
+ color:black;
+ font-weight: bolder;
+ }
  .cotent div{
  padding: auto 1px;}
  #cart-img {
@@ -232,6 +245,10 @@ transition: all 0.5s;
             opacity: 1;
             cursor: pointer;
         }
+/*         .card-container{ */
+/* /*         background-color: rgba(255, 255, 255, 0.8); */ */
+/*         margin:10px auto; */
+/*         } */
  
   </style>
  </head>
@@ -239,7 +256,7 @@ transition: all 0.5s;
 <body>
 
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
-  <div class="container">
+  <div class="container mycontainer">
   
     <div id="top" class="row align-items-center" >
       <div class="col-3"><a href="<%= request.getContextPath() %>/front-end/shopping/mealMenu2.jsp">單點</a></div>
@@ -253,7 +270,7 @@ transition: all 0.5s;
     
     <c:forEach var="mealVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
       
-      <div class="col-6">
+      <div class="col-6 card-container">
       <div class="row align-items-center">
       <div id="card-text"class="col-4">
       <h4>${mealVO.meal_name}</h4>
