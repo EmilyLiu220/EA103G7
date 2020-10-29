@@ -20,7 +20,8 @@ public class ResOrderJDBCDAO implements ResOrderDAO_interface {
 	private static final String UPDATE = "UPDATE RES_ORDER SET MEAL_ORDER_NO=? ,MEM_NO=? ,EMP_NO=? ,RES_DATE=? ,PEOPLE=? ,TIME_PERI_NO=? ,INFO_STS=? ,SEAT_STS=? WHERE RES_NO = ?";
 	private static final String GET_ONE_MEM_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEM_NO = ?";
 	private static final String GET_RES_DATE_AND_TIME_PERI_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = ? AND TIME_PERI_NO = ?";
-
+	private static final String GET_BY_RES_DATE = "SELECT RES_NO ,MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = to_date(?,'yyyy-mm-dd') ORDER BY RES_NO";
+	
 	@Override
 	public String insert(ResOrderVO resOrderVO, String seats_no[]) {
 		Connection con = null;
@@ -474,6 +475,67 @@ public class ResOrderJDBCDAO implements ResOrderDAO_interface {
 		}
 		return list;
 	}
+	
+
+	@Override
+	public List<ResOrderVO> findByResDate(String res_date) {
+		List<ResOrderVO> list = new ArrayList<ResOrderVO>();
+		ResOrderVO resOrderVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_BY_RES_DATE);
+			pstmt.setString(1, res_date);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				resOrderVO = new ResOrderVO();
+				resOrderVO.setRes_no(rs.getString("RES_NO"));
+				resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
+				resOrderVO.setMem_no(rs.getString("MEM_NO"));
+				resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+				resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+				resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+				resOrderVO.setPeople(rs.getInt("PEOPLE"));
+				resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+				resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+				resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+				list.add(resOrderVO);
+			}
+			System.out.println("Get By Res_Date success");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} catch (NullPointerException npe) {
+			throw new RuntimeException("A bytesArrayToByteObject error occured. " + npe.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 
 	public static void main(String[] args) {
 //
@@ -547,20 +609,38 @@ public class ResOrderJDBCDAO implements ResOrderDAO_interface {
 //			System.out.print(resOrderVO3.getSeat_sts() + ",\t");
 //			System.out.println();
 		
-		List<ResOrderVO> list2 = dao.findByResDate_And_TimePeri_getAll("2020-10-17", "TP0006");
-		for (ResOrderVO resOrderVO4 : list2) {
-			System.out.print(resOrderVO4.getRes_no() + ",\t");
-			System.out.print(resOrderVO4.getMeal_order_no() + ",\t");
-			System.out.print(resOrderVO4.getMem_no() + ",\t");
-			System.out.print(resOrderVO4.getEmp_no() + ",\t");
-			System.out.print(resOrderVO4.getRes_time() + ",\t");
-			System.out.print(resOrderVO4.getRes_date() + ",\t");
-			System.out.print(resOrderVO4.getPeople() + ",\t");
-			System.out.print(resOrderVO4.getTime_peri_no() + ",\t");
-			System.out.print(resOrderVO4.getInfo_sts() + ",\t");
-			System.out.print(resOrderVO4.getSeat_sts() + ",\t");
+//		List<ResOrderVO> list2 = dao.findByResDate_And_TimePeri_getAll("2020-10-17", "TP0006");
+//		for (ResOrderVO resOrderVO4 : list2) {
+//			System.out.print(resOrderVO4.getRes_no() + ",\t");
+//			System.out.print(resOrderVO4.getMeal_order_no() + ",\t");
+//			System.out.print(resOrderVO4.getMem_no() + ",\t");
+//			System.out.print(resOrderVO4.getEmp_no() + ",\t");
+//			System.out.print(resOrderVO4.getRes_time() + ",\t");
+//			System.out.print(resOrderVO4.getRes_date() + ",\t");
+//			System.out.print(resOrderVO4.getPeople() + ",\t");
+//			System.out.print(resOrderVO4.getTime_peri_no() + ",\t");
+//			System.out.print(resOrderVO4.getInfo_sts() + ",\t");
+//			System.out.print(resOrderVO4.getSeat_sts() + ",\t");
+//			System.out.println();
+//
+//		}
+		
+		// select By Res_Date
+		List<ResOrderVO> list3 = dao.findByResDate("2020-09-22");
+		for (ResOrderVO resOrderVO5 : list3) {
+			System.out.print(resOrderVO5.getRes_no() + ",\t");
+			System.out.print(resOrderVO5.getMeal_order_no() + ",\t");
+			System.out.print(resOrderVO5.getMem_no() + ",\t");
+			System.out.print(resOrderVO5.getEmp_no() + ",\t");
+			System.out.print(resOrderVO5.getRes_time() + ",\t");
+			System.out.print(resOrderVO5.getRes_date() + ",\t");
+			System.out.print(resOrderVO5.getPeople() + ",\t");
+			System.out.print(resOrderVO5.getTime_peri_no() + ",\t");
+			System.out.print(resOrderVO5.getInfo_sts() + ",\t");
+			System.out.print(resOrderVO5.getSeat_sts() + ",\t");
 			System.out.println();
-
 		}
+		
 	}
+
 }

@@ -8,11 +8,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import com.res_detail.model.ResDetailDAO;
-import com.res_detail.model.ResDetailDAO_interface;
-import com.res_detail.model.ResDetailService;
-import com.res_detail.model.ResDetailVO;
+import com.res_detail.model.*;
 
 public class ResOrderDAO implements ResOrderDAO_interface {
 
@@ -33,7 +29,8 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 	private static final String UPDATE = "UPDATE RES_ORDER SET MEAL_ORDER_NO=? ,MEM_NO=? ,EMP_NO=? ,RES_TIME=CURRENT_TIMESTAMP, RES_DATE=? ,PEOPLE=? ,TIME_PERI_NO=? ,INFO_STS=? ,SEAT_STS=? WHERE RES_NO = ?";
 	private static final String GET_ONE_MEM_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEM_NO = ? ORDER BY RES_TIME DESC";
 	private static final String GET_RES_DATE_AND_TIME_PERI_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = ? AND TIME_PERI_NO = ?";
-
+	private static final String GET_BY_RES_DATE = "SELECT RES_NO ,MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = to_date(?,'yyyy-mm-dd') ORDER BY RES_NO";
+	
 	@Override
 	public String insert(ResOrderVO resOrderVO, String seats_no[]) {
 		Connection con = null;
@@ -498,6 +495,62 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 		} catch (NullPointerException npe) {
 			throw new RuntimeException("A bytesArrayToByteObject error occured. " + npe.getMessage());
 			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<ResOrderVO> findByResDate(String res_date) {
+		List<ResOrderVO> list = new ArrayList<ResOrderVO>();
+		ResOrderVO resOrderVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_BY_RES_DATE);
+			pstmt.setDate(1, java.sql.Date.valueOf(res_date));
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				resOrderVO = new ResOrderVO();
+				resOrderVO.setRes_no(rs.getString("RES_NO"));
+				resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
+				resOrderVO.setMem_no(rs.getString("MEM_NO"));
+				resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+				resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+				resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+				resOrderVO.setPeople(rs.getInt("PEOPLE"));
+				resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+				resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+				resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+				list.add(resOrderVO); // Store the row in the list
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} catch (NullPointerException npe) {
+			throw new RuntimeException("A bytesArrayToByteObject error occured. " + npe.getMessage());
 		} finally {
 			if (rs != null) {
 				try {

@@ -16,4 +16,7 @@ public interface ResOrderDAO_interface {
 	public List<ResOrderVO> findByResDate_And_TimePeri_getAll(String res_date, String time_peri_no);
 	
 	public List<ResOrderVO> getAll();
+	
+	// 當日用餐確認通知需要用到的方法
+	public List<ResOrderVO> findByResDate(String res_date);
 }

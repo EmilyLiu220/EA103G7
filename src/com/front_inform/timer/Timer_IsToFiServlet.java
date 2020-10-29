@@ -15,18 +15,19 @@ public class Timer_IsToFiServlet extends HttpServlet {
         super();
     }
 	
-	TimerTask task = new Timer_IsToFi();
+	TimerTask taskIsToFi = new Timer_IsToFi();
 	public void init() {
     	java.util.Timer clock1 = new java.util.Timer();
     	long delay1 = 1 * 1000;
     	long period = 86400000; // 24 小時
     	// 從現在開始的 1 秒後，每 24 小時會執行一次此排程器，將當日的通知設定 insert 進前台通知裡
-    	clock1.schedule(task, delay1, period);
+    	clock1.schedule(taskIsToFi, delay1, period);
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		System.out.println("Timer_IsToFiServlet init immediately.(load-on-startup)");
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -35,7 +36,7 @@ public class Timer_IsToFiServlet extends HttpServlet {
 	}
 
 	public void destroy() {
-		task.cancel();
+		taskIsToFi.cancel();
 	}
 	
 }
