@@ -73,7 +73,7 @@
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<c:forEach var="resOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-	<c:if test="${resOrderVO.info_sts lt 2}">
+	<c:if test="${resOrderVO.info_sts lt 3}">
 		<tr>
 			<td>
 				<c:forEach var="resDetailVO" items="${resDetailSvc.getAllResNO(resOrderVO.res_no)}">
@@ -148,7 +148,7 @@
 			<td>
 				<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
 					<c:choose>    
-						<c:when test="${resOrderVO.info_sts ne 3}">  
+						<c:when test="${resOrderVO.info_sts lt 1}">  
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
 								<input type="hidden" name="res_people" value="${resOrderVO.people}">
 								<input type="hidden" name="action" value="modify_Seat_Order">
@@ -163,7 +163,7 @@
 			<td>
 				<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
 					<c:choose>    
-						<c:when test="${resOrderVO.info_sts ne 3}">  
+						<c:when test="${resOrderVO.info_sts lt 1}">  
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
 								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
 			     				<input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
