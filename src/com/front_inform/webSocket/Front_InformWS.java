@@ -19,9 +19,6 @@ import com.google.gson.Gson;
 @ServerEndpoint("/Front_InformWS/{userName}") 
 public class Front_InformWS {
 	
-//	pollingThread_FI_Backup thread1=new pollingThread_FI_Backup();
-//	Thread thread=new Thread(thread1);
-	
 	private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
 	Gson gson = new Gson();
 	
@@ -30,9 +27,8 @@ public class Front_InformWS {
 	public void onOpen(@PathParam("userName") String userName, Session userSession) throws IOException {
 		sessionsMap.put(userName, userSession);
 		// 取得所有使用者
-		Set<String> userNames = sessionsMap.keySet();
-		// keySet() 可以把 Map 裡所有 key 的資料取出來，直接取得一個 Set 類別存放取出的資料
-//		thread.start(); // 開啟一個執行緒對資料庫中的資料進行輪詢
+//		Set<String> userNames = sessionsMap.keySet();
+		// keySet() 可以把 Map 裡所有 key 的資料取出來，直接取得一個 Set 類別存放取出的資料...貌似不會用到
 	}
 
 	public void onMessage(List<Front_InformVO> fiVOs) { // DB 傳來的物件
@@ -56,14 +52,9 @@ public class Front_InformWS {
 
 	@OnClose // 使用者視窗關閉
 	public void onClose(Session userSession, CloseReason reason) {
-		// 停止輪詢 DB 的執行緒
-//		thread1.stopMe();
-		
-		String userNameClose = null;
 		Set<String> userNames = sessionsMap.keySet(); // 取得所有 users
 		for (String userName : userNames) {
 			if (sessionsMap.get(userName).equals(userSession)) { // 取得斷掉的連線
-				userNameClose = userName;
 				sessionsMap.remove(userName); // 移除這個連線
 				break;
 			}

@@ -133,21 +133,23 @@ public class Front_informServlet extends HttpServlet {
 				seats_noList.toArray(seats_no);
 				
 				if(checkYes!=null) { // 勾選確定來吃
-					fiSvc.updateSts(1, info_no);
-					// 發送當日訂位確認通知後必須修改 Info_Sts 為 2 (已發送已確認)
-					resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
-							resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
-							new Integer(2), resOrderVO.getSeat_sts(), seats_no);
+					boolean checked = fiSvc.updateSts(1, info_no);
+					if(checked) {
+						// 發送當日訂位確認通知後必須修改 Info_Sts 為 2 (已發送已確認)
+						resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
+								resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
+								new Integer(2), resOrderVO.getSeat_sts(), seats_no);
+					}
 				}
 				if(checkNo!=null) { // 勾選不來吃
-					boolean check = fiSvc.updateSts(3, info_no);
-					if(check) {
+					boolean checked = fiSvc.updateSts(3, info_no);
+					if(checked) {
 						fiSvc.addROFI(mem_no, res_no, "您的訂位已取消");
+						// 發送當日訂位確認通知後必須修改 Info_Sts 為 3 (會員已取消)
+						resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
+								resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
+								new Integer(3), resOrderVO.getSeat_sts(), seats_no);
 					}
-					// 發送當日訂位確認通知後必須修改 Info_Sts 為 3 (會員已取消)
-					resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
-							resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
-							new Integer(3), resOrderVO.getSeat_sts(), seats_no);
 				}
 				
 			} catch (Exception e) {
