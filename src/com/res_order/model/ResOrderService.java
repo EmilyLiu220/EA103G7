@@ -65,4 +65,9 @@ public class ResOrderService {
 	public List<ResOrderVO> getAll() {
 		return dao.getAll();
 	}
+	
+	// 當日用餐確認通知需要用到的方法
+	public List<ResOrderVO> getByResDate(String res_date) {
+		return dao.findByResDate(res_date);
+	}
 }
