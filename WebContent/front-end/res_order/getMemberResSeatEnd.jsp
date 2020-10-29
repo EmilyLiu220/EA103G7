@@ -1,12 +1,14 @@
-<%@page import="com.time_peri.model.TimePeriService"%>
+<%@ page import="com.time_peri.model.TimePeriService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.res_order.model.*"%>
+<%@page import="com.mem.model.MemVO"%>
 <%
+	MemVO memVO = (MemVO) session.getAttribute("memVO2");
 	ResOrderService resOrderSvc = new ResOrderService();
-	List<ResOrderVO> list = resOrderSvc.getOneMemberResOrder("MEM0010", "end");
+	List<ResOrderVO> list = resOrderSvc.getOneMemberResOrder(memVO.getMem_no(), "end");
 	pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
@@ -39,6 +41,11 @@
 	</tr>
 </table>
 <table class="table table-striped table-hover mx-auto w-auto">
+<c:choose>
+	 <c:when test="${list.size() eq 0}">
+	 	<font style="font-size: 40px;" color="red">查無資料</font><br>
+    </c:when>
+    <c:otherwise>
 	<tr>
 		<th>桌位</th>
 		<th>訂餐編號</th>
@@ -55,7 +62,7 @@
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<c:forEach var="resOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-	<c:if test="${resOrderVO.info_sts gt 1}">
+	<c:if test="${(resOrderVO.info_sts eq 3) or (resOrderVO.seat_sts eq 1)}">
 		<tr>
 			<td>
 				<c:forEach var="resDetailVO" items="${resDetailSvc.getAllResNO(resOrderVO.res_no)}">
@@ -64,7 +71,7 @@
 			</td>
 			<td>
 				<c:if test="${not empty resOrderVO.meal_order_no}">
-					${resOrderVO.meal_order_no}
+					<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">
 					<c:if test="${resOrderVO.info_sts gt 1}">  
@@ -114,6 +121,8 @@
 </table>
 
 <%@ include file="pages/page2.file"%>
+	    </c:otherwise>
+</c:choose>
 <input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/back-end/seat_obj/addSeatObj.jsp'">
 <input class="btn btn-secondary" type="button" value="回桌訂位畫面" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp'">
 </div>
