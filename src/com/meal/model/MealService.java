@@ -28,7 +28,7 @@ public class MealService {
 	};
 
 	public MealVO updateMeal(String meal_no, String meal_name, String meal_info, byte[] meal_img, Integer meal_price,
-			Integer meal_sts,Integer cat_no) {
+			Integer meal_sts,Integer cat_no,List<Meal_partVO> partList) {
 		MealVO mealVO = new MealVO();
 		mealVO.setMeal_no(meal_no);
 		mealVO.setMeal_name(meal_name);
@@ -37,7 +37,7 @@ public class MealService {
 		mealVO.setMeal_price(meal_price);
 		mealVO.setMeal_sts(meal_sts);
 		mealVO.setCat_no(cat_no);
-		dao.update(mealVO);
+		dao.update(mealVO,partList);
 
 		return mealVO;
 	};

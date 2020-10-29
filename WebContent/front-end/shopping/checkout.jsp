@@ -33,38 +33,70 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Checkout</title>
 <style>
- *{ 
+ *{
+  text-align:center;  
    box-sizing: border-box; 
    margin:0; 
  } 
-.container{
+.mycontainer{
+/* text-align:center;  */
 /*   border:2px solid red; */
+background-color: rgba(0, 0, 0, 0.9);
 }
-#cart-title{
-border:1px solid green;
-  height:100px;  
+.title {
+/* background-color: lightgray; */
+color:#fff;
+font-size: 26px;
+font-weight: bolder;
+text-align: center;
+height: 100px;
 }
-.row{
+.title span{
+/* background-color: lightgray; */
+text-align: center;
+}
+.content{
+color:black;
+background-color: rgba(255, 255, 255, 0.8);
 /*   border:1px solid green; */
 /*   height:100px;  */
   
 }
-.col{
-   border:1px dashed black; 
+#cate,#amount{
+color:black;
+font-weight: bolder;
+text-align: center;
 }
+
+.col{
+   border:1px solid black; 
+  	height: 50px;
+}
+.submit{
+width: 108px;
+height: 72px;
+background-color: rgba(0, 0, 0, 0.9);
+color:#fff;
+font-weight: bolder;
+}
+.submit-row{
+background-color: rgba(209, 209, 209, 1);
+}
+
+
 </style>
 </head>
 <body>
 
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
 
-<div class="container">
+<div class="container mycontainer">
 	
-  <div id="title" class="row">
-   ${mem_no} 您的訂單內容：
+  <div id="title" class="row title justify-content-center">
+   <span>${mem_no} 您的訂單內容：</span>
     
     </div>
-  <div id="cate" class="row">
+  <div id="cate" class="row content">
     <div class="col">餐點名稱</div>
     <div class="col">餐點價格</div>
     <div class="col">數量</div>
@@ -72,7 +104,7 @@ border:1px solid green;
   </div>
   <c:if test="${empty res_no}">
   <c:forEach var="mealVO" items="${mealList}">
-  <div id="cartcontent" class="row">
+  <div id="cartcontent" class="row content">
     <div class="col">${mealVO.meal_name}</div>
     <div class="col">${mealVO.meal_price}</div>
     <div class="col">${mealVO.meal_qty}</div>
@@ -81,7 +113,7 @@ border:1px solid green;
   	</c:forEach>
   	
   	 <c:forEach var="mealSetVO" items="${setList}">
-  <div id="cartcontent" class="row">
+  <div id="cartcontent" class="row content">
     <div class="col">${mealSetVO.meal_set_name}</div>
     <div class="col">${mealSetVO.meal_set_price}</div>
     <div class="col">${mealSetVO.meal_set_qty}</div>
@@ -91,7 +123,7 @@ border:1px solid green;
   	</c:if>
   <c:if test="${not empty res_no}">
   <c:forEach var="mealVO" items="${rsvMealList}">
-  <div id="cartcontent" class="row">
+  <div id="cartcontent" class="row content">
     <div class="col">${mealVO.meal_name}</div>
     <div class="col">${mealVO.meal_price}</div>
     <div class="col">${mealVO.meal_qty}</div>
@@ -100,7 +132,7 @@ border:1px solid green;
   	</c:forEach>
   	
   	 <c:forEach var="mealSetVO" items="${rsvSetList}">
-  <div id="cartcontent" class="row">
+  <div id="cartcontent" class="row content">
     <div class="col">${mealSetVO.meal_set_name}</div>
     <div class="col">${mealSetVO.meal_set_price}</div>
     <div class="col">${mealSetVO.meal_set_qty}</div>
@@ -112,15 +144,17 @@ border:1px solid green;
   
   <c:if test="${empty res_no}">
   <form method="POST" action="<%= request.getContextPath()%>/MealOrderServlet.do">
-  <div id="amount" class="row">
+  <div id="amount" class="row content">
  	<div class="col">選擇取餐時間：<input name="pickup_time" id="f_date1"></div>
 	<div class="col">總金額：${amount} 元</div>
   </div>
-  <div class="row">
+  <div class="row submit-row justify-content-end">
+  <div class="col-2">
   <input type="hidden" name="action" value="checkout">
   <input type="hidden" name="mem_no" value="${mem_no}">
   <input type="hidden" name="amount" value="${amount}">
-  <input type="submit" value="完成結帳">
+  <input class="submit" type="submit" value="完成結帳">
+  </div>
   </div>
  </form>
   </c:if>

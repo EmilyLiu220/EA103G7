@@ -42,24 +42,13 @@
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  <title>瀏覽菜單</title>
  <style>
- 	body{
- 	
- 	}
-  div.container {
-  
-/*       border: 1px solid red; */
-/*       width: 100%; */
-/*             height: 100%; */
-/*             background-color: rgba(255, 255, 255, 0.9); */
-    }
-
-    div.container div.col {
-/*       border: 1px solid blue; */
-    }
+.mycontainer {
+/* 	background-color: rgba(0, 0, 0, 0.9); */
+/* 	color:white; */
+	font-weight: bolder;
+ }
 
     div.row {
-      /* height: 100px; */
-/*       border: 1px solid green; */
        margin-bottom: 10px; 
     }
     #menu p{
@@ -153,6 +142,32 @@
  background-color:#ffbc5e;
  	
  }
+ #cartJSP{
+ position: fixed;
+ top:40%;
+ left:1%;
+ width:350px;
+ font-size:14px; 
+ 
+ 
+ }
+ #cartJSP{
+ color:black;
+ font-weight: bolder;
+ }
+  .cotent div{
+ padding: auto 1px;}
+ #cart-img {
+ position: fixed;
+ top:30%;
+ left:8%;
+ width:80px;
+ height: 80px;
+ }
+  #menu p{
+  color:#black;
+  font-weight: bolder;
+    }
  #qty{
  width:100px;
  }
@@ -203,6 +218,10 @@
             opacity: 1;
             cursor: pointer;
         }
+/*         .card-container{ */
+/* /*         background-color: rgba(255, 255, 255, 0.8); */ */
+/*         margin:10px auto; */
+/*         } */
  
   </style>
  </head>
@@ -211,7 +230,7 @@
 
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
 
-  <div class="container">
+  <div class="container mycontainer">
   
     <div id="top" class="row align-items-center" >
       <div class="col-3"><a href="<%= request.getContextPath() %>/front-end/shopping/mealMenu2.jsp">單點</a></div>
@@ -223,10 +242,10 @@
     
     
     <%@ include file="/front-end/shopping/page1.file" %> 
-    <div id="menu" class="row justify-content-start">
+    <div id="menu" class="row justify-content-starts">
     
     <c:forEach var="mealSetVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-      <div class="col-6">
+      <div class="col-6 card-container">
       <div class="row align-items-center">
       <div id="card-text"class="col-4">
       <h4>${mealSetVO.meal_set_name}</h4>
@@ -273,7 +292,7 @@
       </div>
         <%@ include file="/front-end/shopping/page2.file" %> 
 	<br> 
-<%--  	 <jsp:include page="/front-end/shopping/cart.jsp" flush="true" /> --%>
+	<img id="cart-img" src="<%= request.getContextPath() %>/front-end/shopping/icon/8.png">
      <div id="cartJSP">
       <div id="cart-header" class="row">
     <div class="col">餐點名稱</div>
@@ -760,6 +779,10 @@
                  }
              });
          };
+         
+         $('#cart-img').click(function(e){
+        	 $('#cartJSP').fadeToggle(500);
+         })
  		
  	};
 	

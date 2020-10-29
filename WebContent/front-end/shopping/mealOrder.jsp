@@ -25,8 +25,13 @@
 /*   box-sizing: border-box; */
 /*   margin:0; */
 }
-.container{
-/*   border:2px solid red; */
+.mycontainer{
+color:black;
+/* background-color: black; */
+background-color: rgba(0, 0, 0, 0.9);
+}
+.mycontainer b{
+color:white;
 }
 #cate{
 text-align:center;
@@ -37,13 +42,14 @@ text-align:center;
   
 }
 .col,.col-4,.col-2{
-  border:1px dashed black;
+  border:1px solid black;
 }
 #header,#content div,#content{
   height:50px;
 }
 #header div{
-background-color: lightgray;
+/* background-color: lightgray; */
+background-color: rgba(255, 255, 255, 0.8);
 font-weight: bolder;
 }
 #content a{
@@ -52,15 +58,25 @@ font-weight: bolder;
 }
 #content a:hover{
 color:darkgray;
-font-weight: bolder;
 text-decoration: underline;
+}
+#content div{
+/* background-color:#fff; */
+background-color: rgba(255, 255, 255, 0.8);
+color:
+}
+.title{
+color:#fff;
+text-align: center;
+font-size: 26px;
+font-weight: bolder;
 }
 </style>
 </head>
-<body>
+<body class="mybody">
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
-<div class="container">
-<div class="row">${mem_no} 的訂餐訂單</div>
+<div class="container mycontainer">
+<div class="row title"><div class="col">${mem_no} 的訂餐訂單</div></div>
   <div id="header" class="row">
     <div class="col-2">訂餐編號：</div>
 <!--     <div class="col-2">會員編號：</div> -->
@@ -82,14 +98,14 @@ text-decoration: underline;
     <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</div>
     <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.pickup_time)}</div>
     <div class="col">${mealOrderVO.amount}</div>
-    <div class="col">${mealOrderVO.noti_sts == 0 ?'未通知':'已通知'}</div>
-    <div class="col">${mealOrderVO.pay_sts == 0?'未付款':'已付款'}</div>
+    <div class="col">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</div>
+    <div class="col">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</div>
     <div class="col">
-    <c:if test="${mealOrderVO.meal_order_sts == 0}">已取消</c:if>
+    <c:if test="${mealOrderVO.meal_order_sts == 0}"><font color="red">已取消</font></c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
     <c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
-    <c:if test="${mealOrderVO.meal_order_sts == 4}">已完成</c:if></div>
+    <c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></div>
 <%--   	<form action="<%= request.getContextPath() %>/MealOrderServlet.do" method="POST"> --%>
 <!--   <div class="col"> -->
 <%--   	<input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/> --%>

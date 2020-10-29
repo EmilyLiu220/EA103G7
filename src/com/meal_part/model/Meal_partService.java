@@ -38,6 +38,9 @@ public class Meal_partService {
 	public void deleteMeal_part(String meal_no,String fd_no) {
 		dao.delete(meal_no,fd_no);
 	}
+	public void deleteMeal_part(String meal_no) {
+		dao.delete(meal_no);
+	}
 
 	public Meal_partVO getOneMeal_part(String meal_no,String fd_no) {
 		return dao.findByPrimaryKey(meal_no,fd_no);

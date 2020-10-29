@@ -66,7 +66,7 @@ public class MealSetServlet extends HttpServlet {
 						mealSetImg = buf;
 //						in.close();
 					} else {
-						errormsgs.put("mealSetInfo", "請上傳圖片啦");
+						errormsgs.put("mealSetImg", "請上傳圖片啦");
 					}
 
 				} catch (Exception e) {
@@ -115,7 +115,7 @@ public class MealSetServlet extends HttpServlet {
 
 				if (!errormsgs.isEmpty()) {
 					req.setAttribute("mealSetVO", mealSetVO);
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/insertMealSet.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/insertMealSet2.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -133,13 +133,13 @@ public class MealSetServlet extends HttpServlet {
 						mealSetCat, conList);
 
 				req.setAttribute("meaSetlVO", mealSetVO);
-				String url = "/back-end/meal_set/listAllMealSet.jsp";
+				String url = "/back-end/meal_set/listAllMealSet2.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); //
 				successView.forward(req, res);
 
 			} catch (Exception e) {
 				errormsgs.put("exception", "無法取得修改資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/insertMealSet.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/insertMealSet2.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -234,7 +234,7 @@ public class MealSetServlet extends HttpServlet {
 
 				if (!errormsgs.isEmpty()) {
 					req.setAttribute("mealSetVO", mealSetVO);
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/updateMealSet.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/updateMealSet2.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -255,14 +255,14 @@ public class MealSetServlet extends HttpServlet {
 						mealSetSts, mealSetCat, conList);
 
 				req.setAttribute("mealSetVO", mealSetVO);
-				String url = "/back-end/meal_set/listAllMealSet.jsp";
+				String url = "/back-end/meal_set/listAllMealSet2.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // ���view
 				successView.forward(req, res);
 
 			} catch (Exception e) {
 				errormsgs.put("exception", "�L�k���o���:" + e.getMessage());
 				System.out.println("�����I2");
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/updateMealSet.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/updateMealSet2.jsp");
 				failureView.forward(req, res);
 			}
 
@@ -279,13 +279,13 @@ public class MealSetServlet extends HttpServlet {
 				MealSetVO mealSetVO = mealSetSrv.searchByNo(mealSetNo);
 
 				req.setAttribute("mealSetVO", mealSetVO);
-				String url = "/back-end/meal_set/updateMealSet.jsp";
+				String url = "/back-end/meal_set/updateMealSet2.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 			} catch (Exception e) {
 				errormsgs.put("exception", "�L�k���o�n�ק諸���:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/listAllMealSet.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/meal_set/listAllMealSet2.jsp");
 				failureView.forward(req, res);
 			}
 		}

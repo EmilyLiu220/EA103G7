@@ -5,9 +5,10 @@
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.meal.model.*"%>
+<%@ page import="com.meal_set.model.*"%>
 
 <% 
-MealVO mealVO = (MealVO) request.getAttribute("mealVO"); 
+MealSetVO mealSetVO = (MealSetVO) request.getAttribute("mealSetVO"); 
 Map<String, String> errormsgs = (LinkedHashMap) request.getAttribute("errormsgs");
 
 %>
@@ -19,7 +20,7 @@ Map<String, String> errormsgs = (LinkedHashMap) request.getAttribute("errormsgs"
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>訂單管理-listAll</title>
-<jsp:useBean id="foodSrv" class="com.food.model.FoodService"/>
+<jsp:useBean id="mealSrv" class="com.meal.model.MealService" />
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
 <jsp:useBean id="mealOrderSrv2" scope="page" class="com.meal_order.model.MealOrderService"/>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.css" />
@@ -184,14 +185,14 @@ height: 410px;
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">修改餐點內容</h3>
+							<h3 style="margin-bottom:0;">修改套餐內容</h3>
 						</td>
 					</tr>
 				</table>
 				<br>
 				
 <jsp:useBean id="mealCatSrv" class="com.meal_category.model.MealCatService"/>
-				<FORM METHOD="post" ACTION="<%= request.getContextPath() %>/meal/meal.do" enctype="multipart/form-data">
+				<FORM METHOD="post" ACTION="<%= request.getContextPath() %>/meal_set/mealSet.do" enctype="multipart/form-data">
 				<table class="table table-hover" style="width: 95%; font-size: 90%;">
 					<thead style="text-align: center;">
 						<tr>
@@ -203,32 +204,51 @@ height: 410px;
 					<tbody id="tbody">
 						<tr>
 							<td id="meal-content">
-							<b>餐點編號：</b><%= mealVO.getMeal_no()%><br><br>
-							餐點名稱：<input type="TEXT" name="meal_name" size="15" value="<%= mealVO.getMeal_name()%>"/><p>${not empty errormsgs.get("mealName")!=null?errormsgs.get("mealName"):''}</p>
+							<b>餐點編號：</b><%= mealSetVO.getMeal_set_no()%><br><br>
+							餐點名稱：<input type="TEXT" name="meal_set_name" size="15" value="<%= mealSetVO.getMeal_set_name()%>"/><p>${not empty errormsgs.get("mealSetName")!=null?errormsgs.get("mealSetName"):''}</p>
 							
-							餐點描述：<textarea  cols="45" rows="5"  maxlength="220" name="meal_info" ><%= mealVO.getMeal_info() %></textarea><p>${not empty errormsgs.get("mealInfo")!=null?errormsgs.get("mealInfo"):''}</p>
-							餐點價格：<input type="TEXT" name="meal_price" size="15" value="<%= mealVO.getMeal_price()%>"/><p>${not empty errormsgs.get("mealPrice")!=null?errormsgs.get("mealPrice"):''}</p>
+							餐點描述：<textarea  cols="45" rows="5"  maxlength="220" name="meal_set_info" ><%= mealSetVO.getMeal_set_info() %></textarea><p>${not empty errormsgs.get("mealSetInfo")!=null?errormsgs.get("mealSetInfo"):''}</p>
+							餐點價格：<input type="TEXT" name="meal_set_price" size="15" value="<%= mealSetVO.getMeal_set_price()%>"/><p>${not empty errormsgs.get("mealSetPrice")!=null?errormsgs.get("mealSetPrice"):''}</p>
 							餐點種類：<select name="cat_no">
 			 					  <c:forEach var="mealCatVO" items="${mealCatSrv.all}">
-								  <option value="${mealCatVO.cat_no}" ${(mealVO.cat_no == mealCatVO.cat_no)?"selected":"" }>${mealCatVO.cat_name}
+								  <option value="${mealCatVO.cat_no}" ${(mealSetVO.cat_no == mealCatVO.cat_no)?"selected":"" }>${mealCatVO.cat_name}
 			 					  </c:forEach>
 			 					  </select><br><br>
-			 				上下架狀態：<select size="1" name="meal_sts">
+			 				上下架狀態：<select size="1" name="meal_set_sts">
 									 <option value="0"  >下架
 									 <option value="1"  >上架
 									 </select><p></p>
-							選用食材組成：<button id="add">+</button>&nbsp;&nbsp;<button id="remove">-</button><p></p>
-							<p>${not empty errormsgs.get("foodsNo")!=null?errormsgs.get("foodsNo"):''}</p>
-							<p>${not empty errormsgs.get("foodsGw")!=null?errormsgs.get("foodsGw"):''}</p>
-							食材：<select name="fd_no">
-									<c:forEach var="foodVO" items="${foodSrv.all}">
-									<option value="${foodVO.fd_no}">${foodVO.fd_name}
-									</c:forEach>
-									</select>&nbsp;<input type="text" name="fd_gw" size="15" value=""/> 公克<p></p>
+							套餐組成：<button id="add">+</button>&nbsp;&nbsp;<button id="remove">-</button><p></p>
+							<p>${not empty errormsgs.get("mealNo")!=null?errormsgs.get("mealNo"):''}</p>
+							餐點：<select name="meal_no">
+								<c:forEach var="mealVO" items="${mealSrv.all}">
+								<option value="${mealVO.meal_no}">${mealVO.meal_name}
+								</c:forEach>
+								</select>&nbsp;
+								<select name="meal_qty">
+										<% for(int i =1;i<10;i++){ %>
+										<option value="<%= i%>"><%= i%>
+										<%} %>
+						
+								</select>
+								<p></p>
+								餐點：<select name="meal_no">
+								<c:forEach var="mealVO" items="${mealSrv.all}">
+								<option value="${mealVO.meal_no}">${mealVO.meal_name}
+								</c:forEach>
+								</select>&nbsp;
+								<select name="meal_qty">
+										<% for(int i =1;i<10;i++){ %>
+										<option value="<%= i%>"><%= i%>
+										<%} %>
+						
+								</select>
+								<p></p>
 									
 							</td>
-							<td style="text-align: center;"><img name="meal_img" src="<%= request.getContextPath() %>/meal/meal.showPic?meal_img=${mealVO.meal_no}"/>
-															<br><br><input id="upload" type="file" name="meal_img" size="45"/></td>
+							<br>
+							<td style="text-align: center;"><img name="meal_set_img" src="<%= request.getContextPath() %>/meal_set/mealSet.showPic?meal_set_img=${mealSetVO.meal_set_no}"/>
+															<br><br><input id="upload" type="file" name="meal_set_img" size="45"/></td>
 							<td id="preview" style="text-align: center; width:536px;">
 															</td>
 						</tr>
@@ -236,7 +256,7 @@ height: 410px;
 				</table>
 				<br>
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="meal_no" value="<%= mealVO.getMeal_no()%>">
+<input type="hidden" name="meal_set_no" value="<%= mealSetVO.getMeal_set_no()%>">
 <input type="submit" value="送出修改"></FORM>
 			</p>
 		</div>
@@ -305,21 +325,27 @@ height: 410px;
 			$(".newtr:last-child").remove();
 			
 		});
-		
 		var add = document.getElementById("add");
 		add.addEventListener("click", function (e) {
-			
 		    e.preventDefault();
+			
 			var tr = document.createElement("tr");
 			tr.classList.add("newtr");
 
 		    tr.innerHTML = `
-		    	食材：<select name="fd_no">
-				<c:forEach var="foodVO" items="${foodSrv.all}">
-				<option value="${foodVO.fd_no}">${foodVO.fd_name}
-				</c:forEach>
-				</select><span> </span><input type="text" name="fd_gw" size="15"/> 公克<p></p>`;
-			mealContent.append(tr);
+		                       餐點：<select name="meal_no">
+			 <c:forEach var="mealVO" items="${mealSrv.all}">
+			 <option value="${mealVO.meal_no}">${mealVO.meal_name}
+			 </c:forEach>
+			 </select>&nbsp;
+		    	<select name="meal_qty">
+		    	<% for(int i =1;i<10;i++){ %>
+		    	 <option value="<%=i %>"><%=i%>
+		    	 <%}%>
+		    	 </select>
+		    	 <p></p>
+		`;
+		    mealContent.append(tr);
 		});
 
 		

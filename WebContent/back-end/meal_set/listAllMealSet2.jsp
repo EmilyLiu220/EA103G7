@@ -4,13 +4,16 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
+<%@ page import="java.io.*"%>
 <%@ page import="com.meal.model.*"%>
+<%@ page import="com.meal_set.model.*"%>
 
 <% 
-MealVO mealVO = (MealVO) request.getAttribute("mealVO"); 
-Map<String, String> errormsgs = (LinkedHashMap) request.getAttribute("errormsgs");
-
+MealSetService mealSetSrv = new MealSetService(); 
+List<MealSetVO> list = mealSetSrv.getAll(); 
+request.setAttribute("list",list);
 %>
+<jsp:useBean id="mealCatSrv" class="com.meal_category.model.MealCatService"/>
 
 <!DOCTYPE html>
 <html>
@@ -18,10 +21,9 @@ Map<String, String> errormsgs = (LinkedHashMap) request.getAttribute("errormsgs"
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>訂單管理-listAll</title>
-<jsp:useBean id="foodSrv" class="com.food.model.FoodService"/>
+<title>訂單管理-listQuery</title>
+
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
-<jsp:useBean id="mealOrderSrv2" scope="page" class="com.meal_order.model.MealOrderService"/>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.css" />
 <!-- Bootstrap CSS CDN -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -32,8 +34,9 @@ Map<String, String> errormsgs = (LinkedHashMap) request.getAttribute("errormsgs"
 <!-- Font Awesome JS -->
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
 <style>
-#table-1, #table-1 td{
+#table-1, #table-1 td {
 	background: #555;
     color: #fff;
 	border: 0;
@@ -45,15 +48,6 @@ Map<String, String> errormsgs = (LinkedHashMap) request.getAttribute("errormsgs"
 .table a{
 color:blue;
 text-decoration: underline;
-}
-#tbody p{
-color:red;
-font-weight: bolder;
-font-size: 14px;
-}
-img{
-width: 512px;
-height: 410px;
 }
 </style>
 
@@ -178,66 +172,96 @@ height: 410px;
 				</div>
 			</nav>
 
-			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 訂餐訂單管理</span>
+			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 餐點管理</span>
 			<a href="<%=request.getContextPath()%>/back-end/back-index_New.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
 			<p>
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">修改餐點內容</h3>
+							<h3 style="margin-bottom:0;">查看所有餐點內容</h3>
 						</td>
 					</tr>
 				</table>
 				<br>
+<%-- 				<form action="<%= request.getContextPath()%>/MealOrderServlet.do" method="POST"> --%>
+<!-- 				<table id="table-2"> -->
+<!-- 				<tr class="row query"> -->
+<!-- 					<td class="col">訂單編號：<input type="text" name="meal_order_no" size="10"/></td> -->
+<!-- 					<td class="col">員工編號：<input type="text" name="emp_no" size="10"/></td> -->
+<!-- 					<td class="col">會員編號：<input type="text" name="mem_no" size="10"/></td> -->
+<!-- 				</tr> -->
+<!-- 				<tr class="row query"> -->
+<!-- 					<td class="col">通知狀態：<select name="noti_sts"> -->
+<!-- 			 			<option value=''>請選擇 -->
+<!-- 			 			<option value=0>未通知 -->
+<!-- 			 			<option value=1>已通知 -->
+<!-- 						</select></td> -->
+<!-- 				<td class="col">付款狀態：<select name="pay_sts"> -->
+<!-- 			 			<option value=''>請選擇 -->
+<!-- 			 			<option value=0>未付款 -->
+<!-- 			 			<option value=1>已付款 -->
+<!-- 						</select></td> -->
+<!-- 				<td class="col">訂單狀態：<select name="meal_order_sts"> -->
+<!-- 			 			<option value=''>請選擇 -->
+<!-- 			 			<option value=0>已取消 -->
+<!-- 			 			<option value=1>未派工 -->
+<!-- 			 			<option value=2>已派工 -->
+<!-- 			 			<option value=3>出餐未取 -->
+<!-- 			 			<option value=4>已完成 -->
+<!-- 						</select></td> -->
+<!-- 						</tr> -->
+<!-- 	<tr class="row query"> -->
+<!-- 				<td class="col"> -->
+<!-- 				訂餐時間：<input type="text" name="order_time" class="f_date1"/> -->
+<!-- 				至 <input type="text" name="order_time" class="f_date1"/> 之間</td> -->
+<!-- 				</tr> -->
+<!-- 	<tr class="row query">			 -->
+<!-- 				<td class="col"> -->
+<!-- 				取餐時間：<input type="text" name="pickup_time" class="f_date1"/> -->
+<!-- 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td> -->
+<!-- 				<td> -->
+<!-- 				<input type="submit" value="查詢結果"/> -->
+<!-- 				<input type="hidden" name="action" value="queryAll"/></td> -->
+<!-- 				</tr> -->
 				
-<jsp:useBean id="mealCatSrv" class="com.meal_category.model.MealCatService"/>
-				<FORM METHOD="post" ACTION="<%= request.getContextPath() %>/meal/meal.do" enctype="multipart/form-data">
-				<table class="table table-hover" style="width: 95%; font-size: 90%;">
+<!-- 				</table> -->
+<!-- 				</form> -->
+				<br>
+				<%-- 錯誤表列 --%>
+
+				<table class="table table-hover" style="width: 80%; font-size: 90%;">
 					<thead style="text-align: center;">
 						<tr>
-							<th style="width: 35%;">詳細內容</th>
-							<th style="width: 30%;">餐點目前圖片</th>
-							<th style="width: 30%;">預覽更新圖片</th>
+							<th style="width: 10%;">餐點編號</th>
+							<th style="width: 10%;">餐點名稱</th>
+							<th style="width: 20%;">餐點描述</th>
+							<th style="width: 10%;">餐點價格</th>
+							<th style="width: 10%;">餐點種類</th>
+							<th style="width: 10%;">上下架狀態</th>
+							<th style="width: 10%;"></th>
 						</tr>
 					</thead>
-					<tbody id="tbody">
+					<tbody>
+					<c:forEach var="mealSetVO" items="${list}">
 						<tr>
-							<td id="meal-content">
-							<b>餐點編號：</b><%= mealVO.getMeal_no()%><br><br>
-							餐點名稱：<input type="TEXT" name="meal_name" size="15" value="<%= mealVO.getMeal_name()%>"/><p>${not empty errormsgs.get("mealName")!=null?errormsgs.get("mealName"):''}</p>
-							
-							餐點描述：<textarea  cols="45" rows="5"  maxlength="220" name="meal_info" ><%= mealVO.getMeal_info() %></textarea><p>${not empty errormsgs.get("mealInfo")!=null?errormsgs.get("mealInfo"):''}</p>
-							餐點價格：<input type="TEXT" name="meal_price" size="15" value="<%= mealVO.getMeal_price()%>"/><p>${not empty errormsgs.get("mealPrice")!=null?errormsgs.get("mealPrice"):''}</p>
-							餐點種類：<select name="cat_no">
-			 					  <c:forEach var="mealCatVO" items="${mealCatSrv.all}">
-								  <option value="${mealCatVO.cat_no}" ${(mealVO.cat_no == mealCatVO.cat_no)?"selected":"" }>${mealCatVO.cat_name}
-			 					  </c:forEach>
-			 					  </select><br><br>
-			 				上下架狀態：<select size="1" name="meal_sts">
-									 <option value="0"  >下架
-									 <option value="1"  >上架
-									 </select><p></p>
-							選用食材組成：<button id="add">+</button>&nbsp;&nbsp;<button id="remove">-</button><p></p>
-							<p>${not empty errormsgs.get("foodsNo")!=null?errormsgs.get("foodsNo"):''}</p>
-							<p>${not empty errormsgs.get("foodsGw")!=null?errormsgs.get("foodsGw"):''}</p>
-							食材：<select name="fd_no">
-									<c:forEach var="foodVO" items="${foodSrv.all}">
-									<option value="${foodVO.fd_no}">${foodVO.fd_name}
-									</c:forEach>
-									</select>&nbsp;<input type="text" name="fd_gw" size="15" value=""/> 公克<p></p>
-									
-							</td>
-							<td style="text-align: center;"><img name="meal_img" src="<%= request.getContextPath() %>/meal/meal.showPic?meal_img=${mealVO.meal_no}"/>
-															<br><br><input id="upload" type="file" name="meal_img" size="45"/></td>
-							<td id="preview" style="text-align: center; width:536px;">
-															</td>
+							<td style="text-align: center;"><font color="#dea554">${mealSetVO.meal_set_no}</font></td>
+							<td style="text-align: center;">${mealSetVO.meal_set_name}</td>
+							<td style="text-align: center;">${mealSetVO.meal_set_info}</td>
+							<td style="text-align: center;">${mealSetVO.meal_set_price} 元</td>
+							<td style="text-align: center;"><c:forEach var="mealCatVO" items="${mealCatSrv.all}">
+                    <c:if test="${mealSetVO.cat_no == mealCatVO.cat_no}">
+	                    ${mealCatVO.cat_name}
+                    </c:if>
+                </c:forEach></td>
+							<td style="text-align: center;">${mealSetVO.meal_set_sts == 0?'<font color="red">已下架</font>':'<font color="green">上架中</font>'}</td>
+							<td style="text-align: center;"><FORM METHOD="post" ACTION="<%= request.getContextPath() %>/meal_set/mealSet.do" style="margin-bottom: 0px;">
+			     											<input type="submit" value="修改餐點">
+			     											<input type="hidden" name="meal_set_no"  value="${mealSetVO.meal_set_no}">
+			     											<input type="hidden" name="action"	value="getOneupdate"></FORM></td>
 						</tr>
+					</c:forEach>
 					</tbody>
 				</table>
-				<br>
-<input type="hidden" name="action" value="update">
-<input type="hidden" name="meal_no" value="<%= mealVO.getMeal_no()%>">
-<input type="submit" value="送出修改"></FORM>
 			</p>
 		</div>
 	</div>
@@ -250,85 +274,19 @@ height: 410px;
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	<!-- jQuery Custom Scroller CDN -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-	
-	
-	
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#sidebar").mCustomScrollbar({
-			theme : "minimal"
-		});
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#sidebar").mCustomScrollbar({
+				theme : "minimal"
+			});
 
-		$('#sidebarCollapse').on('click', function() {
-			$('#sidebar, #content').toggleClass('active');
-			$('.collapse.in').toggleClass('in');
-			$('a[aria-expanded=true]').attr('aria-expanded', 'false');
-		});
-	});
-	
-	function init() {
-		var upload = document.getElementById("upload");
-		upload.addEventListener("change", function(e) {
-
-			var files = e.target.files;
-			console.log(files[0])
-			if (files && files[0]) {
-				var file = files[0];
-				if (file.type.indexOf("image") > -1) {
-					var reader = new FileReader();
-					reader.onload = function(e) {
-
-						var img = document.createElement("img");
-						var preview = document.getElementById("preview");
-						img.setAttribute("src", e.target.result);
-						img.style.width = "512px";
-						img.style.height = "410px";
-						
-						img.classList.add("check");
-						preview.appendChild(img);
-					}
-					reader.readAsDataURL(file);
-				} else {
-					alert("只能上傳圖片檔");
-				}
-			}
-			var check = document.getElementsByClassName("check");
-					if(check.length>0){
-						check[0].remove();
-					}
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar, #content').toggleClass('active');
+				$('.collapse.in').toggleClass('in');
+				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+			});
 		});
 		
-		var mealContent = document.getElementById("meal-content");
-		var remove = document.getElementById("remove");
-		remove.addEventListener("click",function(e){
-			e.preventDefault();
-			$(".newtr:last-child").remove();
-			
-		});
-		
-		var add = document.getElementById("add");
-		add.addEventListener("click", function (e) {
-			
-		    e.preventDefault();
-			var tr = document.createElement("tr");
-			tr.classList.add("newtr");
-
-		    tr.innerHTML = `
-		    	食材：<select name="fd_no">
-				<c:forEach var="foodVO" items="${foodSrv.all}">
-				<option value="${foodVO.fd_no}">${foodVO.fd_name}
-				</c:forEach>
-				</select><span> </span><input type="text" name="fd_gw" size="15"/> 公克<p></p>`;
-			mealContent.append(tr);
-		});
-
-		
-		
-		
-	}
-	window.onload = init;
-		
-	
 	</script>
 </body>
 </html>

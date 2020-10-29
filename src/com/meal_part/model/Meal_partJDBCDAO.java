@@ -454,6 +454,41 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 		System.out.println(map2.get("carb"));
 		System.out.println(map2.get("fat"));
 	}
+	
+	public void delete(String meal_no) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement("DELETE FROM MEAL_PART WHERE MEAL_NO = ?");
+			pstmt.setString(1, meal_no);
+
+			pstmt.executeUpdate();
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
 
 	
 }
