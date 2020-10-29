@@ -106,6 +106,7 @@
 		<servlet-class>com.front_inform.timer.Timer_IsToFiServlet</servlet-class>
 <!-- 		<load-on-startup>10</load-on-startup> -->
 	</servlet>
+	<!-- 上線需打開 load-on-startup，直接在 server 開啟後去找當日 Inform_Set 輸入至 Front_Inform，且每隔 24hr 執行一次 -->
 	
 	<servlet-mapping>
 		<servlet-name>Timer_IsToFiServlet</servlet-name>
