@@ -2,6 +2,7 @@ package com.res_order.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,7 +91,15 @@ public class ResOrderServlet extends HttpServlet {
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
 			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
-//			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
+
+			/********** 判斷訂位日期是否為今日，若 true 則直接發送當日訂位確認通知 ( 這樣寫我那邊可以少判斷些東西...霸脫組長大大了 QQ ) **********/
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date today = new java.util.Date();
+			String todayStr = sdf.format(today);
+			if(todayStr.equals(res_date)) {
+				front_InformSvc.addRCFI(next_res_no); // 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
+			}
+			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 			req.setAttribute("res_no", next_res_no);
@@ -113,7 +122,7 @@ public class ResOrderServlet extends HttpServlet {
 			String people = req.getParameter("people");
 			String emp_no = req.getParameter("emp_no");
 			String mem_no = req.getParameter("mem_no");
-
+			
 			if ("--請選擇日期--".equals(res_date)) {
 				errorMsgs.add("請選擇訂位日期");
 			}
@@ -138,6 +147,7 @@ public class ResOrderServlet extends HttpServlet {
 			
 			ResOrderService resOrderSvc = new ResOrderService();
 			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
+			
 			resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 					emp_no, java.sql.Date.valueOf(res_date), new Integer(people), time_peri_no,
 					resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), seats_no);
@@ -147,6 +157,15 @@ public class ResOrderServlet extends HttpServlet {
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
 			front_InformSvc.addROFI(mem_no, res_no, "訂位訂單修改成功，點選查看訂位明細");
+
+			/********** 判斷訂單修改後，若修改後的日期=今日，則直接再發送一次當日訂位確認通知 **********/
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date today = new java.util.Date();
+			String todayStr = sdf.format(today);
+			if(todayStr.equals(res_date)) {
+				front_InformSvc.addRCFI(res_no); // 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
+			}
+			
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
@@ -197,7 +216,7 @@ public class ResOrderServlet extends HttpServlet {
 
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
-			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
+			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂單明細");
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
@@ -318,14 +337,13 @@ public class ResOrderServlet extends HttpServlet {
 			ResOrderService resOrderSve = new ResOrderService();
 
 			ResOrderVO resOrderVO = resOrderSve.getOneResOrder(res_no);
-
+			
 			resOrderSve.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
 					resOrderVO.getTime_peri_no(), new Integer(3), resOrderVO.getSeat_sts(), null);
 			
 			Front_InformService front_InformSvc = new Front_InformService();
-			// 發送通知
-			front_InformSvc.addROFI(resOrderVO.getMem_no(), res_no, "取消訂位成功，點選訂位歷史紀錄查看");
+			front_InformSvc.addROFI(resOrderVO.getMem_no(), res_no, "您的訂位已取消");
 			
 			RequestDispatcher failureView = req.getRequestDispatcher(requestURL + "?whichPage=" + whichPage);
 			failureView.forward(req, res);
