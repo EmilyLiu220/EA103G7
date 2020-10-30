@@ -43,7 +43,6 @@ public class AuthFilter implements Filter {
 		fa0001.add(req.getContextPath() + "/back-end/emp/listAllEmp.jsp");
 		fa0001.add(req.getContextPath() + "/back-end/emp/listOneEmp.jsp");
 		fa0001.add(req.getContextPath() + "/back-end/emp/update_emp_auth.jsp");
-		fa0001.add(req.getContextPath() + "/back-end/emp/update_emp_info.jsp");
 		fa0001.add(req.getContextPath() + "/back-end/emp/update_emp_sts.jsp");
 		
 		List<String> fa0002 = new ArrayList<>();
