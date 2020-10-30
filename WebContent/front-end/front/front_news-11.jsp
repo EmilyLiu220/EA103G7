@@ -7,7 +7,7 @@
 
 <%
  	NewsService newsSvc = new NewsService(); 
-     List<NewsVO> list = newsSvc.frontNews_sts(1); 
+     List<NewsVO> list = newsSvc.frontNews_sts(0); 
      request.setAttribute("list",list);
 
 %>
