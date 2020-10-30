@@ -55,6 +55,22 @@ request.setAttribute("detailList", detailList);
 color:blue;
 text-decoration: underline;
 }
+form,h3{
+display: inline;
+}
+#table-1 span,input{
+text-align: right;
+}
+#cancelBtn{
+    font-weight: bolder;
+    background: darkred;
+    color: #fff;
+    border-radius: 15px;
+}
+#cancelBtn:hover{
+background-color: red;
+border: 2px solid darkgray;
+}
 </style>
 
 </head>
@@ -252,6 +268,17 @@ text-decoration: underline;
 					<tr>
 						<td>
 							<h3 style="margin-bottom:0;">訂餐編號：${mealOrderVO.meal_order_no}</h3>
+							<span>	
+							<c:if test="${mealOrderVO.meal_order_sts == 1}">
+  						<form method="POST" action="<%= request.getContextPath()%>/MealOrderServlet.do">
+  						<input type="hidden" name="action" value="cancel"/>
+  						<input type="hidden" name="reqURL" value="<%=request.getAttribute("returnPath") %>"/>
+ 						 <input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>
+  						<input id="cancelBtn" type="submit" value="取消此訂單"/>
+  						<c:if test="${not empty errormsgs}"><p>${errormsgs.get("orderUpdate")}</p></c:if>
+ 						 </form>
+ 						 </c:if></span>
+						
 						</td>
 					</tr>
 				</table>

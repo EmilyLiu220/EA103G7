@@ -92,7 +92,7 @@ font-weight: bolder;
 <%-- <c:if test="${mealOrderVO.mem_no == mem_no}"> --%>
     
   
-  <div id="content" class="row">
+  <div id="content" class="row" ${(mealOrderVO.meal_order_no == param.meal_order_no) ? 'style="background-color:#dea554"':''}>
     <div class="col-2"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=memOrder&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></div>
 <%--     <div class="col-2">${mealOrderVO.mem_no}</div> --%>
     <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</div>

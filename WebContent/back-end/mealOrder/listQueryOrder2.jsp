@@ -254,7 +254,7 @@ text-decoration: underline;
 					<%@ include file="queryPage1.file"%>
 					<tbody>
 					<c:forEach var="mealOrderVO" items="${orderList}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-						<tr>
+						<tr ${(mealOrderVO.meal_order_no == param.meal_order_no) ? 'bgcolor=#c8a97e':''}>
 							<td style="text-align: center;"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search&whichPage=<%= whichPage%>&queryString=<%= request.getAttribute("action")%>">${mealOrderVO.meal_order_no}</a></td>
 							<td style="text-align: center;">${mealOrderVO.emp_no}</td>
 							<td style="text-align: center;">${mealOrderVO.mem_no!=null ? mealOrderVO.mem_no :'非會員顧客'}</td>
