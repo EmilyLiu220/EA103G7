@@ -351,6 +351,19 @@ width:100px;
            //minDate:               '-1970-01-01', // 去除今日(不含)之前
            //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
         });
+        
+        var somedate1 = new Date();
+        $('#ad_date').datetimepicker({
+            beforeShowDay: function(date) {
+          	  if (  date.getYear() <  somedate1.getYear() || 
+   		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+   		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                ) {
+                     return [false, ""]
+                }
+                return [true, ""];
+        }});
+        
         $.datetimepicker.setLocale('zh');
         $('#re_date').datetimepicker({
 	       theme: '',              //theme: 'dark',
@@ -364,6 +377,19 @@ width:100px;
 		//minDate:               '-1970-01-01', // 去除今日(不含)之前
 		//maxDate:               '+1970-01-01'  // 去除今日(不含)之後
 		});
+        
+        var somedate2 = new Date();
+        $('#re_date').datetimepicker({
+            beforeShowDay: function(date) {
+          	  if (  date.getYear() <  somedate2.getYear() || 
+   		           (date.getYear() == somedate2.getYear() && date.getMonth() <  somedate2.getMonth()) || 
+   		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() < somedate2.getDate())
+                ) {
+                     return [false, ""]
+                }
+                return [true, ""];
+        }});
+        
 	</script>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->

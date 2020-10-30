@@ -232,7 +232,7 @@ img {
 					<th>廣告編號</th>
 					<th>員工編號</th>
 					<th>廣告標題</th>
-					<th>廣告內容</th>
+					<th style="text-align:center;">廣告內容</th>
 					<th style="text-align:center;">起始日期</th>
 					<th style="text-align:center;">結束日期</th>
 					<th style="text-align:center;">廣告圖片</th>
