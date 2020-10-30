@@ -113,7 +113,6 @@
       
 </head>
 <body>
-	<jsp:include page="/back-end/siderbar/siderbar.jsp" />
 	
 	<div class="wrapper" id="top">
 
@@ -350,7 +349,7 @@
 	</div>
 </div>
 
-<%-- <jsp:include page="/back-end/siderbar/siderbar.jsp" /> --%>
+<jsp:include page="/back-end/siderbar/siderbar.jsp" />
 	
 
   <!-- Bootstrap core JavaScript -->
@@ -365,16 +364,25 @@
   <script src="<%=request.getContextPath()%>/back-end/js/dataTables.bootstrap4.min.js"></script>
 
   <link href="<%=request.getContextPath()%>/back-end/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  
 
   <!-- jQuery Custom Scroller CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="<%=request.getContextPath()%>/front-end/js/sweetalert.min.js"></script>
   <script type="text/javascript">
 
 	$(document).ready(function() {
+		var warningMsg="";
 		<c:forEach var="warningVO" items="${warningList}">
-			console.log('${warningVO.getFd_stk()}');
+			warningMsg+="食材編號"+'${warningVO.getFd_no()}'+" "+'${warningVO.getFd_name()}'+" 庫存量不足"+"\n";
 		</c:forEach>
-		
+		//把錯誤訊息串起來
+			swal({
+			  title: "注意食材底於底線!",
+			  icon: "warning",
+			  text: warningMsg
+			});			
+		//sweetalert顯示訊息
 		$("#fd_btn_addinput").click(function(){
 			//新增input
 			$("#fd_form_add").find(".fd_btn_send_addfd").before( $("#fd_form_add").find(".adddiv_original").clone() );
@@ -499,6 +507,13 @@
 					"sNext" : "下頁",
 					"sLast" : "末頁"
 				},
+			},
+			"rowCallback": function( row, data, index ) {
+		        if ( $(data[4]).text() - $(data[3]).text()) {
+			          $(row).find('td:eq(3)').css('color', 'red');
+			          $(row).find('td:eq(4)').css('color', 'red');
+		          $(row).addClass("table-danger");
+		        }
 			},
 			"autoWidth:" : false, //禁用自動列寬的計算
 			"ordering":false,
