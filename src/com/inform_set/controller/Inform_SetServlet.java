@@ -594,6 +594,19 @@ public class Inform_SetServlet extends HttpServlet {
 					is_date = new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期!");
 				}
+				// 判斷是否小於今日
+				java.util.Date today = new java.util.Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String todayStr = sdf.format(today);
+				java.util.Date sqlToday = java.sql.Date.valueOf(todayStr);
+				if(is_date.before(sqlToday)){
+					errorMsgs.add("請勿輸入過去日期!");
+				}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/inform_set/add_is.jsp");
+					failureView.forward(req, res);
+					return;
+				}
 				
 				Inform_SetVO isVO = new Inform_SetVO();
 				isVO.setEmp_no(emp_no);
@@ -605,9 +618,6 @@ public class Inform_SetServlet extends HttpServlet {
 				isVO = isSvc.addIs(emp_no, is_cont, is_date);
 				
 				// 若使用者輸入的時間為今日，則會直接執行由 Inform_Set table 輸入至 Front_Inform table 的動作
-				java.util.Date today = new java.util.Date();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				String todayStr = sdf.format(today);
 				if(todayStr.equals(is_date.toString())) {
 					Front_InformService fiSvc = new Front_InformService();
 					fiSvc.addISToAll(isVO.getIs_no());

@@ -272,23 +272,6 @@
 			}
 		}
 		
-		// 登入後顯示登出按鈕，登出後顯示登入按鈕
-		var login = document.getElementById("in");
-		var logout = document.getElementById("out");
-		var info = document.getElementById("info2");
-		
-		var no = document.getElementById("no");
-		
-		if (no.innerText !== "") {
-			login.classList.add("unshow");
-			logout.classList.remove("unshow");
-			info.classList.remove("unshow");
-		} else {
-			info.classList.add("unshow");
-			logout.classList.add("unshow");
-			login.classList.remove("unshow");
-		}
-		
 	</script>
 	
 </body>

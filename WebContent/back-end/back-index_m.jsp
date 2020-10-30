@@ -19,17 +19,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>主管員工專區RWD</title>
+<title>主管員工專區</title>
 
-<!-- Bootstrap CSS CDN -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/bootstrap-4.1.0.min.css">
 <!-- Our Custom CSS -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/style2.css">
 <!-- Scrollbar Custom CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/jquery-3.1.4.mCustomScrollbar.min.css">
 <!-- Font Awesome JS -->
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+<script defer src="<%=request.getContextPath()%>/back-end/js/solid.js"></script>
+<script defer src="<%=request.getContextPath()%>/back-end/js/fontawesome.js"></script>
 
 <style>
 .manager>ul>li>a:hover{
@@ -200,13 +200,13 @@
 	</div>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="<%=request.getContextPath()%>/back-end/js/jquery-3.3.1.slim.min.js"></script>
 	<!-- Popper.JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="<%=request.getContextPath()%>/back-end/js/popper-2018.min.js"></script>
 	<!-- Bootstrap JS -->
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<script src="<%=request.getContextPath()%>/back-end/js/bootstrap-4.1.0.min.js"></script>
 	<!-- jQuery Custom Scroller CDN -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="<%=request.getContextPath()%>/back-end/js/jquery-3.1.5.mCustomScrollbar.concat.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#sidebar").mCustomScrollbar({
@@ -255,25 +255,6 @@
 				fun2[i].classList.add('unshow');
 			}
 		}
-		
-		// 登入後顯示登出按鈕，登出後顯示登入按鈕
-		var login = document.getElementById("in");
-		var logout = document.getElementById("out");
-		var info = document.getElementById("info2");
-		
-		var no = document.getElementById("no");
-		
-		// 這裡貌似有問題...沒有上述那些 ID 呀
-		if (no.innerText !== "") {
-			login.classList.add("unshow");
-			logout.classList.remove("unshow");
-			info.classList.remove("unshow");
-		} else {
-			info.classList.add("unshow");
-			logout.classList.add("unshow");
-			login.classList.remove("unshow");
-		}
-		
 	</script>
 </body>
 </html>

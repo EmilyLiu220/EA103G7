@@ -15,9 +15,10 @@
 
 <meta charset="UTF-8">
 
-<title>front_home.jsp</title>
+<title>前台首頁</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
 
@@ -825,17 +826,17 @@
 			$('#loginModal').modal('show');
 		} else {
 			$('#sidebar_secondary').addClass('popup-box-on');
-			// 抓出聊天紀錄
-			var jsonObj = { // 這裡要對應原本的 VO 內容
-				"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
-				"sender" : mem_no,
-				"receiver" : "emp",
-				"message" : "",
-				"timestamp" : "",
-				"readSts" : 0
-			};
-			webSocket.send(JSON.stringify(jsonObj));
 		}
+		// 抓出聊天紀錄
+		var jsonObj = { // 這裡要對應原本的 VO 內容
+			"type" : "history", // 等同於一個 "action" 傳進去，去取得歷史訊息
+			"sender" : mem_no,
+			"receiver" : "emp",
+			"message" : "",
+			"timestamp" : "",
+			"readSts" : 0
+		};
+		webSocket.send(JSON.stringify(jsonObj));
 	});
 		
 	// 關閉聊天室 
@@ -1023,8 +1024,8 @@
 <script src="<%=request.getContextPath()%>/front-end/js/bootstrap-datepicker.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.timepicker.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/google-map.js"></script>
+<%-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> --%>
+<%-- <script src="<%=request.getContextPath()%>/front-end/js/google-map.js"></script> --%>
 <script src="<%=request.getContextPath()%>/front-end/js/main.js"></script>
 
 <!--為了顯示地址選單用 -->
