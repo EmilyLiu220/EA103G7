@@ -7,6 +7,13 @@
 	FoodService foodSvc = new FoodService();
 	List<FoodVO> list = foodSvc.getAll();
 	pageContext.setAttribute("list", list);
+	
+	List<FoodVO> warningList = new ArrayList<FoodVO>();
+	for(FoodVO fd : foodSvc.getAll()){
+		if(fd.getFd_stk()<fd.getStk_ll())
+			warningList.add(fd);
+	}
+	pageContext.setAttribute("warningList", warningList);
 %>
 
 <!DOCTYPE html>
@@ -15,24 +22,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>食材管理</title>
-	
-<!-- CSS的部分  -->
-<!-- Bootstrap CSS CDN -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-	crossorigin="anonymous">
-<!-- Our Custom CSS -->
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/back-end/css/style2.css">
-<!-- Scrollbar Custom CSS -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-<!-- Font Awesome JS -->
-<script src="https://kit.fontawesome.com/d6c1e36c40.js" crossorigin="anonymous"></script>
-<!-- Font family -->
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  
   
 <style>
 /* 	#dataTable,#dataTable th{ */
@@ -108,111 +97,36 @@
 	div.table-responsive{
 		padding:2px;
 	}
+	#loc{
+		z-index: 10;
+	}
+/* 	#content{ */
+/* 		top:100px; */
+/* 	} */
+	#top{
+		top:100px;
+		position:absolute;
+	}
+	
 }
 </style>
       
 </head>
 <body>
+	<jsp:include page="/back-end/siderbar/siderbar.jsp" />
+	
+	<div class="wrapper" id="top">
 
-	<div class="wrapper">
-
-		<!-- Sidebar  -->
-		<nav id="sidebar">
-			<div class="sidebar-header" style="cursor: default;">
-				<h3><span>EMP0009</span><br>詹詠祺，您好！</h3>
-				<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
-			</div>
-
-			<ul class="list-unstyled components">
-				<li><a href="#">現場點餐</a></li>
-				<li><a href="#">現場劃位</a></li>
-				<li><a href="#">訂單結帳</a></li>
-				<li><a href="#">候位管理</a></li>
-				<li class="active"><a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">主管員工專區</a>
-					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li><a href="#">員工管理</a></li>
-						<li><a href="#">會員管理</a></li>
-						<li><a href="#">廣告管理</a></li>
-						<li><a href="#">最新消息管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-						<li><a href="#">評價管理</a></li>
-						<li><a href="#">用餐時段管理</a></li>
-						<li><a href="#">桌位管理</a></li>
-						<li><a href="#">菜單管理</a></li>
-						<li><a href="#">食材管理</a></li>
-						<li><a href="#">餐點組成管理</a></li>
-						<li><a href="#">食材消耗統計</a></li>
-						<li><a href="#">紅利商品管理</a></li>
-					</ul>
-				</li>
-				<li><a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
-					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/empCheckAllInform.jsp">查看通知</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
-						<li><a href="#">訂單派工</a></li>
-						<li><a href="#">出餐管理</a></li>
-						<li><a href="#">訂餐訂單處理</a></li>
-						<li><a href="#">訂餐管理</a></li>
-						<li><a href="#">訂單管理</a></li>
-						<li><a href="#">訂位管理</a></li>
-					</ul>
-				</li>
-			</ul>
-
-			<ul class="list-unstyled CTAs">
-				<li><a href="#" id="logIn">Log in</a></li>
-				<li><a href="#" id="logOut">Log out</a></li>
-			</ul>
-		</nav>
-
+		<div id="loc">
 		<!-- Page Content  -->
 		<div id="content" class="mb-1">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-					<button type="button" id="sidebarCollapse" class="btn btn-dark">
-						<i class="fas fa-align-justify"></i>
-					</button>
-					
-					<div id="titleBig" style="margin: 0 auto; font-size: 30px; font-weight: 800; cursor: default;">
-						吃Pot 吧！員工專區
-					</div>
-					<div id="rwdShow">
-						<button type="button" id="topbarCollapse" class="btn btn-info"
-							data-toggle="collapse" data-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent" aria-expanded="false"
-							aria-label="Toggle navigation">
-							<i class="fas fa-align-justify"></i>
-						</button>
-						
-						<div id="titleSmall"
-							style="padding-left: 10px; font-size: 30px; font-weight: 800; cursor: default;">吃
-							Pot 吧！員工專區</div>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="nav navbar-nav ml-auto">
-								<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
-								<li class="nav-item active"><a class="nav-link" href="#"
-									id="empId" style="cursor: default;"><span>EMP0009
-											詹詠祺</span>，您好！</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">訂單結帳</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">候位管理</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
-								<li class="nav-item active">
-								<div id="topLogIn" style="display: inline-block; width: 90px; text-align: center; border-radius: 5px; background: #6d7fcc; color: #fff; cursor: pointer;">Log in</div>
-								<div id="topLogOut" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #6d7fcc; color: #fff; cursor: pointer;">Log out</div></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</nav>
-				
+			
+			
         	<div class="card shadow mb-4"> 
         		<div class="card-header py-3 "> 
         			<h6 style='display:inline' class="m-0 font-weight-bold text-primary">新增食材</h6>
-        			<button id="fd_btn_addinput" type="button" class="btn btn-sm btn-dark float-right mx-1"><i class="far fa-plus-square"></i></button>
-					<button id="fd_btn_subinput" type="button" class="btn btn-sm btn-dark float-right mx-1"><i class="fas fa-minus"></i></button>
+        			<button id="fd_btn_addinput" type="button" class="btn btn-sm btn-dark float-right mx-1">+</button>
+					<button id="fd_btn_subinput" type="button" class="btn btn-sm btn-dark float-right mx-1">-</button>
         		</div>
         						
 				<div class="card-body">
@@ -433,11 +347,13 @@
 			</div>
 		</div>
 	</div>
+	</div>
 </div>
-	
+
+<%-- <jsp:include page="/back-end/siderbar/siderbar.jsp" /> --%>
 	
 
-  <!-- Bootstrap core JavaScript-->
+  <!-- Bootstrap core JavaScript -->
   <script src="<%=request.getContextPath()%>/back-end/js/jquery.min.js"></script>
   <script src="<%=request.getContextPath()%>/back-end/js/bootstrap.bundle.min.js"></script>
 
@@ -450,25 +366,14 @@
 
   <link href="<%=request.getContextPath()%>/back-end/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-  <!-- Popper.JS -->
-  <script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-		integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-		crossorigin="anonymous"></script>
   <!-- jQuery Custom Scroller CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
   <script type="text/javascript">
 
 	$(document).ready(function() {
-		$("#sidebar").mCustomScrollbar({
-			theme : "minimal"
-		});
-		
-		$('#sidebarCollapse').on('click',function() {
-			$('#sidebar, #content').toggleClass('active');
-			$('.collapse.in').toggleClass('in');
-			$('a[aria-expanded=true]').attr('aria-expanded', 'false');
-		});
+		<c:forEach var="warningVO" items="${warningList}">
+			console.log('${warningVO.getFd_stk()}');
+		</c:forEach>
 		
 		$("#fd_btn_addinput").click(function(){
 			//新增input
