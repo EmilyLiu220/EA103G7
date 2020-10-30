@@ -303,7 +303,6 @@
 	  <url-pattern>/back-end/emp/listOneEmp.jsp</url-pattern>
 	  <url-pattern>/back-end/emp/select_page.jsp</url-pattern>
 	  <url-pattern>/back-end/emp/update_emp_auth.jsp</url-pattern>
-	  <url-pattern>/back-end/emp/update_emp_info.jsp</url-pattern>
 	  <url-pattern>/back-end/emp/update_emp_sts.jsp</url-pattern>
 	  <url-pattern>/back-end/mem/*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
