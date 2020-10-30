@@ -353,11 +353,11 @@
 	
 
   <!-- Bootstrap core JavaScript -->
-  <script src="<%=request.getContextPath()%>/back-end/js/jquery.min.js"></script>
+<%--   <script src="<%=request.getContextPath()%>/back-end/js/jquery.min.js"></script> --%>
   <script src="<%=request.getContextPath()%>/back-end/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="<%=request.getContextPath()%>/back-end/js/jquery.easing.min.js"></script>
+<%--   <script src="<%=request.getContextPath()%>/back-end/js/jquery.easing.min.js"></script> --%>
   
   <!-- Page level plugins -->
   <script src="<%=request.getContextPath()%>/back-end/js/jquery.dataTables.min.js"></script>
@@ -367,7 +367,7 @@
   
 
   <!-- jQuery Custom Scroller CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script> -->
   <script src="<%=request.getContextPath()%>/front-end/js/sweetalert.min.js"></script>
   <script type="text/javascript">
 
@@ -377,11 +377,13 @@
 			warningMsg+="食材編號"+'${warningVO.getFd_no()}'+" "+'${warningVO.getFd_name()}'+" 庫存量不足"+"\n";
 		</c:forEach>
 		//把錯誤訊息串起來
+		if(warningMsg.length>0){
 			swal({
-			  title: "注意食材底於底線!",
-			  icon: "warning",
-			  text: warningMsg
+				title: "注意食材底於底線!",
+				icon: "warning",
+				text: warningMsg
 			});			
+		}
 		//sweetalert顯示訊息
 		$("#fd_btn_addinput").click(function(){
 			//新增input
@@ -487,6 +489,7 @@
 				//將原本的動作全部變回原本的樣子
 			});
 		});
+		
 		table = $("#dataTable").DataTable({
 			language : {
 				"sProcessing" : "處理中...",
@@ -509,7 +512,7 @@
 				},
 			},
 			"rowCallback": function( row, data, index ) {
-		        if ( $(data[4]).text() - $(data[3]).text()) {
+		        if ( $(data[3]).text() - $(data[4]).text() <0) {
 			          $(row).find('td:eq(3)').css('color', 'red');
 			          $(row).find('td:eq(4)').css('color', 'red');
 		          $(row).addClass("table-danger");
