@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<%
+	MemVO memVO = (MemVO) request.getAttribute("memVO");
+%>
 
 <html>
 <head>
@@ -64,74 +67,26 @@
 	
 	
 	<FORM METHOD="post" ACTION="mem.do" name="form1">
-<!-- 	<table> -->
-<!-- 		<tr> -->
-<!-- 			<td>會員姓名:<font color=red><b>*</b></font></td> -->
-<!-- 			<td><input type="text" name="mem_name" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>帳號:<font color=red><b>*</b></font></td> -->
-<!-- 			<td><input type="text" name="mem_act" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>密碼:<font color=red><b>*</b></font></td> -->
-<!-- 			<td><input type="password" name="mem_psw1" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>密碼確認:<font color=red><b>*</b></font></td> -->
-<!-- 			<td><input type="password" name="mem_psw2" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>性別:</td> -->
-<!-- 			<td><label><input type="radio" name="mem_gen" size="45" value="男" />男</label> -->
-<!-- 				<label><input type="radio" name="mem_gen" size="45" value="女" />女</label> -->
-<!-- 				<label><input type="radio" name="mem_gen" size="45" value="其他" checked/>其他</label></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>生日:</td> -->
-<!-- 			<td><input type="date" name="mem_bir" size="45" value="0001-01-01" /></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>手機:<font color=red><b>*</b></font></td> -->
-<!-- 			<td><input type="text" name="mem_tel" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>地址:</td> -->
-<!-- 			<td> -->
-<!-- 				<div id="zipcode3"> -->
-<!-- 				<div class="f3" data-role="county" name="city"> -->
-<!-- 				</div> -->
-<!-- 				<div class="f4" data-role="district" name="town"> -->
-<!-- 				</div> -->
-<!-- 				</div> -->
-<!-- 				<input name="address" type="text" class="f13 address form-control"> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>e-mail:<font color=red><b>*</b></font></td> -->
-<!-- 			<td><input type="email" name="mem_mail" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 	</table> -->
 	
 	<ul>
-		<li>會員姓名:<font color=red><b>*</b></font><input type="text" id="mem_name2" name="mem_name" size="45" required/></li>
+		<li>會員姓名:<font color=red><b>*</b></font><input type="text" id="mem_name2" name="mem_name" size="45" value="${memVO.mem_name}" required/></li>
 		
-		<li>帳號:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_act2" name="mem_act" size="45" required/></li>
+		<li>帳號:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_act2" name="mem_act" size="45" value="${memVO.mem_act}" required/></li>
 		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" id="mem_psw1" name="mem_psw1" size="45" value="" required/></li>
 		<li>密碼確認:<font color=red><b>*</b></font><input type="password" id="mem_psw2"  name="mem_psw2" size="45" value="" required/></li>
 		<li>性別:&emsp;&emsp;&emsp;<label><input type="radio" name="mem_gen2" size="45" value="男" />男</label>
  				<label><input type="radio" name="mem_gen2" size="45" value="女" />女</label>
  				<label><input type="radio" name="mem_gen2" size="45" value="其他" checked/>其他</label></li>
-		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" id="mem_bir2" name="mem_bir" size="45" value="" required/></li>
-		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_tel2" name="mem_tel" size="45" value="" required/></li>
-		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" id="mem_mail2" name="mem_mail" size="45" value="" required/></li>
+		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" id="mem_bir2" name="mem_bir" size="45" value="${memVO.mem_bir}" required/></li>
+		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_tel2" name="mem_tel" size="45" value="${memVO.mem_tel}" required/></li>
+		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" id="mem_mail2" name="mem_mail" size="45" value="${memVO.mem_mail}" required/></li>
 		<li>地址:
 			<div id="zipcode3" style="width: 800px">
  			<div class="f4" data-role="county" name="city"></div>
 			<div class="f5" data-role="district" name="town"></div>
 			</div>
 			<br><br>
-			<input id="address2" name="address" type="text" size="50px">
+			<input id="address2" name="address" type="text" size="50px" value="${memVO.mem_adrs}">
 		</li>
 	</ul>
 	
@@ -170,15 +125,15 @@
 	});
 	
 	<!--註冊成功訊息-->
-	var mem_psw1 = document.getElementsByName("mem_psw1");
-	var mem_psw2 = document.getElementsByName("mem_psw2");
-	var ok = document.getElementById("ok");
+// 	var mem_psw1 = document.getElementsByName("mem_psw1");
+// 	var mem_psw2 = document.getElementsByName("mem_psw2");
+// 	var ok = document.getElementById("ok");
 	
-	ok.addEventListener("click", function(e) {
-		if (mem_psw1[0].value !== "" && mem_psw2[0].value !== "" && mem_psw1[0].value === mem_psw2[0].value) {
-			alert("註冊成功");
-		}
-	});
+// 	ok.addEventListener("click", function(e) {
+// 		if (mem_psw1[0].value !== "" && mem_psw2[0].value !== "" && mem_psw1[0].value === mem_psw2[0].value) {
+// 			alert("註冊成功");
+// 		}
+// 	});
 	
 </script>
 	

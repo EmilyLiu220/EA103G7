@@ -68,51 +68,6 @@
 	</c:if>
 	
 	<FORM METHOD="post" ACTION="mem.do" name="form1">
-<!-- 	<table> -->
-<!-- 		<tr> -->
-<!-- 			<td>會員姓名:</td> -->
-<%-- 			<td><input type="text" name="mem_name" size="45" value="${memVO.mem_name}" required/></td> --%>
-<!-- 		</tr> -->
-		
-<!-- 		<tr> -->
-<!-- 			<td>密碼:</td> -->
-<!-- 			<td><input type="password" name="mem_psw1" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>密碼確認:</td> -->
-<!-- 			<td><input type="password" name="mem_psw2" size="45" value="" required/></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>性別:</td> -->
-<!-- 			<td><label><input type="radio" name="mem_gen" size="45" value="男" />男</label> -->
-<!-- 				<label><input type="radio" name="mem_gen" size="45" value="女" />女</label> -->
-<!-- 				<label><input type="radio" name="mem_gen" size="45" value="其他" checked/>其他</label></td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>生日:</td> -->
-<%-- 			<td><input type="date" name="mem_bir" size="45" value="${memVO.mem_bir}" required/></td> --%>
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>手機:</td> -->
-<%-- 			<td><input type="text" name="mem_tel" size="45" value="${memVO.mem_tel}" required/></td> --%>
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>地址:</td> -->
-<!-- 			<td> -->
-<!-- 				<div id="zipcode3"> -->
-<!-- 				<div class="f3" data-role="county" name="city"> -->
-<!-- 				</div> -->
-<!-- 				<div class="f4" data-role="district" name="town"> -->
-<!-- 				</div> -->
-<!-- 				</div> -->
-<%-- 				<input name="address" type="text" class="f13 address form-control" value="${memVO.mem_adrs}"> --%>
-<!-- 			</td> -->
-<!-- 		</tr> -->
-<!-- 		<tr> -->
-<!-- 			<td>e-mail:</td> -->
-<%-- 			<td><input type="email" name="mem_mail" size="45" value="${memVO.mem_mail}" required/></td> --%>
-<!-- 		</tr> -->
-<!-- 	</table> -->
 	
 	<ul>
 		<li>會員姓名:<font color=red><b>*</b></font><input type="text" name="mem_name" size="45" value="${memVO.mem_name}" required/></li>

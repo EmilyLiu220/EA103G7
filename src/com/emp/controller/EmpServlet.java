@@ -210,7 +210,7 @@ public class EmpServlet extends HttpServlet {
 			
 			try {
 				/***************************1.接收請求參數****************************************/
-				String emp_no = new String(req.getParameter("emp_no"));
+				String emp_no = req.getParameter("emp_no").trim();
 				
 				/***************************2.開始查詢資料****************************************/
 				EmpService empSvc = new EmpService();

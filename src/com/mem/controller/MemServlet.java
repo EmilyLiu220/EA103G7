@@ -148,7 +148,9 @@ public class MemServlet extends HttpServlet {
 					errorMsgs.add("會員密碼與密碼確認必須一致！");
 				}
 				
-				String mem_gen = req.getParameter("mem_gen");
+				String mem_gen = req.getParameter("mem_gen2");
+				
+				System.out.println("mem_gen" + mem_gen);
 				
 				java.sql.Date mem_bir = java.sql.Date.valueOf(req.getParameter("mem_bir").trim());
 				
