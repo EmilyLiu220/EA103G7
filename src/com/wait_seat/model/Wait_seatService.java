@@ -47,4 +47,16 @@ public class Wait_seatService {
 	public List<Wait_seatVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public Wait_seatVO getFirst() {
+		return dao.getFirst(); //查第一筆資訊
+	}
+	
+	public Integer getCount() {
+		return dao.getAll().size();
+	}
+	
+	public List<Wait_seatVO> getAllForUser() {
+		return dao.getAllForUser(); //顯示給客人看得
+	}
 }

@@ -8,4 +8,6 @@ public interface Wait_seatDAO_interface {
 	public void delete(String wait_seat_no);
 	public Wait_seatVO findByPrimaryKey(String wait_seat_no);
 	public List<Wait_seatVO> getAll();
+	public List<Wait_seatVO> getAllForUser();
+	public Wait_seatVO getFirst();
 }

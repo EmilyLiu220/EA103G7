@@ -1,6 +1,7 @@
 package com.wait_seat.model;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -215,6 +216,109 @@ public class Wait_seatDAO implements Wait_seatDAO_interface{
 				list.add(wait_seatVO);
 			}
 
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public Wait_seatVO getFirst() {
+		Wait_seatVO wait_seatVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+
+			rs.next();
+			wait_seatVO = new Wait_seatVO();
+			wait_seatVO.setWait_seat_no(rs.getString("WAIT_SEAT_NO"));
+			wait_seatVO.setMem_no(rs.getString("MEM_NO"));
+			wait_seatVO.setN_mem_name(rs.getString("N_MEM_NAME"));
+			wait_seatVO.setPhone_m(rs.getString("PHONE_M"));
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return wait_seatVO;
+	}
+
+	@Override
+	public List<Wait_seatVO> getAllForUser() {
+		List<Wait_seatVO> list = new ArrayList<Wait_seatVO>();
+		Wait_seatVO wait_seatVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				wait_seatVO = new Wait_seatVO();
+				wait_seatVO.setWait_seat_no(rs.getString("WAIT_SEAT_NO"));
+				wait_seatVO.setMem_no(rs.getString("MEM_NO"));
+				wait_seatVO.setN_mem_name(rs.getString("N_MEM_NAME"));
+				wait_seatVO.setPhone_m(rs.getString("PHONE_M").substring(0,7).replaceAll("[0-9]", "x")+rs.getString("PHONE_M").substring(7));
+				list.add(wait_seatVO);
+			}
 			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
