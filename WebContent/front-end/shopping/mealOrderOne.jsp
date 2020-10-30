@@ -88,6 +88,17 @@ font-weight: bolder;
 .content-title{
 font-weight: bolder;
 }
+#cancelBtn{
+    font-weight: bolder;
+    background: darkred;
+    color: #fff;
+    border-radius: 15px;
+}
+#cancelBtn:hover{
+background-color: red;
+border: 2px solid darkgray;
+}
+
 
 </style>
 </head>
@@ -96,15 +107,22 @@ font-weight: bolder;
 <div class="container mycontainer">
 <div id="top" class="row">
   <div class="col title">
-  <span>我的訂單</span><c:if test="${not empty returnPath}"><a href="<%=request.getContextPath()%><%=request.getAttribute("returnPath") %>">返回</a></c:if>
+  <span>我的訂單</span>
+  <div id="btnrow" class="row justify-content-end">
   <c:if test="${mealOrderVO.meal_order_sts == 1}">
   <form method="POST" action="<%= request.getContextPath()%>/MealOrderServlet.do">
   <input type="hidden" name="action" value="cancel"/>
+  <input type="hidden" name="reqURL" value="<%=request.getAttribute("returnPath") %>"/>
   <input type="hidden" name="meal_order_no" value="${mealOrderVO.meal_order_no}"/>
   <input id="cancelBtn" type="submit" value="取消此訂單"/>
   <c:if test="${not empty errormsgs}"><p>${errormsgs.get("orderUpdate")}</p></c:if>
   </form>
   </c:if>
+  <c:if test="${not empty returnPath}"><a href="<%=request.getContextPath()%><%=request.getAttribute("returnPath") %>">返回</a></c:if>
+  <a href="<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp">前往訂單列表</a>
+  </div>
+  
+  
   </div>
   </div>
   <div class="row content">
