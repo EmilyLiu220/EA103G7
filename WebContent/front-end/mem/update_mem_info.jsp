@@ -137,15 +137,15 @@
 	}
 	
 	// 修改成功訊息
-	var mem_psw1 = document.getElementsByName("mem_psw1");
-	var mem_psw2 = document.getElementsByName("mem_psw2");
-	var ok = document.getElementById("ok");
+// 	var mem_psw1 = document.getElementsByName("mem_psw1");
+// 	var mem_psw2 = document.getElementsByName("mem_psw2");
+// 	var ok = document.getElementById("ok");
 	
-	ok.addEventListener("click", function(e) {
-		if (mem_psw1[0].value !== "" && mem_psw2[0].value !== "" && mem_psw1[0].value === mem_psw2[0].value) {
-			alert("修改成功");
-		}
-	});
+// 	ok.addEventListener("click", function(e) {
+// 		if (mem_psw1[0].value !== "" && mem_psw2[0].value !== "" && mem_psw1[0].value === mem_psw2[0].value) {
+// 			alert("修改成功");
+// 		}
+// 	});
 	
 </script>
 
