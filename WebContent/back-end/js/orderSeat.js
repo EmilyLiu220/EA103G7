@@ -81,7 +81,7 @@ $(document).ready(function() {
 				"action":"get_All_Seat_People",
 			},
 			success: function(messages) {
-				// console.log(messages);
+//				console.log(messages);
 				jsonArray_people = JSON.parse(messages);
 				setJSONArray_people(jsonArray_people);
 				$("#container").css("display", "block");
@@ -117,7 +117,7 @@ $(document).ready(function() {
 						},
 						success: function(messages) {
 							var jsonArray = JSON.parse(messages);
-							// console.log(jsonArray);
+							console.log(jsonArray);
 							var $myCheckbox = $(".myCheckbox");
 
 							$.each($myCheckbox, function(_index, item) {
@@ -198,7 +198,6 @@ $(document).ready(function() {
 			});
 			$(this).prop("disabled", false);
 			$(this).prop("checked", false);
-			
 		}
 		var thisCheckboxValue = $(this).val();
 		var thisCheckbox = $(this);
@@ -324,9 +323,9 @@ $(document).ready(function() {
 						value: item.seat_name,
 					}).attr("disabled", true).appendTo($label2);
 				});
-				$(".labelOne").css("display", "none");
-				$(".labelTwo").css("display", "none");
-				$("#container").css("display", "none");
+//				$(".labelOne").css("display", "none");
+//				$(".labelTwo").css("display", "none");
+//				$("#container").css("display", "none");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_floor_list = true;// 如果業務執行失敗，修改鎖狀態
@@ -347,7 +346,7 @@ $(document).ready(function() {
 		validateOnBlur: false, 			// 失去焦點時才驗證輸入直
 		minDate: 0,						// 開始日期
 		maxDate: '+1970/01/14',			// 開始日期到結束日期
-	})
+	});
 
 	var lock_order_date = true;// 防止重複提交定義鎖
 	$("#res_date").change(function() {

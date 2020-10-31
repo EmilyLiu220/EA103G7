@@ -342,7 +342,7 @@ $(document).ready(function() {
 				"floor": $("#floor_list").val()
 			},
 			success: function(messages) {
-				console.log(messages);
+//				console.log(messages);
 				$("body > div#container").load(ajaxURL + "/back-end/seat/editSeat.jsp div#container", function(){
 					$.getScript(ajaxURL + "/back-end/js/jquery-1.12.4.js");
 					$.getScript(ajaxURL + "/back-end/js/jquery-ui-1.12.1.js");

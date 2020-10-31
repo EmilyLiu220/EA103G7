@@ -209,19 +209,13 @@ $(document).ready(function() {
 					$.each(nowNotCheckbox, function(i, item){
 						$(item).prop("disabled", false);
 					});
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
 				}
-				if (chooseSeatPeople - people == 0) {
+				if (chooseSeatPeople - people == 0 || chooseSeatPeople - people > 0) {
 					swal("已經選擇適當的桌位囉！", "", "info");
 					$.each(allNotCheckbox, function(i, item){
 						$(item).prop("disabled", true);
 					});
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
 				} else if (chooseSeatPeople >= parseInt(people) + 3) {
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
 					swal("選擇座位人數超過來店人數太多！！", "請重新選擇相符的人數座位～", "info");
 					thisCheckbox.closest(".drag").css({
 						filter: "hue-rotate(0deg)",
@@ -271,7 +265,6 @@ $(document).ready(function() {
 //				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
 				$.getScript(ajaxURL + "/front-end/js/modifySeat.js");
 //				$.getScript(ajaxURL + "/js/sweetalert.min.js");
-				// console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("div#container.container").empty();
 //				$("#time_peri_no").empty();
@@ -328,22 +321,12 @@ $(document).ready(function() {
 	$.datetimepicker.setLocale('zh');	// 設定語言
 	var somedate = new Date();
 	$("#res_date").datetimepicker({
+		timepicker: false,
 		format: 'Y-m-d',				// 時間格式
 		scrollInput: false,				// 預防滾輪選取不可選取的日期
 		validateOnBlur: false, 			// 失去焦點時才驗證輸入直
-		beforeShowDay: function(date) {
-			if (date.getYear() < somedate.getYear() ||
-				(date.getYear() == somedate.getYear() && date.getMonth() < somedate.getMonth()) ||
-				(date.getYear() == somedate.getYear() && date.getMonth() == somedate.getMonth() && date.getDate() < somedate.getDate()) ||
-				date.getYear() > somedate.getYear() ||
-				(date.getYear() == somedate.getYear() && date.getMonth() > somedate.getMonth()) ||
-				(date.getYear() == somedate.getYear() && date.getMonth() == somedate.getMonth() && date.getDate() > somedate.getDate() + 13)
-			) {
-				return [false, ""]
-			}
-			return [true, ""];
-		},
-		timepicker: false
+		minDate: 0,						// 開始日期
+		maxDate: '+1970/01/14',			// 開始日期到結束日期
 	})
 
 	var lock_order_date = true;// 防止重複提交定義鎖
@@ -365,7 +348,6 @@ $(document).ready(function() {
 				"res_date": res_date,
 			},
 			success: function(messages) {
-				// console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("#time_peri_no").empty();
 				$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
@@ -423,7 +405,6 @@ $(document).ready(function() {
 				"people": JSON.stringify(jsonDataStr),
 			},
 			success: function(messages) {
-				// console.log(messages);
 				jsonArray_people = JSON.parse(messages);
 				setJSONArray_people(jsonArray_people);
 				$("#container").css("display", "block");
@@ -451,7 +432,6 @@ $(document).ready(function() {
 				"time_peri_no": time_peri_no,
 			},
 			success: function(messages) {
-				console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				var $myCheckbox = $(".myCheckbox");
 				$.each($myCheckbox, function(_index, item) {
@@ -496,7 +476,6 @@ $(document).ready(function() {
 							$.each(JSON.parse(resInfo).people , (i,people) =>{
 								addChooseSeatPeople(parseInt(people));
 							});
-							console.log(chooseSeatPeople+"+++"+$("#people").val());
 							$.each($myCheckbox, function(_index, item) { // 所有座位
 								if(chooseSeatPeople == $("#people").val()) { 
 									if($(item).not("checked")) {
@@ -519,8 +498,11 @@ $(document).ready(function() {
 									}
 								});
 							});
+							let allNotCheckbox= $(".myCheckbox").not(":checked");
+							$.each(allNotCheckbox, function(i, item){
+								$(item).prop("disabled", true);
+							});
 						} 
-//						console.log(chooseSeatPeople);
 					},
 					error: function(xhr, ajaxOptions, thrownError) {
 						lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態

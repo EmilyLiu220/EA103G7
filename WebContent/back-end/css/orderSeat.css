@@ -1,0 +1,133 @@
+* {
+	box-sizing: border-box;
+}
+
+form {
+	width: 100%;
+}
+
+.blank {
+	height: 100%;
+}
+
+div.container {
+	width: 1800px;
+}
+
+div#orderSeatCondition.container {
+	top: 0px;
+	position: sticky;
+	z-index: 500;
+	/* 	background: #FFFFFF; */
+}
+
+.navbar {
+	position: relative;
+}
+
+#table-1, #table-1 td {
+	background: #555;
+    color: #fff;
+	border: 0;
+	width: 100%;
+	border-radius: 5px;
+	text-align: center;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.orderSeatDiv{
+	position: relative;
+	z-index: 999;
+	top: 70px;
+}
+
+div#container.container {
+	height: 1000px;
+	width: 1400px;
+	border: 1px solid black;
+	position: relative;
+	background-image: url('floor.jpg');
+	/* 	margin: 10px; */
+}
+
+.xdsoft_datetimepicker .xdsoft_datepicker {
+	width: 300px; /* width:  300px; */
+}
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+	height: 151px; /* height:  151px; */
+}
+
+.drag .myCheckbox {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	bottom: 15px;
+	right: 0px;
+}
+
+/* label { */
+/* 	height: 0; */
+/* 	display: inline-block; */
+/* } */
+
+.drag {
+	/* 	border: 1px solid black; */
+	width: 100px;
+	height: 120px;
+	float: left;
+	margin: 0;
+	font-size: .9em;
+	position: relative;
+}
+
+img {
+	width: 100px;
+	height: 100px;
+	z-index: 10;
+	cursor: pointer;
+}
+
+.seatName {
+	width: 30px;
+	text-align: center;
+	background-color: transparent;
+	border-color: rgba(0, 0, 0, 0);
+	box-shadow: 0 rgba(0, 0, 0, 0) inset, 0 rgba(0, 0, 0, 0);
+	outline: 0 none;
+}
+
+.seatLabel {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 16px;
+}
+
+.select_div {
+	width: 100%;
+	text-align: left;
+	font-size: 20px;
+	position: relative;
+	top: 10px;
+	display: inline-block;
+}
+
+#orderSeat {
+	height: 40px;
+}
+
+select#time_peri_no, select#floor_list, input#people, input#res_date {
+	width: 180px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	position: relative;
+}
+
+select#time_peri_no {
+	font-family: monospace;
+}
+
+button#orderSeat {
+	position: relative;
+}
