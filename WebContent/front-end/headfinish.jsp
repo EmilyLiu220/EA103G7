@@ -533,28 +533,28 @@
 			
 	
 	<%-- 通知  webSocket
-	var MyPoint = "/Front_InformWS/${memVO2.mem_no}"; 
-	var host = window.location.host;
-	var path = window.location.pathname;
-	var webCtx = path.substring(0, path.indexOf('/', 1));
-	var endPointURL = "ws://" + host + webCtx + MyPoint;
+	var MyPoint_Inform = "/Front_InformWS/${memVO2.mem_no}"; 
+	var host_Inform = window.location.host;
+	var path_Inform = window.location.pathname;
+	var webCtx_Inform = path_Inform.substring(0, path_Inform.indexOf('/', 1));
+	var endPointURL_Inform = "ws://" + host_Inform + webCtx_Inform + MyPoint_Inform;
 	
-	var mem_no = "${memVO2.mem_no}"; // 宣告自己
+	// var mem_no = "${memVO2.mem_no}"; // 宣告自己，上方聊天室已宣告過
 	var informArea = document.getElementById("fi_cont"); // 通知 table
 	
-	var webSocket = new WebSocket(endPointURL);
+	var webSocket_Inform = new WebSocket(endPointURL_Inform);
 	
-	webSocket.onopen = function(event) {
-		console.log("Connect Success!");
+	webSocket_Inform.onopen = function(event) {
+		console.log("Inform Connect Success!");
 	};
 	
-	webSocket.onmessage = function(event) {
+	webSocket_Inform.onmessage = function(event) {
 		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
 		if ("history" === jsonObj.type) {
-			messagesArea.innerHTML = '';
+			informArea.innerHTML = '';
 			var chat_box = document.createElement('div');
 			chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
-			messagesArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
+			informArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
 			// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
 			var messages = JSON.parse(jsonObj.msgJson);
 			for (var i = 0; i < messages.length; i++) {
@@ -608,7 +608,7 @@
 				chat_message_wrapper.appendChild(ul);
 				chat_box.appendChild(chat_message_wrapper);
 			}
-			messagesArea.scrollTop = messagesArea.scrollHeight;
+			informArea.scrollTop = informArea.scrollHeight;
 		} else if ("chat" === jsonObj.type) {
 			var chat_message_wrapper = document.createElement('div');
 			chat_message_wrapper.classList.add("chat_message_wrapper");
@@ -658,13 +658,13 @@
 			chat_message_wrapper.appendChild(chat_user_avatar);
 			chat_message_wrapper.appendChild(ul);
 			document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
-			messagesArea.scrollTop = messagesArea.scrollHeight;
+			informArea.scrollTop = informArea.scrollHeight;
 		}
 	};
 				
-	webSocket.onclose = function(event) {
+	webSocket_Inform.onclose = function(event) {
 		console.log("Disconnected!");
-	}; --%>
+	};  --%>
 	</script>
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
