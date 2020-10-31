@@ -319,36 +319,40 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				if ("end".equals(sts) && new Integer(rs.getInt("INFO_STS")) > 1) {
-					resOrderVO = new ResOrderVO();
+				if ("end".equals(sts)) {
+					if (new Integer(rs.getInt("SEAT_STS")) == 1 || new Integer(rs.getInt("INFO_STS")) == 3) {
+						resOrderVO = new ResOrderVO();
 
-					resOrderVO.setRes_no(rs.getString("RES_NO"));
-					resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
-					resOrderVO.setMem_no(mem_no);
-					resOrderVO.setEmp_no(rs.getString("EMP_NO"));
-					resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
-					resOrderVO.setRes_date(rs.getDate("RES_DATE"));
-					resOrderVO.setPeople(rs.getInt("PEOPLE"));
-					resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
-					resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
-					resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+						resOrderVO.setRes_no(rs.getString("RES_NO"));
+						resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
+						resOrderVO.setMem_no(mem_no);
+						resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+						resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+						resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+						resOrderVO.setPeople(rs.getInt("PEOPLE"));
+						resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+						resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+						resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
 
-					list.add(resOrderVO); // Store the row in the list
-				} else if ("ing".equals(sts) && new Integer(rs.getInt("INFO_STS")) < 2) {
-					resOrderVO = new ResOrderVO();
+						list.add(resOrderVO); // Store the row in the list
+					}
+				} else if ("ing".equals(sts)) {
+					if (new Integer(rs.getInt("SEAT_STS")) == 0 && new Integer(rs.getInt("INFO_STS")) < 3) {
+						resOrderVO = new ResOrderVO();
 
-					resOrderVO.setRes_no(rs.getString("RES_NO"));
-					resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
-					resOrderVO.setMem_no(mem_no);
-					resOrderVO.setEmp_no(rs.getString("EMP_NO"));
-					resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
-					resOrderVO.setRes_date(rs.getDate("RES_DATE"));
-					resOrderVO.setPeople(rs.getInt("PEOPLE"));
-					resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
-					resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
-					resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+						resOrderVO.setRes_no(rs.getString("RES_NO"));
+						resOrderVO.setMeal_order_no(rs.getString("MEAL_ORDER_NO"));
+						resOrderVO.setMem_no(mem_no);
+						resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+						resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+						resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+						resOrderVO.setPeople(rs.getInt("PEOPLE"));
+						resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+						resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+						resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
 
-					list.add(resOrderVO); // Store the row in the list
+						list.add(resOrderVO); // Store the row in the list
+					}
 				}
 			}
 			// Handle any SQL errors

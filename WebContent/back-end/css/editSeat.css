@@ -21,6 +21,21 @@
 		repeat;
 }
 
+#table-1, #table-1 td {
+	background: #555;
+    color: #fff;
+	border: 0;
+	width: 100%;
+	border-radius: 5px;
+	text-align: center;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.editSeatDiv{
+	position: relative;
+	z-index: 999;
+	top: 70px;
+}
+
 .obj_bar {
 	background-color: deeppink;
 	border: 1px solid black;
