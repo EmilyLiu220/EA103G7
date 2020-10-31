@@ -2,8 +2,6 @@ package com.meal_part.model;
 
 import java.util.*;
 
-import com.food.model.FoodVO;
-
 import java.sql.*;
 
 public class Meal_partJDBCDAO implements Meal_partDAO_interface {
@@ -26,6 +24,9 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 			"join meal_part mp on mp.fd_no=f.fd_no " +
 			"join meal_set_consist m on m.meal_no=mp.meal_no " +
 			"where m.meal_set_no=?";
+	private static final String GET_MEAL_PART_BY_MEAL_NO_STMT =
+			"select * from meal_part " +
+			"where meal_no=?";
 	
 	@Override
 	public void insert(Meal_partVO meal_partVO) {
@@ -355,7 +356,6 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Map<String,Double> map=null;
-		System.out.println(meal_set_no);
 		try {
 			con = DriverManager.getConnection(url, userid, passwd);
 			map=new HashMap<String,Double>();
@@ -398,61 +398,60 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 		return map;
 	}
 	
-	public static void main(String[] args) {
+	@Override
+	public List<Meal_partVO> get_meal_part_by_mealno(String meal_no) {
+		List<Meal_partVO> list = new ArrayList<Meal_partVO>();
+		Meal_partVO meal_partVO = null;		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
-		Meal_partJDBCDAO dao = new Meal_partJDBCDAO();
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_MEAL_PART_BY_MEAL_NO_STMT);
+			pstmt.setString(1, meal_no);
+			rs = pstmt.executeQuery();
 
-		//新增
-		Meal_partVO meal_partVO1 = new Meal_partVO();
-		meal_partVO1.setMeal_no("111");
-		meal_partVO1.setFd_no("333");
-		meal_partVO1.setFd_gw(new Double(333));
-//		dao.insert(meal_partVO1);
+			while (rs.next()) {
+				meal_partVO = new Meal_partVO();
+				meal_partVO.setMeal_no(rs.getString("meal_no"));
+				meal_partVO.setFd_no(rs.getString("fd_no"));
+				meal_partVO.setFd_gw(rs.getDouble("fd_gw"));
+				list.add(meal_partVO);
+			}
 
-		//修改
-		Meal_partVO meal_partVO2 = new Meal_partVO();
-		meal_partVO2.setMeal_no("111");
-		meal_partVO2.setFd_no("111");
-		meal_partVO2.setFd_gw(new Double(144));
-//		dao.update(meal_partVO2);
-
-		//刪除
-//		dao.delete("333", "333");
-
-		//查詢
-//		Meal_partVO meal_partVO3 = dao.findByPrimaryKey("222", "222");
-//		System.out.print("Meal_no=" + meal_partVO3.getMeal_no()+ ",");
-//		System.out.print("Fd_no=" + meal_partVO3.getFd_no() + ",");
-//		System.out.print("Fd_gw=" + meal_partVO3.getFd_gw());
-//		System.out.println();
-//		System.out.println("---------------------");
-
-		//查詢
-		List<Meal_partVO> list = dao.getAll();
-		for (Meal_partVO aMeal_partVO : list) {
-			System.out.print("Meal_no=" + aMeal_partVO.getMeal_no()+ ",");
-			System.out.print("Fd_no=" + aMeal_partVO.getFd_no() + ",");
-			System.out.print("Fd_gw=" + aMeal_partVO.getFd_gw());
-			System.out.println();
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
 		}
-		
-		//查詢
-		Map<String,Double> map=dao.get_NUT_ByMealno("MEAL0001");
-		System.out.println();
-		System.out.println();
-		System.out.println(map.get("cal"));
-		System.out.println(map.get("prot"));
-		System.out.println(map.get("carb"));
-		System.out.println(map.get("fat"));
-		
-		//查詢
-		Map<String,Double> map2=dao.get_nut_by_meal_set_no("MES0001");
-		System.out.println();
-		System.out.println();
-		System.out.println(map2.get("cal"));
-		System.out.println(map2.get("prot"));
-		System.out.println(map2.get("carb"));
-		System.out.println(map2.get("fat"));
+		return list;
 	}
 	
 	public void delete(String meal_no) {
@@ -487,8 +486,71 @@ public class Meal_partJDBCDAO implements Meal_partDAO_interface {
 				}
 			}
 		}
-
 	}
-
 	
+	public static void main(String[] args) {
+
+		Meal_partJDBCDAO dao = new Meal_partJDBCDAO();
+
+		//新增
+		Meal_partVO meal_partVO1 = new Meal_partVO();
+		meal_partVO1.setMeal_no("111");
+		meal_partVO1.setFd_no("333");
+		meal_partVO1.setFd_gw(new Double(333));
+//		dao.insert(meal_partVO1);
+
+		//修改
+		Meal_partVO meal_partVO2 = new Meal_partVO();
+		meal_partVO2.setMeal_no("111");
+		meal_partVO2.setFd_no("111");
+		meal_partVO2.setFd_gw(new Double(144));
+//		dao.update(meal_partVO2);
+
+		//刪除
+//		dao.delete("333", "333");
+
+		//查詢
+//		Meal_partVO meal_partVO3 = dao.findByPrimaryKey("222", "222");
+//		System.out.print("Meal_no=" + meal_partVO3.getMeal_no()+ ",");
+//		System.out.print("Fd_no=" + meal_partVO3.getFd_no() + ",");
+//		System.out.print("Fd_gw=" + meal_partVO3.getFd_gw());
+//		System.out.println();
+//		System.out.println("---------------------");
+
+//		//查詢
+//		List<Meal_partVO> list = dao.getAll();
+//		for (Meal_partVO aMeal_partVO : list) {
+//			System.out.print("Meal_no=" + aMeal_partVO.getMeal_no()+ ",");
+//			System.out.print("Fd_no=" + aMeal_partVO.getFd_no() + ",");
+//			System.out.print("Fd_gw=" + aMeal_partVO.getFd_gw());
+//			System.out.println();
+//		}
+		
+		//查詢
+//		Map<String,Double> map=dao.get_NUT_ByMealno("MEAL0001");
+//		System.out.println();
+//		System.out.println();
+//		System.out.println(map.get("cal"));
+//		System.out.println(map.get("prot"));
+//		System.out.println(map.get("carb"));
+//		System.out.println(map.get("fat"));
+		
+		//查詢
+//		Map<String,Double> map2=dao.get_nut_by_meal_set_no("MES0001");
+//		System.out.println();
+//		System.out.println();
+//		System.out.println(map2.get("cal"));
+//		System.out.println(map2.get("prot"));
+//		System.out.println(map2.get("carb"));
+//		System.out.println(map2.get("fat"));
+		
+		//查詢
+		List<Meal_partVO> list2 = dao.get_meal_part_by_mealno("MEAL0001");
+		for (Meal_partVO aMeal_partVO : list2) {
+			System.out.print("Meal_no=" + aMeal_partVO.getMeal_no()+ ",");
+			System.out.print("Fd_no=" + aMeal_partVO.getFd_no() + ",");
+			System.out.print("Fd_gw=" + aMeal_partVO.getFd_gw());
+			System.out.println();
+		}
+	}
 }

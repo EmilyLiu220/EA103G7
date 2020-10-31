@@ -7,12 +7,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.food.model.FoodVO;
-
 import java.sql.*;
 
 public class Meal_partDAO implements Meal_partDAO_interface {
-
+	
 	private static final String INSERT_STMT = "INSERT INTO MEAL_PART (MEAL_NO,FD_NO,FD_GW) VALUES (?,?,?)";
 	private static final String DELETE = "DELETE FROM MEAL_PART WHERE MEAL_NO=? AND FD_NO=?";
 	private static final String GET_ALL_STMT = "SELECT MEAL_NO,FD_NO,FD_GW FROM MEAL_PART";
@@ -23,10 +21,13 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			"join meal_part m on m.fd_no=f.fd_no " + 
 			"where m.meal_no=?";
 	private static final String GET_NUT_BY_MEAL_NO_STMT =
-			"select sum(fd_gw*cal*meal_qty)/100 cal, sum(fd_gw*prot*meal_qty)/100 prot,sum(fd_gw*carb*meal_qty)/100 carb,sum(fd_gw*fat*meal_qty)/100 fat from food f" +
-			"join meal_part mp on mp.fd_no=f.fd_no" +
-			"join meal_set_consist m on m.meal_no=mp.meal_no" +
+			"select sum(fd_gw*cal*meal_qty)/100 cal, sum(fd_gw*prot*meal_qty)/100 prot,sum(fd_gw*carb*meal_qty)/100 carb,sum(fd_gw*fat*meal_qty)/100 fat from food f " +
+			"join meal_part mp on mp.fd_no=f.fd_no " +
+			"join meal_set_consist m on m.meal_no=mp.meal_no " +
 			"where m.meal_set_no=?";
+	private static final String GET_MEAL_PART_BY_MEAL_NO_STMT =
+			"select * from meal_part " +
+			"where meal_no=?";
 	private static DataSource ds = null;
 	static {
 		try {
@@ -35,7 +36,9 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
+
 	}
+	
 	@Override
 	public void insert(Meal_partVO meal_partVO) {
 
@@ -51,7 +54,7 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			pstmt.executeUpdate();			
 			// Handle any driver errors
 		} catch (SQLException se) {
-			throw new RuntimeException("此餐點已有使用選擇的食材 ");
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
@@ -78,7 +81,8 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();pstmt = con.prepareStatement(UPDATE);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE);
 			pstmt.setDouble(1, meal_partVO.getFd_gw());
 			pstmt.setString(2, meal_partVO.getMeal_no());
 			pstmt.setString(3, meal_partVO.getFd_no());
@@ -114,7 +118,8 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();pstmt = con.prepareStatement(DELETE);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(DELETE);
 			pstmt.setString(1, meal_no);
 			pstmt.setString(2, fd_no);
 
@@ -195,6 +200,45 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 	}
 
 	@Override
+	public void insert(List<Meal_partVO> list, Connection con) {
+		PreparedStatement pstmt = null;
+
+		for(Meal_partVO meal_partVO:list) {
+			try {
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(INSERT_STMT);
+				pstmt.setString(1, meal_partVO.getMeal_no());
+				pstmt.setString(2, meal_partVO.getFd_no());
+				pstmt.setDouble(3, meal_partVO.getFd_gw());
+				pstmt.executeUpdate();
+				con.commit();
+			} catch (SQLException se) {
+				try {
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "+ excep.getMessage());
+				}
+				throw new RuntimeException("A database error occured. " + se.getMessage());
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
 	public List<Meal_partVO> getAll() {
 		List<Meal_partVO> list = new ArrayList<Meal_partVO>();
 		Meal_partVO meal_partVO = null;		
@@ -262,6 +306,7 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			map.put("prot", rs.getDouble(2));
 			map.put("carb", rs.getDouble(3));
 			map.put("fat", rs.getDouble(4));
+			System.out.println(map.get("fat"));
 			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -290,38 +335,6 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			}
 		}
 		return map;
-	}
-
-	@Override
-	public void insert(List<Meal_partVO> list, Connection con) {
-		PreparedStatement pstmt = null;
-
-		for(Meal_partVO meal_partVO:list) {
-			try {
-				con.setAutoCommit(false);
-				pstmt = con.prepareStatement(INSERT_STMT);
-				pstmt.setString(1, meal_partVO.getMeal_no());
-				pstmt.setString(2, meal_partVO.getFd_no());
-				pstmt.setDouble(3, meal_partVO.getFd_gw());
-				pstmt.executeUpdate();
-				con.commit();
-			} catch (SQLException se) {
-				try {
-					con.rollback();
-				} catch (SQLException excep) {
-					throw new RuntimeException("rollback error occured. "+ excep.getMessage());
-				}
-				throw new RuntimeException("A database error occured. " + se.getMessage());
-			} finally {
-				if (pstmt != null) {
-					try {
-						pstmt.close();
-					} catch (SQLException se) {
-						se.printStackTrace(System.err);
-					}
-				}
-			}
-		}
 	}
 
 	@Override
@@ -361,8 +374,67 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 					se.printStackTrace(System.err);
 				}
 			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
 		}
 		return map;
+	}
+	
+	@Override
+	public List<Meal_partVO> get_meal_part_by_mealno(String meal_no) {
+		List<Meal_partVO> list = new ArrayList<Meal_partVO>();
+		Meal_partVO meal_partVO = null;		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_MEAL_PART_BY_MEAL_NO_STMT);
+			pstmt.setString(1, meal_no);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				meal_partVO = new Meal_partVO();
+				meal_partVO.setMeal_no(rs.getString("meal_no"));
+				meal_partVO.setFd_no(rs.getString("fd_no"));
+				meal_partVO.setFd_gw(rs.getDouble("fd_gw"));
+				list.add(meal_partVO);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 	
 	public void delete(String meal_no) {
@@ -397,7 +469,5 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 				}
 			}
 		}
-
 	}
-	
 }
