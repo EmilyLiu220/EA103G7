@@ -550,120 +550,63 @@
 	
 	webSocket_Inform.onmessage = function(event) {
 		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
-		if ("history" === jsonObj.type) {
-			informArea.innerHTML = '';
-			var chat_box = document.createElement('div');
-			chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
-			informArea.appendChild(chat_box); // 將新增的歷史訊息區塊加進 chat 區塊
-			// 這行的jsonObj.message是從redis撈出跟好友的歷史訊息，再parse成JSON格式處理
-			var messages = JSON.parse(jsonObj.msgJson);
-			for (var i = 0; i < messages.length; i++) {
-				var historyData = JSON.parse(messages[i]);
-				var chat_message_wrapper = document.createElement('div');
-				chat_message_wrapper.classList.add("chat_message_wrapper");
-				
-				var chat_user_avatar = document.createElement('div');
-				chat_user_avatar.classList.add("chat_user_avatar");
-						
-				var img = document.createElement('img');
-				img.classList.add("md-user-image");
-				if( historyData.sender === mem_no ){
-					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
-				}else{
-					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
-				}
-				chat_user_avatar.appendChild(img);
-				
-				var ul = document.createElement('ul');
-				ul.classList.add("chat_message");
-				var li = document.createElement('li');
-				var p = document.createElement('p');
-				var span = document.createElement('span');
-				span.classList.add("chat_message_time");
-				var spanReadSts = document.createElement('span');
-						
-				var showMsg = historyData.message;
-				var timestamp = historyData.timestamp;
-				var readSts = historyData.readSts;
-				p.innerHTML = showMsg;
-				var dayTime = timestamp.substring(0,10);
-				p.setAttribute("title",dayTime);
-				var shortTime = timestamp.substring(11,18);
-				shortTime = shortTime.replace(/:$/, '');
-				span.innerHTML = shortTime;
-				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
-				if( historyData.sender === mem_no ){
-					li.className += 'mem';
-					chat_message_wrapper.classList.add("chat_message_right");
-					var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
-					spanReadSts.innerHTML = readStsText;
-					span.appendChild(spanReadSts);
-				}else{
-					li.className += 'emp';
-				}
-				p.appendChild(span);
-				li.appendChild(p);
-				ul.appendChild(li);
-				chat_message_wrapper.appendChild(chat_user_avatar);
-				chat_message_wrapper.appendChild(ul);
-				chat_box.appendChild(chat_message_wrapper);
-			}
-			informArea.scrollTop = informArea.scrollHeight;
-		} else if ("chat" === jsonObj.type) {
-			var chat_message_wrapper = document.createElement('div');
-			chat_message_wrapper.classList.add("chat_message_wrapper");
+		if ( jsonObj.info_sts === 2 ) { // 需要回應的通知
+			var informTr = document.createElement('tr');
+			informTr.setAttribute("name","unread");
 			
-			var chat_user_avatar = document.createElement('div');
-			chat_user_avatar.classList.add("chat_user_avatar");
+			// 第一個 td 要放到 tr 中
+			var informTdCont = document.createElement('td');
+			informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
 			
-			var img = document.createElement('img');
-			img.classList.add("md-user-image");
-			if( jsonObj.sender === mem_no ){
-				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
-			}else{
-				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
-			}
-			chat_user_avatar.appendChild(img);
+			// 下方 span 要放到上方的 td 中
+			var informTdContSpan = document.createElement('span');
+			informTdContSpan.innerHTML = jsonObj.info_cont;
 			
-			var ul = document.createElement('ul');
-			ul.classList.add("chat_message");
-			var li = document.createElement('li');
-			var p = document.createElement('p');
-			var span = document.createElement('span');
-			span.classList.add("chat_message_time");
-			var spanReadSts = document.createElement('span');
-					
-			var showMsg = jsonObj.message;
-			var timestamp = jsonObj.timestamp;
-			var readSts = jsonObj.readSts;
-			p.innerHTML = showMsg;
-			var dayTime = timestamp.substring(0,10);
-			p.setAttribute("title",dayTime);
-			var shortTime = timestamp.substring(11,18);
-			shortTime = shortTime.replace(/:$/, '');
-			span.innerHTML = shortTime;
-			// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
-			if( jsonObj.sender === mem_no ){
-				li.className += 'mem';
-				chat_message_wrapper.classList.add("chat_message_right");
-				var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
-				spanReadSts.innerHTML = readStsText;
-				span.appendChild(spanReadSts);
-			}else{
-				li.className += 'emp';
-			}
-			p.appendChild(span);
-			li.appendChild(p);
-			ul.appendChild(li);
-			chat_message_wrapper.appendChild(chat_user_avatar);
-			chat_message_wrapper.appendChild(ul);
-			document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
+			// 下方的 div 要放到上方的 td 中
+			var informTdDiv = document.createElement('div');
+			informTdDiv.setAttribute("class","d-flex justify-content-end")
+			
+			// 下方兩個 button 要放到上方的 div 中
+			var informTdContBtnYes = document.createElement('button');
+			informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
+			informTdContBtnYes.addEventListener('click', function(){
+				confirm(jsonObj.info_no, jsonObj.res_no);
+			});
+			informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+			var informTdContBtnNo = document.createElement('button');
+			informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
+			informTdContBtnNo.addEventListener('click', function(){
+				cancel(jsonObj.info_no, jsonObj.res_no);
+			});
+			
+			informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
+			informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+			
+			informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+			informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+			informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+			
+			// 第二個 td 也要放到 tr 中
+			var informTdDate = document.createElement('td');
+			informTdDate.style.cssText = "width:100px;";
+			var infoDate = jsonObj.info_date;
+			informTdDate.innerHTML = infoDate;
+
+			// 把兩個 td 都放進 tr 中
+			informTr.appendChild(informTdCont);
+			informTr.appendChild(informTdDate);
+
+			// informArea.scrollTop = informArea.scrollHeight;
+		
+		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知 → 還沒寫
+			
+			
 			informArea.scrollTop = informArea.scrollHeight;
 		}
 	};
 				
 	webSocket_Inform.onclose = function(event) {
-		console.log("Disconnected!");
+		console.log("Inform Disconnected!");
 	};  --%>
 	</script>
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
