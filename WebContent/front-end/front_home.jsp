@@ -843,6 +843,86 @@
 	$("#removeClass").click(function() {
 		$('#sidebar_secondary').removeClass('popup-box-on');
 	});
+	
+	
+	
+	<%-- 通知  webSocket
+	var MyPoint_Inform = "/Front_InformWS/${memVO2.mem_no}"; 
+	var host_Inform = window.location.host;
+	var path_Inform = window.location.pathname;
+	var webCtx_Inform = path_Inform.substring(0, path_Inform.indexOf('/', 1));
+	var endPointURL_Inform = "ws://" + host_Inform + webCtx_Inform + MyPoint_Inform;
+	
+	// var mem_no = "${memVO2.mem_no}"; // 宣告自己，上方聊天室已宣告過
+	var informArea = document.getElementById("fi_cont"); // 通知 table
+	
+	var webSocket_Inform = new WebSocket(endPointURL_Inform);
+	
+	webSocket_Inform.onopen = function(event) {
+		console.log("Inform Connect Success!");
+	};
+	
+	webSocket_Inform.onmessage = function(event) {
+		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+		if ( jsonObj.info_sts === 2 ) { // 需要回應的通知
+			var informTr = document.createElement('tr');
+			informTr.setAttribute("name","unread");
+			
+			// 第一個 td 要放到 tr 中
+			var informTdCont = document.createElement('td');
+			informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+			
+			// 下方 span 要放到上方的 td 中
+			var informTdContSpan = document.createElement('span');
+			informTdContSpan.innerHTML = jsonObj.info_cont;
+			
+			// 下方的 div 要放到上方的 td 中
+			var informTdDiv = document.createElement('div');
+			informTdDiv.setAttribute("class","d-flex justify-content-end")
+			
+			// 下方兩個 button 要放到上方的 div 中
+			var informTdContBtnYes = document.createElement('button');
+			informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
+			informTdContBtnYes.addEventListener('click', function(){
+				confirm(jsonObj.info_no, jsonObj.res_no);
+			});
+			informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+			var informTdContBtnNo = document.createElement('button');
+			informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
+			informTdContBtnNo.addEventListener('click', function(){
+				cancel(jsonObj.info_no, jsonObj.res_no);
+			});
+			
+			informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
+			informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+			
+			informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+			informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+			informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+			
+			// 第二個 td 也要放到 tr 中
+			var informTdDate = document.createElement('td');
+			informTdDate.style.cssText = "width:100px;";
+			var infoDate = jsonObj.info_date;
+			informTdDate.innerHTML = infoDate;
+
+			// 把兩個 td 都放進 tr 中
+			informTr.appendChild(informTdCont);
+			informTr.appendChild(informTdDate);
+			
+			// 這條 tr 還沒放進 table 裡 ㄏㄏ
+			// informArea.scrollTop = informArea.scrollHeight;
+		
+		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知 → 還沒寫
+			
+			
+			informArea.scrollTop = informArea.scrollHeight;
+		}
+	};
+				
+	webSocket_Inform.onclose = function(event) {
+		console.log("Inform Disconnected!");
+	};  --%>
 </script>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>

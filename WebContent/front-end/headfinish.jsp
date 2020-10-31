@@ -595,7 +595,8 @@
 			// 把兩個 td 都放進 tr 中
 			informTr.appendChild(informTdCont);
 			informTr.appendChild(informTdDate);
-
+			
+			// 這條 tr 還沒放進 table 裡 ㄏㄏ
 			// informArea.scrollTop = informArea.scrollHeight;
 		
 		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知 → 還沒寫
