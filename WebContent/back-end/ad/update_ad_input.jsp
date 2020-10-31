@@ -252,27 +252,27 @@
 					<!-- 					-------------------------------------------- -->
 
 					<tr>
-						<td>員工編號:</td>
+						<td>員工編號:<font color=red><b>*</b></font></td>
 						<td><input type="TEXT" name="emp_no" size="45"
 							value="<%=adVO.getEmp_no()%>" /></td>
 
 					</tr>
 					<tr>
-						<td>廣告標題:</td>
+						<td>廣告標題:<font color=red><b>*</b></font></td>
 						<td><input type="TEXT" name="ad_title" size="45"
 							value="<%=adVO.getAd_title()%>" /></td>
 					</tr>
 					<tr>
-						<td>廣告內容:</td>
+						<td>廣告內容:<font color=red><b>*</b></font></td>
 						<td><input type="TEXT" name="ad_cont" size="45"
 							value="<%=adVO.getAd_cont()%>" /></td>
 					</tr>
 					<tr>
-						<td>廣告日期:</td>
+						<td>廣告日期:<font color=red><b>*</b></font></td>
 						<td><input name="ad_add_date" id="add_date" type="text"></td>
 					</tr>
 					<tr>
-						<td>結束日期:</td>
+						<td>結束日期:<font color=red><b>*</b></font></td>
 						<td><input name="ad_re_date" id="re_date" type="text"></td>
 					</tr>
 
