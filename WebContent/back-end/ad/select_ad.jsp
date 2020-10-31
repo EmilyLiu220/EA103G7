@@ -140,7 +140,7 @@
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
 						<a
-							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
+							href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
 							Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
@@ -158,7 +158,7 @@
 						</button>
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
-							<a href="/EA103G7/back-end/back-index_New.jsp">吃 Pot 吧！員工專區</a>
+							<a href="/EA103G7/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
@@ -191,7 +191,7 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 廣告管理</span> <a href="/EA103G7/back-end/back-index_New.jsp"
+			<span> - 廣告管理</span> <a href="/EA103G7/back-end/backindex.jsp"
 				style="display: inline-block; font-size: 8px; font-weight: 900; color: #DEA554; text-decoration: none; margin-left: 20px;"
 				onmouseover="this.style.color='#ffbc5e';"
 				onmouseout="this.style.color='#dea554';">返回首頁</a>

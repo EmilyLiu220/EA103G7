@@ -128,7 +128,7 @@ text-decoration: underline;
 					<button type="button" id="sidebarCollapse" class="btn btn-dark">
 						<i class="fas fa-align-justify"></i>
 					</button>
-					<div id="titleBig" style="margin: 0 auto; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃 Pot 吧！員工專區</a></div>
+					<div id="titleBig" style="margin: 0 auto; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a></div>
 					<div id="rwdShow">
 						<button type="button" id="topbarCollapse" class="btn btn-dark"
 							data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -136,7 +136,7 @@ text-decoration: underline;
 							aria-label="Toggle navigation">
 							<i class="fas fa-align-justify"></i>
 						</button>
-						<div id="titleSmall" style="padding-left: 10px; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃 Pot 吧！員工專區</a></div>
+						<div id="titleSmall" style="padding-left: 10px; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a></div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
 								<li class="nav-item active"><a class="nav-link" href="#"
@@ -173,7 +173,7 @@ text-decoration: underline;
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 餐點管理</span>
-			<a href="<%=request.getContextPath()%>/back-end/back-index_New.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
+			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
 			<p>
 				<table id="table-1">
 					<tr>
