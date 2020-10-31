@@ -1,19 +1,17 @@
 package com.message_record.model;
 
+import java.util.List;
 import java.util.Set;
 
 public class State {
 	private String type;
-	// the user changing the state
-	private String emp;
-	// total users
-	private Set<String> mems;
+	// total users information
+	private List<String> msgJson;
 
-	public State(String type, String emp, Set<String> mems) {
+	public State(String type, List<String> msgJson) {
 		super();
 		this.type = type;
-		this.emp = emp;
-		this.mems = mems;
+		this.setMsgJson(msgJson);
 	}
 
 	public String getType() {
@@ -24,20 +22,12 @@ public class State {
 		this.type = type;
 	}
 
-	public String getEmp() {
-		return emp;
+	public List<String> getMsgJson() {
+		return msgJson;
 	}
 
-	public void setEmp(String emp) {
-		this.emp = emp;
-	}
-
-	public Set<String> getMems() {
-		return mems;
-	}
-
-	public void setMems(Set<String> mems) {
-		this.mems = mems;
+	public void setMsgJson(List<String> msgJson) {
+		this.msgJson = msgJson;
 	}
 
 }

@@ -59,4 +59,5 @@ public class Message_RecordDAO {
 		jedis.close();
 		return allKey;
 	}
+	
 }
