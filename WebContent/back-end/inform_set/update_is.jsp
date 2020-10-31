@@ -43,8 +43,42 @@
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-.unshow{
+.unshow {
  	display: none;
+}
+#forward {
+	display: block; 
+		position: absolute; 
+		right: 20%; 
+		top: 80%;
+}
+#back {
+	display: block; 
+		position: absolute; 
+		right: 35%; 
+		top: 80%;
+}
+#revise {
+	cursor: pointer; 
+	margin-right: 10px; 
+	background: #c8a97e; 
+	color: #fff; 
+	border: 0; 
+	border-radius: 5px; 
+	width: 100px; 
+	height: 40px; 
+	font-weight: 600;
+}
+#holdBack{
+	cursor: pointer; 
+	margin-right: 10px; 
+	background: #c8a97e; 
+	color: #fff; 
+	border: 0; 
+	border-radius: 5px; 
+	width: 100px; 
+	height: 40px; 
+	font-weight: 600;
 }
 </style>
 <style>
@@ -201,7 +235,6 @@
 						</c:forEach>
 					</ul>
 				</c:if>
-				
 				<FORM METHOD="post" ACTION="is.do" name="form1">
 					<table class="table table-hover" style="width: 100%; font-size: 90%;">
 						<tr>
@@ -229,18 +262,17 @@
 						</tr>
 					</table>
 					<br>
-					<div style="display: block; position: absolute; right: 10%; top: 80%;">
+					<div id="forward">
 						<input type="hidden" name="is_no" value="<%=isVO.getIs_no()%>"/>
 						<input type="hidden" name="action" value="updateIs"/>
-						<%--<button style="curosr: pointer; margin-left: 70%; margin-right: 20px; background: #c8a97e; color: #fff; border: 0; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;" onMouseOver="this.style.background='#ffbc5e'" onMouseOut="this.style.background='#c8a97e'"><a href="<%=request.getContextPath()%>/back-end/inform_set/listAll_is.jsp">取消修改</a></button> --%>
-						<input type="submit" value="送出修改" style="cursor: pointer; margin-right: 10px; background: #c8a97e; color: #fff; border: 0; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;" onMouseOver="this.style.background='#ffbc5e'" onMouseOut="this.style.background='#c8a97e'"/>
+						<input id="revise" type="submit" value="送出修改" onMouseOver="this.style.background='#ffbc5e'" onMouseOut="this.style.background='#c8a97e'"/>
 					</div>
 				</FORM>
-				<div style="display: block; position: absolute; right: 20%; top: 80%;">
+				<div id="back">
 					<FORM METHOD="post" ACTION="is.do" name="form1">
 						<input type="hidden" name="is_no" value="<%=isVO.getIs_no()%>"/>
 						<input type="hidden" name="action" value="getOneIsForDisplay"/>
-						<input type="submit" value="取消修改" style="cursor: pointer; margin-right: 10px; background: #c8a97e; color: #fff; border: 0; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;" onMouseOver="this.style.background='#ffbc5e'" onMouseOut="this.style.background='#c8a97e'"/>
+						<input id="holdBack" type="submit" value="取消修改" onMouseOver="this.style.background='#ffbc5e'" onMouseOut="this.style.background='#c8a97e'"/>
 					</FORM>
 				</div>
 			</p>	
