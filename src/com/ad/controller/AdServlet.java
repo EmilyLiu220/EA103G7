@@ -310,7 +310,9 @@ public class AdServlet extends HttpServlet {
 						is.close();
 					}
 				} else {
-					errorMsgs.add("ad_img: 請勿空白");
+					AdService Adsvc = new AdService();
+					AdVO adVO = Adsvc.getOneAd(ad_no);
+					img = adVO.getAd_img();
 				}
 
 				System.out.println(ad_img.getName());

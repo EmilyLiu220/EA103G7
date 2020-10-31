@@ -127,10 +127,7 @@ color: #3e2605
     padding-inline-start: 40px;
     color: #3e2605
 }
-div {
-	width: 100%;
-	margin: 0px auto;
-}
+
 </style>
 <%@ include  file="/front-end/headfinish.jsp"%>
 <div class="container">
@@ -189,11 +186,5 @@ div {
 
 <!-- /.container -->
 <%@ include file="/front-end/footer.jsp"%>
-<script>
 
-$(document).ready(function() {
-    console.log("Hello, World!");
-});
-
-</script>
 </html>

@@ -38,9 +38,6 @@ public class Meal_partService {
 	public void deleteMeal_part(String meal_no,String fd_no) {
 		dao.delete(meal_no,fd_no);
 	}
-	public void deleteMeal_part(String meal_no) {
-		dao.delete(meal_no);
-	}
 
 	public Meal_partVO getOneMeal_part(String meal_no,String fd_no) {
 		return dao.findByPrimaryKey(meal_no,fd_no);
@@ -58,6 +55,10 @@ public class Meal_partService {
 		return dao.get_nut_by_meal_set_no(meal_set_no);
 	}
 	
+	public List<Meal_partVO> get_meal_part_by_mealno(String meal_no) {
+		return dao.get_meal_part_by_mealno(meal_no);
+	}
+
 //	public Double getCal(String meal_no) {
 //		return dao.get_cal_by_mealno(meal_no);
 //	}

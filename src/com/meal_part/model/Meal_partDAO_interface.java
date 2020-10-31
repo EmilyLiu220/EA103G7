@@ -3,7 +3,6 @@ package com.meal_part.model;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
-import com.food.model.*;
 
 public interface Meal_partDAO_interface {
 	public void insert(Meal_partVO meal_partVO);
@@ -15,4 +14,5 @@ public interface Meal_partDAO_interface {
 	public Map<String,Double> get_NUT_ByMealno(String meal_no);
 	public Map<String,Double> get_nut_by_meal_set_no(String meal_set_no);
 	public void delete(String meal_no);
+	public List<Meal_partVO> get_meal_part_by_mealno(String meal_no);
 }

@@ -284,6 +284,8 @@
 	  <url-pattern>/back-end/emp/update_emp_info.jsp</url-pattern>
 	  <url-pattern>/back-end/emp/update_emp_sts.jsp</url-pattern>
 	  <url-pattern>/back-end/mem/*</url-pattern>
+	  <url-pattern>/back-end/ad/*</url-pattern>
+	  <url-pattern>/back-end/news/*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>
