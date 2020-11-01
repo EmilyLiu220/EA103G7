@@ -45,7 +45,10 @@
 			</c:forEach>
 		</ul>
 	</c:if>
-
+	
+	<label class="btn btn-success" style="cursor:pointer"><i class="fas fa-reply" style="font-size:25px" onclick="history.back()"></i></label>
+	<p><p>
+	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back-end/emp/emp.do" style="margin-bottom: 0px;">
 	<table style="font-size: 120%;">
 		<tr>

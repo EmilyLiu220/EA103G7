@@ -1,6 +1,7 @@
 package com.mem.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -68,6 +69,19 @@ public class MemServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
+//				String mem_name = req.getParameter("mem_name");
+//				if (mem_name == null) {
+//					errorMsgs.add("請輸入會員姓名");
+//				}
+				
+				// Send the use back to the form, if there were errors
+//				if (!errorMsgs.isEmpty()) {
+//					RequestDispatcher failureView = req
+//							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+//					failureView.forward(req, res);
+//					return;//程式中斷
+//				}
+				
 				/***************************2.開始查詢資料*****************************************/
 				MemService memSvc = new MemService();
 				MemVO memVO = memSvc.getOneMem(mem_no);
@@ -86,8 +100,6 @@ public class MemServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				
 				req.setAttribute("memVO", memVO); // 資料庫取出的empVO物件,存入req
-				
-				
 				
 				String url = "/back-end/mem/listOneMem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
@@ -481,6 +493,31 @@ public class MemServlet extends HttpServlet {
 				MemService memSvc = new MemService();
 				memSvc.updateByEmp(mem_bns, mem_od_m, mem_od_r, mem_review, mem_repo, mem_sts, mem_no);
 				
+				MemVO memVO2 = memSvc.getOneMem(mem_no);
+				
+				String mem_no2 = memVO2.getMem_no();
+				String mem_name2 = memVO2.getMem_name();
+				String mem_act2 = memVO2.getMem_act();
+				String mem_psw2 = memVO2.getMem_psw();
+				String mem_gen2 = memVO2.getMem_gen();
+				Date mem_bir2 = memVO2.getMem_bir();
+				String mem_tel2 = memVO2.getMem_tel();
+				String mem_adrs2 = memVO2.getMem_adrs();
+				String mem_mail2 = memVO2.getMem_mail();
+				
+				memVO.setMem_no(mem_no2);
+				memVO.setMem_name(mem_name2);
+				memVO.setMem_act(mem_act2);
+				memVO.setMem_psw(mem_psw2);
+				memVO.setMem_gen(mem_gen2);
+				memVO.setMem_bir(mem_bir2);
+				memVO.setMem_tel(mem_tel2);
+				memVO.setMem_adrs(mem_adrs2);
+				memVO.setMem_mail(mem_mail2);
+				
+				HttpSession session_m = req.getSession();
+				session_m.setAttribute("memVO2", memVO);
+				
 				memVO = memSvc.getOneMem(mem_no);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
@@ -521,7 +558,12 @@ public class MemServlet extends HttpServlet {
 		
 		if ("logout".equals(action)) {
 			
-			req.getSession().invalidate();
+			HttpSession session_m = req.getSession();
+			session_m.removeAttribute("account_m");
+			session_m.removeAttribute("memVO2");
+			session_m.removeAttribute("front_informVOs");
+			
+//			req.getSession().invalidate();
 	        res.sendRedirect(req.getContextPath() + "/front-end/front_home.jsp");
 			
 		}
@@ -548,7 +590,7 @@ public class MemServlet extends HttpServlet {
 			    } else {                                       //【帳號 , 密碼有效時, 才做以下工作】
 			      
 			      HttpSession session = req.getSession();
-			      session.setAttribute("account", account);   //*工作1: 才在session內做已經登入過的標識
+			      session.setAttribute("account_m", account);   //*工作1: 才在session內做已經登入過的標識
 			      
 			      MemService memSvc = new MemService();
 			      String mem_no = memSvc.login(account).getMem_no();
@@ -562,9 +604,9 @@ public class MemServlet extends HttpServlet {
 				  session.setAttribute("front_informVOs", front_informVOs);
 				  
 			       try {                                                        
-			         String location = (String) session.getAttribute("location");
+			         String location = (String) session.getAttribute("location_m");
 			         if (location != null) {
-			           session.removeAttribute("location");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
+			           session.removeAttribute("location_m");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
 			           res.sendRedirect(location);            
 			           return;
 			         }

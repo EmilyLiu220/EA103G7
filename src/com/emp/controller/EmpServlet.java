@@ -561,7 +561,13 @@ public class EmpServlet extends HttpServlet {
 		
 		if ("logout".equals(action)) {
 			
-			req.getSession().invalidate();
+			HttpSession session_e = req.getSession();
+			session_e.removeAttribute("account_e");
+			session_e.removeAttribute("empVO2");
+			session_e.removeAttribute("emp_authVO2");
+			session_e.removeAttribute("fun_authVO2");
+			
+//			req.getSession().invalidate();
 	        res.sendRedirect(req.getContextPath() + "/back-end/backindex.jsp");
 			
 		}
@@ -588,7 +594,7 @@ public class EmpServlet extends HttpServlet {
 			    } else {                                       //【帳號 , 密碼有效時, 才做以下工作】
 			      
 			      HttpSession session = req.getSession();
-			      session.setAttribute("account", account);   //*工作1: 才在session內做已經登入過的標識
+			      session.setAttribute("account_e", account);   //*工作1: 才在session內做已經登入過的標識
 			      
 			      EmpService empSvc = new EmpService();
 			      EmpVO empVO = empSvc.getOneEmp(account);
@@ -608,9 +614,9 @@ public class EmpServlet extends HttpServlet {
 				  session.setAttribute("fun_authVO2", list2);
 				  
 			       try {                                                        
-			         String location = (String) session.getAttribute("location");
+			         String location = (String) session.getAttribute("location_e");
 			         if (location != null) {
-			           session.removeAttribute("location");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
+			           session.removeAttribute("location_e");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
 			           res.sendRedirect(location);            
 			           return;
 			         }

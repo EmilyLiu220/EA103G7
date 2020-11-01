@@ -10,7 +10,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <script src="https://kit.fontawesome.com/d6c1e36c40.js" crossorigin="anonymous"></script>
-<title>員工狀態修改</title>
+<title>會員狀態修改</title>
 
 <style>
 	
@@ -38,7 +38,9 @@
 	<div id="loc" style="margin-left:135px">
 	<a class="btn btn-primary" href="select_page_mem.jsp" role="button"><i class="fas fa-home" style="font-size:25px"></i></a>
 	<p><p>
-	<h3 style="font-size: 120%;">員工狀態修改</h3>
+	<label class="btn btn-success" style="cursor:pointer"><i class="fas fa-reply" style="font-size:25px" onclick="history.back()"></i></label>
+	<p><p>
+	<h3 style="font-size: 120%;">會員狀態修改</h3>
 	
 	<h5 style="font-size: 120%;">狀態修改:</h5>
 	
@@ -55,11 +57,11 @@
 	<FORM METHOD="post" ACTION="mem.do" name="form1">
 	<table style="font-size: 120%;">
 		<tr>
-			<td><i class="fas fa-user"></i>&ensp;員工編號:</td>
+			<td><i class="fas fa-user"></i>&ensp;會員編號:</td>
 			<td><%=memVO.getMem_no()%></td>
 		</tr>
 		<tr>
-			<td><i class="fas fa-user"></i>&ensp;員工姓名:</td>
+			<td><i class="fas fa-user"></i>&ensp;會員姓名:</td>
 			<td><%=memVO.getMem_name()%></td>
 		</tr>
 		

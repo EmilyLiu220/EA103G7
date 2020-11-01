@@ -44,6 +44,8 @@
 	<div id="loc" style="margin-left:100px">
 	<a class="btn btn-primary" href="select_page.jsp" role="button"><i class="fas fa-home" style="font-size:25px"></i></a>
 	<p><p>
+	<label class="btn btn-success" style="cursor:pointer"><i class="fas fa-reply" style="font-size:25px" onclick="history.back()"></i></label>
+	<p><p>
 	<h3>所有員工資料</h3>
 	
 	<jsp:useBean id="empSvc2" scope="page" class="com.emp.model.EmpService" />

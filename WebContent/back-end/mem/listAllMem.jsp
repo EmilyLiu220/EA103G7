@@ -44,6 +44,8 @@
 	<div id="loc" style="margin-left:80px">
 	<a class="btn btn-primary" href="select_page_mem.jsp" role="button"><i class="fas fa-home" style="font-size:25px"></i></a>
 	<p><p>
+	<label class="btn btn-success" style="cursor:pointer"><i class="fas fa-reply" style="font-size:25px" onclick="history.back()"></i></label>
+	<p><p>
 	<h3>所有會員資料</h3>
 	
 	<jsp:useBean id="memSvc2" scope="page" class="com.mem.model.MemService" />

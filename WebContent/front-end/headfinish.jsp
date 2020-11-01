@@ -227,8 +227,8 @@
 					<li class="nav-item"><a href="" class="nav-link">評價總覽</a></li>
 					<li class="nav-item"><a href="" class="nav-link">餐廳資訊</a></li>
 					<li class="nav-item"><a href="" class="nav-link">候位狀況</a></li>
-					<li class="nav-item"><a href="" class="nav-link">我要訂餐</a></li>
-					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp" class="nav-link">我要訂位</a></li>
+					<li class="nav-item"><a href="" class="nav-link" id="meal">我要訂餐</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp" class="nav-link" id="res">我要訂位</a></li>
 				</ul>
 			</div>
 		</div>
@@ -294,6 +294,7 @@
 	  </div>
 	</div>
 	<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 結束 --%>
+	
 </body>
 
 	
@@ -786,6 +787,7 @@
 	var title = document.getElementById("title");
 	
 	var path = location.pathname;
+	console.log(path);
 	if (path === '/EA103G7/front-end/mem/login_mem.jsp') {
 		title.innerHTML = '會員中心';
 	}
@@ -807,7 +809,39 @@
 	if (path === '/EA103G7/front-end/mem/mem.do') {
 		title.innerHTML = '會員中心';
 	}
-		
+	
+	<!--判斷會員是否有權限 -->
+	var mem_od_r = `${memVO2.mem_od_r}`;
+	var mem_od_m = `${memVO2.mem_od_m}`;
+	var mem_review = `${memVO2.mem_review}`;
+	var mem_repo = `${memVO2.mem_repo}`;
+	
+	var res = document.getElementById("res");
+	var meal = document.getElementById("meal");
+// 	var review = document.getElementById("review");
+// 	var repo = document.getElementById("repo");
+	
+	if (mem_od_r == 0) {
+		res.addEventListener("click", function() {
+			alert("Sorry！您沒有訂位權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
+	if (mem_od_m == 0) {
+		meal.addEventListener("click", function() {
+			alert("Sorry！您沒有訂餐權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
+// 	if (mem_review == 0) {
+// 		review.addEventListener("click", function() {
+// 			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
+// 		});
+// 	}
+// 	if (mem_repo == 0) {
+// 		repo.addEventListener("click", function() {
+// 			alert("Sorry！您沒有檢舉權限！" + "\n" + "有任何疑問請洽客服。");
+// 		});
+// 	}
+	
 </script>
 	
 <script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>

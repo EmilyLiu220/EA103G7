@@ -24,9 +24,9 @@ public class BackLoginFilter implements Filter {
 		// 【取得 session】
 		HttpSession session = req.getSession();
 		// 【從 session 判斷此user是否登入過】
-		Object account = session.getAttribute("account");
+		Object account = session.getAttribute("account_e");
 		if (account == null) {
-			session.setAttribute("location", req.getRequestURI());
+			session.setAttribute("location_e", req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/back-end/emp/login.jsp");
 			return;
 		} else {
