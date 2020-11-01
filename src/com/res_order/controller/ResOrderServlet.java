@@ -90,7 +90,7 @@ public class ResOrderServlet extends HttpServlet {
 
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
-			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
+			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位訂單");
 
 			/**********
 			 * 判斷訂位日期是否為今日，若 true 則直接發送當日訂位確認通知 ( 這樣寫我那邊可以少判斷些東西...霸脫組長大大了 QQ )
@@ -158,14 +158,15 @@ public class ResOrderServlet extends HttpServlet {
 
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
-			front_InformSvc.addROFI(mem_no, res_no, "訂位訂單修改成功，點選查看訂位明細");
+			front_InformSvc.addROFI(mem_no, res_no, "訂位訂單修改成功，點選查看訂位訂單");
 
 			/********** 判斷訂單修改後，若修改後的日期=今日，則直接再發送一次當日訂位確認通知 **********/
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date today = new java.util.Date();
 			String todayStr = sdf.format(today);
 			if (todayStr.equals(res_date)) {
-				front_InformSvc.addRCFI(res_no); // 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
+				front_InformSvc.addRCFI(res_no); 
+				// 在執行此動作時，已經順便修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
 
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
@@ -218,7 +219,7 @@ public class ResOrderServlet extends HttpServlet {
 
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
-			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位明細");
+			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位訂單");
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
