@@ -940,12 +940,42 @@
 			informTr.appendChild(informTdCont);
 			informTr.appendChild(informTdDate);
 			
-			// 這條 tr 還沒放進 table 裡 ㄏㄏ
+			// 這條 tr 要放進 table 裡 ㄏㄏ
+			informArea.appendChild(informTr);
 			// informArea.scrollTop = informArea.scrollHeight;
 		
-		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知 → 還沒寫
+		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知
+			var informTr = document.createElement('tr');
+			informTr.setAttribute("name","unread");
 			
+			// tr 裡面包 anchor → 還沒寫完，目前有訂位的而已
+			var informTdC_A = document.createElement('a');
+			if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單"){
+				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
+			}else if( jsonObj.info_cont == ""){ // 這裡要記得放訂餐相關通知訊息
+				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+			}
 			
+			// 第一個 td 要放到 tr 中			
+			var informTdCont = document.createElement('td');
+			informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+			// 把 a 內容填入 info_cont 並塞進第一個 td 中
+			informTdC_A.innerHTML = jsonObj.info_cont;
+			// 先在第一個 td 中放 a
+			informTdCont.appendChild(informTdC_A);
+			
+			// 第二個 td 也要放到 tr 中
+			var informTdDate = document.createElement('td');
+			informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+			var infoDate = jsonObj.info_date;
+			informTdDate.innerHTML = infoDate;
+
+			// 把兩個 td 都放進 tr 中
+			informTr.appendChild(informTdCont);
+			informTr.appendChild(informTdDate);
+			
+			// 這條 tr 要放進 table 裡 ㄏㄏ
+			informArea.appendChild(informTr);
 			informArea.scrollTop = informArea.scrollHeight;
 		}
 	};
