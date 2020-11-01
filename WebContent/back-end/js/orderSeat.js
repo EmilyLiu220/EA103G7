@@ -15,36 +15,36 @@ $(document).ready(function() {
 	function ajaxSuccessFalse(xhr) {
 		errorText = xhr.responseText.substr(xhr.responseText.indexOf("Message") + 12, xhr.responseText.indexOf("</p><p><b>Description") - (xhr.responseText.indexOf("Message") + 12));
 	}
-	// var lock_ = true;//防止重複提交定義鎖
-	// $("#").change(function() {
-	// if (!lock_) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
-	// return false;
-	// }
-	// lock_ = false; //3.進來後，立馬把鎖鎖住
-	// $.ajax({
-	// // url is servlet url, ?archive_seat is tell servlet execute which one
-	// judgment
-	// url: ajaxURL + "/orderSeat/ResOrderServlet.do?action=XXXXXXXXXXX",
-	// type: "post",
-	// // synchronize is false
-	// async: false,
-	// data: {
-	// "res_date": res_date,
-	// "time_peri_no": time_peri_no,
-	// },
-	// success: function(messages) {
-	// $.each($myCheckbox, function(_index, item) {
-	// });
-	// lock_ = true;//如果業務執行成功，修改鎖狀態
-	// },
-	// error: function(xhr, ajaxOptions, thrownError) {
-	// lock_ = true;//如果業務執行失敗，修改鎖狀態
-	// ajaxSuccessFalse(xhr);
-	// swal("儲存失敗", errorText, "warning");
-	// },
-	// });
-	// return false;
-	// });
+//	 var lock_ = true;//防止重複提交定義鎖
+//	 $("#").change(function() {
+//	 if (!lock_) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
+//	 return false;
+//	 }
+//	 lock_ = false; //3.進來後，立馬把鎖鎖住
+//	 $.ajax({
+//	 // url is servlet url, ?archive_seat is tell servlet execute which one
+//	 judgment
+//	 url: ajaxURL + "/orderSeat/ResOrderServlet.do?action=XXXXXXXXXXX",
+//	 type: "post",
+//	 // synchronize is false
+//	 async: false,
+//	 data: {
+//	 "res_date": res_date,
+//	 "time_peri_no": time_peri_no,
+//	 },
+//	 success: function(messages) {
+//	 $.each($myCheckbox, function(_index, item) {
+//	 });
+//	 lock_ = true;//如果業務執行成功，修改鎖狀態
+//	 },
+//	 error: function(xhr, ajaxOptions, thrownError) {
+//	 lock_ = true;//如果業務執行失敗，修改鎖狀態
+//	 ajaxSuccessFalse(xhr);
+//	 swal("儲存失敗", errorText, "warning");
+//	 },
+//	 });
+//	 return false;
+//	 });
 	/** ***************************** 人數 ****************************** */
 	var lock_people = true;// 防止重複提交定義鎖
 	$("#people").change(function(e) {
@@ -81,7 +81,7 @@ $(document).ready(function() {
 				"action":"get_All_Seat_People",
 			},
 			success: function(messages) {
-//				console.log(messages);
+				// console.log(messages);
 				jsonArray_people = JSON.parse(messages);
 				setJSONArray_people(jsonArray_people);
 				$("#container").css("display", "block");
@@ -117,7 +117,7 @@ $(document).ready(function() {
 						},
 						success: function(messages) {
 							var jsonArray = JSON.parse(messages);
-							console.log(jsonArray);
+							// console.log(jsonArray);
 							var $myCheckbox = $(".myCheckbox");
 
 							$.each($myCheckbox, function(_index, item) {
@@ -198,6 +198,7 @@ $(document).ready(function() {
 			});
 			$(this).prop("disabled", false);
 			$(this).prop("checked", false);
+			
 		}
 		var thisCheckboxValue = $(this).val();
 		var thisCheckbox = $(this);
@@ -323,9 +324,9 @@ $(document).ready(function() {
 						value: item.seat_name,
 					}).attr("disabled", true).appendTo($label2);
 				});
-//				$(".labelOne").css("display", "none");
-//				$(".labelTwo").css("display", "none");
-//				$("#container").css("display", "none");
+				$(".labelOne").css("display", "none");
+				$(".labelTwo").css("display", "none");
+				$("#container").css("display", "none");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_floor_list = true;// 如果業務執行失敗，修改鎖狀態
@@ -346,7 +347,7 @@ $(document).ready(function() {
 		validateOnBlur: false, 			// 失去焦點時才驗證輸入直
 		minDate: 0,						// 開始日期
 		maxDate: '+1970/01/14',			// 開始日期到結束日期
-	});
+	})
 
 	var lock_order_date = true;// 防止重複提交定義鎖
 	$("#res_date").change(function() {
