@@ -232,12 +232,13 @@
 				messagesArea.innerHTML = '';
 				let receiver = '';
 				var messages = JSON.parse(jsonObj.msgJson);
-				for (var i = 0; i < messages.length; i++) {
+				for (var i = 0; i < messages.length; i++) { // 將畫面渲染
 					var from_msg = document.createElement('div');
 					var historyData = JSON.parse(messages[i]);
 					var content_msg = document.createElement('div');
 					
-					if( historyData.sender !== "emp" ) {
+					// 判斷發送者為何，渲染畫面
+					if( historyData.sender !== "emp" ) { 
 						from_msg.setAttribute("class", "incoming_msg");
 						var incoming_msg_img = document.createElement('div');
 						incoming_msg_img.classList.add("incoming_msg_img");
@@ -259,10 +260,10 @@
 						var timestamp = historyData.timestamp;
 						var readSts = historyData.readSts;
 						p.innerHTML = showMsg;
-						var dayTime = timestamp.substring(0,10);
+						var dayTime = timestamp.split(" ")[0];
 						p.setAttribute("title",dayTime);
-						var shortTime = timestamp.substring(11,18);
-						shortTime = shortTime.replace(/:$/, '');
+						var shortTime =timestamp.split(" ")[1];
+						shortTime = shortTime.substring(0, shortTime.length-3);
 						span.innerHTML = shortTime;
 						
 						content_msg.appendChild(p);
@@ -290,10 +291,11 @@
 						}
 						spanReadSts.innerHTML = readStsText;
 						p.innerHTML = showMsg;
-						var dayTime = timestamp.substring(0,10);
+						var dayTime = timestamp.split(" ")[0];
 						p.setAttribute("title",dayTime + "--" + historyData.emp_no);
-						var shortTime = timestamp.substring(11,18);
-						shortTime = shortTime.replace(/:$/, '');
+						var shortTime =timestamp.split(" ")[1];
+						shortTime = shortTime.substring(0, shortTime.length-3);
+						
 						span.innerHTML = shortTime + " | ";
 						span.appendChild(spanReadSts);
 						
@@ -306,13 +308,16 @@
 					messagesArea.appendChild(from_msg); // 將新增的歷史訊息區塊加進 chat 區塊
 				}
 				
-				// 更新左側清單
+				// 讀取訊息，刷新左側清單
 				let chat_list_receiver = document.querySelector("#"+receiver);
 				chat_list_receiver.removeAttribute("style");
 				let unreadCount = chat_list_receiver.firstChild.lastChild;
 				if( unreadCount.childElementCount == 2){
 					unreadCount.removeChild(unreadCount.lastChild);
+					chat_list_receiver.setAttribute("title","0");
 				}
+				Sort();
+				chat_listListener();
 				
 				messagesArea.scrollTop = messagesArea.scrollHeight;
 			} else if ("chat" === jsonObj.type) {
@@ -323,8 +328,8 @@
 				var sender = document.querySelector('#'+jsonObj.sender);
 				var receiver = document.querySelector('#'+jsonObj.receiver);
 				var dom = sender==null ? receiver : sender;
-				if( dom != null && dom.classList.contains("active_chat")){
-					if( jsonObj.sender !== "emp") {
+				if( dom != null && dom.classList.contains("active_chat")){ // 員工正在該會員的聊天室
+					if( jsonObj.sender !== "emp") { // 若訊息為會員發出，更新聊天室內容
 						from_msg.setAttribute("class", "incoming_msg");
 						
 						var incoming_msg_img = document.createElement('div');
@@ -348,11 +353,12 @@
 						var readSts = jsonObj.readSts;
 						
 						p.innerHTML = showMsg;
-						var dayTime = timestamp.substring(0,10);
+						var dayTime = timestamp.split(" ")[0];
 						p.setAttribute("title",dayTime);
-						var shortTime = timestamp.substring(11,18);
-						shortTime = shortTime.replace(/:$/, '');
+						var shortTime =timestamp.split(" ")[1];
+						shortTime = shortTime.substring(0, shortTime.length-3);
 						span.innerHTML = shortTime;
+						
 						
 						content_msg.appendChild(p);
 						content_msg.appendChild(span);
@@ -367,7 +373,7 @@
 							"receiver" : jsonObj.sender
 						};
 						webSocket.send(JSON.stringify(jsonObj));
-					} else {
+					} else { // 訊息為員工發出，更新畫面
 						from_msg.setAttribute("class", "outgoing_msg");
 						var sent_msg = document.createElement('div');
 						content_msg.classList.add("sent_msg");
@@ -385,10 +391,11 @@
 						}
 						spanReadSts.innerHTML = readStsText;
 						p.innerHTML = showMsg;
-						var dayTime = timestamp.substring(0,10);
+						var dayTime = timestamp.split(" ")[0];
 						p.setAttribute("title",dayTime + "--" + jsonObj.emp_no);
-						var shortTime = timestamp.substring(11,18);
-						shortTime = shortTime.replace(/:$/, '');
+						var shortTime =timestamp.split(" ")[1];
+						shortTime = shortTime.substring(0, shortTime.length-3);
+						
 						span.innerHTML = shortTime + " | ";
 						span.appendChild(spanReadSts);
 						
@@ -396,10 +403,10 @@
 						content_msg.appendChild(span);
 						from_msg.appendChild(content_msg);
 					}
-				} else {
+				} else { // 不在與該會員的聊天室中，收到來自會員的訊息
 					// 更新左側清單
-					if(sender == null){
-						var inbox_chat = document.getElementsByClassName("inbox_chat")[0];
+					var inbox_chat = document.getElementsByClassName("inbox_chat")[0];
+					if(sender == null){ // 若該會員從未留言，新增左側清單
 						var chat_list = document.createElement('div');
 						chat_list.classList.add("chat_list");
 						chat_list.setAttribute("id", jsonObj.sender);
@@ -419,11 +426,19 @@
 						chat_ib.appendChild(spanRead);
 						chat_people.appendChild(chat_img);
 						chat_people.appendChild(chat_ib);
+						chat_list.setAttribute("title", new Date().toLocaleString());
 						chat_list.style.background = "rgba(100, 100, 100, 0.2)";
 						chat_list.appendChild(chat_people);
-						inbox_chat.appendChild(chat_list);
+						
+						chat_list.appendChild(chat_people);
+						if( inbox_chat.childElementCount == 0){
+							inbox_chat.appendChild(chat_list);
+						} else {
+							inbox_chat.insertBefore(chat_list, inbox_chat.firstChild);
+						}
+						
 						chat_listListener();
-					} else {
+					} else { // 會員曾留言，則更新左側列表
 						let chat_ib = dom.firstChild.lastChild;
 						if( chat_ib.childElementCount == 1){
 							let spanRead = document.createElement("span");
@@ -434,6 +449,8 @@
 						} else {
 							chat_ib.lastChild.innerText = parseInt(chat_ib.lastChild.innerText) + parseInt(1);
 						}
+						dom.setAttribute("title", new Date().toLocaleString());
+						inbox_chat.insertBefore(dom, inbox_chat.firstChild);
 					}
 				}
 				messagesArea.appendChild(from_msg); // 將新增的訊息區塊加進 chat 區塊
@@ -480,19 +497,20 @@
 				chat_people.appendChild(chat_img);
 				chat_people.appendChild(chat_ib);
 				
+				chat_list.setAttribute("title", "0");
 				if(msgJson.unread != 0){
 					var unread = document.createElement('span');
 					unread.innerHTML = msgJson.unread;
 					unread.classList.add("badge", "badge-primary", "badge-pill", "float-right");
-					//latestMsgTime
 					chat_ib.appendChild(unread);
+					chat_list.setAttribute("title", msgJson.latestMsgTime);
 					chat_list.style.background = "rgba(100, 100, 100, 0.2)";
 				}
-				
 				chat_list.appendChild(chat_people);
 				inbox_chat.appendChild(chat_list);
 			}
 			
+	        Sort();
 			chat_listListener();
 			
 			// 發送訊息
@@ -532,6 +550,53 @@
 				})
 			});
 		}
+		
+		// 排序左側清單
+		function Sort() {
+            var $domArr = $(".inbox_chat .chat_list").get();
+            $domArr.sort(function (a, b) {
+                var $aTime = $(a).attr('title');
+                var $bTime = $(b).attr('title');
+                if ($aTime && $bTime) {
+                	let aDate;
+                	let bDate;
+                	if($aTime != '0'){
+                		aDate = new Date( $aTime.split(" ")[0] );
+                		let aTime = $aTime.split(" ")[1];
+                		let aTimeDetail = aTime.substring(2).split(":");
+                		if( aTime.charAt(0) == "下" ) {
+                			aTimeDetail[0] = parseInt(aTimeDetail[0]) + parseInt(12);
+                		}
+                		aDate.setHours(aTimeDetail[0]);
+                		aDate.setMinutes(aTimeDetail[1]);
+                		aDate.setSeconds(aTimeDetail[2]);
+                	} else {
+                        aDate = new Date($aTime);
+                	}
+                	
+                	if($bTime != '0'){
+                		bDate = new Date( $bTime.split(" ")[0] );
+                		let bTime = $bTime.split(" ")[1];
+                		let bTimeDetail = bTime.substring(2).split(":");
+                		if( bTime.charAt(0) == "下" ) {
+                			bTimeDetail[0] = parseInt(bTimeDetail[0]) + parseInt(12);
+                		}
+                		bDate.setHours(bTimeDetail[0]);
+                		bDate.setMinutes(bTimeDetail[1]);
+                		bDate.setSeconds(bTimeDetail[2]);
+                	} else {
+                        bDate = new Date($bTime);
+                	}
+                	
+                    if (aDate > bDate)
+                        return -1   
+                    else
+                        return 1
+                }
+            });
+            $(".inbox_chat").html($domArr);
+        }
+		
 		
 		// 建立聊天清單監聽器
 		function chat_listListener(){
