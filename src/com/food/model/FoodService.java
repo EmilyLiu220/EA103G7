@@ -75,7 +75,7 @@ public class FoodService {
 			if(modVO.getMeal_no()!=null) {
 				if(mealMap.containsKey(modVO.getMeal_no())) { 
 					mealMap.put(modVO.getMeal_no(), mealMap.get(modVO.getMeal_no())+modVO.getQty());
-					}else{
+				}else{
 					mealMap.put(modVO.getMeal_no(),modVO.getQty());
 				}
 			}
@@ -83,12 +83,7 @@ public class FoodService {
 		Map<String,Integer> mealSetMap=new HashMap<String,Integer>();
 		for(MealOrderDetailVO modVO:list) {
 			if(modVO.getMeal_set_no()!=null) {
-				if(mealSetMap.containsKey(modVO.getMeal_set_no())) {
-					//邏輯同上
-					mealSetMap.put(modVO.getMeal_set_no(),mealSetMap.get(modVO.getMeal_set_no())+modVO.getQty());
-				}else {
-					mealSetMap.put(modVO.getMeal_set_no(),modVO.getQty());
-				}
+				mealSetMap.put(modVO.getMeal_set_no(),modVO.getQty());
 			}
 		}
 		MealSetConService MSCSvc=new MealSetConService();
@@ -111,7 +106,7 @@ public class FoodService {
 					foodMap.put(meal_partVO.getFd_no(), meal_partVO.getFd_gw()*mealnoMap.getValue());
 				}
 			}
-		}	
+		}
 		return foodMap;
 	}	
 	
@@ -125,7 +120,7 @@ public class FoodService {
 				break;
 			}
 		}
-		
+
 		if(enough) {
 			for(Map.Entry<String,Double> fdnoMap:foodMap.entrySet()) {
 				String fd_no=FDsvc.getOneFood(fdnoMap.getKey()).getFd_no();
