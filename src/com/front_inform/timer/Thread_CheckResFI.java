@@ -19,9 +19,9 @@ public class Thread_CheckResFI implements Runnable {
 	@Override
 	public void run() {
 		try {
-			// 起來後先讓它睡個一個小時...QQ
-            Thread.sleep(3600000);
-            // 一個小時過去了...
+			// 起來後先讓它睡個 5s...QQ
+            Thread.sleep(5000);
+            // 5s 過去了...
             // 發現居然這則通知依舊沒有被回覆！！！
             if(fiVO.getInfo_sts()==2) { // 需要回覆的通知未確認
             	Front_InformService fiSvc = new Front_InformService();
