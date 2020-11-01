@@ -309,54 +309,32 @@ public class FoodDAO implements FoodDAO_interface {
 	}
 	
 	public Map<String,Double> GetFdnoAndQtyByListMealOrderDetail(List<MealOrderDetailVO> list){
-		//用來取出所有的meal，再從所有的meal取出fd_no，以及這筆訂單相對應食材所需要的數量
-		Map<String,Integer> mealMap=new HashMap<String,Integer>(); //單點的部分
+		Map<String,Integer> mealMap=new HashMap<String,Integer>(); 
 		for(MealOrderDetailVO modVO:list) {
 			if(modVO.getMeal_no()!=null) {
-				//一筆訂單細節，要不就是餐點，要不就是套餐，用有沒有餐點編號當判斷
 				if(mealMap.containsKey(modVO.getMeal_no())) { 
-					//mealMap內有相同的meal_no
 					mealMap.put(modVO.getMeal_no(), mealMap.get(modVO.getMeal_no())+modVO.getQty());
-					//把相同的meal_no的值取出，加上meal_no的數量放回去，因為key值相同會直接覆蓋原有的value
-					System.out.print("套餐"+modVO.getMeal_no()+" "+modVO.getMeal_name());
-					System.out.println(" 數量"+mealMap.get(modVO.getMeal_no())+modVO.getQty());
 				}else{
-					//mealMap內有沒有相同的meal_no
 					mealMap.put(modVO.getMeal_no(),modVO.getQty());
-					System.out.print("套餐"+modVO.getMeal_no()+" "+modVO.getMeal_name());
-					System.out.println(" 數量"+modVO.getQty());
-					//把meal_no當key,qty當value放入map內
 				}
-			}//到這裡就處理好所有的單點餐點，不用else處理套餐，另寫一個if來處理，同時處理有點複雜晚點再處理
+			}
 		}		
 		Map<String,Integer> mealSetMap=new HashMap<String,Integer>();
 		for(MealOrderDetailVO modVO:list) {
 			if(modVO.getMeal_set_no()!=null) {
 				mealSetMap.put(modVO.getMeal_set_no(),modVO.getQty());
-				System.out.print("套餐的合併"+modVO.getMeal_set_no()+" "+modVO.getMeal_name());
-				System.out.println(" 訂單數量"+modVO.getQty());
 			}
-		}//map內有所有的套餐編號和數量，接著把所有的套餐取出他組成的餐點
+		}
 		MealSetConDAO MSCDao=new MealSetConDAO();
 		for(Map.Entry<String,Integer> mealSetnoMap:mealSetMap.entrySet()) {
-			//map的foreach
 			for(MealSetConVO mscVO:MSCDao.searchBySetNo(mealSetnoMap.getKey())) {
-			//取出套餐中每個餐點
 				if(mealMap.containsKey(mscVO.getMeal_no())) { 
-					//邏輯同上
 					mealMap.put(mscVO.getMeal_no(), mealMap.get(mscVO.getMeal_no())+mscVO.getMeal_qty()*mealSetnoMap.getValue());
-					//有相同的餐點則取出餐點原有的數量+(該餐點在套餐中的數量*套餐的數量)
 				}else {
 					mealMap.put(mscVO.getMeal_no(), mscVO.getMeal_qty()*mealSetnoMap.getValue());
-					//沒有相同的餐點則該餐點在套餐中的數量*套餐的數量
 				}
 			}
-		}//取出所有套餐的餐點，將meal_no當key和數量當value放入mealMap
-		//----
-		for(Map.Entry<String,Integer> map:mealMap.entrySet()) {
-			System.out.println(map.getKey()+" "+map.getValue());
 		}
-		//----
 		Meal_partDAO MPDao=new Meal_partDAO();
 		Map<String,Double> foodMap=new HashMap<String,Double>();
 		for(Map.Entry<String,Integer> mealnoMap:mealMap.entrySet()) {
@@ -367,13 +345,7 @@ public class FoodDAO implements FoodDAO_interface {
 					foodMap.put(meal_partVO.getFd_no(), meal_partVO.getFd_gw()*mealnoMap.getValue());
 				}
 			}
-		}//取出所有的食材，將fd_no當key和數量當value放入foodMap		
-		//---
-		System.out.println("-----------------");
-		for(Map.Entry<String,Double> map:foodMap.entrySet()) {
-			System.out.println(map.getKey()+" "+map.getValue());
 		}
-		//---
 		return foodMap;
 	}	
 	
@@ -386,7 +358,6 @@ public class FoodDAO implements FoodDAO_interface {
 			pstmt = con.prepareStatement(UPDATE_STK);
 			for(Map.Entry<String,Double> map:foodnoMap.entrySet()) {
 				pstmt.setInt(1, foodDao.findByPrimaryKey(map.getKey()).getFd_stk()-map.getValue().intValue());
-				//原本應該要把庫存與庫存底線改成Double比較合理，但需要改的地方實在太多，直接轉型
 				pstmt.setString(2, map.getKey());
 				pstmt.executeUpdate();
 			}
@@ -409,22 +380,15 @@ public class FoodDAO implements FoodDAO_interface {
 	}
 	
 	public boolean check_food(List<MealOrderDetailVO> list) { 
-		//檢查並回傳夠不夠，足夠就update並回傳ture，不足就回傳false
-		//參數是map<食材的編號,所需的重量>
 		FoodDAO FdDao=new FoodDAO();
 		Map<String,Double> foodMap=FdDao.GetFdnoAndQtyByListMealOrderDetail(list);
 		boolean enough=true;
-		//當值為false,break
-		System.out.println("-----------------");
 		for(Map.Entry<String,Double> fdnoMap:foodMap.entrySet()) {
-			System.out.print("庫存量:"+FdDao.findByPrimaryKey(fdnoMap.getKey()).getFd_stk());
-			System.out.println(" 數量:"+fdnoMap.getValue());
 			if(FdDao.findByPrimaryKey(fdnoMap.getKey()).getFd_stk()-fdnoMap.getValue()<0) {
 				enough=false;
 				break;
 			}
-		}//用食材編號查詢該食材的重量，相減若有不夠，break,return false
-		
+		}
 		if(enough) {			
 			return true;
 		}
