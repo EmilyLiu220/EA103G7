@@ -122,15 +122,17 @@ public class Front_informServlet extends HttpServlet {
 				String res_no = fiSvc.getByInfoNo(info_no).getRes_no();
 				ResOrderService resOrderSvc = new ResOrderService();
 				ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
-				// 透過 ResDetailService 取得 String[] seats_no 才能塞入 updateResOrder() 方法
-				ResDetailService resDetailSvc = new ResDetailService();
-				List<ResDetailVO> resDetailVOs = resDetailSvc.getAllResNO(res_no);
-				List<String> seats_noList = new ArrayList<String>();
-				for(ResDetailVO resDetailVO : resDetailVOs) {
-					seats_noList.add(resDetailVO.getSeat_no());
-				}
-				String[] seats_no= new String[seats_noList.size()];
-				seats_noList.toArray(seats_no);
+				
+//				// EJ 說在 ResOrderDAO 裡有判斷 seats_no 是否為 null 值，若是，則會做其他動作
+//				// 透過 ResDetailService 取得 String[] seats_no 才能塞入 updateResOrder() 方法
+//				ResDetailService resDetailSvc = new ResDetailService();
+//				List<ResDetailVO> resDetailVOs = resDetailSvc.getAllResNO(res_no);
+//				List<String> seats_noList = new ArrayList<String>();
+//				for(ResDetailVO resDetailVO : resDetailVOs) {
+//					seats_noList.add(resDetailVO.getSeat_no());
+//				}
+//				String[] seats_no= new String[seats_noList.size()];
+//				seats_noList.toArray(seats_no);
 				
 				if(checkYes!=null) { // 勾選確定來吃
 					boolean checked = fiSvc.updateSts(1, info_no);
@@ -138,7 +140,7 @@ public class Front_informServlet extends HttpServlet {
 						// 發送當日訂位確認通知後必須修改 Info_Sts 為 2 (已發送已確認)
 						resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 								resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
-								new Integer(2), resOrderVO.getSeat_sts(), seats_no);
+								new Integer(2), resOrderVO.getSeat_sts(), null);
 					}
 				}
 				if(checkNo!=null) { // 勾選不來吃
@@ -148,7 +150,7 @@ public class Front_informServlet extends HttpServlet {
 						// 發送當日訂位確認通知後必須修改 Info_Sts 為 3 (會員已取消)
 						resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 								resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
-								new Integer(3), resOrderVO.getSeat_sts(), seats_no);
+								new Integer(3), resOrderVO.getSeat_sts(), null);
 					}
 				}
 				
