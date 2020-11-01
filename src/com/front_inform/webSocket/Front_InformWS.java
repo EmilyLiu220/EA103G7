@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -13,8 +14,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import com.front_inform.model.*;
+
+import com.front_inform.model.Front_InformVO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 @ServerEndpoint("/Front_InformWS/{userName}") 
@@ -33,20 +36,15 @@ public class Front_InformWS {
 	}
 
 	public void onMessage(List<Front_InformVO> fiVOs) { // DB 傳來的物件
+		Gson gsonReceiver = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		for(Front_InformVO fiVO : fiVOs) {
 			String mem_no = fiVO.getMem_no();
-			java.sql.Date originalIs_date = fiVO.getInfo_date();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String is_dateStr = sdf.format(originalIs_date);
-			java.sql.Date is_date = java.sql.Date.valueOf(is_dateStr);
-			System.out.println(is_date);
-			fiVO.setInfo_date(is_date);
 			if(sessionsMap.containsKey(mem_no)) {
 				Session userSession = sessionsMap.get(mem_no); // 取得 userSession
 				if(userSession != null && userSession.isOpen()) {
 					// 因為上面是直接傳來 VO → 轉成 Json 後才會再輸出到前端
-					userSession.getAsyncRemote().sendText(gson.toJson(fiVO));
-					System.out.println("new Inform : " + gson.toJson(fiVO));
+					userSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVO));
+					System.out.println("new Inform : " + gsonReceiver.toJson(fiVO));
 				}
 			}
 		}
@@ -66,8 +64,5 @@ public class Front_InformWS {
 				break;
 			}
 		}
-		String text = String.format("session ID = %s, disconnected; close code = %d%nusers: %s", 
-				userSession.getId(), reason.getCloseCode().getCode(), userNames);
-		System.out.println(text);
 	}
 }
