@@ -649,30 +649,30 @@
 		console.log("Connect Success!");
 	};
 	
-// 	function callToast(){
-// 		// 當有新訊息時，在客服小姐旁邊跳出 toast
-// 		toastr.info("您有新訊息！");
-// 		toastr.options = {
-// 			"positionClass": "toast-bottom-right",
-// 			"newestOnTop": true,
-// 			"closeButton": true,
-// 			"progressBar": true,
-// 			"onclick": null,
-// 			"showDuration": "500",
-// 			"hideDuration": "1000",
-// 			"timeOut": "5000",
-// 			"extendedTimeOut": "1000",
-// 			"showEasing": "swing",
-// 			"hideEasing": "linear",
-// 			"showMethod": "fadeIn",
-// 			"hideMethod": "fadeOut"
-// 		}
-// 	}
+	function callToast(){
+		// 當有新訊息時，在客服小姐旁邊跳出 toast
+		toastr.info("您有新訊息！");
+		toastr.options = {
+			"positionClass": "toast-bottom-right",
+			"newestOnTop": true,
+			"closeButton": true,
+			"progressBar": true,
+			"onclick": null,
+			"showDuration": "500",
+			"hideDuration": "1000",
+			"timeOut": "5000",
+			"extendedTimeOut": "1000",
+			"showEasing": "swing",
+			"hideEasing": "linear",
+			"showMethod": "fadeIn",
+			"hideMethod": "fadeOut"
+		}
+	}
 	
 	webSocket.onmessage = function(event) {
 		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
-		
 		if ("history" === jsonObj.type) { // 這次來的是歷史訊息內容
+			console.log("收到 history 訊息");
 			messagesArea.innerHTML = '';
 			var chat_box = document.createElement('div');
 			chat_box.setAttribute("class", "chat_box touchscroll chat_box_colors_a");
@@ -686,7 +686,7 @@
 				
 				var chat_user_avatar = document.createElement('div');
 				chat_user_avatar.classList.add("chat_user_avatar");
-				
+						
 				var img = document.createElement('img');
 				img.classList.add("md-user-image");
 				if( historyData.sender === mem_no ){
@@ -710,14 +710,18 @@
 				p.innerHTML = showMsg;
 				var dayTime = timestamp.substring(0,10);
 				p.setAttribute("title",dayTime);
-				var shortTime = timestamp.substring(11,18);
+				var shortTime = timestamp.substring(10,17);
 				shortTime = shortTime.replace(/:$/, '');
 				span.innerHTML = shortTime;
 				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
 				if( historyData.sender === mem_no ){
 					li.className += 'mem';
 					chat_message_wrapper.classList.add("chat_message_right");
-					var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
+					var readStsText = " 已讀";
+					if(readSts==0){
+						readStsText = " 未讀";
+						spanReadSts.classList.add("chat_unread");
+					}
 					spanReadSts.innerHTML = readStsText;
 					span.appendChild(spanReadSts);
 				}else{
@@ -732,55 +736,81 @@
 			}
 			messagesArea.scrollTop = messagesArea.scrollHeight;
 		} else if ("chat" === jsonObj.type) {
-			var chat_message_wrapper = document.createElement('div');
-			chat_message_wrapper.classList.add("chat_message_wrapper");
+			console.log("收到 "+jsonObj.sender+" chat 訊息");
 			
-			var chat_user_avatar = document.createElement('div');
-			chat_user_avatar.classList.add("chat_user_avatar");
-			
-			var img = document.createElement('img');
-			img.classList.add("md-user-image");
-			if( jsonObj.sender === mem_no ){
-				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
-			}else{
-				img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
-			}
-			chat_user_avatar.appendChild(img);
-			
-			var ul = document.createElement('ul');
-			ul.classList.add("chat_message");
-			var li = document.createElement('li');
-			var p = document.createElement('p');
-			var span = document.createElement('span');
-			span.classList.add("chat_message_time");
-			var spanReadSts = document.createElement('span');
-			
-			var showMsg = jsonObj.message;
-			var timestamp = jsonObj.timestamp;
-			var readSts = jsonObj.readSts;
-			p.innerHTML = showMsg;
-			var dayTime = timestamp.substring(0,10);
-			p.setAttribute("title",dayTime);
-			var shortTime = timestamp.substring(11,18);
-			shortTime = shortTime.replace(/:$/, '');
-			span.innerHTML = shortTime;
-			// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
-			if( jsonObj.sender === mem_no ){
-				li.className += 'mem';
-				chat_message_wrapper.classList.add("chat_message_right");
-				var readStsText = readSts == 0 ? " 未讀" : " 已讀"; 
-				spanReadSts.innerHTML = readStsText;
-				span.appendChild(spanReadSts);
-			}else{
-				li.className += 'emp';
-			}
-			p.appendChild(span);
-			li.appendChild(p);
-			ul.appendChild(li);
-			chat_message_wrapper.appendChild(chat_user_avatar);
-			chat_message_wrapper.appendChild(ul);
-			document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
-			messagesArea.scrollTop = messagesArea.scrollHeight;
+			// 若聊天室為開啟狀態
+			if(document.querySelector('#sidebar_secondary').classList.contains('popup-box-on')){
+				var chat_message_wrapper = document.createElement('div');
+				chat_message_wrapper.classList.add("chat_message_wrapper");
+				
+				var chat_user_avatar = document.createElement('div');
+				chat_user_avatar.classList.add("chat_user_avatar");
+				
+				var img = document.createElement('img');
+				img.classList.add("md-user-image");
+				if( jsonObj.sender === mem_no ){
+					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/smallWu.jpg");
+				}else{
+					img.setAttribute("src","<%=request.getContextPath()%>/front-end/images/bigWu.png");
+				}
+				chat_user_avatar.appendChild(img);
+				
+				var ul = document.createElement('ul');
+				ul.classList.add("chat_message");
+				var li = document.createElement('li');
+				var p = document.createElement('p');
+				var span = document.createElement('span');
+				span.classList.add("chat_message_time");
+				var spanReadSts = document.createElement('span');
+						
+				var showMsg = jsonObj.message;
+				var timestamp = jsonObj.timestamp;
+				var readSts = jsonObj.readSts;
+				p.innerHTML = showMsg;
+				var dayTime = timestamp.substring(0,10);
+				p.setAttribute("title",dayTime);
+				var shortTime = timestamp.substring(10,17);
+				shortTime = shortTime.replace(/:$/, '');
+				span.innerHTML = shortTime;
+				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
+				if( jsonObj.sender === mem_no ){
+					li.className += 'mem';
+					chat_message_wrapper.classList.add("chat_message_right");
+					var readStsText = " 已讀";
+					if(readSts==0){
+						readStsText = " 未讀";
+						spanReadSts.classList.add("chat_unread");
+					}
+					spanReadSts.innerHTML = readStsText;
+					span.appendChild(spanReadSts);
+				}else{
+					li.className += 'emp';
+				}
+				p.appendChild(span);
+				li.appendChild(p);
+				ul.appendChild(li);
+				chat_message_wrapper.appendChild(chat_user_avatar);
+				chat_message_wrapper.appendChild(ul);
+				document.getElementsByClassName("chat_box")[0].appendChild(chat_message_wrapper);
+				messagesArea.scrollTop = messagesArea.scrollHeight;
+				// 收到員工訊息，發送給員工已讀訊息
+				if(jsonObj.sender == "emp"){
+					var jsonObj = {
+						"type" : "read",
+						"sender" : mem_no,
+						"receiver" : "emp"
+					};
+					webSocket.send(JSON.stringify(jsonObj));
+				}
+			} else { // 聊天室沒開啟，跳出新訊息通知
+				callToast();
+			} 
+		} else if ("read" === jsonObj.type){
+			console.log("收到 "+jsonObj.sender+" read 訊息");
+			document.querySelectorAll('.chat_unread').forEach( (e)=>{
+				e.innerText = " 已讀";
+				e.classList.remove("chat_unread");
+			});
 		}
 	};
 				
@@ -838,7 +868,7 @@
 		};
 		webSocket.send(JSON.stringify(jsonObj));
 	});
-		
+			
 	// 關閉聊天室 
 	$("#removeClass").click(function() {
 		$('#sidebar_secondary').removeClass('popup-box-on');

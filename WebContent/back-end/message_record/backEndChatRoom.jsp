@@ -261,7 +261,7 @@
 						p.innerHTML = showMsg;
 						var dayTime = timestamp.substring(0,10);
 						p.setAttribute("title",dayTime);
-						var shortTime = timestamp.substring(11,18);
+						var shortTime = timestamp.substring(10,17);
 						shortTime = shortTime.replace(/:$/, '');
 						span.innerHTML = shortTime;
 						
@@ -292,7 +292,7 @@
 						p.innerHTML = showMsg;
 						var dayTime = timestamp.substring(0,10);
 						p.setAttribute("title",dayTime + "--" + historyData.emp_no);
-						var shortTime = timestamp.substring(11,18);
+						var shortTime = timestamp.substring(10,17);
 						shortTime = shortTime.replace(/:$/, '');
 						span.innerHTML = shortTime + " | ";
 						span.appendChild(spanReadSts);
@@ -350,7 +350,7 @@
 						p.innerHTML = showMsg;
 						var dayTime = timestamp.substring(0,10);
 						p.setAttribute("title",dayTime);
-						var shortTime = timestamp.substring(11,18);
+						var shortTime = timestamp.substring(10,17);
 						shortTime = shortTime.replace(/:$/, '');
 						span.innerHTML = shortTime;
 						
@@ -387,7 +387,7 @@
 						p.innerHTML = showMsg;
 						var dayTime = timestamp.substring(0,10);
 						p.setAttribute("title",dayTime + "--" + jsonObj.emp_no);
-						var shortTime = timestamp.substring(11,18);
+						var shortTime = timestamp.substring(10,17);
 						shortTime = shortTime.replace(/:$/, '');
 						span.innerHTML = shortTime + " | ";
 						span.appendChild(spanReadSts);
