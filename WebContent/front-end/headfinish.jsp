@@ -124,7 +124,7 @@
 						</td>
 				   </c:when>
 				   <c:otherwise>
-						<td style="width:300px;">${front_informVO.info_cont}</td>
+						<td style="width:300px;word-break: break-all;">${front_informVO.info_cont}</td>
 				   </c:otherwise>
 				</c:choose>
 				
@@ -303,22 +303,24 @@
 <script src="<%=request.getContextPath()%>/front-end/js/toastr.min.js"></script>
 <script type="text/javascript">
 	<%-- 取得通知訊息 --%>	
-	$(document).ready(function() {
+	getInform();
+	
+	function getInform(){
+		$.ajax({
+			 url:'<%=request.getContextPath() %>/front_inform/fi.do',
+			 method:"POST",
+			 dataType:"text",
+			 data:{
+				 action: 'getMyInform',
+			 },
+			 success:function(res){},
+			 error:function(err){},	
+		});
+	}
+	
+	window.onbeforeunload=function(e){
 		getInform();
-		
-		function getInform(){
-			$.ajax({
-				 url:'<%=request.getContextPath() %>/front_inform/fi.do',
-				 method:"POST",
-				 dataType:"text",
-				 data:{
-					 action: 'getMyInform',
-				 },
-				 success:function(res){ },
-				 error:function(err){},	
-			});
-		}
-	});
+	}
 		
 	<%-- 聊天室  webSocket --%>
 	var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
@@ -404,7 +406,6 @@
 				p.setAttribute("title",dayTime);
 				var shortTime =timestamp.split(" ")[1];
 				shortTime = shortTime.substring(0, shortTime.length-3);
-				
 				span.innerHTML = shortTime;
 				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
 				if( historyData.sender === mem_no ){
@@ -570,7 +571,7 @@
 			
 			
 	
-	<%-- 通知  webSocket
+	<%-- 通知  webSocket --%>
 	var MyPoint_Inform = "/Front_InformWS/${memVO2.mem_no}"; 
 	var host_Inform = window.location.host;
 	var path_Inform = window.location.pathname;
@@ -588,13 +589,20 @@
 	
 	webSocket_Inform.onmessage = function(event) {
 		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+		
+		// 未打開鈴鐺，顯示小紅點
+		if(document.getElementById("fi_cont").style.display == 'none'){
+		   document.getElementsByClassName("badge")[0].style.display = "inline-block";
+		}
+		
 		if ( jsonObj.info_sts === 2 ) { // 需要回應的通知
 			var informTr = document.createElement('tr');
 			informTr.setAttribute("name","unread");
+			informTr.style.cssText = "background-color: rgb(230, 249, 255);"; // 此 td 寬度 300px
 			
 			// 第一個 td 要放到 tr 中
 			var informTdCont = document.createElement('td');
-			informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+			informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
 			
 			// 下方 span 要放到上方的 td 中
 			var informTdContSpan = document.createElement('span');
@@ -634,31 +642,33 @@
 			informTr.appendChild(informTdCont);
 			informTr.appendChild(informTdDate);
 			
-			// 這條 tr 要放進 table 裡 ㄏㄏ
-			informArea.appendChild(informTr);
-			// informArea.scrollTop = informArea.scrollHeight;
+			// 這條 tr 要放進 table 裡
+			informArea.children[0].insertBefore(informTr, informArea.children[0].firstChild);
+			informArea.scrollTop = 0;
 		
 		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知
 			var informTr = document.createElement('tr');
 			informTr.setAttribute("name","unread");
+			informTr.style.cssText = "background-color: rgb(230, 249, 255);";
 			
-			// tr 裡面包 anchor → 還沒寫完，目前有訂位的而已
+			// tr 裡面包 <a>
 			var informTdC_A = document.createElement('a');
 			if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單"){
 				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
-			}else if( jsonObj.info_cont == ""){ // 這裡要記得放訂餐相關通知訊息
+			}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐"){ // 這裡要記得放訂餐相關通知訊息
 				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
 			}
 			
-			// 第一個 td 要放到 tr 中			
+			// 第一個 td 要放到 tr 中
 			var informTdCont = document.createElement('td');
-			informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+			informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
 			// 把 a 內容填入 info_cont 並塞進第一個 td 中
+			informTdC_A.style.cssText = "word-break: break-all;";
 			informTdC_A.innerHTML = jsonObj.info_cont;
 			// 先在第一個 td 中放 a
 			informTdCont.appendChild(informTdC_A);
 			
-			// 第二個 td 也要放到 tr 中
+			// 第二個 td 也要放到 tr 中 
 			var informTdDate = document.createElement('td');
 			informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
 			var infoDate = jsonObj.info_date;
@@ -668,15 +678,17 @@
 			informTr.appendChild(informTdCont);
 			informTr.appendChild(informTdDate);
 			
-			// 這條 tr 要放進 table 裡 ㄏㄏ
-			informArea.appendChild(informTr);
-			informArea.scrollTop = informArea.scrollHeight;
+			// 這條 tr 要放進 table 裡 
+			informArea.children[0].insertBefore(informTr, informArea.children[0].firstChild);
+			informArea.scrollTop = 0;
 		}
+		
 	};
 				
 	webSocket_Inform.onclose = function(event) {
 		console.log("Inform Disconnected!");
-	};  --%>
+	};
+	
 	</script>
 	<script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 	<script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
@@ -703,7 +715,7 @@
 		let fi_cont = document.getElementById("fi_cont");
 		
 		// 已讀未讀顯示顏色
-		let readColor = document.querySelectorAll('[name="	read"]');
+		let readColor = document.querySelectorAll('[name="read"]');
 		for(let i=0; i<readColor.length ;i++){
 			readColor[i].style.backgroundColor = "#fff"; 
 		}
@@ -745,6 +757,7 @@
 						fi_cont.style.display = "none";
 					}
 				}
+				console.log("popFrontInform ajax回應");
 			 },
 			 error:function(err){
 				console.log(err);
