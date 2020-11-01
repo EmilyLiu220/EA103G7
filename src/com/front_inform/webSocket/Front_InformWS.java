@@ -1,6 +1,7 @@
 package com.front_inform.webSocket;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,10 +35,16 @@ public class Front_InformWS {
 	public void onMessage(List<Front_InformVO> fiVOs) { // DB 傳來的物件
 		for(Front_InformVO fiVO : fiVOs) {
 			String mem_no = fiVO.getMem_no();
+			java.sql.Date originalIs_date = fiVO.getInfo_date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String is_dateStr = sdf.format(originalIs_date);
+			java.sql.Date is_date = java.sql.Date.valueOf(is_dateStr);
+			System.out.println(is_date);
+			fiVO.setInfo_date(is_date);
 			if(sessionsMap.containsKey(mem_no)) {
 				Session userSession = sessionsMap.get(mem_no); // 取得 userSession
 				if(userSession != null && userSession.isOpen()) {
-					// 因為上面是用 VO (Java 物件)包裝 → 轉成 Json 後才會再輸出到前端
+					// 因為上面是直接傳來 VO → 轉成 Json 後才會再輸出到前端
 					userSession.getAsyncRemote().sendText(gson.toJson(fiVO));
 					System.out.println("new Inform : " + gson.toJson(fiVO));
 				}

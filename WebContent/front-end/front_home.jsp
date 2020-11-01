@@ -876,7 +876,7 @@
 	
 	
 	
-	<%-- 通知  webSocket
+	<%-- 通知  webSocket，時間排序上有問題，最新的訊息會跑在最底下  --%>
 	var MyPoint_Inform = "/Front_InformWS/${memVO2.mem_no}"; 
 	var host_Inform = window.location.host;
 	var path_Inform = window.location.pathname;
@@ -949,22 +949,27 @@
 			informTr.setAttribute("name","unread");
 			
 			// tr 裡面包 anchor → 還沒寫完，目前有訂位的而已
+			// 貌似連不到 anchor RRRRRRRR~~~~~ QQ...
 			var informTdC_A = document.createElement('a');
 			if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單"){
 				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
 			}else if( jsonObj.info_cont == ""){ // 這裡要記得放訂餐相關通知訊息
 				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+			}else{
+				// 需考慮到來自活動推播的通知訊息
 			}
 			
-			// 第一個 td 要放到 tr 中			
+			// 第一個 td 要放到 tr 中
 			var informTdCont = document.createElement('td');
-			informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+			informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
 			// 把 a 內容填入 info_cont 並塞進第一個 td 中
+			informTdC_A.style.cssText = "word-break: break-all;";
 			informTdC_A.innerHTML = jsonObj.info_cont;
 			// 先在第一個 td 中放 a
 			informTdCont.appendChild(informTdC_A);
 			
-			// 第二個 td 也要放到 tr 中
+			// 第二個 td 也要放到 tr 中 ( 需要更改時間格式  )
+			// sql 出來是「十一月 1,2020」 需更換成「 2020-11-01」→ fiWS.java 有更動，尚未測試
 			var informTdDate = document.createElement('td');
 			informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
 			var infoDate = jsonObj.info_date;
@@ -976,13 +981,13 @@
 			
 			// 這條 tr 要放進 table 裡 ㄏㄏ
 			informArea.appendChild(informTr);
-			informArea.scrollTop = informArea.scrollHeight;
+			// informArea.scrollTop = informArea.scrollHeight;
 		}
 	};
 				
 	webSocket_Inform.onclose = function(event) {
 		console.log("Inform Disconnected!");
-	};  --%>
+	};
 </script>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
