@@ -338,7 +338,6 @@
 
  	function callToast(){
 		// 當有新訊息時，在客服小姐旁邊跳出 toast
-		toastr.info("您有新訊息！");
 		toastr.options = {
 			"positionClass": "toast-bottom-right",
 			"newestOnTop": true,
@@ -354,6 +353,12 @@
 			"showMethod": "fadeIn",
 			"hideMethod": "fadeOut"
 		}
+		toastr.info("您有新訊息！");
+		
+		$("#toast-container").click(function(){
+			document.getElementById("addClass").click();
+		})
+		
 	}
 	
 	webSocket.onmessage = function(event) {
@@ -394,11 +399,12 @@
 				var showMsg = historyData.message;
 				var timestamp = historyData.timestamp;
 				var readSts = historyData.readSts;
-				p.innerHTML = showMsg;
-				var dayTime = timestamp.substring(0,10);
+				p.innerHTML = showMsg;				
+				var dayTime = timestamp.split(" ")[0];
 				p.setAttribute("title",dayTime);
-				var shortTime = timestamp.substring(10,17);
-				shortTime = shortTime.replace(/:$/, '');
+				var shortTime =timestamp.split(" ")[1];
+				shortTime = shortTime.substring(0, shortTime.length-3);
+				
 				span.innerHTML = shortTime;
 				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
 				if( historyData.sender === mem_no ){
@@ -454,10 +460,10 @@
 				var timestamp = jsonObj.timestamp;
 				var readSts = jsonObj.readSts;
 				p.innerHTML = showMsg;
-				var dayTime = timestamp.substring(0,10);
+				var dayTime = timestamp.split(" ")[0];
 				p.setAttribute("title",dayTime);
-				var shortTime = timestamp.substring(10,17);
-				shortTime = shortTime.replace(/:$/, '');
+				var shortTime =timestamp.split(" ")[1];
+				shortTime = shortTime.substring(0, shortTime.length-3);
 				span.innerHTML = shortTime;
 				// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
 				if( jsonObj.sender === mem_no ){
