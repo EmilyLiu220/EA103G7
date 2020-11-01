@@ -165,7 +165,8 @@ public class ResOrderServlet extends HttpServlet {
 			java.util.Date today = new java.util.Date();
 			String todayStr = sdf.format(today);
 			if (todayStr.equals(res_date)) {
-				front_InformSvc.addRCFI(res_no); // 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
+				front_InformSvc.addRCFI(res_no); 
+				// 在執行此動作時，已經順便修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
 
 //			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
