@@ -54,6 +54,15 @@
 	        <input type="submit" value="送出">
 	    </FORM>
 	  </li>
+	  
+<!-- 	  <li> -->
+<!-- 	    <FORM METHOD="post" ACTION="mem.do" > -->
+<!-- 	        <b>輸入會員姓名 :</b> -->
+<!-- 	        <input type="text" name="mem_name" placeholder="王小明" size="6px"> -->
+<!-- 	        <input type="hidden" name="action" value="getOne_For_Display"> -->
+<!-- 	        <input type="submit" value="送出"> -->
+<!-- 	    </FORM> -->
+<!-- 	  </li> -->
 	
 	  <jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
 	   

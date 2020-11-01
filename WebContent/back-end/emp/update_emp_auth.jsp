@@ -53,6 +53,8 @@
 	<div id="loc">
 	<a class="btn btn-primary" href="select_page.jsp" role="button"><i class="fas fa-home" style="font-size:25px"></i></a>
 	<p><p>
+	<label class="btn btn-success" style="cursor:pointer"><i class="fas fa-reply" style="font-size:25px" onclick="history.back()"></i></label>
+	<p><p>
 	<h3 style="font-size: 120%;">員工權限修改</h3>
 
 	<h5 style="font-size: 100%;">權限修改:</h5>

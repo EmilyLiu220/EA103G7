@@ -38,6 +38,8 @@
 	<div id="loc" style="margin-left:100px">
 	<a class="btn btn-primary" href="select_page_mem.jsp" role="button"><i class="fas fa-home" style="font-size:25px"></i></a>
 	<p><p>
+	<label class="btn btn-success" style="cursor:pointer"><i class="fas fa-reply" style="font-size:25px" onclick="history.back()"></i></label>
+	<p><p>
 	<h3>會員資料</h3>
 
 	<table style="border:3px #cccccc solid; text-align:center; font-size: 80%;" cellpadding="10" border='1'>
