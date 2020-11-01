@@ -23,64 +23,7 @@
 	<div class="wrapper">
 		<!-- Page Content  -->
 		<div id="content">
-<<<<<<< HEAD
-
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container-fluid">
-
-					<button type="button" id="sidebarCollapse" class="btn btn-dark">
-						<i class="fas fa-align-justify"></i>
-					</button>
-					<div id="titleBig" style="margin: 0 auto; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a></div>
-					<div id="rwdShow">
-						<button type="button" id="topbarCollapse" class="btn btn-dark"
-							data-toggle="collapse" data-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent" aria-expanded="false"
-							aria-label="Toggle navigation">
-							<i class="fas fa-align-justify"></i>
-						</button>
-						<div id="titleSmall" style="padding-left: 10px; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a></div>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="nav navbar-nav ml-auto">
-								<li class="nav-item active"><a class="nav-link" href="#"
-									id="empId" style="cursor: default;">
-									<c:choose>
-										<c:when test="${empVO2.emp_no==null}">
-											<span style="color: red; margin-top: 1rem;">嗨，您好！請記得登入喔！</span>
-										</c:when>
-										<c:otherwise>
-											<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}，您好！</span>
-										</c:otherwise>
-									</c:choose>	
-								</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">訂單結帳</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">候位管理</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
-								<li class="nav-item active" style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
-									<c:choose>
-										<c:when test="${empVO2.emp_no==null}">
-											<div id="topLogIn" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log in</a></div>
-										</c:when>
-										<c:otherwise>
-											<div id="topLogOut" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="">Log out</a></div>
-										</c:otherwise>
-									</c:choose>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</nav>
-
-			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
-			<p>
-=======
 		<div class="editSeatDiv">
->>>>>>> refs/heads/ejzilch_1030
 				<ul>
 					<%-- 錯誤表列 --%>
 					<c:if test="${not empty errorMsgs}">
