@@ -2,10 +2,14 @@ package com.news.controller;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import com.emp.model.EmpService;
+import com.emp.model.EmpVO;
 import com.news.model.NewsService;
 import com.news.model.NewsVO;
 
@@ -118,14 +122,26 @@ public class NewsServlet extends HttpServlet {
 				String news_no = req.getParameter("news_no").trim();
 
 				String emp_no = req.getParameter("emp_no").trim();
-//				String emp_noReg = "^[(EMP)[0-9]{4}]$";
-
-				if (emp_no == null || emp_no.trim().length() == 0) {
+				// 判斷是否真的有輸入員工編號
+				// 有輸入員工編號
+				if(emp_no != null && emp_no.length() != 0) { 
+					emp_no = emp_no.toUpperCase();
+					String emp_noReg = "E{1}M{1}P{1}[\\d]{4}";
+					Pattern patEmp = Pattern.compile(emp_noReg);
+					Matcher matcherEmp = patEmp.matcher(emp_no.trim());
+					if(!matcherEmp.find()) {
+						errorMsgs.add("員工編號格式不正確");
+					}
+					
+					EmpService empSvc = new EmpService();
+					EmpVO empVO = empSvc.getOneEmp(emp_no.toUpperCase());
+					if (empVO == null) {
+						errorMsgs.add("查無員工");
+					}
+					
+				}else {
 					errorMsgs.add("emp_no: 請勿空白");
 				}
-//				else if (!emp_no.trim().matches(emp_noReg)) { // 以下練習正則(規)表示式(regular-expression)
-//					errorMsgs.add("emp_no: 只能是EMP_ , 且長度必需在4");
-//				}
 
 				String news_cont = req.getParameter("news_cont").trim();
 				if (news_cont == null || news_cont.trim().length() == 0) {

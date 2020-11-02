@@ -203,17 +203,17 @@
 
 			<table>
 				<tr>
-					<th>消息編號</th>
-					<th>員工編號</th>
-					<th>消息內容</th>
-					<th>發布日期</th>
-					<th>店訊狀態</th>
+					<th style="text-align:center;">消息編號</th>
+					<th style="text-align:center;">員工編號</th>
+					<th style="text-align:center;">消息內容</th>
+					<th style="text-align:center;">發布日期</th>
+					<th style="text-align:center;">店訊狀態</th>
 				</tr>
 				<tr>
-					<td style="width: 100px;"><%=newsVO.getNews_no()%></td>
-					<td style="width: 100px;"><%=newsVO.getEmp_no()%></td>
+					<td style="width: 100px;text-align:center;"><%=newsVO.getNews_no()%></td>
+					<td style="width: 100px;text-align:center;"><%=newsVO.getEmp_no()%></td>
 					<td style="width: 1200px;"><%=newsVO.getNews_cont()%></td>
-					<td style="width: 100px;"><%=newsVO.getNews_date()%></td>
+					<td style="width: 100px;text-align:center;"><%=newsVO.getNews_date()%></td>
 
 					<c:if test="${newsVO.news_sts == 0}">
 						<td style="width: 100px; text-align: center;">已下架</td>

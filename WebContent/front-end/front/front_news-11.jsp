@@ -6,10 +6,9 @@
 <%@ page import="com.news.model.*"%>
 
 <%
- 	NewsService newsSvc = new NewsService(); 
-     List<NewsVO> list = newsSvc.frontNews_sts(0); 
-     request.setAttribute("list",list);
-
+	NewsService newsSvc = new NewsService();
+	List<NewsVO> list = newsSvc.frontNews_sts(1);
+	request.setAttribute("list", list);
 %>
 
 <!DOCTYPE html>
@@ -39,7 +38,6 @@
 </head>
 
 <style>
-
 element.style {
 	width: 1250px;
 }
@@ -112,24 +110,26 @@ container {
 	height: 100%;
 	width: 100%;
 }
-#ad_title{
-color: #3e2605
+
+#ad_title {
+	color: #3e2605
 }
+
 #classLink {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
-    color: #3e2605
+	display: block;
+	list-style-type: disc;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	padding-inline-start: 40px;
+	color: #3e2605
 }
+
 div {
 	width: 100%;
 	margin: 0px auto;
 }
-
 
 pageMainArea {
 	position: relative;
@@ -137,14 +137,13 @@ pageMainArea {
 	padding-top: 100px;
 }
 
-.data{
- text-align:left;
-
+.data {
+	text-align: left;
 }
-#date{
-    width: 120px;
-    text-align:center;
-   
+
+#date {
+	width: 120px;
+	text-align: center;
 }
 </style>
 
@@ -155,6 +154,15 @@ pageMainArea {
 			<div class="pageMainArea">
 				<div id="content" style="height: 900px;">
 					<div class="container-fluid">
+						<div class="hd" style="margin-bottom: -20px;">
+							<a href="<%=request.getContextPath()%>/front-end/front_home.jsp">首頁</a> <span>最新消息</span>
+						</div>
+						<div class="font-weight-light text-center text-lg-left mt-4 mb-0">
+							<a id="classLink" class="classLink"
+								href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp"
+								style="border-top: 1px solid #cacaca; border-bottom: 1px solid #cacaca;">所有店訊
+							</a>
+						</div>
 						<div class="card shadow mb-4">
 							<div class="card-header py-3"></div>
 							<div class="card-body">
@@ -171,7 +179,8 @@ pageMainArea {
 														begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-	1%>">
 														<tr>
 															<td class="data">${newsVO.news_cont}</td>
-															<td class="data" id="date" style=" padding-left: 0px;padding-right: 0px">${newsVO.news_date}</td>
+															<td class="data" id="date"
+																style="padding-left: 0px; padding-right: 0px">${newsVO.news_date}</td>
 														</tr>
 													</c:forEach>
 												</tbody>

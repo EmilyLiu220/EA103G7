@@ -317,67 +317,8 @@
 	</div>
 </body>
 
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script
-	src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 
-<script>
-        $.datetimepicker.setLocale('zh');
-        $('#add_date').datetimepicker({
-           theme: '',              //theme: 'dark',
- 	       timepicker:false,       //timepicker:true,
- 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
- 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
- 		   value: '<%=adVO.getAd_add_date()%>', // value:   new Date(),
-           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-           //startDate:	            '2017/07/10',  // 起始日
-           //minDate:               '-1970-01-01', // 去除今日(不含)之前
-           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
-        });
-
-        var somedate1 = new Date();
-        $('#add_date').datetimepicker({
-            beforeShowDay: function(date) {
-          	  if (  date.getYear() <  somedate1.getYear() || 
-   		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
-   		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
-                ) {
-                     return [false, ""]
-                }
-                return [true, ""];
-        }});
-        
-        </script>
-<script>
-        $.datetimepicker.setLocale('zh');
-        $('#re_date').datetimepicker({
-           theme: '',              //theme: 'dark',
- 	       timepicker:false,       //timepicker:true,
- 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
- 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
- 		   value: '<%=adVO.getAd_re_date()%>', // value:   new Date(),
-	//disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-	//startDate:	            '2017/07/10',  // 起始日
-	//minDate:               '-1970-01-01', // 去除今日(不含)之前
-	//maxDate:               '+1970-01-01'  // 去除今日(不含)之後
-	});
-        
-        var somedate2 = new Date();
-        $('#re_date').datetimepicker({
-            beforeShowDay: function(date) {
-          	  if (  date.getYear() <  somedate2.getYear() || 
-   		           (date.getYear() == somedate2.getYear() && date.getMonth() <  somedate2.getMonth()) || 
-   		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() < somedate2.getDate())
-                ) {
-                     return [false, ""]
-                }
-                return [true, ""];
-        }});
-        
-</script>
 <!-- jQuery CDN - Slim version (=without AJAX) -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -433,5 +374,37 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
+</script>
+
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.js"></script>
+<script
+	src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.full.js"></script>
+<script>
+$.datetimepicker.setLocale('zh'); // kr ko ja en
+$(function(){
+	 $('#add_date').datetimepicker({
+		value: '<%=adVO.getAd_add_date()%>',
+	  format:'Y-m-d',
+	  onShow:function(){
+	   this.setOptions({
+	    maxDate:$('#re_date').val()?$('#re_date').val():false
+	   })
+	  },
+	  timepicker:false
+	 });
+	 
+	 $('#re_date').datetimepicker({
+		 value: '<%=adVO.getAd_re_date()%>',
+	  format:'Y-m-d',
+	  onShow:function(){
+	   this.setOptions({
+	    minDate:$('#add_date').val()?$('#add_date').val():false  
+	   })
+	  },
+	  timepicker:false
+	 });
+});
 </script>
 </html>

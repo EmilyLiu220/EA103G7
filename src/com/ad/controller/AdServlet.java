@@ -13,9 +13,7 @@ import com.ad.model.AdService;
 import com.ad.model.AdVO;
 import com.emp.model.EmpService;
 import com.emp.model.EmpVO;
-import com.inform_set.model.Inform_SetService;
-import com.meal_set_consist.model.MealSetConVO;
-import com.mem.model.MemVO;
+
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class AdServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -135,6 +133,11 @@ public class AdServlet extends HttpServlet {
 //				
 //				Inform_SetService in_set = new Inform_SetService();
 //				in_set.addAd();
+				/*******************************************************************/
+				
+//				AdWS adWS =new AdWS();
+//				adWS.onMessage(adVO);
+				
 				
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String url = "/back-end/ad/listAllAd.jsp";
@@ -182,9 +185,15 @@ public class AdServlet extends HttpServlet {
 			try {
 				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 				String str = req.getParameter("ad_no");
+				System.out.println(str);
+//				if (str == null || str.trim().length() == 0 ){
+//					errorMsgs.add("請輸入ad_no");
+//				}
+				
 				if (str == null || (str.trim()).length() == 0) {
 					errorMsgs.add("請輸入ad_no");
 				}
+				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/ad/select_ad.jsp");

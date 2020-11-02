@@ -88,20 +88,20 @@ img {
 				<li><a href="#">現場點餐</a></li>
 				<li><a href="#">現場劃位</a></li>
 				<li><a href="#">訂單結帳</a></li>
-				<li><a href="#">候位管理</a></li>
+				<li><a href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 				<li class="active"><a href="#pageSubmenu"
 					data-toggle="collapse" aria-expanded="false"
 					class="dropdown-toggle">主管員工專區</a>
 					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li><a href="#">員工管理</a></li>
-						<li><a href="#">會員管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
 						<li><a href="#">評價管理</a></li>
 						<li><a href="#">用餐時段管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-						<li><a href="#">菜單管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
 						<li><a href="#">食材管理</a></li>
 						<li><a href="#">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>
@@ -115,7 +115,7 @@ img {
 						<li><a href="#">訂單派工</a></li>
 						<li><a href="#">出餐管理</a></li>
 						<li><a href="#">訂餐訂單處理</a></li>
-						<li><a href="#">訂餐管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
 						<li><a href="#">訂單管理</a></li>
 						<li><a href="#">訂位管理</a></li>
 					</ul></li>

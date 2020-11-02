@@ -91,13 +91,13 @@ width:100px;
 				<li><a href="#">現場點餐</a></li>
 				<li><a href="#">現場劃位</a></li>
 				<li><a href="#">訂單結帳</a></li>
-				<li><a href="#">候位管理</a></li>
+				<li><a href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 				<li class="active"><a href="#pageSubmenu"
 					data-toggle="collapse" aria-expanded="false"
 					class="dropdown-toggle">主管員工專區</a>
 					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li><a href="#">員工管理</a></li>
-						<li><a href="#">會員管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
@@ -105,7 +105,7 @@ width:100px;
 						<li><a href="#">用餐時段管理</a></li>
 						<li><a
 							href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-						<li><a href="#">菜單管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
 						<li><a href="#">食材管理</a></li>
 						<li><a href="#">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>
@@ -119,7 +119,7 @@ width:100px;
 						<li><a href="#">訂單派工</a></li>
 						<li><a href="#">出餐管理</a></li>
 						<li><a href="#">訂餐訂單處理</a></li>
-						<li><a href="#">訂餐管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
 						<li><a href="#">訂單管理</a></li>
 						<li><a href="#">訂位管理</a></li>
 					</ul></li>
@@ -307,7 +307,7 @@ width:100px;
 				       	</div>
 						
 						<br>
-						<button type="button" class="btn btn-secondary button" onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/addAd.jsp'">取消</button>
+						<button type="button" class="btn btn-secondary button" onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/select_ad.jsp'">取消</button>
  					    <button type="submit" class="btn btn-primary button" id="sendMsg"  onclick="sendMsg();">儲存</button>
 						<input type="hidden" name="action" value="insert">
 						<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
@@ -333,65 +333,6 @@ width:100px;
 		}
 	%>
 </body>
-	<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-	<script
-		src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
-
-	<script>
-        $.datetimepicker.setLocale('zh');
-        $('#ad_date').datetimepicker({
-	       theme: '',              //theme: 'dark',
-	       timepicker:false,       //timepicker:true,
-	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=getAd_add_date%>', // value:   new Date(),
-		  
-           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-           //startDate:	            '2017/07/10',  // 起始日
-           //minDate:               '-1970-01-01', // 去除今日(不含)之前
-           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
-        });
-        
-        var somedate1 = new Date();
-        $('#ad_date').datetimepicker({
-            beforeShowDay: function(date) {
-          	  if (  date.getYear() <  somedate1.getYear() || 
-   		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
-   		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
-                ) {
-                     return [false, ""]
-                }
-                return [true, ""];
-        }});
-        
-        $.datetimepicker.setLocale('zh');
-        $('#re_date').datetimepicker({
-	       theme: '',              //theme: 'dark',
-	       timepicker:false,       //timepicker:true,
-	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
-	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=getAd_re_date%> ', // value:   new Date(),
-
-		//disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
-		//startDate:	            '2017/07/10',  // 起始日
-		//minDate:               '-1970-01-01', // 去除今日(不含)之前
-		//maxDate:               '+1970-01-01'  // 去除今日(不含)之後
-		});
-        
-        var somedate2 = new Date();
-        $('#re_date').datetimepicker({
-            beforeShowDay: function(date) {
-          	  if (  date.getYear() <  somedate2.getYear() || 
-   		           (date.getYear() == somedate2.getYear() && date.getMonth() <  somedate2.getMonth()) || 
-   		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() < somedate2.getDate())
-                ) {
-                     return [false, ""]
-                }
-                return [true, ""];
-        }});
-        
-	</script>
-
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -448,7 +389,36 @@ width:100px;
 		}
 	</script>
 
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.js"></script>
+<script
+	src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.full.js"></script>
+<script>
 
+$.datetimepicker.setLocale('zh'); // kr ko ja en
+$(function(){
+	 $('#ad_date').datetimepicker({
+	  format:'Y-m-d',
+	  onShow:function(){
+	   this.setOptions({
+	    maxDate:$('#re_date').val()?$('#re_date').val():false
+	   })
+	  },
+	  timepicker:false
+	 });
+	 
+	 $('#re_date').datetimepicker({
+	  format:'Y-m-d',
+	  onShow:function(){
+	   this.setOptions({
+	    minDate:$('#ad_date').val()?$('#ad_date').val():false
+	   })
+	  },
+	  timepicker:false
+	 });
+});
+</script>
 </html>
 
 

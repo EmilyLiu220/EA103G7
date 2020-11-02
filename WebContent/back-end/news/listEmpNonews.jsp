@@ -228,12 +228,11 @@
 			<table class="table table-hover" style="width: 100%; font-size: 70%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th>消息編號</th>
-						<th>員工編號</th>
-						<th>消息內容</th>
-						<th>發布日期</th>
-						<th>店訊日期</th>
-						<th>店訊狀態</th>
+						<th style="text-align:center;">消息編號</th>
+						<th style="text-align:center;">員工編號</th>
+						<th style="text-align:center;">消息內容</th>
+						<th style="text-align:center;">發布日期</th>
+						<th style="text-align:center;">店訊狀態</th>
 					</tr>
 				</thead>
 
@@ -242,10 +241,10 @@
 					end="<%=pageIndex+rowsPerPage-1%>">
 
 					<tr>
-						<td style="width: 100px;">${newsVO.news_no}</td>
-						<td style="width: 100px;">${newsVO.emp_no}</td>
+						<td style="width: 100px;text-align:center;">${newsVO.news_no}</td>
+						<td style="width: 100px;text-align:center;">${newsVO.emp_no}</td>
 						<td style="width: 1200px;">${newsVO.news_cont}</td>
-						<td style="width: 100px;">${newsVO.news_date}</td>
+						<td style="width: 100px;text-align:center;">${newsVO.news_date}</td>
 
 						<c:if test="${newsVO.news_sts == 0}">
 							<td style="width: 100px; text-align: center;">已下架</td>
