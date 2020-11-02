@@ -47,9 +47,9 @@
 	
 	  <a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=Update_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-primary"><i class="fas fa-utensils"></i>&ensp;密碼和個資修改</a>
 	  <a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=check_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-secondary"><i class="fas fa-utensils"></i>&ensp;個資查詢</a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-success"><i class="fas fa-utensils"></i>&ensp;我的訂單</a>
+	  <a href="#" class="list-group-item list-group-item-action list-group-item-success"><i class="fas fa-utensils"></i>&ensp;我的訂位</a>
+	  <a href="#" class="list-group-item list-group-item-action list-group-item-warning"><i class="fas fa-utensils"></i>&ensp;我的訂餐</a>
 	  <a href="#" class="list-group-item list-group-item-action list-group-item-danger"><i class="fas fa-utensils"></i>&ensp;紅利專區</a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-warning"></a>
 	  <a href="#" class="list-group-item list-group-item-action list-group-item-info"></a>
 	  <a href="#" class="list-group-item list-group-item-action list-group-item-light"></a>
 	  <a href="#" class="list-group-item list-group-item-action list-group-item-dark"></a>

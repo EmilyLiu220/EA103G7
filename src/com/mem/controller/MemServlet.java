@@ -69,19 +69,6 @@ public class MemServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
-//				String mem_name = req.getParameter("mem_name");
-//				if (mem_name == null) {
-//					errorMsgs.add("請輸入會員姓名");
-//				}
-				
-				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
-//					failureView.forward(req, res);
-//					return;//程式中斷
-//				}
-				
 				/***************************2.開始查詢資料*****************************************/
 				MemService memSvc = new MemService();
 				MemVO memVO = memSvc.getOneMem(mem_no);
@@ -228,8 +215,6 @@ public class MemServlet extends HttpServlet {
 				
 				String mem_gen = req.getParameter("mem_gen2");
 				
-				System.out.println("mem_gen" + mem_gen);
-				
 				java.sql.Date mem_bir = java.sql.Date.valueOf(req.getParameter("mem_bir").trim());
 				
 				String mem_tel = req.getParameter("mem_tel");
@@ -291,8 +276,13 @@ public class MemServlet extends HttpServlet {
 				/***************************2.開始新增資料***************************************/
 				memVO = memSvc.addMem(mem_name, mem_act, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail);
 				
+				// 判斷註冊成功用
+				String x = "success";
+				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				req.setAttribute("memVO", memVO);
+				
+				req.setAttribute("x", x);
 				
 				String url = "/front-end/mem/login_mem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listOneEmp.jsp
@@ -429,18 +419,12 @@ public class MemServlet extends HttpServlet {
 					errorMsgs.add("會員密碼與密碼確認必須一致！");
 				}
 				
-				System.out.println("psw1" + mem_psw1);
-				
 				String mem_gen = req.getParameter("mem_gen");
-				
-				System.out.println("gen" + mem_gen);
 				
 				java.sql.Date mem_bir = java.sql.Date.valueOf(req.getParameter("mem_bir").trim());
 				if (mem_bir == null) {
 					mem_bir = java.sql.Date.valueOf("2020-09-10");
 				}
-				
-				System.out.println("bir" + mem_bir);
 				
 				String mem_tel = req.getParameter("mem_tel");
 				String mem_telReg = "^09[0-9]{8}$";
@@ -449,8 +433,6 @@ public class MemServlet extends HttpServlet {
 				} else if(!mem_tel.trim().matches(mem_telReg)) { 
 					errorMsgs.add("手機號碼: 只能是數字, 且長度必需為10碼");
 	            }
-				
-				System.out.println("tel" + mem_tel);
 				
 				String city = req.getParameter("city").trim();
 				String town = req.getParameter("town").trim();
@@ -469,16 +451,17 @@ public class MemServlet extends HttpServlet {
 					mem_adrs = "";
 				}
 				
-				System.out.println("adrs" + mem_adrs);
-				
 				String mem_mail = req.getParameter("mem_mail");
 				if (mem_mail == null || mem_mail.trim().length() == 0) {
 					errorMsgs.add("e-mail: 請勿空白");
 				}
 				
-				System.out.println("mail" + mem_mail);
+				MemService memSvc = new MemService();
+				String mem_act = memSvc.getOneMem(mem_no).getMem_act();
 				
 				MemVO memVO = new MemVO();
+				memVO.setMem_no(mem_no);
+				memVO.setMem_act(mem_act);
 				memVO.setMem_name(mem_name);
 				memVO.setMem_psw(mem_psw1);
 				memVO.setMem_gen(mem_gen);
@@ -497,15 +480,15 @@ public class MemServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
-				MemService memSvc = new MemService();
-				memVO = memSvc.updateByMem(mem_name, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail, mem_no);
-				String mem_act = memSvc.getOneMem(mem_no).getMem_act();
+				memSvc.updateByMem(mem_name, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail, mem_no);
 				
-				memVO.setMem_no(mem_no);
-				memVO.setMem_act(mem_act);
+				// 判斷修改成功用
+				String x = "success";
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("memVO", memVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				
+				req.setAttribute("x", x);
 				
 				String url = "/front-end/mem/showMemInfo.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
