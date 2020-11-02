@@ -10,6 +10,7 @@
 	session.setAttribute("insert", "insert");
 %>
 <jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
+<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" /> 
 <%
 	List<SeatVO> list = seatSvc.getAll();
 	TreeSet<Integer> ts = new TreeSet<Integer>();
@@ -17,6 +18,14 @@
 		ts.add(list.get(i).getSeat_f());
 	}
 	pageContext.setAttribute("ts", ts);
+	
+	SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat sdFormat2 = new SimpleDateFormat("HH");
+	Date date = new Date();
+	String toDay = sdFormat.format(date);
+	String Hours = sdFormat2.format(date);
+	request.setAttribute("Hours", Hours);
+	request.setAttribute("toDay", toDay);
 %>
 <!DOCTYPE html>
 <html>
@@ -51,7 +60,7 @@ input, select {
 				</div>
 				<table id="table-1">
 					<tr>
-						<td><h3 style="margin-bottom:0;">訂位狀況</h3></td>
+						<td><h3 style="margin-bottom:0;">座位狀況</h3></td>
 					</tr>
 				</table>
 				<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
@@ -62,12 +71,15 @@ input, select {
 							</c:forEach>
 						</select>
 							預定日期: 
-							<input name="res_date" id="res_date" type="text" value="--請選擇日期--" onfocus="this.blur()"> 
+							<input name="res_date" id="res_date" type="text" value="${toDay}" onfocus="this.blur()"> 
 						<label class="labelOne"> 
 							選擇時段: 
-							<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" /> 
 							<select id="time_peri_no" name="time_peri_no" >
-									<option class="lt" value="-1">--請先選擇日期--</option>
+								<c:forEach var="timePeriVO" items="${timePeriSvc.all}">
+									<c:if test="${(fn:indexOf(timePeriVO.time_start,'PM') gt 0 ? fn:substring(timePeriVO.time_start,0,2)+12 : fn:substring(timePeriVO.time_start,0,2)) gt Hours-2}">
+										<option class="lt" value="${timePeriVO.time_peri_no}">${timePeriVO.time_start}</option>
+									</c:if>
+								</c:forEach>
 							</select> 
 							<input type="hidden" name="mem_no" value="${memVO2.mem_no}"> <input type="hidden" name="emp_no" value="${empVO2.emp_no}">
 						</label>
@@ -76,7 +88,7 @@ input, select {
 							<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 						</label>
 						<input type="hidden" name="action" value="order_seat">
-						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>訂位</button>
+						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>劃位</button>
 					</div>
 					<div id="container" class="container">
 						<c:forEach var="seatVO" items="${seatSvc.all}">
