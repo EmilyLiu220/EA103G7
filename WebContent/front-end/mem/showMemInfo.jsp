@@ -6,7 +6,7 @@
 	MemVO memVO = (MemVO) request.getAttribute("memVO");
 %>
 <%
-	String x = (String) request.getAttribute("x");
+	String x = (String) request.getAttribute("x"); // 判斷修改成功用
 %>
 
 <html>

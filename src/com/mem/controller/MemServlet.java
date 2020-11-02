@@ -455,8 +455,15 @@ public class MemServlet extends HttpServlet {
 				if (mem_mail == null || mem_mail.trim().length() == 0) {
 					errorMsgs.add("e-mail: 請勿空白");
 				}
-				
 				MemService memSvc = new MemService();
+				List<MemVO> list2 = memSvc.getAll();
+				for (int i = 0; i < list2.size(); i++) {
+					if (mem_mail.equals(list2.get(i).getMem_mail())) {
+						errorMsgs.add("此email已被使用！");
+						break;
+					}
+				}
+				
 				String mem_act = memSvc.getOneMem(mem_no).getMem_act();
 				
 				MemVO memVO = new MemVO();
