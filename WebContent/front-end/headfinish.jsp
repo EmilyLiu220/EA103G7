@@ -95,43 +95,6 @@
 	%>
 	<%-- 小鈴鐺 table 開始 --%>
 	<table id="fi_cont" style="border:0;display:none;">
-		<c:forEach var="front_informVO" items="${front_informVOs}">
-			<tr name="${(front_informVO.read_sts == 0) ? 'unread':'read'}" >
-				<c:choose>
-				   <c:when test="${front_informVO.info_sts == 2}">
-						<td style="width:300px;">${front_informVO.info_cont}
-						<br>
-						<div class="d-flex justify-content-end">
-							<button id="${front_informVO.info_no}yes" style="margin-right:3px" onclick="confirm('${front_informVO.info_no}', '${front_informVO.res_no}')">確認</button>
-							<button id="${front_informVO.info_no}no" onclick="cancel('${front_informVO.info_no}', '${front_informVO.res_no}')">取消</button>
-						</div>
-						</td>
-				   </c:when>
-				   <c:when test="${front_informVO.info_sts == 1}">
-						<td style="width:300px;">${front_informVO.info_cont}
-						<br>
-						<div class="d-flex justify-content-end">
-							<span>已確認</span>
-						</div>
-						</td>
-				   </c:when>
-				   <c:when test="${front_informVO.info_sts == 3}">
-						<td style="width:300px;">${front_informVO.info_cont}
-						<br>
-						<div class="d-flex justify-content-end">
-							<span>已取消</span>
-						</div>
-						</td>
-				   </c:when>
-				   <c:otherwise>
-						<td style="width:300px;word-break: break-all;">${front_informVO.info_cont}</td>
-				   </c:otherwise>
-				</c:choose>
-				
-				<td style="width:100px;"><fmt:formatDate value="${front_informVO.info_date}"
-						pattern="yyyy-MM-dd" /></td>
-			</tr>
-		</c:forEach>
 	</table>
 	<%-- 小鈴鐺 table 結束 --%>
 	
@@ -302,26 +265,6 @@
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/toastr.min.js"></script>
 <script type="text/javascript">
-	<%-- 取得通知訊息 --%>	
-	getInform();
-	
-	function getInform(){
-		$.ajax({
-			 url:'<%=request.getContextPath() %>/front_inform/fi.do',
-			 method:"POST",
-			 dataType:"text",
-			 data:{
-				 action: 'getMyInform',
-			 },
-			 success:function(res){},
-			 error:function(err){},	
-		});
-	}
-	
-	window.onbeforeunload=function(e){
-		getInform();
-	}
-		
 	<%-- 聊天室  webSocket --%>
 	var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
 	var host = window.location.host;
@@ -348,7 +291,7 @@
 			"onclick": null,
 			"showDuration": "500",
 			"hideDuration": "1000",
-			"timeOut": "5000",
+			"timeOut": "10000",
 			"extendedTimeOut": "1000",
 			"showEasing": "swing",
 			"hideEasing": "linear",
@@ -577,9 +520,8 @@
 	var path_Inform = window.location.pathname;
 	var webCtx_Inform = path_Inform.substring(0, path_Inform.indexOf('/', 1));
 	var endPointURL_Inform = "ws://" + host_Inform + webCtx_Inform + MyPoint_Inform;
-	
-	// var mem_no = "${memVO2.mem_no}"; // 宣告自己，上方聊天室已宣告過
-	var informArea = document.getElementById("fi_cont"); // 通知 table
+
+	var informArea = document.getElementById("fi_cont"); // 取得通知 table
 	
 	var webSocket_Inform = new WebSocket(endPointURL_Inform);
 	
@@ -588,101 +530,538 @@
 	};
 	
 	webSocket_Inform.onmessage = function(event) {
-		var jsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
-		
-		// 未打開鈴鐺，顯示小紅點
-		if(document.getElementById("fi_cont").style.display == 'none'){
-		   document.getElementsByClassName("badge")[0].style.display = "inline-block";
-		}
-		
-		if ( jsonObj.info_sts === 2 ) { // 需要回應的通知
-			var informTr = document.createElement('tr');
-			informTr.setAttribute("name","unread");
-			informTr.style.cssText = "background-color: rgb(230, 249, 255);"; // 此 td 寬度 300px
+		var originalJsonObj = JSON.parse(event.data); // 把發送來的字串資料轉成 json 物件
+		// 若從後端傳來的 originalJsonObj 是陣列
+		if(Array.isArray(originalJsonObj) && originalJsonObj !== null){
+			for(let i=0 ; i<originalJsonObj.length ; i++){
+				var jsonObj = originalJsonObj[i];
+				// 已讀訊息 → 不需要小紅點
+				if ( jsonObj.read_sts === 1 ) {
+					var informTr = document.createElement('tr');
+					informTr.setAttribute("name","read");
+					// 需要回應的通知未確認
+					if ( jsonObj.info_sts === 2 ) {
+						// 第一個 td 要放到 tr 中
+						var informTdCont = document.createElement('td');
+						informTdCont.style.cssText = "height: 46px; width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+						
+						// 下方 span 要放到上方的 td 中
+						var informTdContSpan = document.createElement('span');
+						informTdContSpan.innerHTML = jsonObj.info_cont;
+						
+						// 下方的 div 要放到上方的 td 中
+						var informTdDiv = document.createElement('div');
+						informTdDiv.setAttribute("class","d-flex justify-content-end")
+						
+						// 下方兩個 button 要放到上方的 div 中
+						var informTdContBtnYes = document.createElement('button');
+						informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
+						informTdContBtnYes.innerHTML = "確認";
+						informTdContBtnYes.addEventListener('click', function(){
+							confirm(jsonObj.info_no, jsonObj.res_no);
+						});
+						
+						informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+						var informTdContBtnNo = document.createElement('button');
+						informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
+						informTdContBtnNo.innerHTML = "取消";
+						informTdContBtnNo.addEventListener('click', function(){
+							cancel(jsonObj.info_no, jsonObj.res_no);
+						});
+						
+						informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
+						informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+						
+						informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+						informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+						informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+						
+						// 第二個 td 也要放到 tr 中
+						var informTdDate = document.createElement('td');
+						informTdDate.style.cssText = "width:100px;";
+						var infoDate = jsonObj.info_date;
+						informTdDate.innerHTML = infoDate;
 			
-			// 第一個 td 要放到 tr 中
-			var informTdCont = document.createElement('td');
-			informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
+						// 把兩個 td 都放進 tr 中
+						informTr.appendChild(informTdCont);
+						informTr.appendChild(informTdDate);
+						
+						// 這條 tr 要放進 table 裡
+						informArea.appendChild(informTr);
+						informArea.scrollTop = 0;
+					
+					// 不需要回應的通知
+					} else if ( jsonObj.info_sts === 0 ) {
+						// td 裡面包 <a>
+						var informTdC_A = document.createElement('a');
+						if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單" || jsonObj.info_cont == "您的訂位已取消"){
+							informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
+						}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){
+							informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+						}
+						
+						// tr 中的第一個 td
+						var informTdCont = document.createElement('td');
+						informTdCont.style.cssText = "width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+						// 把 info_cont 填入 a 中
+						informTdC_A.style.cssText = "word-break: break-all;";
+						informTdC_A.innerHTML = jsonObj.info_cont;
+						// 先在第一個 td 中放 a
+						informTdCont.appendChild(informTdC_A);
+						
+						// tr 中的第二個 td
+						var informTdDate = document.createElement('td');
+						informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+						var infoDate = jsonObj.info_date;
+						informTdDate.innerHTML = infoDate;
 			
-			// 下方 span 要放到上方的 td 中
-			var informTdContSpan = document.createElement('span');
-			informTdContSpan.innerHTML = jsonObj.info_cont;
+						// 把兩個 td 都放進 tr 中
+						informTr.appendChild(informTdCont);
+						informTr.appendChild(informTdDate);
+						
+						// tr 放進 table 裡 
+						informArea.appendChild(informTr);
+						informArea.scrollTop = 0;
+						
+					// 需要回應的通知已確認
+					} else if ( jsonObj.info_sts === 1 ) {
+						// 第一個 td 要放到 tr 中
+						var informTdCont = document.createElement('td');
+						informTdCont.style.cssText = "height: 46px; width: 300px;"; // 此 td 寬度 300px
+						
+						// 下方 span 要放到上方的 td 中
+						var informTdContSpan = document.createElement('span');
+						informTdContSpan.innerHTML = jsonObj.info_cont;
+						
+						// 下方的 div 要放到上方的 td 中
+						var informTdDiv = document.createElement('div');
+						informTdDiv.setAttribute("class","d-flex justify-content-end")
+						var informTdContYesSpan = document.createElement('span');
+						informTdContYesSpan.innerHTML = "已確認";
+						informTdDiv.appendChild(informTdContYesSpan); // <div> 內放 checked yes
+						
+						informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+						informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+						informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+						
+						// 第二個 td 也要放到 tr 中
+						var informTdDate = document.createElement('td');
+						informTdDate.style.cssText = "width:100px;";
+						var infoDate = jsonObj.info_date;
+						informTdDate.innerHTML = infoDate;
 			
-			// 下方的 div 要放到上方的 td 中
-			var informTdDiv = document.createElement('div');
-			informTdDiv.setAttribute("class","d-flex justify-content-end")
+						// 把兩個 td 都放進 tr 中
+						informTr.appendChild(informTdCont);
+						informTr.appendChild(informTdDate);
+						
+						// 這條 tr 要放進 table 裡
+						informArea.appendChild(informTr);
+						informArea.scrollTop = 0;
+						
+					// 需要回應的通知已取消
+					} else if ( jsonObj.info_sts === 3 ) {
+						// 第一個 td 要放到 tr 中
+						var informTdCont = document.createElement('td');
+						informTdCont.style.cssText = "height: 46px; width:300px;"; // 此 td 寬度 300px
+						
+						// 下方 span 要放到上方的 td 中
+						var informTdContSpan = document.createElement('span');
+						informTdContSpan.innerHTML = jsonObj.info_cont;
+						
+						// 下方的 div 要放到上方的 td 中
+						var informTdDiv = document.createElement('div');
+						informTdDiv.setAttribute("class","d-flex justify-content-end")
+						var informTdContNoSpan = document.createElement('span');
+						informTdContNoSpan.innerHTML = "已取消";
+						informTdDiv.appendChild(informTdContNoSpan); // <div> 內放 checked no
+						
+						informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+						informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+						informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+						
+						// 第二個 td 也要放到 tr 中
+						var informTdDate = document.createElement('td');
+						informTdDate.style.cssText = "width:100px;";
+						var infoDate = jsonObj.info_date;
+						informTdDate.innerHTML = infoDate;
 			
-			// 下方兩個 button 要放到上方的 div 中
-			var informTdContBtnYes = document.createElement('button');
-			informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
-			informTdContBtnYes.addEventListener('click', function(){
-				confirm(jsonObj.info_no, jsonObj.res_no);
-			});
-			informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
-			var informTdContBtnNo = document.createElement('button');
-			informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
-			informTdContBtnNo.addEventListener('click', function(){
-				cancel(jsonObj.info_no, jsonObj.res_no);
-			});
+						// 把兩個 td 都放進 tr 中
+						informTr.appendChild(informTdCont);
+						informTr.appendChild(informTdDate);
+						
+						// 這條 tr 要放進 table 裡
+						informArea.appendChild(informTr);
+						informArea.scrollTop = 0;
+					}
+					
+				// 未讀訊息 → 需要小紅點
+				} else {
+					// 未打開鈴鐺 table，需顯示小紅點
+					if(document.getElementById("fi_cont").style.display == 'none'){
+						document.getElementsByClassName("badge")[0].style.display = "inline-block";
+					}
+					
+					if ( jsonObj.info_sts === 2 ) { // 需要回應的通知
+						var informTr = document.createElement('tr');
+						informTr.setAttribute("name","unread");
+						informTr.style.cssText = "background-color: rgb(230, 249, 255);";
+						
+						// 第一個 td 要放到 tr 中
+						var informTdCont = document.createElement('td');
+						informTdCont.style.cssText = "height: 46px; width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+						
+						// 下方 span 要放到上方的 td 中
+						var informTdContSpan = document.createElement('span');
+						informTdContSpan.innerHTML = jsonObj.info_cont;
+						
+						// 下方的 div 要放到上方的 td 中
+						var informTdDiv = document.createElement('div');
+						informTdDiv.setAttribute("class","d-flex justify-content-end")
+						
+						// 下方兩個 button 要放到上方的 div 中
+						var informTdContBtnYes = document.createElement('button');
+						informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
+						informTdContBtnYes.innerHTML = "確認";
+						informTdContBtnYes.addEventListener('click', function(){
+							confirm(jsonObj.info_no, jsonObj.res_no);
+						});
+						
+						informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+						var informTdContBtnNo = document.createElement('button');
+						informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
+						informTdContBtnNo.innerHTML = "取消";
+						informTdContBtnNo.addEventListener('click', function(){
+							cancel(jsonObj.info_no, jsonObj.res_no);
+						});
+						
+						informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
+						informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+						
+						informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+						informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+						informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+						
+						// 第二個 td 也要放到 tr 中
+						var informTdDate = document.createElement('td');
+						informTdDate.style.cssText = "width:100px;";
+						var infoDate = jsonObj.info_date;
+						informTdDate.innerHTML = infoDate;
 			
-			informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
-			informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+						// 把兩個 td 都放進 tr 中
+						informTr.appendChild(informTdCont);
+						informTr.appendChild(informTdDate);
+						
+						// 這條 tr 要放進 table 裡
+						informArea.appendChild(informTr);
+						informArea.scrollTop = 0;
+					
+					} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知
+						var informTr = document.createElement('tr');
+						informTr.setAttribute("name","unread");
+						informTr.style.cssText = "background-color: rgb(230, 249, 255);";
+						
+						// tr 裡面包 <a>
+						var informTdC_A = document.createElement('a');
+						if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單" || jsonObj.info_cont == "您的訂位已取消"){
+							informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
+						}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){ 
+							informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+						}
+						
+						// 第一個 td 要放到 tr 中
+						var informTdCont = document.createElement('td');
+						informTdCont.style.cssText = "width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+						// 把 info_cont 填入 a 中
+						informTdC_A.style.cssText = "word-break: break-all;";
+						informTdC_A.innerHTML = jsonObj.info_cont;
+						// 先在第一個 td 中放 a
+						informTdCont.appendChild(informTdC_A);
+						
+						// 第二個 td 也要放到 tr 中 
+						var informTdDate = document.createElement('td');
+						informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+						var infoDate = jsonObj.info_date;
+						informTdDate.innerHTML = infoDate;
 			
-			informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
-			informTdCont.appendChild(document.createElement('br')); // td 放 <br>
-			informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
-			
-			// 第二個 td 也要放到 tr 中
-			var informTdDate = document.createElement('td');
-			informTdDate.style.cssText = "width:100px;";
-			var infoDate = jsonObj.info_date;
-			informTdDate.innerHTML = infoDate;
-
-			// 把兩個 td 都放進 tr 中
-			informTr.appendChild(informTdCont);
-			informTr.appendChild(informTdDate);
-			
-			// 這條 tr 要放進 table 裡
-			informArea.children[0].insertBefore(informTr, informArea.children[0].firstChild);
-			informArea.scrollTop = 0;
-		
-		} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知
-			var informTr = document.createElement('tr');
-			informTr.setAttribute("name","unread");
-			informTr.style.cssText = "background-color: rgb(230, 249, 255);";
-			
-			// tr 裡面包 <a>
-			var informTdC_A = document.createElement('a');
-			if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單"){
-				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
-			}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐"){ // 這裡要記得放訂餐相關通知訊息
-				informTdC_A.setAttribute("src","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+						// 把兩個 td 都放進 tr 中
+						informTr.appendChild(informTdCont);
+						informTr.appendChild(informTdDate);
+						
+						// 這條 tr 要放進 table 裡 
+						//if(informArea.firstElementChild !== null){
+						//	informArea.firstElementChild.insertBefore(informTr);
+						//} else {
+						informArea.appendChild(informTr);
+						//}
+						informArea.scrollTop = 0;
+					}
+				}
 			}
-			
-			// 第一個 td 要放到 tr 中
-			var informTdCont = document.createElement('td');
-			informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
-			// 把 a 內容填入 info_cont 並塞進第一個 td 中
-			informTdC_A.style.cssText = "word-break: break-all;";
-			informTdC_A.innerHTML = jsonObj.info_cont;
-			// 先在第一個 td 中放 a
-			informTdCont.appendChild(informTdC_A);
-			
-			// 第二個 td 也要放到 tr 中 
-			var informTdDate = document.createElement('td');
-			informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
-			var infoDate = jsonObj.info_date;
-			informTdDate.innerHTML = infoDate;
-
-			// 把兩個 td 都放進 tr 中
-			informTr.appendChild(informTdCont);
-			informTr.appendChild(informTdDate);
-			
-			// 這條 tr 要放進 table 裡 
-			informArea.children[0].insertBefore(informTr, informArea.children[0].firstChild);
-			informArea.scrollTop = 0;
-		}
+		// 若從後端傳來的 originalJsonObj 不是陣列
+		} else if(!Array.isArray(originalJsonObj) && originalJsonObj !== null){
+			var jsonObj = originalJsonObj;
+			// 已讀訊息 → 不需要小紅點
+			if ( jsonObj.read_sts === 1 ) {
+				var informTr = informArea.insertRow(0);
+				informTr.setAttribute("name","read");
+				// 需要回應的通知未確認
+				if ( jsonObj.info_sts === 2 ) {
+					// 第一個 td 要放到 tr 中
+					var informTdCont = document.createElement('td');
+					informTdCont.style.cssText = "height: 290px; width:300px; word-break: break-all;"; // 此 td 寬度 300px
+					
+					// 下方 span 要放到上方的 td 中
+					var informTdContSpan = document.createElement('span');
+					informTdContSpan.innerHTML = jsonObj.info_cont;
+					
+					// 下方的 div 要放到上方的 td 中
+					var informTdDiv = document.createElement('div');
+					informTdDiv.setAttribute("class","d-flex justify-content-end")
+					
+					// 下方兩個 button 要放到上方的 div 中
+					var informTdContBtnYes = document.createElement('button');
+					informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
+					informTdContBtnYes.innerHTML = "確認";
+					informTdContBtnYes.addEventListener('click', function(){
+						confirm(jsonObj.info_no, jsonObj.res_no);
+					});
+					
+					informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+					var informTdContBtnNo = document.createElement('button');
+					informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
+					informTdContBtnNo.innerHTML = "取消";
+					informTdContBtnNo.addEventListener('click', function(){
+						cancel(jsonObj.info_no, jsonObj.res_no);
+					});
+					
+					informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
+					informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+					
+					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+					informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+					informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+					
+					// 第二個 td 也要放到 tr 中
+					var informTdDate = document.createElement('td');
+					informTdDate.style.cssText = "width:100px;";
+					var infoDate = jsonObj.info_date;
+					informTdDate.innerHTML = infoDate;
 		
+					// 把兩個 td 都放進 tr 中
+					informTr.appendChild(informTdCont);
+					informTr.appendChild(informTdDate);
+					
+					// 這條 tr 要放進 table 裡
+					// informArea.appendChild(informTr);
+					informArea.scrollTop = 0;
+				
+				// 不需要回應的通知
+				} else if ( jsonObj.info_sts === 0 ) {
+					// td 裡面包 <a>
+					var informTdC_A = document.createElement('a');
+					if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單" || jsonObj.info_cont == "您的訂位已取消"){
+						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
+					}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){ 
+						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+					}
+					
+					// tr 中的第一個 td
+					var informTdCont = document.createElement('td');
+					informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
+					// 把 info_cont 填入 a 中
+					informTdC_A.style.cssText = "word-break: break-all;";
+					informTdC_A.innerHTML = jsonObj.info_cont;
+					// 先在第一個 td 中放 a
+					informTdCont.appendChild(informTdC_A);
+					
+					// tr 中的第二個 td
+					var informTdDate = document.createElement('td');
+					informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+					var infoDate = jsonObj.info_date;
+					informTdDate.innerHTML = infoDate;
+		
+					// 把兩個 td 都放進 tr 中
+					informTr.appendChild(informTdCont);
+					informTr.appendChild(informTdDate);
+					
+					// tr 放進 table 裡 
+					// informArea.appendChild(informTr);
+					informArea.scrollTop = 0;
+					
+				// 需要回應的通知已確認
+				} else if ( jsonObj.info_sts === 1 ) {
+					// 第一個 td 要放到 tr 中
+					var informTdCont = document.createElement('td');
+					informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+					
+					// 下方 span 要放到上方的 td 中
+					var informTdContSpan = document.createElement('span');
+					informTdContSpan.innerHTML = jsonObj.info_cont;
+					
+					// 下方的 div 要放到上方的 td 中
+					var informTdDiv = document.createElement('div');
+					informTdDiv.setAttribute("class","d-flex justify-content-end")
+					var informTdContYesSpan = document.createElement('span');
+					informTdContYesSpan.innerHTML = "已確認";
+					informTdDiv.appendChild(informTdContYesSpan); // <div> 內放 checked yes
+					
+					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+					informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+					informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+					
+					// 第二個 td 也要放到 tr 中
+					var informTdDate = document.createElement('td');
+					informTdDate.style.cssText = "width:100px;";
+					var infoDate = jsonObj.info_date;
+					informTdDate.innerHTML = infoDate;
+		
+					// 把兩個 td 都放進 tr 中
+					informTr.appendChild(informTdCont);
+					informTr.appendChild(informTdDate);
+					
+					// 這條 tr 要放進 table 裡
+					// informArea.appendChild(informTr);
+					informArea.scrollTop = 0;
+					
+				// 需要回應的通知已取消
+				} else if ( jsonObj.info_sts === 3 ) {
+					// 第一個 td 要放到 tr 中
+					var informTdCont = document.createElement('td');
+					informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+					
+					// 下方 span 要放到上方的 td 中
+					var informTdContSpan = document.createElement('span');
+					informTdContSpan.innerHTML = jsonObj.info_cont;
+					
+					// 下方的 div 要放到上方的 td 中
+					var informTdDiv = document.createElement('div');
+					informTdDiv.setAttribute("class","d-flex justify-content-end")
+					var informTdContNoSpan = document.createElement('span');
+					informTdContNoSpan.innerHTML = "已取消";
+					informTdDiv.appendChild(informTdContNoSpan); // <div> 內放 checked no
+					
+					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+					informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+					informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+					
+					// 第二個 td 也要放到 tr 中
+					var informTdDate = document.createElement('td');
+					informTdDate.style.cssText = "width:100px;";
+					var infoDate = jsonObj.info_date;
+					informTdDate.innerHTML = infoDate;
+		
+					// 把兩個 td 都放進 tr 中
+					informTr.appendChild(informTdCont);
+					informTr.appendChild(informTdDate);
+					
+					// 這條 tr 要放進 table 裡
+					// informArea.appendChild(informTr);
+					informArea.scrollTop = 0;
+				}
+				
+			// 未讀訊息 → 需要小紅點
+			} else {
+				// 未打開鈴鐺 table，需顯示小紅點
+				if(document.getElementById("fi_cont").style.display == 'none'){
+					document.getElementsByClassName("badge")[0].style.display = "inline-block";
+				}
+				
+				if ( jsonObj.info_sts === 2 ) { // 需要回應的通知
+					var informTr = informArea.insertRow(0);
+					informTr.setAttribute("name","unread");
+					informTr.style.cssText = "background-color: rgb(230, 249, 255);";
+					
+					// 第一個 td 要放到 tr 中
+					var informTdCont = document.createElement('td');
+					informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
+					
+					// 下方 span 要放到上方的 td 中
+					var informTdContSpan = document.createElement('span');
+					informTdContSpan.innerHTML = jsonObj.info_cont;
+					
+					// 下方的 div 要放到上方的 td 中
+					var informTdDiv = document.createElement('div');
+					informTdDiv.setAttribute("class","d-flex justify-content-end")
+					
+					// 下方兩個 button 要放到上方的 div 中
+					var informTdContBtnYes = document.createElement('button');
+					informTdContBtnYes.setAttribute("id",jsonObj.info_no+"yes");
+					informTdContBtnYes.innerHTML = "確認";
+					informTdContBtnYes.addEventListener('click', function(){
+						confirm(jsonObj.info_no, jsonObj.res_no);
+					});
+					
+					informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+					var informTdContBtnNo = document.createElement('button');
+					informTdContBtnNo.setAttribute("id",jsonObj.info_no+"no");
+					informTdContBtnNo.innerHTML = "取消";
+					informTdContBtnNo.addEventListener('click', function(){
+						cancel(jsonObj.info_no, jsonObj.res_no);
+					});
+					
+					informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
+					informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
+					
+					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
+					informTdCont.appendChild(document.createElement('br')); // td 放 <br>
+					informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
+					
+					// 第二個 td 也要放到 tr 中
+					var informTdDate = document.createElement('td');
+					informTdDate.style.cssText = "width:100px;";
+					var infoDate = jsonObj.info_date;
+					informTdDate.innerHTML = infoDate;
+		
+					// 把兩個 td 都放進 tr 中
+					informTr.appendChild(informTdCont);
+					informTr.appendChild(informTdDate);
+					
+					// 這條 tr 要放進 table 裡
+					// informArea.appendChild(informTr);
+					informArea.scrollTop = 0;
+				
+				} else if ( jsonObj.info_sts === 0 ) { // 不需要回應的通知
+					var informTr = informArea.insertRow(0);
+					informTr.setAttribute("name","unread");
+					informTr.style.cssText = "background-color: rgb(230, 249, 255);";
+					
+					// tr 裡面包 <a>
+					var informTdC_A = document.createElement('a');
+					if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單" || jsonObj.info_cont == "您的訂位已取消"){
+						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
+					}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){
+						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
+					}
+					
+					// 第一個 td 要放到 tr 中
+					var informTdCont = document.createElement('td');
+					informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
+					// 把 info_cont 填入 a 中
+					informTdC_A.style.cssText = "word-break: break-all;";
+					informTdC_A.innerHTML = jsonObj.info_cont;
+					// 先在第一個 td 中放 a
+					informTdCont.appendChild(informTdC_A);
+					
+					// 第二個 td 也要放到 tr 中 
+					var informTdDate = document.createElement('td');
+					informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+					var infoDate = jsonObj.info_date;
+					informTdDate.innerHTML = infoDate;
+		
+					// 把兩個 td 都放進 tr 中
+					informTr.appendChild(informTdCont);
+					informTr.appendChild(informTdDate);
+					
+					// 這條 tr 要放進 table 裡 
+					//if(informArea.firstElementChild !== null){
+					//	informArea.firstElementChild.insertBefore(informTr);
+					//} else {
+					//	informArea.appendChild(informTr);
+					//}
+					informArea.scrollTop = 0;
+				}
+			}
+		}
 	};
 				
 	webSocket_Inform.onclose = function(event) {
@@ -767,6 +1146,21 @@
 		});
 	}		
 	
+	// 設定可以按按鈕的時間 → 耕耘中......
+	//var wait_time = 5; //設定秒數(單位秒)
+	//var secs_time = 0;
+	//for (var i = 0; i <= wait_time; i++) {
+	//    window.setTimeout("sTimer(" + i + ")", i * 1000);
+	//}
+	//function sTimer(num) {
+	//    if (num == wait_time) {
+	//    	document.getElementsByClassName("readyToConfirm").disabled = "disabled";
+	//        document.getElementsByClassName("readyToCancel").onclick;
+	//    } else {
+	//        secs_time = wait_time - num;
+	//    }
+	//}
+	
 	// 須回覆的通知被按下確認鍵
 	function confirm(info_no, res_no){
 		$.ajax({
@@ -780,8 +1174,7 @@
 				 res_no: res_no,
 				 checkYes: 'checkYes'
 			 },
-			 success:function(res){
-			 },
+			 success:function(res){console.log("用餐確認按鈕已點選")},
 			 error:function(err){console.log(err)},	
 		});
 		document.getElementById(info_no+"no").disabled="disabled";
@@ -800,8 +1193,7 @@
 				 res_no: res_no,
 				 checkNo: 'checkNo'
 			 },
-			 success:function(res){
-			 },
+			 success:function(res){console.log("取消用餐按鈕已點選")},
 			 error:function(err){console.log(err)},	
 		});			
 		document.getElementById(info_no+"yes").disabled="disabled";
@@ -836,26 +1228,14 @@
 	var title = document.getElementById("title");
 	
 	var path = location.pathname;
-	console.log(path);
-	if (path === '/EA103G7/front-end/mem/login_mem.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/login_success_mem.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/addMem.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/forgetPsw.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/showMemInfo.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/update_mem_info.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/mem.do') {
+	var path_f = '/EA103G7/front-end/mem';
+	if (path === path_f + '/login_mem.jsp' || 
+		path === path_f + '/login_success_mem.jsp' || 
+		path === path_f + '/addMem.jsp' || 
+		path === path_f + '/forgetPsw.jsp' || 
+		path === path_f + '/showMemInfo.jsp' || 
+		path === path_f + '/update_mem_info.jsp' || 
+		path === path_f + '/mem.do') {
 		title.innerHTML = '會員中心';
 	}
 	
@@ -893,26 +1273,42 @@
 // 		});
 // 	}
 	
+// 	if (mem_no === '') {
+// 		res.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+// 	if (mem_no === '') {
+// 		meal.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+// 	if (mem_no === '') {
+// 		review.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+// 	if (mem_no === '') {
+// 		repo.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+	
 	if (mem_no === '') {
 		res.addEventListener("click", function() {
 			alert("請先登入會員喔！");
 		});
-	}
-	if (mem_no === '') {
 		meal.addEventListener("click", function() {
 			alert("請先登入會員喔！");
 		});
-	}
-	if (mem_no === '') {
 		review.addEventListener("click", function() {
 			alert("請先登入會員喔！");
 		});
-	}
-	if (mem_no === '') {
 		repo.addEventListener("click", function() {
 			alert("請先登入會員喔！");
 		});
 	}
+	
 </script>
 	
 <script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>

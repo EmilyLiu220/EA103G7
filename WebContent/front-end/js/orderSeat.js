@@ -459,25 +459,40 @@ $(document).ready(function() {
 			title: "請問要順便訂餐嗎?",
 			text: "訂餐方便又簡單～",
 			icon: "warning",
-			buttons: ["訂位就好", "我要順便訂餐"],
-		}).then((willDelete) => {
-			if (willDelete) {
-				swal("來去訂餐吧～", {
-					icon: "success",
-				}).then(function() {
-					$("<input>").attr({
+			buttons: {
+			    cancel: "取消!",
+			    catch: {
+			    	text: "訂位就好",
+			    	value: "res_seat",
+			    },
+			    defeat: {
+			    	text: "我要訂餐～",
+			    	value: "res_meal",
+			    },
+			}
+		}).then((value) => {
+			switch (value) {
+			 case "res_meal":
+				 swal("來去訂餐吧～", {
+						icon: "success",
+				 }).then(function() {
+					 $("<input>").attr({
 						type: "hidden",
 						name: "goMeal",
 						value: "carry_on_res_meal",
 					}).appendTo("div#orderSeatCondition.container");
 					form.submit();
 				});
-			} else {
+			     break;
+			 case "res_seat":
 				swal("即將完成訂位", {
 					icon: "success",
 				}).then(function() {
 					form.submit();
 				});
+			    break;
+			 default:
+				 swal("不做任何選項～", "再考慮考慮吧！", "info");
 			}
 		});
 		e.preventDefault();

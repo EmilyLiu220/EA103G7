@@ -5,6 +5,10 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.meal.model.MealDAO;
 import com.wait_seat.model.*;
 
 public class Wait_seatServlet extends HttpServlet {
@@ -111,9 +115,7 @@ public class Wait_seatServlet extends HttpServlet {
 			}
 			if((n_mem_name=req.getParameter("n_mem_name").trim())==null || n_mem_name.length()==0) {
 				n_mem_nameIsNull=true;
-			}
-			System.out.println("mem_no="+mem_no+" "+memIsNull);
-			System.out.println("n_mem_name="+n_mem_name+" "+n_mem_nameIsNull);			
+			}		
 			
 			String phone_m=req.getParameter("phone_m");
 
@@ -193,6 +195,24 @@ public class Wait_seatServlet extends HttpServlet {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/wait_seat/listAllWait_seat.jsp");
 				failureView.forward(req, res);
 			}
+		}
+		
+		if ("getAll".equals(action)) {
+			Wait_seatDAO WSDao = new Wait_seatDAO();
+			List<Wait_seatVO> list = WSDao.getAllForUser();
+//			Map<String,String> map = new HashMap<>();
+//			if (list!=null) {
+//				for(Wait_seatVO VO:list) {
+//					map.put("wait_seat_no",VO.getWait_seat_no());
+//					map.put("phone_m",VO.getPhone_m());
+//				}
+//			}
+			res.setContentType("application/json; charset=utf-8");
+			PrintWriter out = res.getWriter();
+//			JSONObject jsonObject = new JSONObject(list);
+			Gson gson = new Gson();   
+			String str = gson.toJson(list); 
+			out.print(str);
 		}
 	}
 }

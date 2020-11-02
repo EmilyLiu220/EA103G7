@@ -2,6 +2,14 @@
     pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<%
+	String x = (String) request.getAttribute("x"); // 判斷註冊成功用
+%>
+
+<%
+	String y = (String) request.getAttribute("y"); // 判斷寄信成功用
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +48,7 @@ td {
 </style>
     
 </head>
-<body>
+<body onload="hint()">
 	
 	<%@ include file="/front-end/headfinish.jsp"%>
 	
@@ -98,10 +106,31 @@ td {
 			
 	</FORM>
 	</div>
-		
-		
-		
+				
 		<jsp:include page="/front-end/front/footer.jsp" />
+        
+<script>
+	
+	<!--判斷註冊成功和忘記密碼寄信用-->
+	var x = `${x}`;
+	var y = `${y}`;
+	function hint() {
+		if (x === "success") {
+			alert("註冊成功！");
+		} else if (y === "mail") {
+			alert("臨時密碼已寄出，請至email信箱查收！");
+		}
+	}
+	
+	<!--判斷註冊成功用-->
+// 	var y = `${y}`;
+// 	function send() {
+// 		if (y === "mail") {
+// 			alert("臨時密碼已寄出，請至email信箱查收！");
+// 		}
+// 	}
+	
+</script>
         
 </body>
 </html>

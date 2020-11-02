@@ -217,6 +217,16 @@
 		<url-pattern>/news/news.do</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 候位 -->
+	<servlet>
+		<servlet-name>Wait_seatServlet</servlet-name>
+		<servlet-class>com.wait_seat.controller.Wait_seatServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Wait_seatServlet</servlet-name>
+		<url-pattern>/wait_seat/wait_seat.do</url-pattern>
+	</servlet-mapping>
+	
 		<servlet>
 		<servlet-name>AdServlet</servlet-name>
 		<servlet-class>com.ad.controller.AdServlet</servlet-class>

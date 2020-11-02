@@ -9,6 +9,10 @@
 <%
 	session.setAttribute("insert", "insert");
 %>
+<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
+<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" />
+<jsp:useBean id="resOrderSvc" scope="page" class="com.res_order.model.ResOrderService" />
+<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +31,6 @@ input, select {
 <jsp:include page="/front-end/headfinish.jsp"></jsp:include>
 </head>
 <body>
-	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<%
 		List<SeatVO> list = seatSvc.getAll();
 		TreeSet<Integer> ts = new TreeSet<Integer>();
@@ -40,6 +43,25 @@ input, select {
 		<input type="hidden" id="res_no" name="res_no" value="${param.res_no}">
 		<input type="hidden" id="res_people" value="${param.res_people}">
 		<div class="container" id="modifySeatCondition">
+			<table class="table table-striped table-hover mx-auto w-auto">
+				<tr>
+					<th rowspan="2" style="color: red; font-weight:bold; vertical-align:middle;">原訂位資訊</th>
+					<th>桌位</th>
+					<th>預約訂位日期</th>
+					<th>用餐時段</th>
+					<th>人數</th>
+				</tr>
+				<tr>
+					<td>
+						<c:forEach var="resDetailVO" items="${resDetailSvc.getAllResNO(param.res_no)}">
+							${seatSvc.getOneSeat(resDetailVO.seat_no).seat_f}樓_${seatSvc.getOneSeat(resDetailVO.seat_no).seat_name}桌<br> 
+						</c:forEach>
+						</td>
+					<td>${resOrderSvc.getOneResOrder(param.res_no).res_date}</td>
+					<td>${timePeriSvc.getOneTimePeri(resOrderSvc.getOneResOrder(param.res_no).time_peri_no).time_start}</td>
+					<td>${param.res_people}</td>
+				</tr>
+			</table>
 			<select id="floor_list" name="floor_list">
 				<c:forEach var="seat_f" items="${ts}">
 					<option class="lt" value="${seat_f}">${seat_f}樓座位區</option>
@@ -49,7 +71,6 @@ input, select {
 				<input name="res_date" id="res_date" type="text" value="--請選擇日期--" onfocus="this.blur()"> 
 			<label class="labelOne"> 
 				選擇時段: 
-				<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" /> 
 				<select id="time_peri_no" name="time_peri_no" >
 						<option class="lt" value="-1">--請先選擇日期--</option>
 				</select> 

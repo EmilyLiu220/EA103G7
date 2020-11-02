@@ -69,21 +69,74 @@ public class MemServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
-//				String mem_name = req.getParameter("mem_name");
-//				if (mem_name == null) {
-//					errorMsgs.add("請輸入會員姓名");
-//				}
-				
-				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
-//					failureView.forward(req, res);
-//					return;//程式中斷
-//				}
-				
 				/***************************2.開始查詢資料*****************************************/
 				MemService memSvc = new MemService();
+				MemVO memVO = memSvc.getOneMem(mem_no);
+				
+				if (memVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				
+				req.setAttribute("memVO", memVO); // 資料庫取出的empVO物件,存入req
+				
+				String url = "/back-end/mem/listOneMem.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if ("getOne_For_Display_ByName".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				
+				String mem_name = req.getParameter("mem_name");
+				if (mem_name == null || (mem_name.trim()).length() == 0) {
+					errorMsgs.add("請輸入會員姓名");
+				}
+				
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				String mem_no = null;
+				
+				MemService memSvc = new MemService();
+				List<MemVO> list_m = memSvc.getAll();
+				for (int i = 0; i < list_m.size(); i++) {
+					if (mem_name.equals(list_m.get(i).getMem_name())) {
+						mem_no = list_m.get(i).getMem_no();
+						break;
+					}
+				}
+				
+				System.out.println(mem_no);
+				/***************************2.開始查詢資料*****************************************/
 				MemVO memVO = memSvc.getOneMem(mem_no);
 				
 				if (memVO == null) {
@@ -162,8 +215,6 @@ public class MemServlet extends HttpServlet {
 				
 				String mem_gen = req.getParameter("mem_gen2");
 				
-				System.out.println("mem_gen" + mem_gen);
-				
 				java.sql.Date mem_bir = java.sql.Date.valueOf(req.getParameter("mem_bir").trim());
 				
 				String mem_tel = req.getParameter("mem_tel");
@@ -225,9 +276,13 @@ public class MemServlet extends HttpServlet {
 				/***************************2.開始新增資料***************************************/
 				memVO = memSvc.addMem(mem_name, mem_act, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail);
 				
-				System.out.println("333");
+				// 判斷註冊成功用
+				String x = "success";
+				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				req.setAttribute("memVO", memVO);
+				
+				req.setAttribute("x", x);
 				
 				String url = "/front-end/mem/login_mem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listOneEmp.jsp
@@ -364,18 +419,12 @@ public class MemServlet extends HttpServlet {
 					errorMsgs.add("會員密碼與密碼確認必須一致！");
 				}
 				
-				System.out.println("psw1" + mem_psw1);
-				
 				String mem_gen = req.getParameter("mem_gen");
-				
-				System.out.println("gen" + mem_gen);
 				
 				java.sql.Date mem_bir = java.sql.Date.valueOf(req.getParameter("mem_bir").trim());
 				if (mem_bir == null) {
 					mem_bir = java.sql.Date.valueOf("2020-09-10");
 				}
-				
-				System.out.println("bir" + mem_bir);
 				
 				String mem_tel = req.getParameter("mem_tel");
 				String mem_telReg = "^09[0-9]{8}$";
@@ -384,8 +433,6 @@ public class MemServlet extends HttpServlet {
 				} else if(!mem_tel.trim().matches(mem_telReg)) { 
 					errorMsgs.add("手機號碼: 只能是數字, 且長度必需為10碼");
 	            }
-				
-				System.out.println("tel" + mem_tel);
 				
 				String city = req.getParameter("city").trim();
 				String town = req.getParameter("town").trim();
@@ -404,16 +451,24 @@ public class MemServlet extends HttpServlet {
 					mem_adrs = "";
 				}
 				
-				System.out.println("adrs" + mem_adrs);
-				
 				String mem_mail = req.getParameter("mem_mail");
 				if (mem_mail == null || mem_mail.trim().length() == 0) {
 					errorMsgs.add("e-mail: 請勿空白");
 				}
+				MemService memSvc = new MemService();
+				List<MemVO> list2 = memSvc.getAll();
+				for (int i = 0; i < list2.size(); i++) {
+					if (mem_mail.equals(list2.get(i).getMem_mail())) {
+						errorMsgs.add("此email已被使用！");
+						break;
+					}
+				}
 				
-				System.out.println("mail" + mem_mail);
+				String mem_act = memSvc.getOneMem(mem_no).getMem_act();
 				
 				MemVO memVO = new MemVO();
+				memVO.setMem_no(mem_no);
+				memVO.setMem_act(mem_act);
 				memVO.setMem_name(mem_name);
 				memVO.setMem_psw(mem_psw1);
 				memVO.setMem_gen(mem_gen);
@@ -432,15 +487,15 @@ public class MemServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
-				MemService memSvc = new MemService();
-				memVO = memSvc.updateByMem(mem_name, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail, mem_no);
-				String mem_act = memSvc.getOneMem(mem_no).getMem_act();
+				memSvc.updateByMem(mem_name, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail, mem_no);
 				
-				memVO.setMem_no(mem_no);
-				memVO.setMem_act(mem_act);
+				// 判斷修改成功用
+				String x = "success";
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("memVO", memVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				
+				req.setAttribute("x", x);
 				
 				String url = "/front-end/mem/showMemInfo.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
@@ -482,7 +537,7 @@ public class MemServlet extends HttpServlet {
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("memVO", memVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					req.setAttribute("memVO", memVO); // 含有輸入格式錯誤的memVO物件,也存入req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/back-end/mem/update_mem_sts.jsp");
 					failureView.forward(req, res);
@@ -529,7 +584,7 @@ public class MemServlet extends HttpServlet {
 				memVO = memSvc.getOneMem(mem_no);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("memVO", memVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				req.setAttribute("memVO", memVO); // 資料庫update成功後,正確的的memVO物件,存入req
 				
 				String url = "/back-end/mem/listOneMem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
@@ -545,23 +600,72 @@ public class MemServlet extends HttpServlet {
 		}
 		
 		if ("forget_psw".equals(action)) {
-					
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
 			String mem_mail = req.getParameter("mem_mail");
+			
+			System.out.println("000");
+			
+			MemService memSvc = new MemService();
+			boolean exist = false;
+			List<MemVO> list2 = memSvc.getAll();
+			for (int i = 0; i < list2.size(); i++) {
+				System.out.println("1"+ mem_mail);
+				if (mem_mail.equals(list2.get(i).getMem_mail())) {
+					exist = true;
+					System.out.println("111");
+					break;
+				}
+			}
+			if (!exist) {
+				errorMsgs.add("查無此email！請重新輸入！");
+				System.out.println("222");
+			}
+			
+			// Send the use back to the form, if there were errors
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/mem/forgetPsw.jsp");
+				failureView.forward(req, res);
+				return; //程式中斷
+			}
+			
 			String mem_psw = RandomPsw.genAuthCode(8);
+			
+			System.out.println("333");
 			
 			MemVO memVO = new MemVO();
 			memVO.setMem_mail(mem_mail);
 			memVO.setMem_psw(mem_psw);
 			
-			MemService memSvc = new MemService();
+			System.out.println("444");
+			
 			memVO = memSvc.forgetPsw(mem_psw, mem_mail);
+			
+			System.out.println("555");
 			
 			ForgetPswMail fpm = new ForgetPswMail();
 			String messageText = "請使用此密碼進行登入：" + mem_psw + "\n"
 					+ "點此連結進行登入，並修改密碼:" + "http://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/front-end/mem/login_mem.jsp";
 			fpm.sendMail(mem_mail, "忘記密碼", messageText);
 			
-			res.sendRedirect(req.getContextPath() + "/front-end/mem/login_mem.jsp");
+			System.out.println("666");
+			
+			String y = "mail";
+			
+			req.setAttribute("y", y);
+			
+			String url = "/front-end/mem/login_mem.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+			
+			System.out.println("777");
+			
+//			res.sendRedirect(req.getContextPath() + "/front-end/mem/login_mem.jsp");
 		}
 		
 		if ("logout".equals(action)) {
