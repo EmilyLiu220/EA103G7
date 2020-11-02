@@ -518,6 +518,14 @@ public class MemServlet extends HttpServlet {
 				HttpSession session_m = req.getSession();
 				session_m.setAttribute("memVO2", memVO);
 				
+				if (mem_sts == 0) {
+					session_m.removeAttribute("account_m");
+					session_m.removeAttribute("memVO2");
+					session_m.removeAttribute("front_informVOs");
+					
+//					res.sendRedirect(req.getContextPath() + "/front-end/front_home.jsp");
+				}
+				
 				memVO = memSvc.getOneMem(mem_no);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
@@ -582,8 +590,13 @@ public class MemServlet extends HttpServlet {
 				
 				LoginHandler lh = new LoginHandler();
 				// 【檢查該帳號 , 密碼是否有效】
-			    if (!lh.allowUser(account, password)) {          //【帳號 , 密碼無效時】
+			    if (lh.allowUser(account, password) == 0) {          //【帳號 , 密碼無效時】
 			    	errorMsgs.add("您的帳號或密碼無效！請重新輸入！");
+			    	RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/mem/login_mem.jsp");
+					failureView.forward(req, res);
+			    } else if (lh.allowUser(account, password) == 1) {
+			    	errorMsgs.add("您已被停權！請快點滾！");
 			    	RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/mem/login_mem.jsp");
 					failureView.forward(req, res);

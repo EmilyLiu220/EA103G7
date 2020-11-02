@@ -586,8 +586,13 @@ public class EmpServlet extends HttpServlet {
 				
 				LoginHandler lh = new LoginHandler();
 				// 【檢查該帳號 , 密碼是否有效】
-			    if (!lh.allowUser(account, password)) {          //【帳號 , 密碼無效時】
+			    if (lh.allowUser(account, password) == 0) {          //【帳號 , 密碼無效時】
 			    	errorMsgs.add("您的帳號或密碼無效！請重新輸入！");
+			    	RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/login.jsp");
+					failureView.forward(req, res);
+			    } else if (lh.allowUser(account, password) == 1) {
+			    	errorMsgs.add("您已離職，請快點滾！");
 			    	RequestDispatcher failureView = req
 							.getRequestDispatcher("/back-end/emp/login.jsp");
 					failureView.forward(req, res);
