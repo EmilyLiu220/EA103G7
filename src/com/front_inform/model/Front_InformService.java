@@ -21,7 +21,7 @@ public class Front_InformService {
 	
 	public void addNormalFI(String mem_no, String info_cont) { 
 		// 由 meal_order 的 controller，在符合的動作區塊內去 new 這支 Service 並使用此方法
-		// info_cont="訂餐成功！您尚未付款，點選前往結帳" 或 "您已成功付款，點選查看訂單明細" 或 "您的餐點已完成，請至本餐廳取餐" 或 "您的訂單已取消"
+		// info_cont="您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" 或 "您的訂餐已取消"
 		List<Front_InformVO> fiVOs = new ArrayList<Front_InformVO>();
 		Front_InformVO fiVO = dao.insertInfo(mem_no, info_cont);
 		if(fiVO!=null) {

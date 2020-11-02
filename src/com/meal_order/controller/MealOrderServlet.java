@@ -23,6 +23,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.front_inform.model.*;
 import com.google.gson.Gson;
 import com.meal.model.*;
 import com.meal_order.model.*;
@@ -240,6 +241,8 @@ public class MealOrderServlet extends HttpServlet {
 				RequestDispatcher success = req.getRequestDispatcher(url);
 				success.forward(req, res);
 			} else {
+				Front_InformService fiSvc = new Front_InformService();
+				fiSvc.addNormalFI(mealOrderVO.getMem_no(), "您的訂餐已取消");
 				mealOrderSrv.updateOrderSts(mealOrderNo, 0, mealOrderVO.getNoti_sts(), mealOrderVO.getPay_sts());
 				mealOrderVO.setMeal_order_sts(0);
 				req.setAttribute("mealOrderVO", mealOrderVO);
@@ -287,10 +290,12 @@ public class MealOrderServlet extends HttpServlet {
 
 			String mealOrderNo = (String) req.getParameter("meal_order_no");
 			Integer mealOrderSts = new Integer(3);
-			Integer notiSts = new Integer(req.getParameter("noti_sts"));
+			Integer notiSts = new Integer(1); // 原 req.getParameter("noti_sts")
 			Integer paySts = new Integer(req.getParameter("pay_sts"));
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
+			Front_InformService fiSvc = new Front_InformService();
+			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)");
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
