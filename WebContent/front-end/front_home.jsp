@@ -50,43 +50,6 @@
 <body>
 	<%-- 小鈴鐺 table 開始 --%>
 	<table id="fi_cont" style="border: 0; display: none;">
-		<c:forEach var="front_informVO" items="${front_informVOs}">
-			<tr name="${(front_informVO.read_sts == 0) ? 'unread':'read'}">
-				<c:choose>
-					<c:when test="${front_informVO.info_sts == 2}">
-						<td style="width: 300px;word-break: break-all;">${front_informVO.info_cont}<br>
-							<div class="d-flex justify-content-end">
-								<button id="${front_informVO.info_no}yes"
-									style="margin-right: 3px"
-									onclick="confirm('${front_informVO.info_no}', '${front_informVO.res_no}')">確認</button>
-								<button id="${front_informVO.info_no}no"
-									onclick="cancel('${front_informVO.info_no}', '${front_informVO.res_no}')">取消</button>
-							</div>
-						</td>
-					</c:when>
-					<c:when test="${front_informVO.info_sts == 1}">
-						<td style="width: 300px;word-break: break-all;">${front_informVO.info_cont}<br>
-							<div class="d-flex justify-content-end">
-								<span>已確認</span>
-							</div>
-						</td>
-					</c:when>
-					<c:when test="${front_informVO.info_sts == 3}">
-						<td style="width: 300px;word-break: break-all;">${front_informVO.info_cont}<br>
-							<div class="d-flex justify-content-end">
-								<span>已取消</span>
-							</div>
-						</td>
-					</c:when>
-					<c:otherwise>
-						<td style="width: 300px;word-break: break-all;">${front_informVO.info_cont}</td>
-					</c:otherwise>
-				</c:choose>
-
-				<td style="width: 100px;"><fmt:formatDate
-						value="${front_informVO.info_date}" pattern="yyyy-MM-dd" /></td>
-			</tr>
-		</c:forEach>
 	</table>
 	<%-- 小鈴鐺 table 結束 --%>
 
@@ -613,33 +576,6 @@
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/toastr.min.js"></script>
 <script type="text/javascript">
-	<%-- 取得通知訊息 --%>	
-	getInform();
-	
-	function getInform(){
-		$.ajax({
-			 url:'<%=request.getContextPath() %>/front_inform/fi.do',
-			 method:"POST",
-			 contentType:'application/x-www-form-urlencoded; charset=utf-8',
-			 dataType:"json",
-			 data:{
-				 action: 'getMyInform'
-			 },
-			 success:function(res){
-				 // 要拚 Table 的地方
-				 QAQ = res
-				 console.log(res);
-			 },
-			 error:function(err){},	
-		});
-	}
-	
-	window.onbeforeunload=function(e){
-		getInform();
-	}
-	
-	
-	
 	<%-- 聊天室  webSocket --%>
 	var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
 	var host = window.location.host;
@@ -666,7 +602,7 @@
 			"onclick": null,
 			"showDuration": "500",
 			"hideDuration": "1000",
-			"timeOut": "5000",
+			"timeOut": "10000",
 			"extendedTimeOut": "1000",
 			"showEasing": "swing",
 			"hideEasing": "linear",

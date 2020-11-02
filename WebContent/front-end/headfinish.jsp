@@ -265,26 +265,6 @@
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/toastr.min.js"></script>
 <script type="text/javascript">
-	<%-- 取得通知訊息	
-	getInform();
-	
-	function getInform(){
-		$.ajax({
-			 url:'<%=request.getContextPath() %>/front_inform/fi.do',
-			 method:"POST",
-			 dataType:"text",
-			 data:{
-				 action: 'getMyInform',
-			 },
-			 success:function(res){},
-			 error:function(err){},	
-		});
-	}
-	
-	window.onbeforeunload=function(e){
-		getInform();
-	} --%>
-		
 	<%-- 聊天室  webSocket --%>
 	var MyPoint = "/Message_RecordWS/${memVO2.mem_no}"; 
 	var host = window.location.host;
