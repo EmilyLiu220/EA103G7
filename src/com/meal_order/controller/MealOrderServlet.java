@@ -1,11 +1,13 @@
 package com.meal_order.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.RequestDispatcher;
@@ -270,8 +272,8 @@ public class MealOrderServlet extends HttpServlet {
 
 			Map<String, Object> pushMsg = new HashMap<>();
 			pushMsg.put("mealOrderVO", mealOrderVO);
-			if(mealOrderVO.getMeal_order_sts()==2) {
-			pushMsg.put("action", "prepared");
+			if (mealOrderVO.getMeal_order_sts() == 2) {
+				pushMsg.put("action", "prepared");
 			}
 			pushMsg.put("detailList", detailList);
 			String jsonMap = gson.toJson(pushMsg);
@@ -361,6 +363,79 @@ public class MealOrderServlet extends HttpServlet {
 			req.setAttribute("action", action);
 			req.setAttribute("orderList", orderList);
 			req.getRequestDispatcher("/back-end/mealOrder/listQueryOrder2.jsp").forward(req, res);
+
+		}
+
+		if ("orderChart".equals(action)) {
+
+			Map<String, String[]> map = (HashMap) session.getAttribute("orderChart");
+//			if (map == null || map.isEmpty()) {
+			if (req.getParameter("whichPage") == null) {
+				Map<String, String[]> map2 = new HashMap<>(req.getParameterMap());
+				session.setAttribute("orderChart", map2);
+				map = map2;
+
+			}
+//			}
+			MealOrderService mealOrderSrv = new MealOrderService();
+			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
+//			List<MealOrderDetailVO> detailList = new ArrayList<>();
+			MealOrderDetailService detailSrv = new MealOrderDetailService();
+			MealService mealSrv = new MealService();
+			MealSetService mealSetSrv = new MealSetService();
+//			Map <String,MealVO> mealMap = new HashMap<>();
+//			for(MealVO mealVO : mealSrv.getAll()) {
+//			mealMap.put(mealVO.getMeal_no(),mealVO);						;
+//			}
+
+			Map<String, Object> mealMap = mealSrv.getAll().stream()
+					.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
+			Map<String, Object> mealSetMap = mealSetSrv.getAll().stream()
+					.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
+
+			for (MealOrderVO mealOrderVO : orderList) {
+				for (MealOrderDetailVO detailVO : detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no())) {
+					if (detailVO.getMeal_no() != null) {
+						if (detailVO.getMeal_no().equals(mealMap.get(detailVO.getMeal_no()))) {
+							((MealVO) mealMap.get(detailVO.getMeal_no())).setMeal_qty(
+									((MealVO) mealMap.get(detailVO.getMeal_no())).getMeal_qty() + detailVO.getQty());
+						}
+					}
+					if (detailVO.getMeal_set_no() != null) {
+						if (detailVO.getMeal_set_no().equals(mealSetMap.get(detailVO.getMeal_set_no()))) {
+							((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).setMeal_set_qty(
+									((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).getMeal_set_qty()
+											+ detailVO.getQty());
+						}
+					}
+				}
+			}
+
+			int amount;
+			int mealCount = 0;
+			int mealSetCount = 0;
+
+			for (MealOrderVO mealOrderVO : orderList) {
+				mealCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
+						.filter(d -> (d.getMeal_no() != null)).mapToInt(d -> d.getQty()).sum();
+				mealSetCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
+						.filter(d -> (d.getMeal_set_no() != null)).mapToInt(d -> d.getQty()).sum();
+			}
+			amount = orderList.stream().mapToInt(m -> m.getAmount()).sum();
+			Map<String, Map<String, Object>> jsonMap = new HashMap<>();
+			jsonMap.put("mealMap", mealMap);
+			jsonMap.put("mealSetMap",mealSetMap);
+			Gson gson = new Gson();
+			String jsondata = gson.toJson(jsonMap);
+			res.setContentType("application/json; charset=utf-8");
+			PrintWriter out = res.getWriter();
+			out.write(jsondata);
+			System.out.println(jsondata);
+			
+			req.setAttribute("mealMap", mealMap);
+			req.setAttribute("mealSetMap", mealSetMap);
+			req.setAttribute("orderList", orderList);
+//			req.getRequestDispatcher("/back-end/mealOrder/orderChart.jsp").forward(req, res);
 
 		}
 
