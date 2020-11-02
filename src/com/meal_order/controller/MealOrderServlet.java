@@ -305,7 +305,7 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			Front_InformService fiSvc = new Front_InformService();
-			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "您的餐點已完成，請至本餐廳取餐(點選可查看訂單)");
+			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "餐點已完成，請至本餐廳取餐(點選可查看訂單)");
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();
