@@ -6,6 +6,10 @@
 	String x = (String) request.getAttribute("x"); // 判斷註冊成功用
 %>
 
+<%
+	String y = (String) request.getAttribute("y"); // 判斷寄信成功用
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +48,7 @@ td {
 </style>
     
 </head>
-<body onload="sign()">
+<body onload="hint()">
 	
 	<%@ include file="/front-end/headfinish.jsp"%>
 	
@@ -107,13 +111,24 @@ td {
         
 <script>
 	
-	<!--判斷註冊成功用-->
+	<!--判斷註冊成功和忘記密碼寄信用-->
 	var x = `${x}`;
-	function sign() {
+	var y = `${y}`;
+	function hint() {
 		if (x === "success") {
 			alert("註冊成功！");
+		} else if (y === "mail") {
+			alert("臨時密碼已寄出，請至email信箱查收！");
 		}
 	}
+	
+	<!--判斷註冊成功用-->
+// 	var y = `${y}`;
+// 	function send() {
+// 		if (y === "mail") {
+// 			alert("臨時密碼已寄出，請至email信箱查收！");
+// 		}
+// 	}
 	
 </script>
         

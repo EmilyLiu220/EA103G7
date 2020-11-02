@@ -24,6 +24,16 @@
 	<div id="container">
 	<h3 style="text-align:center">忘記密碼</h3>
 	
+	<%-- 錯誤表列 --%>
+	<c:if test="${not empty errorMsgs}">
+		<font style="color:red">請修正以下錯誤:</font>
+		<ul>
+			<c:forEach var="message" items="${errorMsgs}">
+				<li style="color:red">${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+	
 	<form method="post" action="<%=request.getContextPath()%>/front-end/mem/mem.do">
 		<span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;請輸入email:</span>
 		<input type="email" name="mem_mail" value="" required>
@@ -41,14 +51,14 @@
 
 <script>
 
-	var mem_mail = document.getElementsByName("mem_mail");
-	var ok = document.getElementById("ok");
+// 	var mem_mail = document.getElementsByName("mem_mail");
+// 	var ok = document.getElementById("ok");
 	
-	ok.addEventListener("click", function() {
-		if (mem_mail[0].value !== "") {
-			alert("臨時密碼已寄出，請至email信箱查收！");
-		}
-	});
+// 	ok.addEventListener("click", function() {
+// 		if (mem_mail[0].value !== "") {
+// 			alert("臨時密碼已寄出，請至email信箱查收！");
+// 		}
+// 	});
 
 </script>
 
