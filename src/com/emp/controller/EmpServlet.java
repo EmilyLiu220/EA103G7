@@ -91,10 +91,9 @@ public class EmpServlet extends HttpServlet {
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("emp_authVO", list);
-				
 				req.setAttribute("empVO", empVO); // 資料庫取出的empVO物件,存入req
 				
+				req.setAttribute("emp_authVO", list);
 				
 				// 為了得到權限名稱
 				List<Fun_authVO> list2 = new ArrayList<>();
@@ -104,6 +103,83 @@ public class EmpServlet extends HttpServlet {
 				}
 				req.setAttribute("fun_authVO", list2);
 				
+				String url = "/back-end/emp/listOneEmp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/emp/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if ("getOne_For_Display_ByName".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				
+				String emp_name = req.getParameter("emp_name");
+				if (emp_name == null || (emp_name.trim()).length() == 0) {
+					errorMsgs.add("請輸入員工姓名");
+				}
+				
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				String emp_no = null;
+				
+				EmpService empSvc = new EmpService();
+				List<EmpVO> list_e = empSvc.getAll();
+				for (int i = 0; i < list_e.size(); i++) {
+					if (emp_name.equals(list_e.get(i).getEmp_name())) {
+						emp_no = list_e.get(i).getEmp_no();
+						break;
+					}
+				}
+				
+				System.out.println(emp_no);
+				/***************************2.開始查詢資料*****************************************/
+				EmpVO empVO = empSvc.getOneEmp(emp_no);
+				
+				Emp_authService emp_authService = new Emp_authService();
+				List<Emp_authVO> list = emp_authService.getOneEmp_auth(emp_no);
+				
+				if (empVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("empVO", empVO); // 資料庫取出的empVO物件,存入req
+				
+				req.setAttribute("emp_authVO", list);
+				
+				// 為了得到權限名稱
+				List<Fun_authVO> list2 = new ArrayList<>();
+				for (int i = 0; i < list.size(); i++) {
+					Fun_authVO Fun_authVO = new Fun_authService().getOneFun(list.get(i).getFun_no());
+					list2.add(Fun_authVO);
+				}
+				req.setAttribute("fun_authVO", list2);
 				
 				String url = "/back-end/emp/listOneEmp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
