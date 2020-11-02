@@ -45,6 +45,7 @@ public class ResOrderServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
+		res.setContentType("text/html;charset=UTF-8");
 		String action = req.getParameter("action");
 		String goMeal = req.getParameter("goMeal");
 		HttpSession hs = req.getSession();
@@ -240,7 +241,6 @@ public class ResOrderServlet extends HttpServlet {
 
 		/********************** 取得今日此時段，那些位置被訂了 **********************/
 		if ("get_Res_Order_Today".equals(action)) {
-
 			PrintWriter out = res.getWriter();
 
 			String res_date = req.getParameter("res_date");
@@ -263,12 +263,12 @@ public class ResOrderServlet extends HttpServlet {
 					}
 				}
 				JSONArray seatNoJSONList = new JSONArray(seatNoList);
-				res.setContentType("text/plain");
 				res.setCharacterEncoding("UTF-8");
 				out.print(seatNoJSONList.toString());
 				out.flush();
 				out.close();
 			} else {
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "請選擇正確時段");
 				return;
 			}
 			return;

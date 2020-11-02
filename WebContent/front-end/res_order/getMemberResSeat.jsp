@@ -1,10 +1,10 @@
-<%@page import="com.mem.model.MemVO"%>
-<%@page import="com.time_peri.model.TimePeriService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.res_order.model.*"%>
+<%@page import="com.mem.model.MemVO"%>
+<%@page import="com.time_peri.model.TimePeriService"%>
 <%
 	MemVO memVO = (MemVO) session.getAttribute("memVO2");
  	ResOrderService resOrderSvc = new ResOrderService();
@@ -38,18 +38,15 @@
 		<td><h3 style="margin-bottom:0;">進行中的訂位</h3></td>
 	</tr>
 </table>
-<table class="table table-striped table-hover mx-auto w-auto">
 <c:choose>
 	 <c:when test="${list.size() eq 0}">
 	 	<font style="font-size: 40px;" color="red">查無資料</font><br>
     </c:when>
     <c:otherwise>
+<table class="table table-striped table-hover mx-auto w-auto">
 	<tr>
 		<th>桌位</th>
 		<th>訂餐明細</th>
-<!-- 		<th>會員編號</th> -->
-<!-- 		<th>員工編號</th> -->
-<!-- 		<th>訂單成立時間</th> -->
 		<th>預約訂位日期</th>
 		<th>用餐時段</th>
 		<th>人數</th>
@@ -100,20 +97,6 @@
 					</form>
 				</c:if>
 			</td>
-<!-- 			<td> -->
-<%-- 				${resOrderVO.mem_no} --%>
-<!-- 			</td> -->
-<!-- 			<td> -->
-<%-- 				<c:if test="${not empty resOrderVO.emp_no}"> --%>
-<%-- 					${resOrderVO.emp_no} --%>
-<%-- 				</c:if>  --%>
-<%-- 				<c:if test="${empty resOrderVO.emp_no}"> --%>
-<!-- 					無 -->
-<%-- 				</c:if> --%>
-<!-- 			</td> -->
-<!-- 			<td> -->
-<%-- 				<fmt:formatDate value="${resOrderVO.res_time}" pattern="yyyy-MM-dd HH:mm:ss"/> --%>
-<!-- 			</td> -->
 			<td>
 				${resOrderVO.res_date}
 			</td>

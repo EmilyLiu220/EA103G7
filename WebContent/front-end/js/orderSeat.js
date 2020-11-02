@@ -198,7 +198,6 @@ $(document).ready(function() {
 			});
 			$(this).prop("disabled", false);
 			$(this).prop("checked", false);
-			
 		}
 		var thisCheckboxValue = $(this).val();
 		var thisCheckbox = $(this);
@@ -255,6 +254,8 @@ $(document).ready(function() {
 				return false;
 			}
 		});
+		$("#chooseSeatPeople").text(" "+chooseSeatPeople+" ");
+		console.log(chooseSeatPeople);
 		return false;
 	});
 

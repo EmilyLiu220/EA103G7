@@ -40,7 +40,6 @@
 						<td><h3 style="margin-bottom:0;">桌位編輯</h3></td>
 					</tr>
 				</table>
-				<br>
 				<jsp:include page="/back-end/seat/editSeat_include.jsp"></jsp:include>
 			</div>
 		</div>

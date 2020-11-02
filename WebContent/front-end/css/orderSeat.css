@@ -15,8 +15,11 @@ div.container {
 }
 
 div#orderSeatCondition.container {
-	top: 168px;
-	position: sticky;
+	background-color: lime;
+	width: 230px;
+	top: 170px;
+	left: 0;
+	position: fixed;
 	z-index: 500;
 	/* 	background: #FFFFFF; */
 }
@@ -44,8 +47,8 @@ div#container.container {
 }
 
 .drag .myCheckbox {
-	width: 20px;
-	height: 20px;
+	width: 0px;
+	height: 0px;
 	position: absolute;
 	bottom: 15px;
 	right: 0px;
@@ -55,8 +58,13 @@ div#container.container {
 /* 	height: 0; */
 /* 	display: inline-block; */
 /* } */
-.labelOne, .labelTwo {
+.labelOne, .labelTwo{
 	display: none;
+}
+
+.labelThree {
+	text-align: center;
+	background-color: transparent;
 }
 
 .drag {
@@ -106,12 +114,24 @@ img {
 	display: none;
 }
 
-select#time_peri_no, select#floor_list, input#people, input#res_date {
+select#time_peri_no, select#floor_list, input#people, input#people, input#res_date {
 	width: 180px;
 	height: 40px;
 	font-size: 20px;
 	text-align: center;
 	position: relative;
+}
+
+input#chooseSeatPeople {
+	width: 50px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	position: relative;
+	background-color: transparent;
+	border-color: rgba(0, 0, 0, 0);
+	box-shadow: 0 rgba(0, 0, 0, 0) inset, 0 rgba(0, 0, 0, 0);
+	outline: 0 none;
 }
 
 select#time_peri_no {
