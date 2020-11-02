@@ -145,46 +145,46 @@ $(document).ready(function() {
 		lock_people = false; // 3.進來後，立馬把鎖鎖住
 		var people = $("#people").val();
 		if(parseInt(people) < chooseSeatPeople) {
+//			console.log(chooseSeatPeople);
 			var people = $("#res_people").val();
-//			console.log(jsonArray_people);
+			var time_peri_no = $("#time_peri_no").val();
+			var res_date = $("#res_date").val();
+			chooseSeatPeople = 0;
 			$("#people").val(people);
 			swal("人數低於選擇座位人數！", "請重新確認人數", "warning");
 			$.each($(".myCheckbox"), (i, itemCheckbox) =>{
-				$.each(JSON.parse(thisResInfo).seat_no , (i, item) =>{
-					let time_peri_no = $("#time_peri_no").val();
-					let res_date = $("#res_date").val();
-					if($(itemCheckbox).val() == item && JSON.parse(thisResInfo).res_date == res_date && JSON.parse(thisResInfo).time_peri_no == time_peri_no) {
+				$.each(JSON.parse(JSONArray) , (i, item) =>{
+					if($(itemCheckbox).val() == item ) {
+						$(item).closest(".drag").css({
+							filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+						});
+						$(item).prop("checked", true);
+						$(item).prop("disabled", false);
+						$("#people").val(people);
+					}
+				});
+				$.each(JSON.parse(thisResInfo).seat_no, (i, orderSeat) => {
+					if ($(itemCheckbox).val() == orderSeat  && JSON.parse(thisResInfo).res_date == res_date && JSON.parse(thisResInfo).time_peri_no == time_peri_no) {
 						$(itemCheckbox).closest(".drag").css({
 							filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(252deg) brightness(103%) contrast(118%)",
 						});
-						$(itemCheckbox).prop("checked", true);
 						$(itemCheckbox).prop("disabled", false);
-						$("#people").val(people);
-					} else {
-						$(itemCheckbox).closest(".drag").css({
-							filter: "hue-rotate(0deg)",
-						});
-						$(itemCheckbox).prop("checked", false);
-						$(itemCheckbox).prop("disabled", true);
-					}
-				});
-			});
-			chooseSeatPeople = 0;
-			$.each($(".myCheckbox"), (i, itemCheckbox) =>{
-				$.each(jsonArray_people, function(_index, itemPeople) {
-					let key = Object.keys(itemPeople);
-					let value = Object.values(itemPeople);
-					if (key[0] === $(itemCheckbox).val()) {
-						if ($(itemCheckbox).is(":checked")) {
-							addChooseSeatPeople(value[0]);
-						}
+						$(itemCheckbox).prop("checked", true);
+						$(itemCheckbox).css("display", "block");
+						addChooseSeatPeople(parseInt(JSON.parse(thisResInfo).people));
 					}
 				});
 			});
 		}
 		if(parseInt(people) > chooseSeatPeople ){
+			console.log(chooseSeatPeople);
 			$.each($(".myCheckbox").not(":checked"), (i, item) =>{
 				$(item).prop("disabled", false);
+			});
+		}
+		if(parseInt(people) == chooseSeatPeople ){
+			$.each($(".myCheckbox").not(":checked"), (i, item) =>{
+				$(item).prop("disabled", true);
 			});
 		}
 		if ($("#people").val() > 20 || $("#people").val() < 1) {
@@ -501,6 +501,7 @@ $(document).ready(function() {
 				"time_peri_no": time_peri_no,
 			},
 			success: function(messages) {
+				setJSONArray(messages);
 				var jsonArray = JSON.parse(messages);
 				var $myCheckbox = $(".myCheckbox");
 				$.each($myCheckbox, function(_index, item) {
@@ -609,12 +610,19 @@ $(document).ready(function() {
 	function setJSONArray_people(value) {
 		jsonArray_people = value;
 	}
+	
+	function setJSONArray(jsonArray){
+		JSONArray = jsonArray;
+	}
+	
 	function addChooseSeatPeople(value) {
 		chooseSeatPeople += value;
 	}
+	
 	function lessChooseSeatPeople(value) {
 		chooseSeatPeople -= value;
 	}
+	
 	function getThisResInfo(resInfo){
 		thisResInfo = resInfo;
 	}
