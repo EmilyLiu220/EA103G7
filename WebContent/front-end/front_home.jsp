@@ -903,7 +903,7 @@
 					var informTdC_A = document.createElement('a');
 					if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單" || jsonObj.info_cont == "您的訂位已取消"){
 						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
-					}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){
+					}else if( jsonObj.info_cont == "訂餐成功，點選查看訂餐訂單" || jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐(點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){
 						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
 					}
 					// tr 中的第一個 td
@@ -1075,12 +1075,12 @@
 					var informTdC_A = document.createElement('a');
 					if( jsonObj.info_cont == "訂位成功，點選查看訂位訂單" || jsonObj.info_cont == "訂位訂單修改成功，點選查看訂位訂單" || jsonObj.info_cont == "您的訂位已取消"){
 						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp");
-					}else if( jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){ 
+					}else if( jsonObj.info_cont == "訂餐成功，點選查看訂餐訂單" || jsonObj.info_cont == "您的餐點已完成，請至本餐廳取餐(點選可查看訂單)" || jsonObj.info_cont == "您的訂餐已取消" ){ 
 						informTdC_A.setAttribute("href","<%=request.getContextPath()%>/front-end/shopping/mealOrder.jsp");
 					}
 					// tr 中的第一個 td
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width: 300px; word-break: break-all;"; // 此 td 寬度 300px
 					// 把 info_cont 填入 a 中
 					informTdC_A.style.cssText = "word-break: break-all;";
 					informTdC_A.innerHTML = jsonObj.info_cont;
