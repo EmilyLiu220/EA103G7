@@ -53,7 +53,7 @@ text-decoration: underline;
 .container{
 
 }
-.container canvas{
+#myChart{
 width: 100%;
 height:450px;
 display: block;
@@ -230,67 +230,67 @@ display: block;
 				取餐時間：<input type="text" name="pickup_time" class="f_date1"/>
 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td>
 				<td>
-				<input type="submit" value="查詢結果"/>
-				<input type="hidden" name="action" value="queryAll"/></td>
+				<input id="submit" type="button" value="查詢結果"/>
+				<input type="hidden" name="action" value="orderChart"/></td>
 				</tr>
 				
 				</table>
 				</form>
 				<br>
-				<%-- 錯誤表列 --%>
-				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
-						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
+<%-- 				錯誤表列 --%>
+<%-- 				<c:if test="${not empty errorMsgs}"> --%>
+<!-- 					<font style="color: red">請修正以下錯誤:</font> -->
+<!-- 					<ul> -->
+<%-- 						<c:forEach var="message" items="${errorMsgs}"> --%>
+<%-- 							<li style="color: red">${message}</li> --%>
+<%-- 						</c:forEach> --%>
+<!-- 					</ul> -->
+<%-- 				</c:if> --%>
 				<div class="container">
 				<canvas id="myChart" width="400" height="400"></canvas>
 				</div>
-				<table class="table table-hover" style="width: 100%; font-size: 90%;">
-					<thead style="text-align: center;">
-						<tr>
-							<th style="width: 10%;">訂餐編號</th>
-							<th style="width: 10%;">員工編號</th>
-							<th style="width: 10%;">會員編號</th>
-							<th style="width: 15%;">訂餐時間</th>
-							<th style="width: 15%;">預計取餐時間</th>
-							<th style="width: 10%;">訂單金額</th>
-							<th style="width: 10%;">通知狀態</th>
-							<th style="width: 10%;">付款狀態</th>
-							<th style="width: 10%;">訂單狀態</th>
-						</tr>
-					</thead>
-					<%@ include file="page1.file"%>
-					<tbody>
-					<c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-						<tr ${(mealOrderVO.meal_order_no == param.meal_order_no) ? 'bgcolor=#c8a97e':''}>
-							<td style="text-align: center;"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></td>
-							<td style="text-align: center;">${mealOrderVO.emp_no}</td>
-							<td style="text-align: center;">${mealOrderVO.mem_no!=null ? mealOrderVO.mem_no :'非會員顧客'}</td>
-							<td style="text-align: center;">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</td>
-							<td style="text-align: center;">${mealOrderVO.pickup_time !=null ? mealOrderSrv2.dateFormat(mealOrderVO.pickup_time) : '現場用餐'}</td>
-							<td style="text-align: center;">${mealOrderVO.amount}</td>
-							<td style="text-align: center;">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</td>
-							<td style="text-align: center;">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</td>
-							<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 0}"><font color="red">已取消</font></c:if>
-   														 	<c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if>
-   														 	<c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if>
-    														<c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if>
-    														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
-				<%@ include file="page2.file"%>
-			</p>
-		</div>
+<!-- 				<table class="table table-hover" style="width: 100%; font-size: 90%;"> -->
+<!-- 					<thead style="text-align: center;"> -->
+<!-- 						<tr> -->
+<!-- 							<th style="width: 10%;">訂餐編號</th> -->
+<!-- 							<th style="width: 10%;">員工編號</th> -->
+<!-- 							<th style="width: 10%;">會員編號</th> -->
+<!-- 							<th style="width: 15%;">訂餐時間</th> -->
+<!-- 							<th style="width: 15%;">預計取餐時間</th> -->
+<!-- 							<th style="width: 10%;">訂單金額</th> -->
+<!-- 							<th style="width: 10%;">通知狀態</th> -->
+<!-- 							<th style="width: 10%;">付款狀態</th> -->
+<!-- 							<th style="width: 10%;">訂單狀態</th> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+<%-- 					<%@ include file="page1.file"%> --%>
+<!-- 					<tbody> -->
+<%-- 					<c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> --%>
+<%-- 						<tr ${(mealOrderVO.meal_order_no == param.meal_order_no) ? 'bgcolor=#c8a97e':''}> --%>
+<%-- 							<td style="text-align: center;"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderVO.emp_no}</td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderVO.mem_no!=null ? mealOrderVO.mem_no :'非會員顧客'}</td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderVO.pickup_time !=null ? mealOrderSrv2.dateFormat(mealOrderVO.pickup_time) : '現場用餐'}</td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderVO.amount}</td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</td> --%>
+<%-- 							<td style="text-align: center;">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</td> --%>
+<%-- 							<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 0}"><font color="red">已取消</font></c:if> --%>
+<%--    														 	<c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if> --%>
+<%--    														 	<c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if> --%>
+<%--     														<c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if> --%>
+<%--     														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td> --%>
+<!-- 						</tr> -->
+<%-- 					</c:forEach> --%>
+<!-- 					</tbody> -->
+<!-- 				</table> -->
+<%-- 				<%@ include file="page2.file"%> --%>
+<!-- 			</p> -->
+<!-- 		</div> -->
 	</div>
-
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 	<!-- Popper.JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<!-- Bootstrap JS -->
@@ -334,38 +334,195 @@ display: block;
 //            maxDate:               new Date(now.getFullYear(),(now.getMonth()+1),now.getDate())  // 去除今日(不含)之後
         });
         
+        $("#submit").click(function(e){
+        	e.preventDefault();
+        	$.ajax({
+                url: "${pageContext.request.contextPath}/MealOrderServlet.do",
+                type: "POST",
+                data: {
+                    action: 'orderChart',
+                    meal_order_no:$('#table-2').find('input[name="meal_order_no"]').val(),
+                    mem_no:$('#table-2').find('input[name="mem_no"]').val(),
+                    emp_no:$('#table-2').find('input[name="emp_no"]').val(),
+                    noti_sts:$('#table-2').find('input[name="noti_sts"]').val(),
+                    pay_sts:$('#table-2').find('input[name="pay_sts"]').val(),
+                    meal_order_sts:$('#table-2').find('input[name="meal_order_sts"]').val(),
+                    order_time:[$('#table-2').find('input[name="order_time"]').val(),$('#table-2').find('input[name="order_time"]').val()],
+                    pickup_time:[$('#table-2').find('input[name="pickup_time"]').val(),$('#table-2').find('input[name="pickup_time"]').val()]
+                    
+                },
+                dataType: "JSON",
+                success: function (e) {
+                	console.log(typeof(e));
+                	console.log(Object.keys(e.mealMap).length);
+                	var mealLen = Object.keys(e.mealMap).length;
+                	var setLen = Object.keys(e.mealSetMap).length;
+                	console.log(mealLen);
+                	console.log(setLen);
+                	var mealKeys = Object.keys(e.mealMap);
+                	var setKeys = Object.keys(e.mealSetMap);
+                	
+                	var dataset =[]; 
+                		for(let i =0,i<mealLen,i++){
+                		var mealObj[i] =
+                		
+ 	               		{
+ 	               		label:e.mealMap.mealKeys[i].meal_name,
+                        data: [120, 0, 30, 50, 20, 30,75,66,132,260,88,364],
+                        fill: false,
+                        backgroundColor: [
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)',
+                            'rgba(0, 0, 0, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 0, 0, 1)',
+                        ],
+                        borderWidth: 1
+                		}
+ 	               		};
+                		
+                		
+                
+                	
+                	
+                	
+                	var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                            datasets: [{
+                                label: '${mealMap.get("MEAL0001").meal_name}',
+                                data: [120, 0, 30, 50, 20, 30,75,66,132,260,88,364],
+                                fill: false,
+                                backgroundColor: [
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)',
+                                    'rgba(0, 0, 0, 1)'
+                                ],
+                                borderColor: [
+                                    'rgba(0, 0, 0, 1)',
+                                ],
+                                borderWidth: 1
+                            },{
+                                label: 'second',
+                                data: [66, 124, 28, 177, 37, 12,33,175,98,222,67,227],
+                                fill: false,
+                                backgroundColor: [
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)',
+                                    'rgba(0, 0, 255, 1)'
+                                ],
+                                borderColor: [
+                                    'rgba(0, 0, 255, 1)',
+                                ],
+                                borderWidth: 1
+                            }],
+                           
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                    	stepSize: 30,
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+            });
+	        	
+        	
+        	
+        })
         
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '${mealMap.get("MEAL0001").meal_name}',
+                    data: [120, 0, 30, 50, 20, 30,75,66,132,260,88,364],
+                    fill: false,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(0, 0, 0, 1)',
                     ],
                     borderWidth: 1
-                }]
+                },{
+                    label: 'second',
+                    data: [66, 124, 28, 177, 37, 12,33,175,98,222,67,227],
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)',
+                        'rgba(0, 0, 255, 1)'
+                    ],
+                    borderColor: [
+                        'rgba(0, 0, 255, 1)',
+                    ],
+                    borderWidth: 1
+                }],
+               
             },
             options: {
                 scales: {
                     yAxes: [{
                         ticks: {
+                        	stepSize: 30,
                             beginAtZero: true
                         }
                     }]
