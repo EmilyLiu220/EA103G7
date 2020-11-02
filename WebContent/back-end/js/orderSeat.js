@@ -280,17 +280,18 @@ $(document).ready(function() {
 				"action":"floor_load",
 			},
 			success: function(messages) {
-				$("body > div#container.container").load(ajaxURL + "/front-end/res_order/orderSeat.jsp div#container.container");
+				$("body > div#container.container").load(ajaxURL + "/back-end/res_order/orderSeat.jsp div#container.container");
 //				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
-				$.getScript(ajaxURL + "/front-end/js/orderSeat.js");
+				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
 //				$.getScript(ajaxURL + "/js/sweetalert.min.js");
 				// console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("div#container.container").empty();
 				$("#time_peri_no").empty();
 				$("#people").val("");
-				$("#res_date").val("--請選擇日期--");
-				$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請先選擇日期--</option>");
+				const toDay = new Date();
+				$("#res_date").val(toDay);
+				$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
 				$.each(jsonArray, function(_index, item) {
 					$("<div>").attr({
 						class: "drag",
@@ -324,9 +325,9 @@ $(document).ready(function() {
 						value: item.seat_name,
 					}).attr("disabled", true).appendTo($label2);
 				});
-				$(".labelOne").css("display", "none");
-				$(".labelTwo").css("display", "none");
-				$("#container").css("display", "none");
+//				$(".labelOne").css("display", "none");
+//				$(".labelTwo").css("display", "none");
+//				$("#container").css("display", "none");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_floor_list = true;// 如果業務執行失敗，修改鎖狀態
