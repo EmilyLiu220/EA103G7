@@ -471,13 +471,18 @@ $(document).ready(function() {
 						value: "carry_on_res_meal",
 					}).appendTo("div#orderSeatCondition.container");
 					form.submit();
+					return false;
 				});
-			} else {
+			} else if (willDelete === null) {
 				swal("即將完成訂位", {
 					icon: "success",
 				}).then(function() {
 					form.submit();
+					return false;
 				});
+			} else {
+				swal("不做任何選項～", "再考慮考慮吧！", "info");
+				return false;
 			}
 		});
 		e.preventDefault();
