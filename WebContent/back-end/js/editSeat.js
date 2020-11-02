@@ -269,57 +269,63 @@ $(document).ready(function() {
 			return false;
 		}
 		lock_delete = false; //3.進來後，立馬把鎖鎖住
-		// check checkbox is checked?
-		$("input:checked").each(function() {
-			var mySeat = new Object();
-			// get seat_no transmision for servlet delete seat
-			mySeat.seat_no = $(this).attr("value");
-			// check seat_no is not sull
-			if (mySeat.seat_no != null) {
-				var jsonDataStr = JSON.stringify(mySeat);
-				$.ajax({
-					// url is servlet url, ?action=delete_seat is tell servlet
-					// execute which one judgment
-					url: ajaxURL + "/seat/SeatServlet.do?action=delete_seat",
-					type: "post",
-					// async is false
-					async: false,
-					data: {
-						"jsonDataStr": jsonDataStr
-					},
-					success: function(result) {
-						swal("儲存成功", "成功刪除選取桌位", "success").then(function() {
-							$("body > div#container").load(ajaxURL + "/back-end/seat/editSeat2.jsp div#container", function(){
-								$.getScript(ajaxURL + "/back-end/js/jquery-1.12.4.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery-ui-1.12.1.js");
-								$.getScript(ajaxURL + "/back-end/js/sweetalert.min.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery.ui.core.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery.ui.widget.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery.ui.mouse.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery.ui.draggable.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery-collision.min.js");
-								$.getScript(ajaxURL + "/back-end/js/jquery-ui-draggable-collision.min.js");
+		if($("input:checked").length != 0){
+			// check checkbox is checked?
+			$("input:checked").each(function() {
+				var mySeat = new Object();
+				// get seat_no transmision for servlet delete seat
+				mySeat.seat_no = $(this).attr("value");
+				// check seat_no is not sull
+				if (mySeat.seat_no != null) {
+					var jsonDataStr = JSON.stringify(mySeat);
+					$.ajax({
+						// url is servlet url, ?action=delete_seat is tell servlet
+						// execute which one judgment
+						url: ajaxURL + "/seat/SeatServlet.do?action=delete_seat",
+						type: "post",
+						// async is false
+						async: false,
+						data: {
+							"jsonDataStr": jsonDataStr
+						},
+						success: function(result) {
+							swal("儲存成功", "成功刪除選取桌位", "success").then(function() {
+								$("body > div#container").load(ajaxURL + "/back-end/seat/editSeat2.jsp div#container", function(){
+									$.getScript(ajaxURL + "/back-end/js/jquery-1.12.4.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery-ui-1.12.1.js");
+									$.getScript(ajaxURL + "/back-end/js/sweetalert.min.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery.ui.core.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery.ui.widget.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery.ui.mouse.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery.ui.draggable.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery-collision.min.js");
+									$.getScript(ajaxURL + "/back-end/js/jquery-ui-draggable-collision.min.js");
+								});
+								$.getScript(ajaxURL + "/back-end/js/editSeat.js");
+								
 							});
-							$.getScript(ajaxURL + "/back-end/js/editSeat.js");
-							
-						});
-						lock_delete = true;//如果業務執行成功，修改鎖狀態
-					},
-					error: function() {
-						lock_delete = true;//如果業務執行失敗，修改鎖狀態
-						alert("異常！");
-					},
-				});
-				// this page if checked this div remove
-				$("input:checked").each(function() {
-					$("input:checked").closest("div").remove();
-				});
-			} else {
-				$("input:checked").each(function() {
-					$("input:checked").closest("div").remove();
-				});
-			}
-		});
+							lock_delete = true;//如果業務執行成功，修改鎖狀態
+						},
+						error: function() {
+							lock_delete = true;//如果業務執行失敗，修改鎖狀態
+							alert("異常！");
+						},
+					});
+					// this page if checked this div remove
+					$("input:checked").each(function() {
+						$("input:checked").closest("div").remove();
+					});
+				} else {
+					swal("儲存成功", "成功刪除選取桌位", "success");
+					$("input:checked").each(function() {
+						$("input:checked").closest("div").remove();
+					});
+				}
+			});
+		} else {
+			swal("無任何動作", "請選取座位物件後按刪除紐", "info");
+		}
+		lock_delete = true;
 		return false;
 	});
 	

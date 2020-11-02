@@ -12,7 +12,7 @@
 }
 
 #container {
-	height: 900px;
+	height: 890px;
 	width: 1400px;
 	border: 1px solid black;
 	position: absolute;
@@ -41,12 +41,17 @@
 	border: 1px solid black;
 	width: 250px;
 	height: 100%;
-	position: fixed;
-	bottom: 0px;
-	right: 20px;
+	position: absolute;
+	right: 0;
 	z-index: 9;
 	overflow: auto;
 	margin: 0 auto;
+}
+
+.editSeatDiv_include {
+	height: 900px;
+	width: 100%;
+	position: relative;
 }
 
 p {
@@ -149,10 +154,6 @@ img {
 	bottom: 0;
 	right: 0;
 	margin: 10px auto;
-}
-
-form {
-	height: 100%
 }
 
 span {
