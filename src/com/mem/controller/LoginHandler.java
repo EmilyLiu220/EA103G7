@@ -5,7 +5,7 @@ import com.mem.model.MemVO;
 
 public class LoginHandler {
 	
-	protected boolean allowUser(String account, String password) {
+	protected Integer allowUser(String account, String password) {
 		
 		MemVO memVO = new MemVO();
 		MemService memSvc = new MemService();
@@ -13,13 +13,15 @@ public class LoginHandler {
 		memVO = memSvc.login(account);
 		
 		if (memVO == null) {
-			return false;
+			return 0;
 		}
 				
 		if ((memVO.getMem_act()).equals(account) && (memVO.getMem_psw()).equals(password) && memVO.getMem_sts() == 1) {
-		    return true;
+		    return 2;
+		} else if ((memVO.getMem_act()).equals(account) && (memVO.getMem_psw()).equals(password) && memVO.getMem_sts() == 0) {
+		    return 1;
 		} else {
-		    return false;
+			return 0;
 		}
 		
 	}
