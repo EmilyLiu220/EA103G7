@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
-	String x = (String) request.getAttribute("x");
+	String x = (String) request.getAttribute("x"); // §PÂ_µù¥U¦¨¥\¥Î
 %>
 
 <!DOCTYPE html>
