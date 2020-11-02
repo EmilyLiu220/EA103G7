@@ -1177,32 +1177,55 @@
 	var mem_od_m = `${memVO2.mem_od_m}`;
 	var mem_review = `${memVO2.mem_review}`;
 	var mem_repo = `${memVO2.mem_repo}`;
+	var mem_no = `${memVO2.mem_no}`;
 	
 	var res = document.getElementById("res");
 	var meal = document.getElementById("meal");
 // 	var review = document.getElementById("review");
 // 	var repo = document.getElementById("repo");
 	
-	if (mem_od_r == 0) {
+	if (mem_no !== '' && mem_od_r == 0) {
 		res.addEventListener("click", function() {
 			alert("Sorry！您沒有訂位權限！" + "\n" + "有任何疑問請洽客服。");
 		});
 	}
-	if (mem_od_m == 0) {
+	
+	if (mem_no !== '' && mem_od_m == 0) {
 		meal.addEventListener("click", function() {
 			alert("Sorry！您沒有訂餐權限！" + "\n" + "有任何疑問請洽客服。");
 		});
 	}
-// 	if (mem_review == 0) {
+// 	if (mem_no !== '' && mem_review == 0) {
 // 		review.addEventListener("click", function() {
 // 			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
 // 		});
 // 	}
-// 	if (mem_repo == 0) {
+// 	if (mem_no !== '' && mem_repo == 0) {
 // 		repo.addEventListener("click", function() {
 // 			alert("Sorry！您沒有檢舉權限！" + "\n" + "有任何疑問請洽客服。");
 // 		});
 // 	}
+	
+	if (mem_no === '') {
+		res.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+	}
+	if (mem_no === '') {
+		meal.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+	}
+	if (mem_no === '') {
+		review.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+	}
+	if (mem_no === '') {
+		repo.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+	}
 	
 </script>
 
