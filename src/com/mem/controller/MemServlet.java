@@ -114,6 +114,72 @@ public class MemServlet extends HttpServlet {
 			}
 		}
 		
+		if ("getOne_For_Display_ByName".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				
+				String mem_name = req.getParameter("mem_name");
+				if (mem_name == null || (mem_name.trim()).length() == 0) {
+					errorMsgs.add("請輸入會員姓名");
+				}
+				
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				String mem_no = null;
+				
+				MemService memSvc = new MemService();
+				List<MemVO> list_m = memSvc.getAll();
+				for (int i = 0; i < list_m.size(); i++) {
+					if (mem_name.equals(list_m.get(i).getMem_name())) {
+						mem_no = list_m.get(i).getMem_no();
+						break;
+					}
+				}
+				
+				System.out.println(mem_no);
+				/***************************2.開始查詢資料*****************************************/
+				MemVO memVO = memSvc.getOneMem(mem_no);
+				
+				if (memVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				
+				req.setAttribute("memVO", memVO); // 資料庫取出的empVO物件,存入req
+				
+				String url = "/back-end/mem/listOneMem.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/mem/select_page_mem.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
 		if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -225,7 +291,6 @@ public class MemServlet extends HttpServlet {
 				/***************************2.開始新增資料***************************************/
 				memVO = memSvc.addMem(mem_name, mem_act, mem_psw1, mem_gen, mem_bir, mem_tel, mem_adrs, mem_mail);
 				
-				System.out.println("333");
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				req.setAttribute("memVO", memVO);
 				

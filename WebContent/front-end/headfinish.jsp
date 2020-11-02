@@ -903,16 +903,17 @@
 			alert("請先登入會員喔！");
 		});
 	}
-	if (mem_no === '') {
-		review.addEventListener("click", function() {
-			alert("請先登入會員喔！");
-		});
-	}
-	if (mem_no === '') {
-		repo.addEventListener("click", function() {
-			alert("請先登入會員喔！");
-		});
-	}
+// 	if (mem_no === '') {
+// 		review.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+// 	if (mem_no === '') {
+// 		repo.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+	
 </script>
 	
 <script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>

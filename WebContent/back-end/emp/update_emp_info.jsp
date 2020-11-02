@@ -92,7 +92,7 @@
 	
 	ok.addEventListener("click", function(e) {
 		if (emp_psw1[0].value !== "" && emp_psw2[0].value !== "" && emp_psw1[0].value === emp_psw2[0].value) {
-			alert("修改成功");
+			alert("修改成功！");
 		}
 	});
 

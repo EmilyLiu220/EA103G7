@@ -52,15 +52,11 @@
 	
 	<div>
 		<FORM METHOD="post" ACTION="emp.do" >
-	       <b>選擇員工姓名:</b>
-	       <select size="1" name="emp_no">
-	         <c:forEach var="empVO" items="${empSvc2.all}" > 
-	          <option value="${empVO.emp_no}">${empVO.emp_name}
-	         </c:forEach>   
-	       </select>
-	       <input type="hidden" name="action" value="getOne_For_Display">
-	       <input type="submit" value="送出">
-	     </FORM>
+	        <b>輸入員工姓名 :</b>
+	        <input type="text" name="emp_name" placeholder="王小明" size="6px" required>
+	        <input type="hidden" name="action" value="getOne_For_Display_ByName">
+	        <input type="submit" value="送出">
+	    </FORM>
 	</div>
 	
 	<%-- 錯誤表列 --%>

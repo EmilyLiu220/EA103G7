@@ -48,8 +48,17 @@
 	  <li>
 	    <FORM METHOD="post" ACTION="emp.do" >
 	        <b>輸入員工編號 :</b>
-	        <input type="text" name="emp_no" placeholder="EMP0001" size="6px">
+	        <input type="text" name="emp_no" placeholder="EMP0001" size="6px" required>
 	        <input type="hidden" name="action" value="getOne_For_Display">
+	        <input type="submit" value="送出">
+	    </FORM>
+	  </li>
+	  
+	  <li>
+	    <FORM METHOD="post" ACTION="emp.do" >
+	        <b>輸入員工姓名 :</b>
+	        <input type="text" name="emp_name" placeholder="王小明" size="6px" required>
+	        <input type="hidden" name="action" value="getOne_For_Display_ByName">
 	        <input type="submit" value="送出">
 	    </FORM>
 	  </li>
