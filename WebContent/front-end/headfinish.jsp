@@ -836,26 +836,14 @@
 	var title = document.getElementById("title");
 	
 	var path = location.pathname;
-	console.log(path);
-	if (path === '/EA103G7/front-end/mem/login_mem.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/login_success_mem.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/addMem.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/forgetPsw.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/showMemInfo.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/update_mem_info.jsp') {
-		title.innerHTML = '會員中心';
-	}
-	if (path === '/EA103G7/front-end/mem/mem.do') {
+	var path_f = '/EA103G7/front-end/mem';
+	if (path === path_f + '/login_mem.jsp' || 
+		path === path_f + '/login_success_mem.jsp' || 
+		path === path_f + '/addMem.jsp' || 
+		path === path_f + '/forgetPsw.jsp' || 
+		path === path_f + '/showMemInfo.jsp' || 
+		path === path_f + '/update_mem_info.jsp' || 
+		path === path_f + '/mem.do') {
 		title.innerHTML = '會員中心';
 	}
 	
@@ -893,16 +881,16 @@
 // 		});
 // 	}
 	
-	if (mem_no === '') {
-		res.addEventListener("click", function() {
-			alert("請先登入會員喔！");
-		});
-	}
-	if (mem_no === '') {
-		meal.addEventListener("click", function() {
-			alert("請先登入會員喔！");
-		});
-	}
+// 	if (mem_no === '') {
+// 		res.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
+// 	if (mem_no === '') {
+// 		meal.addEventListener("click", function() {
+// 			alert("請先登入會員喔！");
+// 		});
+// 	}
 // 	if (mem_no === '') {
 // 		review.addEventListener("click", function() {
 // 			alert("請先登入會員喔！");
@@ -913,6 +901,21 @@
 // 			alert("請先登入會員喔！");
 // 		});
 // 	}
+	
+	if (mem_no === '') {
+		res.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+		meal.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+		review.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+		repo.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+	}
 	
 </script>
 	

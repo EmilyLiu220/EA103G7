@@ -2,6 +2,10 @@
     pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<%
+	String x = (String) request.getAttribute("x");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +44,7 @@ td {
 </style>
     
 </head>
-<body>
+<body onload="sign()">
 	
 	<%@ include file="/front-end/headfinish.jsp"%>
 	
@@ -98,10 +102,20 @@ td {
 			
 	</FORM>
 	</div>
-		
-		
-		
+				
 		<jsp:include page="/front-end/front/footer.jsp" />
+        
+<script>
+	
+	<!--判斷註冊成功用-->
+	var x = `${x}`;
+	function sign() {
+		if (x === "success") {
+			alert("註冊成功！");
+		}
+	}
+	
+</script>
         
 </body>
 </html>

@@ -5,6 +5,9 @@
 <% 
 	MemVO memVO = (MemVO) request.getAttribute("memVO");
 %>
+<%
+	String x = (String) request.getAttribute("x");
+%>
 
 <html>
 <head>
@@ -27,7 +30,7 @@
 </style>
 
 </head>
-<body>
+<body onload="sign()">
 	
 	<%@ include file="/front-end/headfinish.jsp"%>
 	
@@ -117,6 +120,18 @@
 	</div>
 	
 	<jsp:include page="/front-end/front/footer.jsp" />
+	
+<script>
+	
+	<!--判斷修改成功用-->
+	var x = `${x}`;
+	function sign() {
+		if (x === "success") {
+			alert("修改成功！");
+		}
+	}
+	
+</script>
 	
 </body>
 </html>
