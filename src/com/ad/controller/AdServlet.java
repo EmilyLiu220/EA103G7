@@ -2,6 +2,8 @@ package com.ad.controller;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
@@ -9,6 +11,8 @@ import javax.servlet.http.*;
 
 import com.ad.model.AdService;
 import com.ad.model.AdVO;
+import com.emp.model.EmpService;
+import com.emp.model.EmpVO;
 import com.inform_set.model.Inform_SetService;
 import com.meal_set_consist.model.MealSetConVO;
 import com.mem.model.MemVO;
@@ -267,10 +271,37 @@ public class AdServlet extends HttpServlet {
 				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 				String ad_no = req.getParameter("ad_no").trim();
 //				System.out.println(ad_no);
+//				String emp_no = req.getParameter("emp_no").trim();
+//				if (emp_no == null || emp_no.trim().length() == 0) {
+//					errorMsgs.add("emp_no: 請勿空白");
+//				}
+				
+				
+				/**************************************** 得員工編號 emp_no ( String ) ****************************************/
+				// 取得員工編號參數
 				String emp_no = req.getParameter("emp_no").trim();
-				if (emp_no == null || emp_no.trim().length() == 0) {
+				// 判斷是否真的有輸入員工編號
+				// 有輸入員工編號
+				if(emp_no != null && emp_no.length() != 0) { 
+					emp_no = emp_no.toUpperCase();
+					String emp_noReg = "E{1}M{1}P{1}[\\d]{4}";
+					Pattern patEmp = Pattern.compile(emp_noReg);
+					Matcher matcherEmp = patEmp.matcher(emp_no.trim());
+					if(!matcherEmp.find()) {
+						errorMsgs.add("員工編號格式不正確");
+					}
+					
+					EmpService empSvc = new EmpService();
+					EmpVO empVO = empSvc.getOneEmp(emp_no.toUpperCase());
+					if (empVO == null) {
+						errorMsgs.add("查無員工");
+					}
+					
+				}else {
 					errorMsgs.add("emp_no: 請勿空白");
 				}
+				
+				
 //				System.out.println(emp_no);
 				String ad_title = req.getParameter("ad_title").trim();
 				if (ad_title == null || ad_title.trim().length() == 0) {

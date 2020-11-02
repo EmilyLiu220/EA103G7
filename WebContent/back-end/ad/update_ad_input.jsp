@@ -2,10 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.ad.model.*"%>
+<%@ page import="com.emp.model.*"%>
 <%
 	AdVO adVO = (AdVO) request.getAttribute("adVO"); //AdServlet.java (Controller) 存入req的adVO物件 (包括幫忙取出的adVO, 也包括輸入資料錯誤時的adVO物件)
+	EmpVO empVO2 = (EmpVO) session.getAttribute("empVO2");
 %>
-<%=adVO == null%>
+
 <html>
 <head>
 
@@ -254,7 +256,7 @@
 					<tr>
 						<td>員工編號:<font color=red><b>*</b></font></td>
 						<td><input type="TEXT" name="emp_no" size="45"
-							value="<%=adVO.getEmp_no()%>" /></td>
+							value="<%=(empVO2==null)? "EMP0001" : empVO2.getEmp_no()%>"/></td>
 
 					</tr>
 					<tr>
