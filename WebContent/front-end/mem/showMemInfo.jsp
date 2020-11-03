@@ -30,7 +30,7 @@
 </style>
 
 </head>
-<body onload="sign()">
+<body onload="hint()">
 	
 	<%@ include file="/front-end/headfinish.jsp"%>
 	
@@ -121,13 +121,22 @@
 	
 	<jsp:include page="/front-end/front/footer.jsp" />
 	
+<!--sweet alert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
 <script>
 	
 	<!--判斷修改成功用-->
 	var x = `${x}`;
-	function sign() {
+	function hint() {
 		if (x === "success") {
-			alert("修改成功！");
+			swal({
+				  title: "恭喜您！修改成功！",
+				  text: "3秒後自動關閉。",
+				  icon: "success",
+				  timer: 3000,
+				  showConfirmButton: true
+				});
 		}
 	}
 	

@@ -456,13 +456,13 @@ public class MemServlet extends HttpServlet {
 					errorMsgs.add("e-mail: 請勿空白");
 				}
 				MemService memSvc = new MemService();
-				List<MemVO> list2 = memSvc.getAll();
-				for (int i = 0; i < list2.size(); i++) {
-					if (mem_mail.equals(list2.get(i).getMem_mail())) {
-						errorMsgs.add("此email已被使用！");
-						break;
-					}
-				}
+//				List<MemVO> list2 = memSvc.getAll();
+//				for (int i = 0; i < list2.size(); i++) {
+//					if (mem_mail.equals(list2.get(i).getMem_mail())) {
+//						errorMsgs.add("此email已被使用！");
+//						break;
+//					}
+//				}
 				
 				String mem_act = memSvc.getOneMem(mem_no).getMem_act();
 				
@@ -655,9 +655,9 @@ public class MemServlet extends HttpServlet {
 			
 			System.out.println("666");
 			
-			String y = "mail";
+			String x = "mail";
 			
-			req.setAttribute("y", y);
+			req.setAttribute("x", x);
 			
 			String url = "/front-end/mem/login_mem.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
@@ -695,12 +695,14 @@ public class MemServlet extends HttpServlet {
 				LoginHandler lh = new LoginHandler();
 				// 【檢查該帳號 , 密碼是否有效】
 			    if (lh.allowUser(account, password) == 0) {          //【帳號 , 密碼無效時】
-			    	errorMsgs.add("您的帳號或密碼無效！請重新輸入！");
+			    	String x = "logfail";
+			    	req.setAttribute("x", x);
 			    	RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/mem/login_mem.jsp");
 					failureView.forward(req, res);
 			    } else if (lh.allowUser(account, password) == 1) {
-			    	errorMsgs.add("您已被停權！請快點滾！");
+			    	String x = "quit";
+			    	req.setAttribute("x", x);
 			    	RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/mem/login_mem.jsp");
 					failureView.forward(req, res);

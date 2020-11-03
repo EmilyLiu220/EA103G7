@@ -3,11 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
-	String x = (String) request.getAttribute("x"); // 判斷註冊成功用
-%>
-
-<%
-	String y = (String) request.getAttribute("y"); // 判斷寄信成功用
+	String x = (String) request.getAttribute("x"); // 判斷各種狀況用
 %>
 
 <!DOCTYPE html>
@@ -108,27 +104,53 @@ td {
 	</div>
 				
 		<jsp:include page="/front-end/front/footer.jsp" />
-        
+
+<!--sweet alert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
 	
-	<!--判斷註冊成功和忘記密碼寄信用-->
+	<!--判斷各種狀況用-->
 	var x = `${x}`;
-	var y = `${y}`;
 	function hint() {
 		if (x === "success") {
-			alert("註冊成功！");
-		} else if (y === "mail") {
-			alert("臨時密碼已寄出，請至email信箱查收！");
+// 			alert("恭喜您！註冊成功！");
+			swal({
+				  title: "恭喜您！註冊成功！",
+				  text: "3秒後自動關閉。",
+				  icon: "success",
+				  timer: 3000,
+				  showConfirmButton: true
+				});
+		} else if (x === "mail") {
+// 			alert("臨時密碼已寄出，請至email信箱查收！");
+			swal({
+				  title: "臨時密碼已寄出，請查看email！",
+				  text: "3秒後自動關閉。",
+				  icon: "success",
+				  timer: 3000,
+				  showConfirmButton: true
+				});
+		} else if (x === "quit") {
+// 			alert("您已被停權！請快點滾！");
+			swal({
+				  title: "您已被停權！請快點滾！",
+				  text: "3秒後自動關閉。",
+				  icon: "error",
+				  timer: 3000,
+				  showConfirmButton: true
+				});
+		} else if (x === "logfail") {
+// 			alert("帳號或密碼無效！請重新輸入！");
+			swal({
+				  title: "帳號或密碼無效！請重新輸入！",
+				  text: "3秒後自動關閉。",
+				  icon: "error",
+				  timer: 3000,
+				  showConfirmButton: true
+				});
 		}
 	}
-	
-	<!--判斷註冊成功用-->
-// 	var y = `${y}`;
-// 	function send() {
-// 		if (y === "mail") {
-// 			alert("臨時密碼已寄出，請至email信箱查收！");
-// 		}
-// 	}
 	
 </script>
         
