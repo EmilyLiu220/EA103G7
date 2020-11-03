@@ -36,9 +36,8 @@ public class AdServlet extends HttpServlet {
 			}
 		}
 
-//		==========================
-
 		String action = req.getParameter("action");
+		//==========================
 
 		// insert
 		if ("insert".equals(action)) {
