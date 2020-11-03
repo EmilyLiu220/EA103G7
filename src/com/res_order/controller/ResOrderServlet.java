@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,6 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.front_inform.model.Front_InformService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mem.model.MemService;
+import com.mem.model.MemVO;
 import com.res_detail.model.ResDetailService;
 import com.res_detail.model.ResDetailVO;
 import com.res_order.model.ResOrderService;
@@ -94,7 +101,7 @@ public class ResOrderServlet extends HttpServlet {
 			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位訂單");
 
 			/**********
-			 * 判斷訂位日期是否為今日，若 true 則直接發送當日訂位確認通知 
+			 * 判斷訂位日期是否為今日，若 true 則直接發送當日訂位確認通知
 			 **********/
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date today = new java.util.Date();
@@ -103,7 +110,7 @@ public class ResOrderServlet extends HttpServlet {
 				front_InformSvc.addRCFI(next_res_no); // 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
 			req.setAttribute("res_no", next_res_no);
-			
+
 			res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 			return;
 		}
@@ -123,7 +130,7 @@ public class ResOrderServlet extends HttpServlet {
 			String mem_no = req.getParameter("mem_no");
 			String requestURL = req.getParameter("requestURL");
 			String whichPage = req.getParameter("whichPage");
-			
+
 			if ("--請選擇日期--".equals(res_date)) {
 				errorMsgs.add("請選擇訂位日期");
 			}
@@ -213,18 +220,17 @@ public class ResOrderServlet extends HttpServlet {
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
 			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位訂單");
-			
+
 			/**********
-			 * 仍要判斷訂位日期是否為今日，若 true 則直接發送當日訂位確認通知 
+			 * 仍要判斷訂位日期是否為今日，若 true 則直接發送當日訂位確認通知
 			 **********/
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date today = new java.util.Date();
 			String todayStr = sdf.format(today);
 			if (todayStr.equals(res_date)) {
-				front_InformSvc.addRCFI(next_res_no); 
+				front_InformSvc.addRCFI(next_res_no);
 				// 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
-			
 
 			req.setAttribute("res_no", next_res_no);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/shopping/mealMenu2.jsp");
@@ -259,7 +265,7 @@ public class ResOrderServlet extends HttpServlet {
 						List<ResDetailVO> resDetailList = resDetailSvc.getAllResNO(resOrderVO.getRes_no());
 						// 如果桌位編號有在訂單內，回傳並將該桌號disabled
 						for (ResDetailVO resDetailVO : resDetailList) {
-							if(req.getParameter("floor") != null) {
+							if (req.getParameter("floor") != null) {
 								Integer floor = Integer.parseInt(req.getParameter("floor"));
 								if (seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
 									seatNoList.add(resDetailVO.getSeat_no());
@@ -423,7 +429,7 @@ public class ResOrderServlet extends HttpServlet {
 
 			return;
 		}
-		
+
 		// 去修改頁面
 		if ("modify_Seat_Order".equals(action)) {
 			String requestURL = req.getParameter("requestURL");
@@ -436,14 +442,75 @@ public class ResOrderServlet extends HttpServlet {
 		}
 
 		// 修改頁面返回上一頁
-		if("return_former_page".equals(action)) {
+		if ("return_former_page".equals(action)) {
 			String requestURL = req.getParameter("requestURL");
 			String whichPage = req.getParameter("whichPage");
 			RequestDispatcher failureView = req.getRequestDispatcher(requestURL + "?whichPage=" + whichPage);
 			failureView.forward(req, res);
 			return;
 		}
-		
+
+		if ("get_res_info".equals(action)) {
+
+			String res_date = req.getParameter("res_date");
+			String time_peri_no = req.getParameter("time_peri_no");
+			String seat_no = req.getParameter("seat_no");
+			Integer floor = Integer.parseInt(req.getParameter("floor"));
+
+			System.out.println(res_date);
+			System.out.println(time_peri_no);
+			System.out.println(seat_no);
+			System.out.println(floor);
+
+			ResDetailService resDetailSvc = new ResDetailService();
+			ResOrderService resOrderSvc = new ResOrderService();
+			MemService memSvc = new MemService();
+			SeatService seatSvc = new SeatService();
+			TimePeriService timePeriSvc = new TimePeriService();
+
+			List<String> seatNoList = new ArrayList<String>();
+			Map<String, String> thisResOrderInfo = new HashMap<String, String>();
+
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+			if (!"-1".equals(time_peri_no) && res_date != null) {
+				List<ResOrderVO> resOrderVOList = resOrderSvc.getResDate_And_TimePeri_getAll(res_date, time_peri_no);
+				// 取得訂位訂單
+				for (ResOrderVO resOrderVO : resOrderVOList) {
+					// 判斷是否被取消
+					if (resOrderVO.getInfo_sts() != 3) {
+						List<ResDetailVO> resDetailList = resDetailSvc.getAllResNO(resOrderVO.getRes_no());
+						// 如果桌位編號有在訂單內，回傳並將該桌號disabled
+						int i = 0;
+						for (ResDetailVO resDetailVO : resDetailList) {
+							if (floor != null
+									&& seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
+								seatNoList.add(resDetailVO.getSeat_no());
+								if (resOrderVO.getRes_no().equals(resDetailVO.getRes_no())
+										&& resDetailVO.getSeat_no().equals(seat_no)) {
+									MemVO memVO = memSvc.getOneMem(resOrderVO.getMem_no());
+									TimePeriVO timePeriVO = timePeriSvc.getOneTimePeri(resOrderVO.getTime_peri_no());
+									
+									thisResOrderInfo.put("res_order", gson.toJson(resOrderVO).toString());
+									thisResOrderInfo.put("mem", gson.toJson(memVO).toString());
+									thisResOrderInfo.put("res_detail", gson.toJson(resDetailList).toString());
+									thisResOrderInfo.put("time_peri", gson.toJson(timePeriVO).toString());
+								}
+							}
+						}
+					}
+				}
+			}
+			String JSONSeatVOList = gson.toJson(thisResOrderInfo);
+			PrintWriter out = res.getWriter();
+			res.setContentType("text/plain");
+			res.setCharacterEncoding("UTF-8");
+			out.print(JSONSeatVOList);
+			out.flush();
+			out.close();
+			return;
+		}
+
 		// not do anything, go to the this page
 		res.sendRedirect(req.getContextPath() + "/front-end/front_home.jsp");
 	}
