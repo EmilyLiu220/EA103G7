@@ -525,16 +525,78 @@ $(document).ready(function() {
 		e.stopImmediatePropagation();
 	});
 	// popover menu
+	var lock_popover = true;
 	$('[data-toggle="popover"]').popover({
         trigger: 'click',
         delay: { "show": 100, "hide": 100 },
         title: '<span class="text-info"><strong>訂位資訊</strong></span>',
         content: function(){
-        	return '<div>姓名：</div>' +
-            '<div>桌名：' + $("#floor_list").val()+"樓"+"_"+$(this).closest(".drag").children(".seatLabel").find(".seatName").val()+"桌"+ '</div>' +
-            '<div>時段：</div>' +
-            '<div>人數：</div>' +
-            '<div>點餐：</div>' +
+        	
+        	var isChecked = $("input:checked");
+        	
+        	$.each(isChecked, (i,isChecked) => {
+        		$(isChecked).closest(".drag").css({
+					filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+				});
+        	});
+        	
+        	
+        	var seat_no = $(this).closest(".drag").children(".imgLabel").find(".myCheckbox").val();
+        	var res_date = $("#res_date").val();
+    		var time_peri_no = $("#time_peri_no").val();
+    		var floor = $("#floor_list").val();
+        	if (!lock_popover) {
+        		return false;
+        	}
+        	lock_popover = false;
+        	var jsonStr = $.ajax({
+    			// url is servlet url, ?archive_seat is tell servlet execute which
+    			// one judgment
+    			url: ajaxURL + "/res_order/ResOrderServlet.do?",
+    			type: "post",
+    			// synchronize is false
+    			async: false,
+    			data: {
+    				"action":"get_res_info",
+    				"time_peri_no": time_peri_no,
+    				"res_date": res_date,
+    				"floor": floor,
+    				"seat_no": seat_no,
+    			},
+    			success: function(messages) {
+    				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
+    				jsonStr = JSON.parse(messages);
+    				
+    				lock_popover = true;
+    				return jsonStr;
+    			},
+    			error: function(xhr, ajaxOptions, thrownError) {
+    				lock_popover = true;// 如果業務執行失敗，修改鎖狀態
+    				ajaxSuccessFalse(xhr);
+    				swal("儲存失敗", errorText, "warning");
+    				return false
+    			},
+    		});
+        	// 要取訂單所有座位>點選>變色>取消>還原
+        	var jsonStr2 = JSON.parse(jsonStr.responseText);
+        	var mem = JSON.parse(jsonStr2.mem);
+        	var res_order = JSON.parse(jsonStr2.res_order);
+        	var time_peri = JSON.parse(jsonStr2.time_peri);
+        	var res_detail = JSON.parse(jsonStr2.res_detail);
+        	$.each(res_detail, (i, item) => {
+        		$.each($(".myCheckbox"), (i, myCheckbox) => {
+        			if(item.seat_no == $(myCheckbox).val()) {
+        				$(myCheckbox).closest(".drag").css({
+							filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(180deg) brightness(103%) contrast(118%)",
+						});
+        			}
+        		})
+        	}); 
+        	
+        	return '<div class="res_info">姓名：'+ mem.mem_name +'</div>' +
+            '<div class="res_info">桌名：' + $("#floor_list").val() +"樓"+"_"+$(this).closest(".drag").children(".seatLabel").find(".seatName").val()+"桌"+ '</div>' +
+            '<div class="res_info">時段：' + time_peri.time_start +'</div>' +
+            '<div class="res_info">人數：' + res_order.people +'</div>' +
             '<div class="buttonDiv">' +
             '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;">' +
             '<i class="fa fa-check-circle"></i>入座</a></div>' +

@@ -163,6 +163,11 @@ div.button {
 	padding: 0;
 }
 
+div.res_info {
+	font-size: 30px;
+	padding: 0;
+}
+
 h3.popover-header {
 	text-align: center;
 }
@@ -173,5 +178,5 @@ button.info.btn.btn-secondary {
 	left: 0;
 	width: 100px;
 	height: 100px;
-	opacity: 0.3;
+	opacity: 0;
 }
