@@ -192,7 +192,7 @@
 				<%-- 查詢通知 --%>
 				<table id="table-1">
 					<tr>
-						<td><h3 style="margin-bottom:0;">動態查詢群發通知</h3></td>
+						<td><h3 style="margin-bottom:0;">查詢群發通知</h3></td>
 					</tr>
 				</table>
 				<br>
@@ -207,7 +207,6 @@
 					<br>
 				</c:if>
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/inform_set/is.do" >
-					<span style="position: relative; left: 2%; font-weight: 800; color: red;">可自由輸入欲查詢之條件</span><br><br>
 					<ul>
 						<li>
 							<b>輸入群發通知編號 (如IS0001)：</b>
@@ -225,12 +224,11 @@
 							<b>選擇發送日期：</b>
 							<b>起 </b><input type="text" id="is_date_startDate" name="is_date_startDate" class="hasDatepicker2">
 							<b>訖 </b><input type="text" id="is_date_stopDate" name="is_date_stopDate" class="hasDatepicker2"><br>
-							<br><span> ( 提醒您：若未確實填寫日期，則將查詢由「<span style="color: red; font-weight: 800;">開張日</span>」至「</span><span style="color: red; font-weight: 800;">今日</span><span>」的群發通知內容 ) </span>
 						<br></li>
 					</ul>
 					<div style="display: inline-block; position: relative; left: 5%;">
 						<input type="hidden" name="action" value="getIsForDisplayByComplex">
-						<input type="submit" value="動態查詢" style="margin-right: 20px;">
+						<input type="submit" value="開始查詢" style="margin-right: 20px;">
 						<input type="reset" value="重新填寫">
 					</div>
 				</FORM>
