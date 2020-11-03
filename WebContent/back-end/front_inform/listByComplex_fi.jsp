@@ -174,14 +174,14 @@
 				</div>
 			</nav>
 
-			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5><span> - 通知設定管理</span>
-			<a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回查詢頁面</a>		
+			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 通知設定管理</span>
+			<a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回查詢頁面</a>		
 			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
 			<p>
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查看群發通知</h3>
+							<h3 style="margin-bottom:0;">查看通知</h3>
 						</td>
 					</tr>
 				</table>
@@ -200,11 +200,12 @@
 					<thead style="text-align: center;">
 						<tr>
 							<th style="width: 10%;">編號</th>
-							<th style="width: 40%;">內容</th>
-							<th style="width: 20%;">員工</th>
+							<th style="width: 20%;">會員</th>
+							<th style="width: 10%;">訂位編號</th>
+							<th style="width: 20%;">通知內容</th>
 							<th style="width: 20%;">通知日期</th>
-							<th style="width: 5%;"></th>
-							<th style="width: 5%;"></th>
+							<th style="width: 10%;">類別</th>
+							<th style="width: 10%;">讀取狀態</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -214,18 +215,6 @@
 							<td style="text-align: center; word-break: break-all;">${inform_setVO.is_cont}</td>
 							<td style="text-align: center;">${inform_setVO.emp_no} ${pageScope.empSvc.getOneEmp(inform_setVO.emp_no).emp_name}</td>
 							<td style="text-align: center;"><fmt:formatDate value="${inform_setVO.is_date}" pattern="yyyy-MM-dd" /></td>
-							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/inform_set/is.do" style="margin-bottom: 0px;">
-								<input type="submit" value="修改" id="revise" style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer;box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" onMouseOver="this.style.background='#c4b029'" onMouseOut="this.style.background='#8f801d'">
-								<input type="hidden" name="is_no"  value="${inform_setVO.is_no}">
-								<input type="hidden" name="action"	value="getOneIsForUpdate"></FORM>
-							</td>
-							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/inform_set/is.do" style="margin-bottom: 0px;">
-								<input type="submit" value="刪除" id="del" style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer;box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" onMouseOver="this.style.background='#ba2214'" onMouseOut="this.style.background='#6b2822'">
-								<input type="hidden" name="is_no"  value="${inform_setVO.is_no}">
-								<input type="hidden" name="action" value="deleteIs"></FORM>
-							</td>
 						</tr>
 					</c:forEach>
 					</tbody>

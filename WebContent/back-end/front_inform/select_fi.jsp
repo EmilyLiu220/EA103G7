@@ -8,14 +8,13 @@
 <%@ page import="com.fun_auth.model.*"%>
 
 <%	
-	List<Inform_SetVO> list = (List<Inform_SetVO>) request.getAttribute("isVOs");
-	pageContext.setAttribute("list", list);
 	EmpVO empVO2 = (EmpVO) session.getAttribute("empVO2");
 	Inform_SetVO isVO = (Inform_SetVO) request.getAttribute("isVO");
 	List<Emp_authVO> emp_authVO2 = (List<Emp_authVO>) session.getAttribute("emp_authVO2");
 	List<Fun_authVO> fun_authVO2 = (List<Fun_authVO>) session.getAttribute("fun_authVO2");
 %>
 
+<jsp:useBean id="isSvc" scope="page" class="com.inform_set.model.Inform_SetService"></jsp:useBean>
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
 
 <!DOCTYPE html>
@@ -24,7 +23,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>通知設定管理-複合</title>
+<title>通知設定管理-查詢</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/bootstrap-4.1.0.min.css">
@@ -150,7 +149,7 @@
 										<c:otherwise>
 											<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}，您好！</span>
 										</c:otherwise>
-									</c:choose>
+									</c:choose>	
 								</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
@@ -174,15 +173,26 @@
 				</div>
 			</nav>
 
-			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5><span> - 通知設定管理</span>
-			<a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回查詢頁面</a>		
+			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 查看通知</span>
 			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
 			<p>
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查看群發通知</h3>
+							<h3 style="margin-bottom:0;">查詢所有通知</h3>
 						</td>
+					</tr>
+				</table>
+				<br>
+				<ul>
+					<%-- empCheckAllInform.jsp --%>
+					<li><a href='<%=request.getContextPath()%>/back-end/front_inform/empCheckAllInform.jsp' style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">顯示所有通知</a><br><br></li>
+				</ul>
+				
+				<%-- 查詢通知 --%>
+				<table id="table-1">
+					<tr>
+						<td><h3 style="margin-bottom:0;">查詢通知</h3></td>
 					</tr>
 				</table>
 				<br>
@@ -194,48 +204,48 @@
 							<li style="color: red">${message}</li>
 						</c:forEach>
 					</ul>
+					<br>
 				</c:if>
-
-				<table class="table table-hover" style="width: 100%; font-size: 90%;">
-					<thead style="text-align: center;">
-						<tr>
-							<th style="width: 10%;">編號</th>
-							<th style="width: 40%;">內容</th>
-							<th style="width: 20%;">員工</th>
-							<th style="width: 20%;">通知日期</th>
-							<th style="width: 5%;"></th>
-							<th style="width: 5%;"></th>
-						</tr>
-					</thead>
-					<tbody>
-					<c:forEach var="inform_setVO" items="${list}">
-						<tr>
-							<td style="text-align: center;">${inform_setVO.is_no}</td>
-							<td style="text-align: center; word-break: break-all;">${inform_setVO.is_cont}</td>
-							<td style="text-align: center;">${inform_setVO.emp_no} ${pageScope.empSvc.getOneEmp(inform_setVO.emp_no).emp_name}</td>
-							<td style="text-align: center;"><fmt:formatDate value="${inform_setVO.is_date}" pattern="yyyy-MM-dd" /></td>
-							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/inform_set/is.do" style="margin-bottom: 0px;">
-								<input type="submit" value="修改" id="revise" style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer;box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" onMouseOver="this.style.background='#c4b029'" onMouseOut="this.style.background='#8f801d'">
-								<input type="hidden" name="is_no"  value="${inform_setVO.is_no}">
-								<input type="hidden" name="action"	value="getOneIsForUpdate"></FORM>
-							</td>
-							<td>
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/inform_set/is.do" style="margin-bottom: 0px;">
-								<input type="submit" value="刪除" id="del" style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer;box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" onMouseOver="this.style.background='#ba2214'" onMouseOut="this.style.background='#6b2822'">
-								<input type="hidden" name="is_no"  value="${inform_setVO.is_no}">
-								<input type="hidden" name="action" value="deleteIs"></FORM>
-							</td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
-			</p>
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_inform/fi.do" >
+					<ul>
+						<li>
+							<b>輸入會員編號 (例如MEM0001)：</b>
+							<input type="text" name="mem_no">
+						<br><br></li>
+						<li>
+							<b>選擇通知狀態:</b>
+							<select size="1" name="info_sts" >
+								<option value="">
+								<c:choose>
+									<c:when test="${front_informVO.info_sts == 0}">一般通知</c:when>
+									<c:when test="${front_informVO.info_sts == 1}">確認用餐</c:when>
+									<c:when test="${front_informVO.info_sts == 2}">尚未回覆</c:when>
+									<c:when test="${front_informVO.info_sts == 3}">取消訂位</c:when>
+								</c:choose>
+							</select><br>
+						</li>
+						<li>
+							<b>選擇日期：</b>
+							<b>起 </b><input type="text" id="is_date_startDate" name="is_date_startDate" class="hasDatepicker2">
+							<b>訖 </b><input type="text" id="is_date_stopDate" name="is_date_stopDate" class="hasDatepicker2"><br>
+						<br></li>
+					</ul>
+					<div style="display: inline-block; position: relative; left: 5%;">
+						<input type="hidden" name="action" value="empGetSpecialInform">
+						<input type="submit" value="開始查詢" style="margin-right: 20px;">
+						<input type="reset" value="重新填寫">
+					</div>
+				</FORM>
+				<br>
+			</p>	
 		</div>
 	</div>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="<%=request.getContextPath()%>/back-end/js/jquery-3.3.1.slim.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<!-- Popper.JS -->
 	<script src="<%=request.getContextPath()%>/back-end/js/popper-2018.min.js"></script>
 	<!-- Bootstrap JS -->
@@ -254,7 +264,35 @@
 				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
 			});
 		});
+		$( function() {
+			var dateFormat = "mm/dd/yy",
+			from = $( "#is_date_startDate" ).datepicker({
+				defaultDate: "+1w",
+				changeMonth: true,
+				numberOfMonths: 1
+			}).on( "change", function() {
+				to.datepicker( "option", "minDate", getDate( this ) );
+			}),
+			to = $( "#is_date_stopDate" ).datepicker({
+				defaultDate: "+1w",
+				changeMonth: true,
+				numberOfMonths: 1
+			}).on( "change", function() {
+				from.datepicker( "option", "maxDate", getDate( this ) );
+			});
+		 
+			function getDate( element ) {
+				var date;
+				try {
+					date = $.datepicker.parseDate( dateFormat, element.value );
+				} catch( error ) {
+					date = null;
+				}
+				return date;
+			}
+		});
 	</script>
+	
 	<div id="fun" style="display:none">
 		<c:forEach var="fun_authVO2" items="${fun_authVO2}">
 			<span class="fun">${fun_authVO2.fun_name}</span><br>
