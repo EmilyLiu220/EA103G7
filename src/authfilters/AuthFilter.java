@@ -53,31 +53,77 @@ public class AuthFilter implements Filter {
 		fa0002.add(req.getContextPath() + "/back-end/mem/listOneMem.jsp");
 		fa0002.add(req.getContextPath() + "/back-end/mem/update_mem_sts.jsp");
 		
-		// 各權限確定路徑後加上
+		
 		List<String> fa0003 = new ArrayList<>();
+		fa0003.add(req.getContextPath() + "/back-end/message_record/message_record.do");
+		fa0003.add(req.getContextPath() + "/back-end/message_record/backEndChatRoom.jsp");
+		
 		List<String> fa0004 = new ArrayList<>();
+		fa0004.add(req.getContextPath() + "/back-end/front_inform/front_inform.do");
+		fa0004.add(req.getContextPath() + "/back-end/front_inform/empCheckAllInform.jsp");
+		fa0004.add(req.getContextPath() + "/back-end/front_inform/errorPage.jsp");
+		
 		List<String> fa0005 = new ArrayList<>();
 		List<String> fa0006 = new ArrayList<>();
 		List<String> fa0007 = new ArrayList<>();
 		List<String> fa0008 = new ArrayList<>();
+		
 		List<String> fa0009 = new ArrayList<>();
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/mealOrder.do");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/asignOrder.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/listAllOrder2.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/listOneOrder.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/listQueryOrder2.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/mealOrderManagement.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/orderChart.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/OrderDone.jsp");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/prepareOrder.jsp");
+		
 		List<String> fa0010 = new ArrayList<>();
+		fa0010.add(req.getContextPath() + "/back-end/res_order/res_order.do");
+		fa0010.add(req.getContextPath() + "/back-end/res_order/orderSeat.jsp");
+		
 		List<String> fa0011 = new ArrayList<>();
+		
 		List<String> fa0012 = new ArrayList<>();
+		fa0010.add(req.getContextPath() + "/back-end/seat/seat.do");
+		fa0010.add(req.getContextPath() + "/back-end/seat/editSeat_include.jsp");
+		fa0010.add(req.getContextPath() + "/back-end/seat/editSeat.jsp");
+		fa0010.add(req.getContextPath() + "/back-end/seat_obj/seat_obj.do");
+		fa0010.add(req.getContextPath() + "/back-end/seat_obj/addSeatObj.jsp");
+		fa0010.add(req.getContextPath() + "/back-end/seat_obj/ssetSeatObj.jsp");
+		fa0010.add(req.getContextPath() + "/back-end/seat_obj/updateSeatObj.jsp");
+		
 		List<String> fa0013 = new ArrayList<>();
 		List<String> fa0014 = new ArrayList<>();
 		List<String> fa0015 = new ArrayList<>();
+		
 		List<String> fa0016 = new ArrayList<>();
+		fa0016.add(req.getContextPath() + "/back-end/meal/meal.do");
+		fa0016.add(req.getContextPath() + "/back-end/meal/insertMeal2.jsp");
+		fa0016.add(req.getContextPath() + "/back-end/meal/listAllMeal2.jsp");
+		fa0016.add(req.getContextPath() + "/back-end/meal/menuManagement.jsp");
+		fa0016.add(req.getContextPath() + "/back-end/meal/updateMeal2.jsp");
+		fa0016.add(req.getContextPath() + "/back-end/meal_set/meal_set.do");
+		fa0016.add(req.getContextPath() + "/back-end/meal_set/insertMealSet2.jsp");
+		fa0016.add(req.getContextPath() + "/back-end/meal_set/listAllMealSet2.jsp");
+		fa0016.add(req.getContextPath() + "/back-end/meal_set/updateMealSet2.jsp");
+		
 		List<String> fa0017 = new ArrayList<>();
+		
 		List<String> fa0018 = new ArrayList<>();
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/inform_set.do");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/add_is.jsp");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/errorPage.jsp");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/listAll_is.jsp");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/listByComplex_is.jsp");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/listOne_is.jsp");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/select_is.jsp");
+		fa0018.add(req.getContextPath() + "/back-end/inform_set/update_is.jsp");
+		
 		List<String> fa0019 = new ArrayList<>();
 		List<String> fa0020 = new ArrayList<>();
 		List<String> fa0021 = new ArrayList<>();
-		List<String> fa0022 = new ArrayList<>();
-		List<String> fa0023 = new ArrayList<>();
-		List<String> fa0024 = new ArrayList<>();
-		List<String> fa0025 = new ArrayList<>();
-		
 		
 		// 比對員工權限和請求的路徑 (之後新增全部的權限)
 		if (funs.contains("FA0001") && fa0001.contains(path)) {
@@ -121,14 +167,6 @@ public class AuthFilter implements Filter {
 		} else if (funs.contains("FA0020") && fa0020.contains(path)) {
 			chain.doFilter(request, response);
 		} else if (funs.contains("FA0021") && fa0021.contains(path)) {
-			chain.doFilter(request, response);
-		} else if (funs.contains("FA0022") && fa0022.contains(path)) {
-			chain.doFilter(request, response);
-		} else if (funs.contains("FA0023") && fa0023.contains(path)) {
-			chain.doFilter(request, response);
-		} else if (funs.contains("FA0024") && fa0024.contains(path)) {
-			chain.doFilter(request, response);
-		} else if (funs.contains("FA0025") && fa0025.contains(path)) {
 			chain.doFilter(request, response);
 		} else {
 			res.sendRedirect(req.getContextPath() + "/back-end/backindex.jsp");

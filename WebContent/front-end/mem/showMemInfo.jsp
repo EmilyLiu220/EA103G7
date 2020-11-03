@@ -130,6 +130,7 @@
 	var x = `${x}`;
 	function hint() {
 		if (x === "success") {
+// 			alert("恭喜您！修改成功！");
 			swal({
 				  title: "恭喜您！修改成功！",
 				  text: "3秒後自動關閉。",
