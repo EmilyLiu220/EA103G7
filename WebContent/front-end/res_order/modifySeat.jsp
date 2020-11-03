@@ -50,6 +50,9 @@ input, select {
 					<th>預約訂位日期</th>
 					<th>用餐時段</th>
 					<th>人數</th>
+					<th rowspan="2" style="font-weight:bold; vertical-align:middle;">
+						<button type="submit" class="btn btn-primary" name="action" value="return_former_page" onclick="location.href='<%=request.getContextPath()%>/res_order/ResOrderServlet.do?requestURL=${param.requestURL}&whichPage=${param.whichPage}'">返回</button>
+					</th>
 				</tr>
 				<tr>
 					<td style="vertical-align:middle;">

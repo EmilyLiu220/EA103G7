@@ -150,8 +150,8 @@
 					<c:choose>    
 						<c:when test="${resOrderVO.info_sts lt 1}">  
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
-			     				<input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
+								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+			     				<input type="hidden" name="whichPage" value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
 								<button type="submit" id="cancel_Seat_Res_Order" class="btn btn-danger" onclick='return false;' >取消訂位</button>
 						</c:when>
 						<c:otherwise>

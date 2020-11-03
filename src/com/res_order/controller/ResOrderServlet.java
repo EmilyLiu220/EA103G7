@@ -102,12 +102,8 @@ public class ResOrderServlet extends HttpServlet {
 			if (todayStr.equals(res_date)) {
 				front_InformSvc.addRCFI(next_res_no); // 在執行此動作時順便去修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
-			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
-//			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
-//			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 			req.setAttribute("res_no", next_res_no);
-//			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
-//			failureView.forward(req, res);
+			
 			res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 			return;
 		}
@@ -156,8 +152,6 @@ public class ResOrderServlet extends HttpServlet {
 			resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), emp_no,
 					java.sql.Date.valueOf(res_date), new Integer(people), time_peri_no, resOrderVO.getInfo_sts(),
 					resOrderVO.getSeat_sts(), seats_no);
-//			String next_res_no = resOrderSvc.addResOrder(null, mem_no, emp_no, java.sql.Date.valueOf(res_date),
-//					new Integer(people), time_peri_no, new Integer(0), new Integer(0), seats_no);
 
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
@@ -172,13 +166,9 @@ public class ResOrderServlet extends HttpServlet {
 				// 在執行此動作時，已經順便修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
 
-//			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
-//			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
-//			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 			req.setAttribute("res_no", res_no);
 			RequestDispatcher failureView = req.getRequestDispatcher(requestURL + "?whichPage=" + whichPage);
 			failureView.forward(req, res);
-//			res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 			return;
 		}
 
@@ -223,9 +213,6 @@ public class ResOrderServlet extends HttpServlet {
 			Front_InformService front_InformSvc = new Front_InformService();
 			// 發送通知
 			front_InformSvc.addROFI(mem_no, next_res_no, "訂位成功，點選查看訂位訂單");
-//			// 修改回復狀態，應該加在 Front_InformService > addROFI > 對應的DAO
-//			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
-//			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 
 			req.setAttribute("res_no", next_res_no);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/shopping/mealMenu2.jsp");
@@ -424,7 +411,8 @@ public class ResOrderServlet extends HttpServlet {
 
 			return;
 		}
-
+		
+		// 去修改頁面
 		if ("modify_Seat_Order".equals(action)) {
 			String requestURL = req.getParameter("requestURL");
 			String whichPage = req.getParameter("whichPage");
@@ -435,22 +423,16 @@ public class ResOrderServlet extends HttpServlet {
 			return;
 		}
 
-//		if ("get_Member_Res_Seat_Ing".equals(action)) {
-//			
-//			ResOrderService resOrderSvc = new ResOrderService();
-//			List<ResOrderVO> resOrderVOList = resOrderSvc.getOneMemberResOrder("MEM0010", "ing");
-//			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-//			String jsonStr = gson.toJson(resOrderVOList);
-//			PrintWriter out = res.getWriter();
-//			res.setContentType("text/plain");
-//			res.setCharacterEncoding("UTF-8");
-//			out.write(jsonStr);
-//			out.flush();
-//			out.close();
-//			return;
-//		}
-
+		// 修改頁面返回上一頁
+		if("return_former_page".equals(action)) {
+			String requestURL = req.getParameter("requestURL");
+			String whichPage = req.getParameter("whichPage");
+			RequestDispatcher failureView = req.getRequestDispatcher(requestURL + "?whichPage=" + whichPage);
+			failureView.forward(req, res);
+			return;
+		}
+		
 		// not do anything, go to the this page
-		res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
+		res.sendRedirect(req.getContextPath() + "/front-end/front_home.jsp");
 	}
 }
