@@ -125,7 +125,9 @@ public class ResOrderServlet extends HttpServlet {
 			String people = req.getParameter("people");
 			String emp_no = req.getParameter("emp_no");
 			String mem_no = req.getParameter("mem_no");
-
+			String requestURL = req.getParameter("requestURL");
+			String whichPage = req.getParameter("whichPage");
+			
 			if ("--請選擇日期--".equals(res_date)) {
 				errorMsgs.add("請選擇訂位日期");
 			}
@@ -166,7 +168,7 @@ public class ResOrderServlet extends HttpServlet {
 			java.util.Date today = new java.util.Date();
 			String todayStr = sdf.format(today);
 			if (todayStr.equals(res_date)) {
-				front_InformSvc.addRCFI(res_no); 
+				front_InformSvc.addRCFI(res_no);
 				// 在執行此動作時，已經順便修改 RES_ORDER 裡的 INFO_STS 了 → 修改為 1
 			}
 
@@ -174,9 +176,9 @@ public class ResOrderServlet extends HttpServlet {
 //			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(next_res_no);
 //			resOrderSvc.updateResOrder(next_res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(), resOrderVO.getEmp_no(), resOrderVO.getRes_time(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(), new Integer(1), resOrderVO.getSeat_sts());
 			req.setAttribute("res_no", res_no);
-//			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/getMemberResSeat.jsp");
-//			failureView.forward(req, res);
-			res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
+			RequestDispatcher failureView = req.getRequestDispatcher(requestURL + "?whichPage=" + whichPage);
+			failureView.forward(req, res);
+//			res.sendRedirect(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 			return;
 		}
 
@@ -245,9 +247,9 @@ public class ResOrderServlet extends HttpServlet {
 
 			String res_date = req.getParameter("res_date");
 			String time_peri_no = req.getParameter("time_peri_no");
-
 			ResOrderService resOrderSvc = new ResOrderService();
 			ResDetailService resDetailSvc = new ResDetailService();
+			SeatService seatSvc = new SeatService();
 			if (!"-1".equals(time_peri_no) && res_date != null) {
 				List<ResOrderVO> resOrderList = resOrderSvc.getResDate_And_TimePeri_getAll(res_date, time_peri_no);
 				List<String> seatNoList = new ArrayList<String>();
@@ -258,12 +260,21 @@ public class ResOrderServlet extends HttpServlet {
 						List<ResDetailVO> resDetailList = resDetailSvc.getAllResNO(resOrderVO.getRes_no());
 						// 如果桌位編號有在訂單內，回傳並將該桌號disabled
 						for (ResDetailVO resDetailVO : resDetailList) {
-							seatNoList.add(resDetailVO.getSeat_no());
+							if(req.getParameter("floor") != null) {
+								Integer floor = Integer.parseInt(req.getParameter("floor"));
+								System.out.println(seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f());
+								if (seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
+									seatNoList.add(resDetailVO.getSeat_no());System.out.println(123);
+								}
+							} else {
+								seatNoList.add(resDetailVO.getSeat_no());
+							}
 						}
 					}
 				}
 				JSONArray seatNoJSONList = new JSONArray(seatNoList);
 				res.setCharacterEncoding("UTF-8");
+				System.out.println(seatNoJSONList.toString());
 				out.print(seatNoJSONList.toString());
 				out.flush();
 				out.close();
@@ -356,7 +367,7 @@ public class ResOrderServlet extends HttpServlet {
 			return;
 		}
 
-		/********************** 修改訂位 **********************/
+		/********************** 修改訂位取得訂單資訊 **********************/
 		if ("get_Modify_Seat_Order_Info".equals(action)) {
 			String res_no = req.getParameter("res_no");
 
@@ -417,6 +428,10 @@ public class ResOrderServlet extends HttpServlet {
 		}
 
 		if ("modify_Seat_Order".equals(action)) {
+			String requestURL = req.getParameter("requestURL");
+			String whichPage = req.getParameter("whichPage");
+			req.setAttribute("requestURL", requestURL);
+			req.setAttribute("whichPage", whichPage);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/modifySeat.jsp");
 			failureView.forward(req, res);
 			return;
