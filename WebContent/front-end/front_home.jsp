@@ -5,9 +5,14 @@
 <%@ page import="com.front_inform.model.*"%>
 <%@ page import="com.message_record.model.*"%>
 <%@ page import="com.mem.model.*"%>
-
+<%@ page import="com.ad.model.*"%>
 <%
 	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
+%>
+<%
+	AdService adSvc = new AdService(); 
+     List<AdVO> list = adSvc.find_adsts(1); 
+     request.setAttribute("list",list);
 %>
 <!DOCTYPE html>
 <html>
@@ -17,31 +22,72 @@
 
 <title>前台首頁</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap"
+	rel="stylesheet">
 
-<link rel="icon" type="image/png" sizes="32x32" href="<%=request.getContextPath()%>/images/pot.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="<%=request.getContextPath()%>/images/pot.png">
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/open-iconic-bootstrap.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/animate.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/owl.carousel.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/owl.theme.default.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/magnific-popup.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/aos.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/ionicons.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/jquery.timepicker.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/flaticon.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/icomoon.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/style.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/fiNmsg.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/css/toastr.min.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/open-iconic-bootstrap.min.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/animate.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/owl.carousel.min.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/owl.theme.default.min.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/magnific-popup.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/aos.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/ionicons.min.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/bootstrap-datepicker.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/jquery.timepicker.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/flaticon.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/icomoon.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/style.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/fiNmsg.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/front-end/css/toastr.min.css">
 
 <style>
 .unshow {
 	display: none;
+}
+
+.adimg {
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.ad2 {
+	width: 50%;
+	height: 750px;
+	margin: 0px auto;
+}
+
+.ad3 {
+	background-image:
+		url('<%=request.getContextPath()%>/front-end/images/newsBg.jpg');
+}
+
+.ad {
+	margin-top: 100px;
+	left: 500px;
 }
 </style>
 
@@ -73,7 +119,9 @@
 							</button>
 						</div>
 					</div>
-					<div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px); background: #d6fdff;">
+					<div id="chat"
+						class="chat_box_wrapper chat_box_small chat_box_active"
+						style="opacity: 1; display: block; transform: translateX(0px); background: #d6fdff;">
 					</div>
 					<div class="chat_submit_box">
 						<div class="uk-input-group">
@@ -171,13 +219,15 @@
 					<li class="nav-item"><a href="" class="nav-link">餐廳資訊</a></li>
 					<li class="nav-item"><a href="" class="nav-link">候位狀況</a></li>
 					<li class="nav-item"><a href="" class="nav-link" id="meal">我要訂餐</a></li>
-					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp" class="nav-link" id="res">我要訂位</a></li>
+					<li class="nav-item"><a
+						href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp"
+						class="nav-link" id="res">我要訂位</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<!-- END nav -->
-	
+
 	<%-- 以下為輪播的地方 --%>
 	<section class="home-slider owl-carousel js-fullheight">
 		<div class="slider-item js-fullheight"
@@ -314,68 +364,66 @@
 		</div>
 	</section>
 	<!-- 		------------------------------ -->
+
+	<!-- ----------------------------------------- -->
 	<div id="carouselExampleIndicators" class="carousel slide"
 		data-ride="carousel">
-		<div id="img1">
-			<ol class="carousel-indicators">
-				<li data-target="#carouselExampleIndicators" data-slide-to="0"
-					class="active"></li>
-				<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-				<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-			</ol>
+		<ol class="carousel-indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0"
+				class="active"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		</ol>
 
-			<div class="carousel-inner">
-				<div class="carousel-item active ">
-					<%-- 					<%@ include file="/front-end/front/page1-1.file"%> --%>
+		<div class="ad3"> -->
+			
 
-					<%-- 					<c:forEach var="newsVO" items="${list}" begin="<%=pageIndex%>" --%>
-					<%-- 						end="<%=pageIndex+rowsPerPage-1%>"> --%>
-					<%-- 						<h3>${newsVO.news_cont}</h3> --%>
-					<%-- 						<h4>${newsVO.news_date}</h4> --%>
-					<%-- 					</c:forEach> --%>
+			<div class="carousel-inner ad2">
+				<%@ include file="/front-end/front/page1-1.file"%>
+				<div class="row text-center text-lg-left">
+					<c:forEach var="adVO" items="${list}">
+						<div class="carousel-item ad">
 
+							<div class="col-lg-3 col-md-4 col-6">
+								<label for="${adVO.ad_no}" class="d-block mb-4 h-100"> <img
+									class="img-fluid img-thumbnail"
+									src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"
+									alt="">
+								</label>
+								
+								<div>${adVO.ad_add_date}</div>
+
+								<FORM METHOD="post"
+									ACTION="<%=request.getContextPath()%>/ad/ad.do">
+									<label for="${adVO.ad_no}" class="d-block mb-4 h-100 "
+										style="font-size: 20px" id="ad_title">${adVO.ad_title}<br>
+										<button type="submit" id="${adVO.ad_no}"
+											class="btn btn-outline-dark" style="border-radius: 100%"
+											name="action" value="getFrontOne_For_Display">詳</button>
+									</label> <input type="hidden" name="ad_no" value="${adVO.ad_no}">
+								</FORM>
+							</div>
+						</div>
+					</c:forEach>
 				</div>
-				<!-- 				<div class="carousel-item active ">123</div> -->
-				<!-- 				<div class="carousel-item ">456</div> -->
-				<!-- 				<div class="carousel-item ">789</div> -->
-				<!-- 				<a class="carousel-control-prev" -->
-				<%-- 					href="<%=request.getRequestURI()%>?whichPage=<%=whichPage - 1%>" --%>
-				<!-- 					role="button" data-slide="prev"> <span -->
-				<!-- 					class="carousel-control-prev-icon" aria-hidden="true"></span> <span -->
-				<!-- 					class="sr-only">Previous</span> -->
-				<!-- 				</a> <a class="carousel-control-next" -->
-				<%-- 					href="<%=request.getRequestURI()%>?whichPage=<%=whichPage + 1%>" --%>
-				<!-- 					role="button" data-slide="next"> <span -->
-				<!-- 					class="carousel-control-next-icon" aria-hidden="true"></span> <span -->
-				<!-- 					class="sr-only">Next</span> -->
-				<!-- 				</a> -->
 			</div>
+
 		</div>
-	</div>
-	<!-- ----------------------------------------- -->
-	<div id="ExampleIndicators" class="carousel slide" data-ride="carousel">
 
-
-		<div class="carousel-inner">
-
-			<div class="carousel-item active">
-				<img class="d-block w-100"
-					src="<%=request.getContextPath()%>/front-end/images/twL_ad_20B20_m7ie5yxyhs.jpg"
-					alt="twL_ad_20B20_m7ie5yxyhs.jpg">
-			</div>
-			<div class="carousel-item">
-				<img class="d-block w-100"
-					src="<%=request.getContextPath()%>/front-end/images/twL_ad_20B20_8n3uh8mz6a.jpg"
-					alt="twL_ad_20B20_8n3uh8mz6a.jpg">
-			</div>
-			<div class="carousel-item">
-				<img class="d-block w-100"
-					src="<%=request.getContextPath()%>/front-end/images/twL_ad_20B20_xym5ycjdaj.jpg"
-					alt="twL_ad_20B20_xym5ycjdaj.jpg">
-			</div>
-		</div>
+		
+<!-- 		------------------------------------------- -->
+		<a class="carousel-control-prev" href="#carouselExampleIndicators"
+			role="button" data-slide="prev"> <span
+			class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+			class="sr-only">Previous</span>
+		</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
+			role="button" data-slide="next"> <span
+			class="carousel-control-next-icon" aria-hidden="true"></span> <span
+			class="sr-only">Next</span>
+		</a>
 	</div>
 
+	<!-- 		------------------------------ -->
 
 	<section class="ftco-section img"
 		style="background-image: url(<%=request.getContextPath()%>/front-end/images/carousel_3.jpg)"
@@ -547,7 +595,7 @@
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
 	<%-- loader 結束 --%>
-	
+
 	<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 開始 --%>
 	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1379,7 +1427,8 @@
 	
 </script>
 <script src="<%=request.getContextPath()%>/front-end/js/jquery.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/bootstrap.min.js"></script>
 <script>
 	<%-- 可在 modal 處自由加入想要擋住的內容 --%>
 	var nb = $('nav.navbar-fixed-top');
@@ -1597,26 +1646,41 @@
 // 			alert("請先登入會員喔！");
 // 		});
 	}
-	
+</script>
+<script>
+var ad=$(".ad").get(0);
+ad.classList.add("active");
+var ada=$(".ada").get(0);
+ada.classList.add("active");
 </script>
 
-<script src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/popper.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.easing.1.3.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.waypoints.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.stellar.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/owl.carousel.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.magnific-popup.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.easing.1.3.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.waypoints.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.stellar.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/owl.carousel.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.magnific-popup.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/aos.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.animateNumber.min.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/bootstrap-datepicker.js"></script>
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.timepicker.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.animateNumber.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/bootstrap-datepicker.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.timepicker.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/scrollax.min.js"></script>
 <%-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> --%>
 <%-- <script src="<%=request.getContextPath()%>/front-end/js/google-map.js"></script> --%>
 <script src="<%=request.getContextPath()%>/front-end/js/main.js"></script>
 
 <!--為了顯示地址選單用 -->
-<script src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
 <%-- script 結束 --%>
 </html>
