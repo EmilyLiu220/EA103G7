@@ -49,6 +49,7 @@ $(document).ready(function() {
 	var lock_people = true;// 防止重複提交定義鎖
 	$("#people").change(function(e) {
 		e.preventDefault();
+		e.stopImmediatePropagation();
 		if (!lock_people) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			return false;
 		}
@@ -82,6 +83,7 @@ $(document).ready(function() {
 			},
 			success: function(messages) {
 				// console.log(messages);
+				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
 				jsonArray_people = JSON.parse(messages);
 				setJSONArray_people(jsonArray_people);
 				$("#container").css("display", "block");
@@ -116,6 +118,7 @@ $(document).ready(function() {
 							"action":"get_Res_Order_Today"
 						},
 						success: function(messages) {
+							$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
 							var jsonArray = JSON.parse(messages);
 							// console.log(jsonArray);
 							var $myCheckbox = $(".myCheckbox");
@@ -140,11 +143,12 @@ $(document).ready(function() {
 								});
 							});
 							zeroChooseSeatPeople(0);
-							lock_people_change = true;// 如果業務執行成功，修改鎖狀態
 							$(".labelTwo").css("display", "inline-block");
+							lock_people_change = true;// 如果業務執行成功，修改鎖狀態
 						},
 						error: function(xhr, ajaxOptions, thrownError) {
 							lock_people_change = true;// 如果業務執行失敗，修改鎖狀態
+							$("#people").val("");
 							ajaxSuccessFalse(xhr);
 							swal("儲存失敗", errorText, "warning");
 						},
@@ -191,7 +195,7 @@ $(document).ready(function() {
 		}
 		var people = $("#people").val();
 		// 請使用者輸入來店人數
-		if ($("#people").val().length === 0) {
+		if (people == null) {
 			swal("請先輸入來店人數", "", "info");
 			$(this).closest(".drag").css({
 				filter: "hue-rotate(0deg)",
@@ -263,11 +267,14 @@ $(document).ready(function() {
 	 * ******************************
 	 */
 	var lock_floor_list = true;// 防止重複提交定義鎖
-	$("#floor_list").change(function() {
+	$("#floor_list").change(function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
 		if (!lock_floor_list) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			return false;
 		}
 		lock_floor_list = false; // 3.進來後，立馬把鎖鎖住
+		$(".info.btn.btn-secondary").remove();
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
 			// one judgment
@@ -284,13 +291,11 @@ $(document).ready(function() {
 //				$.getScript(ajaxURL + "/js/jquery-1.12.4.js");
 				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
 //				$.getScript(ajaxURL + "/js/sweetalert.min.js");
-				// console.log(messages);
+//				 console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("div#container.container").empty();
 				$("#time_peri_no").empty();
 				$("#people").val("");
-				const toDay = new Date();
-				$("#res_date").val(toDay);
 				$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
 				$.each(jsonArray, function(_index, item) {
 					$("<div>").attr({
@@ -301,9 +306,11 @@ $(document).ready(function() {
 						"left": item.seat_x + "px",
 						"top": item.seat_y + "px",
 					}).appendTo("div#container.container");
-
+					
 					var $drag = $("div#container.container .drag").eq(_index);
-					$("<label>").appendTo($drag);
+					$("<label>").attr({
+						class: "imgLabel",
+					}).appendTo($drag);
 					var $label = $("div#container.container .drag > label:first-child").eq(_index);
 					$("<input>").attr({
 						type: "checkbox",
@@ -314,6 +321,7 @@ $(document).ready(function() {
 					$("<img>").attr({
 						src: ajaxURL + "/seat/Seat_ObjServlet.do?seat_obj_no=" + item.seat_obj_no,
 					}).appendTo($label);
+					
 					$("<label>").attr({
 						class: "seatLabel",
 					}).appendTo($drag);
@@ -328,6 +336,7 @@ $(document).ready(function() {
 //				$(".labelOne").css("display", "none");
 //				$(".labelTwo").css("display", "none");
 //				$("#container").css("display", "none");
+				lock_floor_list = true;// 如果業務執行失敗，修改鎖狀態
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_floor_list = true;// 如果業務執行失敗，修改鎖狀態
@@ -346,16 +355,20 @@ $(document).ready(function() {
 		format: 'Y-m-d',				// 時間格式
 		scrollInput: false,				// 預防滾輪選取不可選取的日期
 		validateOnBlur: false, 			// 失去焦點時才驗證輸入直
+		defaultDate:new Date(),
 		minDate: 0,						// 開始日期
 		maxDate: '+1970/01/14',			// 開始日期到結束日期
 	})
 
 	var lock_order_date = true;// 防止重複提交定義鎖
-	$("#res_date").change(function() {
+	$("#res_date").change(function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
 		if (!lock_order_date) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			return false;
 		}
 		lock_order_date = false; // 3.進來後，立馬把鎖鎖住
+		$(".info.btn.btn-secondary").remove();
 		var res_date = $("#res_date").val();
 		$.ajax({
 			// url is servlet url, ?archive_seat is tell servlet execute which
@@ -369,7 +382,8 @@ $(document).ready(function() {
 				"action":"get_TimePeri",
 			},
 			success: function(messages) {
-				// console.log(messages);
+				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
+				console.log(messages);
 				var jsonArray = JSON.parse(messages);
 				$("#time_peri_no").empty();
 				$("#time_peri_no").append("<option class=\"lt\" value=\"-1\">--請選擇時段--</option>");
@@ -381,7 +395,7 @@ $(document).ready(function() {
 					$("#time_peri_no").append(option);
 				});
 				$(".labelOne").css("display", "inline-block");
-				lock_order_date = true;// 如果業務執行成功，修改鎖狀態
+				lock_order_date = true;
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_order_date = true;// 如果業務執行失敗，修改鎖狀態
@@ -393,11 +407,14 @@ $(document).ready(function() {
 	})
 
 	var lock_time_peri_no = true;// 防止重複提交定義鎖
-	$("#time_peri_no").change(function() {
+	$("#time_peri_no").change(function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
 		if (!lock_time_peri_no) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			return false;
 		}
 		lock_time_peri_no = false; // 3.進來後，立馬把鎖鎖住
+		$(".info.btn.btn-secondary").remove();
 		var res_date = $("#res_date").val();
 		var time_peri_no = $("#time_peri_no").val();
 		$.ajax({
@@ -413,6 +430,7 @@ $(document).ready(function() {
 				"action":"get_Res_Order_Today",
 			},
 			success: function(messages) {
+				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
 				var jsonArray = JSON.parse(messages);
 				// console.log(jsonArray);
 				var $myCheckbox = $(".myCheckbox");
@@ -431,15 +449,23 @@ $(document).ready(function() {
 							$(item).closest(".drag").css({
 								filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
 							});
+							$("<button>").attr({
+								type: "button",
+								container: "body",
+								class: "info btn btn-secondary",
+								"data-html": "true",
+								"data-toggle": "popover",
+								"data-placement": "top",
+							}).text("資訊").appendTo($(item).closest(".imgLabel"));
 							$(item).prop("disabled", true);
 							$(item).prop("checked", true);
 							$(item).css("display", "none");
 						} 
 					});
 				});
-				lock_time_peri_no = true;// 如果業務執行成功，修改鎖狀態
 				$(".labelTwo").css("display", "inline-block");
 				$("#people").val("");
+				lock_time_peri_no = true;
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
@@ -459,33 +485,153 @@ $(document).ready(function() {
 			title: "請問要順便訂餐嗎?",
 			text: "訂餐方便又簡單～",
 			icon: "warning",
-			buttons: ["訂位就好", "我要順便訂餐"],
-		}).then((willDelete) => {
-			if (willDelete) {
-				swal("來去訂餐吧～", {
-					icon: "success",
-				}).then(function() {
-					$("<input>").attr({
+			buttons: {
+			    cancel: "取消!",
+			    catch: {
+			    	text: "訂位就好",
+			    	value: "res_seat",
+			    },
+			    defeat: {
+			    	text: "我要訂餐～",
+			    	value: "res_meal",
+			    },
+			}
+		}).then((value) => {
+			switch (value) {
+			 case "res_meal":
+				 swal("來去訂餐吧～", {
+						icon: "success",
+				 }).then(function() {
+					 $("<input>").attr({
 						type: "hidden",
 						name: "goMeal",
 						value: "carry_on_res_meal",
 					}).appendTo("div#orderSeatCondition.container");
 					form.submit();
-					return false;
 				});
-			} else if (willDelete === null) {
+			     break;
+			 case "res_seat":
 				swal("即將完成訂位", {
 					icon: "success",
 				}).then(function() {
 					form.submit();
-					return false;
 				});
-			} else {
-				swal("不做任何選項～", "再考慮考慮吧！", "info");
-				return false;
+			    break;
+			 default:
+				 swal("不做任何選項～", "再考慮考慮吧！", "info");
 			}
 		});
 		e.preventDefault();
 		e.stopImmediatePropagation();
 	});
+	// popover menu
+	$('[data-toggle="popover"]').popover({
+        trigger: 'click',
+        delay: { "show": 100, "hide": 100 },
+        title: '<span class="text-info"><strong>訂位資訊</strong></span>',
+        content: function(){
+        	return '<div>姓名：</div>' +
+            '<div>桌名：' + $("#floor_list").val()+"樓"+"_"+$(this).closest(".drag").children(".seatLabel").find(".seatName").val()+"桌"+ '</div>' +
+            '<div>時段：</div>' +
+            '<div>人數：</div>' +
+            '<div>點餐：</div>' +
+            '<div class="buttonDiv">' +
+            '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;">' +
+            '<i class="fa fa-check-circle"></i>入座</a></div>' +
+            '<div class="button col-4"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;">' +
+            '<i class="fa fa-shopping-cart"></i>點餐</a></div>' +
+            '<div class="button col-4"><a href="#" class="btn btn-danger" id="clear_window" onclick="return false;">' +
+            '<i class="fa fa-window-close"></i>關閉</a></div></div>';
+        },
+    });
+    $(document).on('click', '#clear_window', function() {
+        $('[data-toggle="popover"]').popover('hide');
+    });
+    $(document).on('click', 'button.info.btn.btn-secondary', function() {
+        $('[data-toggle="popover"]').not(this).popover('hide');
+    });
 });
+
+// 開局載入
+$(window).load(function init() {
+	var ajaxURL = (window.location.pathname).substr(0, (window.location.pathname).indexOf("/", (window.location.pathname).indexOf("/") + 1));
+	var lock_time_peri_no = true;// 防止重複提交定義鎖
+		if (!lock_time_peri_no) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
+			return false;
+		}
+		lock_time_peri_no = false; // 3.進來後，立馬把鎖鎖住
+		var res_date = $("#res_date").val();
+//		console.log(res_date);
+		var time_peri_no = $("#time_peri_no").val();
+//		console.log(time_peri_no);
+		$.ajax({
+			// url is servlet url, ?archive_seat is tell servlet execute which
+			// one judgment
+			url: ajaxURL + "/res_order/ResOrderServlet.do?",
+			type: "post",
+			// synchronize is false
+			async: false,
+			data: {
+				"res_date": "2020-11-04",
+				"time_peri_no": "TP0001",
+				"action":"get_Res_Order_Today",
+			},
+			success: function(messages) {
+				$.getScript(ajaxURL + "/back-end/js/orderSeat.js");
+				var jsonArray = JSON.parse(messages);
+				// console.log(jsonArray);
+				var $myCheckbox = $(".myCheckbox");
+
+				$.each($myCheckbox, function(_index, item) {
+					$(item).closest(".drag").css({
+						filter: "hue-rotate(0deg)",
+					});
+					$(item).prop("disabled", false);
+					$(item).prop("checked", false);
+					$(item).css("display", "block");
+				});
+				$.each($myCheckbox, function(_index, item) {
+					$.each(jsonArray, function(_index, item1) {
+						if ($(item).val() === item1) {
+							$(item).closest(".drag").css({
+								filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+							});
+							$("<button>").attr({
+								type: "button",
+								container: "body",
+								class: "info btn btn-secondary",
+								"data-html": "true",
+								"data-toggle": "popover",
+								"data-placement": "top",
+							}).text("資訊").appendTo($(item).closest(".imgLabel"));
+							$(item).prop("disabled", true);
+							$(item).prop("checked", true);
+							$(item).css("display", "none");
+						} 
+					});
+				});
+				
+				$("#people").empty();
+				for(let i = 1; i < 21; i++){
+					let option = $("<option/>");
+					option.attr({
+						id:"people",
+						value: i,
+					}).text(i+"人");
+					$("#people").append(option);
+				}
+				
+				lock_time_peri_no = true;// 如果業務執行成功，修改鎖狀態
+				$(".labelTwo").css("display", "inline-block");
+				$("#people").val("");
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
+				ajaxSuccessFalse(xhr);
+				swal("儲存失敗", errorText, "warning");
+			},
+		});
+		return false;
+});
+
+
