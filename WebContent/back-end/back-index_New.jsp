@@ -66,7 +66,7 @@
 						<li><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>

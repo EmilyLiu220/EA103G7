@@ -90,7 +90,7 @@
 					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
 					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
 					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
+					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
 					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
 					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
 					<li class="fun2"><a href="#">食材消耗統計</a></li>
@@ -217,13 +217,12 @@
 								<c:when test="${front_informVO.info_cont eq '提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉功能將於 7 天後恢復'}">暫停檢舉功能通知</c:when>
 								<c:when test="${front_informVO.info_cont eq '提醒您，因您有多則評價被檢舉成功，您的評價功能將於 14 天後恢復'}">暫停評價功能通知</c:when>
 								<c:when test="${front_informVO.info_cont eq '提醒您，您將於 1 分鐘後被停權'}">會員停權通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '訂位成功，點選查看訂位明細'}">訂位成功通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '訂位訂單修改成功，點選查看訂位明細'}">訂位修改通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '訂餐成功！您尚未付款，點選前往結帳'}">訂餐成功尚未結帳</c:when>
-								<c:when test="${front_informVO.info_cont eq '您已成功付款，點選查看訂單明細'}">訂單付款成功通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '您的訂單已取消'}">訂單取消通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '訂位成功，點選查看訂位訂單'}">訂位成功通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '訂位訂單修改成功，點選查看訂位訂單'}">訂位修改通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '訂餐成功，點選查看訂餐訂單'}">訂餐成功通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '餐點已完成，請至本餐廳取餐(點選可查看訂單)'}">取餐通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '您的訂餐已取消'}">訂餐取消通知</c:when>
 								<c:when test="${front_informVO.info_cont eq '您的訂位已取消'}">訂位取消通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '您的餐點已完成，請至本餐廳取餐'}">取餐通知</c:when>
 								<c:when test="${fn:contains(front_informVO.info_cont, '是否確認今日用餐')}">當日用餐通知</c:when>
 								<c:otherwise>活動推播通知</c:otherwise>
 							</c:choose>
