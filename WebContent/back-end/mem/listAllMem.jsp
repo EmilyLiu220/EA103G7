@@ -52,15 +52,11 @@
 	
 	<div>
 		<FORM METHOD="post" ACTION="mem.do" >
-	       <b>選擇會員姓名:</b>
-	       <select size="1" name="mem_no">
-	         <c:forEach var="memVO" items="${memSvc2.all}" > 
-	          <option value="${memVO.mem_no}">${memVO.mem_name}
-	         </c:forEach>   
-	       </select>
-	       <input type="hidden" name="action" value="getOne_For_Display">
-	       <input type="submit" value="送出">
-	     </FORM>
+	        <b>輸入會員姓名 :</b>
+	        <input type="text" name="mem_name" placeholder="王小明" size="6px" required>
+	        <input type="hidden" name="action" value="getOne_For_Display_ByName">
+	        <input type="submit" value="送出">
+	    </FORM>
 	</div>
 	
 	<%-- 錯誤表列 --%>

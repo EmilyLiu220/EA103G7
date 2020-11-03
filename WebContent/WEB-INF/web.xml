@@ -246,10 +246,8 @@
 	  <url-pattern>/front-end/mem/login_success_mem.jsp</url-pattern>
 	  <url-pattern>/front-end/mem/showMemInfo.jsp</url-pattern>
 	  <url-pattern>/front-end/mem/update_mem_info.jsp</url-pattern>
-	  <url-pattern>/front-end/res_order/orderSeat.jsp</url-pattern>
-	  <url-pattern>/front-end/res_order/modifySeat.jsp</url-pattern>
-	  <url-pattern>/front-end/res_order/getMemberResSeat.jsp</url-pattern>
-	  <url-pattern>/front-end/res_order/getMemberResSeatEnd.jsp</url-pattern>
+	  <url-pattern>/front-end/res_order/*</url-pattern>
+	  <url-pattern>/front-end/shopping/*</url-pattern>
 	  <url-pattern></url-pattern>
 	  <url-pattern></url-pattern>
 	  <url-pattern></url-pattern>
@@ -268,7 +266,8 @@
 	</filter>
 	<filter-mapping>
 	  <filter-name>mem_stsFilter</filter-name>
-	  <url-pattern>/front-end/res_order/orderSeat.jsp</url-pattern>
+	  <url-pattern>/front-end/res_order/*</url-pattern>
+	  <url-pattern>/front-end/shopping/*</url-pattern>
 	  <url-pattern></url-pattern>
 	  <url-pattern></url-pattern>
 	  <url-pattern></url-pattern>
@@ -294,8 +293,17 @@
 	  <url-pattern>/back-end/emp/update_emp_info.jsp</url-pattern>
 	  <url-pattern>/back-end/emp/update_emp_sts.jsp</url-pattern>
 	  <url-pattern>/back-end/mem/*</url-pattern>
+	  <url-pattern>/back-end/meal/*</url-pattern>
+	  <url-pattern>/back-end/meal_set/*</url-pattern>
+	  <url-pattern>/back-end/mealOrder/*</url-pattern>
 	  <url-pattern>/back-end/ad/*</url-pattern>
 	  <url-pattern>/back-end/news/*</url-pattern>
+	  <url-pattern>/back-end/front_inform/*</url-pattern>
+	  <url-pattern>/back-end/inform_set/*</url-pattern>
+	  <url-pattern>/back-end/message_record/*</url-pattern>
+	  <url-pattern>/back-end/res_order/*</url-pattern>
+	  <url-pattern>/back-end/seat/*</url-pattern>
+	  <url-pattern>/back-end/seat_obj/*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>
@@ -317,6 +325,15 @@
 	  <url-pattern>/back-end/emp/update_emp_auth.jsp</url-pattern>
 	  <url-pattern>/back-end/emp/update_emp_sts.jsp</url-pattern>
 	  <url-pattern>/back-end/mem/*</url-pattern>
+	  <url-pattern>/back-end/meal/*</url-pattern>
+	  <url-pattern>/back-end/meal_set/*</url-pattern>
+	  <url-pattern>/back-end/mealOrder/*</url-pattern>
+	  <url-pattern>/back-end/front_inform/*</url-pattern>
+	  <url-pattern>/back-end/inform_set/*</url-pattern>
+	  <url-pattern>/back-end/message_record/*</url-pattern>
+	  <url-pattern>/back-end/res_order/*</url-pattern>
+	  <url-pattern>/back-end/seat/*</url-pattern>
+	  <url-pattern>/back-end/seat_obj/*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>

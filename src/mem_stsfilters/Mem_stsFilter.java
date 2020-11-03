@@ -34,23 +34,43 @@ public class Mem_stsFilter implements Filter {
 		
 		MemVO memVO = (MemVO) session.getAttribute("memVO2");
 		
-		String reserve = req.getContextPath() + "/front-end/res_order/orderSeat.jsp";
-		String meal = req.getContextPath() + "/front-end/shopping/mealMenu2.jsp";
-		String review = req.getContextPath() + "";
-		String repo = req.getContextPath() + "";
+//		String reserve = req.getContextPath() + "/front-end/res_order/orderSeat.jsp";
+//		String meal = req.getContextPath() + "/front-end/shopping/mealMenu2.jsp";
+//		String review = req.getContextPath() + "";
+//		String repo = req.getContextPath() + "";
+		
+		List<String> reserve = new ArrayList<>();
+		reserve.add(req.getContextPath() + "/front-end/res_order/res_order.do");
+		reserve.add(req.getContextPath() + "/front-end/res_order/orderSeat.jsp");
+		reserve.add(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
+		reserve.add(req.getContextPath() + "/front-end/res_order/getMemberResSeatEnd.jsp");
+		reserve.add(req.getContextPath() + "/front-end/res_order/modifySeat.jsp");
+		
+		List<String> meal = new ArrayList<>();
+		reserve.add(req.getContextPath() + "/front-end/shopping/shopping.do");
+		reserve.add(req.getContextPath() + "/front-end/shopping/cart.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/scheckout.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/mealMenu2.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/mealOrder.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/mealOrderOne.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/mealSetMenu.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/mealSetMenu.jsp");
+		
+		List<String> review = new ArrayList<>();
+		List<String> repo = new ArrayList<>();
 		
 		Integer mem_od_r = memVO.getMem_od_r();
 		Integer mem_od_m = memVO.getMem_od_m();
 		Integer mem_review = memVO.getMem_review();
 		Integer mem_repo = memVO.getMem_repo();
 		
-		if (mem_od_r.equals(1) && reserve.equals(path)) {
+		if (mem_od_r.equals(1) && reserve.contains(path)) {
 			chain.doFilter(request, response);
-		} else if (mem_od_m.equals(1) && meal.equals(path)) {
+		} else if (mem_od_m.equals(1) && meal.contains(path)) {
 			chain.doFilter(request, response);
-		} else if (mem_review.equals(1) && review.equals(path)) {
+		} else if (mem_review.equals(1) && review.contains(path)) {
 			chain.doFilter(request, response);
-		} else if (mem_repo.equals(1) && repo.equals(path)) {
+		} else if (mem_repo.equals(1) && repo.contains(path)) {
 			chain.doFilter(request, response);
 		} else {
 			res.sendRedirect(req.getContextPath() + "/front-end/front_home.jsp");
