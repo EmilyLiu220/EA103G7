@@ -143,24 +143,31 @@ $(document).ready(function() {
 			return false;
 		}
 		lock_people = false; // 3.進來後，立馬把鎖鎖住
-		var people = $("#people").val();
+		var res_people = $("#res_people").val();
+		var people = $("#people").val()
+		var time_peri_no = $("#time_peri_no").val();
+		var res_date = $("#res_date").val();
 		if(parseInt(people) < chooseSeatPeople) {
-//			console.log(chooseSeatPeople);
-			var people = $("#res_people").val();
-			var time_peri_no = $("#time_peri_no").val();
-			var res_date = $("#res_date").val();
 			chooseSeatPeople = 0;
-			$("#people").val(people);
 			swal("人數低於選擇座位人數！", "請重新確認人數", "warning");
-			$.each($(".myCheckbox"), (i, itemCheckbox) =>{
+			$.each($(".myCheckbox"), (_index, itemCheckbox) =>{
+				if(_index == 0) {
+					$.each($(".myCheckbox"), (ind, checkboxReset) =>{
+						$(checkboxReset).closest(".drag").css({
+							filter: "hue-rotate(0deg)",
+						});
+						$(checkboxReset).prop("checked", false);
+						$(checkboxReset).prop("disabled", true);
+					});
+				}
 				$.each(JSON.parse(JSONArray) , (i, item) =>{
-					if($(itemCheckbox).val() == item ) {
-						$(item).closest(".drag").css({
+					if($(itemCheckbox).val() == item) {
+						$(itemCheckbox).closest(".drag").css({
 							filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
 						});
-						$(item).prop("checked", true);
-						$(item).prop("disabled", false);
-						$("#people").val(people);
+						$(itemCheckbox).prop("checked", true);
+						$(itemCheckbox).prop("disabled", true);
+						return false;
 					}
 				});
 				$.each(JSON.parse(thisResInfo).seat_no, (i, orderSeat) => {
@@ -171,16 +178,43 @@ $(document).ready(function() {
 						$(itemCheckbox).prop("disabled", false);
 						$(itemCheckbox).prop("checked", true);
 						$(itemCheckbox).css("display", "block");
-						addChooseSeatPeople(parseInt(JSON.parse(thisResInfo).people));
+						return false;
 					}
 				});
+				if($(".myCheckbox").length == (_index + 1)){
+					$("#people").val(res_people);
+					if (JSON.parse(thisResInfo).res_date == res_date && JSON.parse(thisResInfo).time_peri_no == time_peri_no) {
+						$.each(JSON.parse(thisResInfo).people, (i, resPeople) => {
+							addChooseSeatPeople(parseInt(resPeople));
+						});
+					} else {
+						chooseSeatPeople = 0;
+						$("#people").val("");
+					}
+				}
 			});
 		}
+		console.log($("#people").val());
+		console.log("chooseSeatPeople："+parseInt(chooseSeatPeople));
 		if(parseInt(people) > chooseSeatPeople ){
+			console.log(parseInt(people));
 			console.log(chooseSeatPeople);
 			$.each($(".myCheckbox").not(":checked"), (i, item) =>{
 				$(item).prop("disabled", false);
 			});
+//			$.each($(".myCheckbox"), (i, itemCheckbox) =>{
+//				$.each(JSON.parse(thisResInfo).seat_no, (i, orderSeat) => {
+//					if ($(itemCheckbox).val() == orderSeat  && JSON.parse(thisResInfo).res_date == res_date && JSON.parse(thisResInfo).time_peri_no == time_peri_no) {
+//						$(itemCheckbox).closest(".drag").css({
+//							filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(252deg) brightness(103%) contrast(118%)",
+//						});
+//						$(itemCheckbox).prop("disabled", false);
+//						$(itemCheckbox).prop("checked", true);
+//						$(itemCheckbox).css("display", "block");
+//						addChooseSeatPeople(parseInt(JSON.parse(thisResInfo).people));
+//					}
+//				});
+//			});
 		}
 		if(parseInt(people) == chooseSeatPeople ){
 			$.each($(".myCheckbox").not(":checked"), (i, item) =>{
@@ -199,8 +233,8 @@ $(document).ready(function() {
 	var lock_checked = true;
 	$(".myCheckbox").change(function() {
 //		console.log("parseInt(people) - chooseSeatPeople > 0");
-//		console.log("chooseSeatPeople"+chooseSeatPeople);
-//		console.log("people"+people);
+		console.log("chooseSeatPeople"+chooseSeatPeople);
+		console.log("people"+people);
 		if($("#res_date").val() == "--請選擇日期--"){
 			swal("請選擇日期！", "請先選擇日期在選擇時段！", "info");
 			$(this).prop("checked", false);
@@ -247,6 +281,7 @@ $(document).ready(function() {
 			let value = Object.values(item);
 			if (key[0] === thisCheckboxValue) {
 				if (thisCheckbox.is(":checked")) {
+					console.log(1);
 					addChooseSeatPeople(value[0]);
 				} else if (thisCheckbox.not(":checked")) {
 					lessChooseSeatPeople(value[0]);
@@ -450,7 +485,7 @@ $(document).ready(function() {
 		var res_date = $("#res_date").val();
 		var time_peri_no = $("#time_peri_no").val();
 		var res_no = $("#res_no").val();
-		
+		var floor = $("#floor_list").val();
 		// get all seat_no
 		var $drag = $(".drag");
 		var jsonDataStr = new Array();
@@ -499,6 +534,7 @@ $(document).ready(function() {
 				"action":"get_Res_Order_Today",
 				"res_date": res_date,
 				"time_peri_no": time_peri_no,
+				"floor": floor,
 			},
 			success: function(messages) {
 				setJSONArray(messages);
@@ -544,12 +580,12 @@ $(document).ready(function() {
 						chooseSeatPeople = 0;
 //						console.log(resInfo);
 						if(JSON.parse(resInfo).res_date == res_date && JSON.parse(resInfo).time_peri_no == time_peri_no){
-							// 設定選取桌位人數初始
-							$.each(JSON.parse(resInfo).people , (i,people) =>{
-								if(JSON.parse(resInfo).seat_f == $("#floor_list").val()) {
-									addChooseSeatPeople(parseInt(people));
-								}
-							});
+//							// 設定選取桌位人數初始
+//							$.each(JSON.parse(resInfo).people , (i,people) =>{
+//								if(JSON.parse(resInfo).seat_f == $("#floor_list").val()) {
+//									addChooseSeatPeople(parseInt(people));
+//								}
+//							});
 							$.each($myCheckbox, function(_index, item) { // 所有座位
 								if(chooseSeatPeople == $("#people").val()) { 
 									if($(item).not("checked")) {
@@ -558,11 +594,6 @@ $(document).ready(function() {
 								}
 								$.each(JSON.parse(resInfo).seat_no, function(_index, item2) { // 訂單的座位
 									if($(item).val() == item2) {
-//										$.each(jsonArray_people, function(_index, item3) {
-//											if(Object.keys(item3) == item2) {
-//												console.log(Object.values(item3));
-//											}
-//										});
 										$(item).closest(".drag").css({
 											filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(252deg) brightness(103%) contrast(118%)",
 										});
@@ -571,6 +602,11 @@ $(document).ready(function() {
 										$(item).css("display", "inline-block");
 									}
 								});
+							});
+							// 設定選取桌位人數初始
+							chooseSeatPeople = 0;
+							$.each(JSON.parse(resInfo).people, function(_index, people) {
+								addChooseSeatPeople(parseInt(people));
 							});
 							$("#people").val($("#res_people").val());
 							let allNotCheckbox= $(".myCheckbox").not(":checked");

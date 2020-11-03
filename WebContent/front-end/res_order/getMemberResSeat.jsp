@@ -71,7 +71,7 @@
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
 	<c:forEach var="resOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 	<c:if test="${resOrderVO.info_sts lt 3}">
-		<tr>
+		<tr style="background: ${param.res_no eq resOrderVO.res_no ? 'LemonChiffon':''};">
 			<td>
 				<c:forEach var="resDetailVO" items="${resDetailSvc.getAllResNO(resOrderVO.res_no)}">
 					${seatSvc.getOneSeat(resDetailVO.seat_no).seat_f}樓_${seatSvc.getOneSeat(resDetailVO.seat_no).seat_name}桌<br> 
@@ -135,6 +135,8 @@
 								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
 								<input type="hidden" name="res_people" value="${resOrderVO.people}">
 								<input type="hidden" name="action" value="modify_Seat_Order">
+								<input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+			     				<input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
 								<button type="submit" id="modify_Seat_Order" class="btn btn-warning" onclick='return false;'>修改座位</button>
 						</c:when>
 						<c:otherwise>

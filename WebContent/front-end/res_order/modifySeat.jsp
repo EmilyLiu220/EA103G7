@@ -52,14 +52,14 @@ input, select {
 					<th>人數</th>
 				</tr>
 				<tr>
-					<td>
+					<td style="vertical-align:middle;">
 						<c:forEach var="resDetailVO" items="${resDetailSvc.getAllResNO(param.res_no)}">
 							${seatSvc.getOneSeat(resDetailVO.seat_no).seat_f}樓_${seatSvc.getOneSeat(resDetailVO.seat_no).seat_name}桌<br> 
 						</c:forEach>
-						</td>
-					<td>${resOrderSvc.getOneResOrder(param.res_no).res_date}</td>
-					<td>${timePeriSvc.getOneTimePeri(resOrderSvc.getOneResOrder(param.res_no).time_peri_no).time_start}</td>
-					<td>${param.res_people}</td>
+					</td>
+					<td style="vertical-align:middle;">${resOrderSvc.getOneResOrder(param.res_no).res_date}</td>
+					<td style="vertical-align:middle;">${timePeriSvc.getOneTimePeri(resOrderSvc.getOneResOrder(param.res_no).time_peri_no).time_start}</td>
+					<td style="vertical-align:middle;">${param.res_people}</td>
 				</tr>
 			</table>
 			<select id="floor_list" name="floor_list">
@@ -81,6 +81,8 @@ input, select {
 				<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
 			</label>
 			<input type="hidden" name="action" value="modify_seat">
+			<input type="hidden" name="requestURL" value="${param.requestURL}">
+			<input type="hidden" name="whichPage" value="${param.whichPage}">
 			<button id="modifySeat" class="btn btn-primary" onclick='return false;'>修改訂位</button>
 		</div>
 		<div id="container" class="container">
