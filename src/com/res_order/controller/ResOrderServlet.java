@@ -262,9 +262,8 @@ public class ResOrderServlet extends HttpServlet {
 						for (ResDetailVO resDetailVO : resDetailList) {
 							if(req.getParameter("floor") != null) {
 								Integer floor = Integer.parseInt(req.getParameter("floor"));
-								System.out.println(seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f());
 								if (seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
-									seatNoList.add(resDetailVO.getSeat_no());System.out.println(123);
+									seatNoList.add(resDetailVO.getSeat_no());
 								}
 							} else {
 								seatNoList.add(resDetailVO.getSeat_no());
@@ -274,7 +273,6 @@ public class ResOrderServlet extends HttpServlet {
 				}
 				JSONArray seatNoJSONList = new JSONArray(seatNoList);
 				res.setCharacterEncoding("UTF-8");
-				System.out.println(seatNoJSONList.toString());
 				out.print(seatNoJSONList.toString());
 				out.flush();
 				out.close();
