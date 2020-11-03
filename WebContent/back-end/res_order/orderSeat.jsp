@@ -85,7 +85,7 @@ input, select {
 						</label>
 						<label class="labelTwo"> 
 							用餐人數: 
-							<input id="people" type="number" min="1" max="60" name="people" placeholder="請輸入用餐人數">人
+							<select id="people" name="people" ></select>
 						</label>
 						<input type="hidden" name="action" value="order_seat">
 						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>劃位</button>
@@ -94,7 +94,7 @@ input, select {
 						<c:forEach var="seatVO" items="${seatSvc.all}">
 							<c:if test="${seatVO.seat_f == 1 }">
 								<div class="drag" style="position: absolute; left: ${seatVO.seat_x}px; top: ${seatVO.seat_y}px;" id="drag">
-									<label> 
+									<label class="imgLabel"> 
 										<input type="checkbox" class="myCheckbox" name="seat_checked" value="${seatVO.seat_no}"> 
 										<img src="<%=request.getContextPath()%>/seat/Seat_ObjServlet.do?seat_obj_no=${seatVO.seat_obj_no}">
 									</label> 

@@ -27,14 +27,15 @@ div#orderSeatCondition.container {
 
 #table-1, #table-1 td {
 	background: #555;
-    color: #fff;
+	color: #fff;
 	border: 0;
 	width: 100%;
 	border-radius: 5px;
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-.orderSeatDiv{
+
+.orderSeatDiv {
 	position: relative;
 	z-index: 999;
 	top: 70px;
@@ -69,7 +70,6 @@ div#container.container {
 /* 	height: 0; */
 /* 	display: inline-block; */
 /* } */
-
 .drag {
 	/* 	border: 1px solid black; */
 	width: 100px;
@@ -116,18 +116,62 @@ img {
 	height: 40px;
 }
 
-select#time_peri_no, select#floor_list, input#people, input#res_date {
+select#time_peri_no, select#floor_list, select#people, input#res_date {
 	width: 180px;
 	height: 40px;
 	font-size: 20px;
-	text-align: center;
 	position: relative;
+	text-align: center;
+	text-align-last: center;
 }
 
-select#time_peri_no {
+ption {
+	text-align: center;
+	text-align-last: center;
+	/* reset to left*/
+}
+
+select#time_peri_no, select#people, input#res_date, select#floor_list {
 	font-family: monospace;
 }
 
 button#orderSeat {
 	position: relative;
+}
+/**************************** 1104 *********************************/
+div.modal-body {
+	/*opacity: 0;*/
+	
+}
+
+div.popover {
+	width: 250px;
+}
+
+div.buttonDiv {
+	width: 100%;
+	text-align: center;
+	padding: 15px 0 0 0;
+}
+
+a.btn.btn-primary, a.btn.btn-danger, a.btn.btn-success {
+	padding: 5px 8px;
+}
+
+div.button {
+	display: inline-block;
+	padding: 0;
+}
+
+h3.popover-header {
+	text-align: center;
+}
+
+button.info.btn.btn-secondary {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	height: 100px;
+	opacity: 0.3;
 }
