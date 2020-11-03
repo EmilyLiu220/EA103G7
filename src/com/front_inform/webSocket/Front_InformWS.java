@@ -38,7 +38,6 @@ public class Front_InformWS {
 				List<Front_InformVO> fiVOs = fiSvc.getMyInform(mem_no); // 取得該會員的所有通知訊息
 				// 因為上面是直接傳來 VO → 轉成 Json 後才會再輸出到前端
 				userSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVOs)); // 傳出String
-				System.out.println("My History Inform : " + gsonReceiver.toJson(fiVOs));
 			}
 		}
 	}
@@ -51,7 +50,6 @@ public class Front_InformWS {
 				Session userSession = sessionsMap.get(mem_no); // 取得 userSession
 				if(userSession != null && userSession.isOpen()) {
 					userSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVO));
-					System.out.println("new Inform : " + gsonReceiver.toJson(fiVO));
 				}
 			}
 		}

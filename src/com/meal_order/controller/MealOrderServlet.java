@@ -144,7 +144,11 @@ public class MealOrderServlet extends HttpServlet {
 			pushMsg.put("mealOrderVO", mealOrderVO);
 			String jsonMap = gson.toJson(pushMsg);
 			webSocket.onMessage(jsonMap);
-
+			
+			// 加入訂餐完成通知
+			Front_InformService fiSvc = new Front_InformService();
+			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "訂餐成功，點選查看訂餐訂單");
+			
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "front-end/shopping/mealOrderOne.jsp";
@@ -216,7 +220,11 @@ public class MealOrderServlet extends HttpServlet {
 			resOrderSvc.updateResOrder(resNo, mealOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
 					resOrderVO.getTime_peri_no(), resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
-
+			
+			// 加入訂餐完成通知
+			Front_InformService fiSvc = new Front_InformService();
+			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "訂餐成功，點選查看訂餐訂單");
+			
 			req.setAttribute("res_no", resNo);
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
@@ -297,7 +305,7 @@ public class MealOrderServlet extends HttpServlet {
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
 			Front_InformService fiSvc = new Front_InformService();
-			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "您的餐點已完成，請至本餐廳取餐 (點選可查看訂單)");
+			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "餐點已完成，請至本餐廳取餐(點選可查看訂單)");
 			mealOrderSrv.updateOrderSts(mealOrderNo, mealOrderSts, notiSts, paySts);
 
 			MealOrderWebSocket webSocket = new MealOrderWebSocket();

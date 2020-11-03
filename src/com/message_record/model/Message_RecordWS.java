@@ -77,8 +77,7 @@ public class Message_RecordWS {
 
 			// 包裝資訊，對前端發送 history 訊息，刷新發送者頁面
 			if (userSession != null && userSession.isOpen()) {
-				userSession.getAsyncRemote().sendText(gson.toJson(cmHistory)); // 因為上面是用 VO (Java 物件)包裝 → 轉成 Json
-																				// 後才會再輸出到前端
+				userSession.getAsyncRemote().sendText(gson.toJson(cmHistory)); // 因為上面是用 VO (Java 物件)包裝 → 轉成 Json 後才會再輸出到前端
 				System.out.println(sender + " history = " + gson.toJson(cmHistory));
 			}
 		}

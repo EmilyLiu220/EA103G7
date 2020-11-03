@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.front_inform.model.*;
+import com.front_inform.webSocket.Front_InformWS;
 import com.mem.model.*;
 import com.res_order.model.*;
 
@@ -132,18 +133,31 @@ public class Front_informServlet extends HttpServlet {
 //				String[] seats_no= new String[seats_noList.size()];
 //				seats_noList.toArray(seats_no);
 				
-				if(checkYes!=null) { // 勾選確定來吃
+				if(checkYes!=null) { // 點選確定來吃
 					boolean checked = fiSvc.updateSts(1, info_no);
 					if(checked) {
+						// 即時更新該筆含有按鈕的當日用餐確認前台通知
+						Front_InformVO fiVO = fiSvc.getByInfoNo(info_no);
+						List<Front_InformVO> fiVOs = new ArrayList<Front_InformVO>();
+						fiVOs.add(fiVO);
+						Front_InformWS fiWS = new Front_InformWS();
+						fiWS.onMessage(fiVOs);
 						// 發送當日訂位確認通知後必須修改 Info_Sts 為 2 (已發送已確認)
 						resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 								resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
 								new Integer(2), resOrderVO.getSeat_sts(), null);
 					}
 				}
-				if(checkNo!=null) { // 勾選不來吃
+				if(checkNo!=null) { // 點選不來吃
 					boolean checked = fiSvc.updateSts(3, info_no);
 					if(checked) {
+						// 即時更新該筆含有按鈕的當日用餐確認前台通知
+						Front_InformVO fiVO = fiSvc.getByInfoNo(info_no);
+						List<Front_InformVO> fiVOs = new ArrayList<Front_InformVO>();
+						fiVOs.add(fiVO);
+						Front_InformWS fiWS = new Front_InformWS();
+						fiWS.onMessage(fiVOs);
+						// 並發送訂位取消通知
 						fiSvc.addROFI(mem_no, res_no, "您的訂位已取消");
 						// 發送當日訂位確認通知後必須修改 Info_Sts 為 3 (會員已取消)
 						resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
