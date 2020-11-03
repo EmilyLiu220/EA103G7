@@ -29,14 +29,11 @@ public class CompositeQuery {
 			int count = 0;
 			for (String key : keys) {
 
-				if (map.get(key).length > 1) {
-//				System.out.println(key);
+				if (((String[])map.get(key)).length > 1) {
 					String value = map.get(key)[0];
 					String value2 = map.get(key)[1];
 
 					if (value != null && value2 != null && value.length() != 0 && value2.length() != 0) {
-//				System.out.println("value1" + value);
-//				System.out.println("value2" + value2);
 						count++;
 						String aCondition = getCondition(key, value.trim(), value2.trim());
 
@@ -48,8 +45,6 @@ public class CompositeQuery {
 
 				} else {
 					String value = map.get(key)[0];
-//				System.out.println(key);
-//				System.out.println(value);
 					if (value != null && value.trim().length() != 0 && !"action".equals(key)) {
 						count++;
 						String aCondition = getCondition(key, value.trim());
