@@ -3,15 +3,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
+<%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.emp_auth.model.*"%>
 <%@ page import="com.fun_auth.model.*"%>
 
-<%
+<%	
+	List<Inform_SetVO> list = (List<Inform_SetVO>) request.getAttribute("isVOs");
+	pageContext.setAttribute("list", list);
 	EmpVO empVO2 = (EmpVO) session.getAttribute("empVO2");
+	Inform_SetVO isVO = (Inform_SetVO) request.getAttribute("isVO");
 	List<Emp_authVO> emp_authVO2 = (List<Emp_authVO>) session.getAttribute("emp_authVO2");
 	List<Fun_authVO> fun_authVO2 = (List<Fun_authVO>) session.getAttribute("fun_authVO2");
 %>
-<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
+
+<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +24,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>主管員工專區</title>
+<title>通知設定管理-複合</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/bootstrap-4.1.0.min.css">
@@ -32,22 +37,14 @@
 <script defer src="<%=request.getContextPath()%>/back-end/js/fontawesome.js"></script>
 
 <style>
-.manager>ul>li>a:hover{
-	color: #dea554;
-	text-decoration:underline;
-	font-weight: 800;
-}
-@media (max-width: 992px) {
-	#sidebar, #sidebarCollapse, #sidebarCollapse span, #titleBig {
-		display: none;
-	}
-	#content, #content.active {
-    	width: 100%;
-	}
-	#rwdShow, #titleSmall {
-		display: inline-block;
-		vertical-align: middle;
-	}
+#table-1, #table-1 td {
+	background: #555;
+    color: #fff;
+	border: 0;
+	width: 100%;
+	border-radius: 5px;
+	text-align: center;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .unshow{
  	display: none;
@@ -144,7 +141,6 @@
 						<div id="titleSmall" style="padding-left: 10px; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a></div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
-								<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
 								<li class="nav-item active"><a class="nav-link" href="#"
 									id="empId" style="cursor: default;">
 									<c:choose>
@@ -177,25 +173,53 @@
 					</div>
 				</div>
 			</nav>
-			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
+
+			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 通知設定管理</span>
+			<a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回查詢頁面</a>		
 			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
-			<div class="manager">
-				<ul>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
-					<li class="fun2"><a href="#">食材消耗統計</a></li>
-					<li class="fun2"><a href="#">紅利商品管理</a></li>
-				</ul>
-			</div>
+			<p>
+				<table id="table-1">
+					<tr>
+						<td>
+							<h3 style="margin-bottom:0;">查看通知</h3>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<%-- 錯誤表列 --%>
+				<c:if test="${not empty errorMsgs}">
+					<font style="color: red">請修正以下錯誤:</font>
+					<ul>
+						<c:forEach var="message" items="${errorMsgs}">
+							<li style="color: red">${message}</li>
+						</c:forEach>
+					</ul>
+				</c:if>
+
+				<table class="table table-hover" style="width: 100%; font-size: 90%;">
+					<thead style="text-align: center;">
+						<tr>
+							<th style="width: 10%;">編號</th>
+							<th style="width: 20%;">會員</th>
+							<th style="width: 10%;">訂位編號</th>
+							<th style="width: 20%;">通知內容</th>
+							<th style="width: 20%;">通知日期</th>
+							<th style="width: 10%;">類別</th>
+							<th style="width: 10%;">讀取狀態</th>
+						</tr>
+					</thead>
+					<tbody>
+					<c:forEach var="inform_setVO" items="${list}">
+						<tr>
+							<td style="text-align: center;">${inform_setVO.is_no}</td>
+							<td style="text-align: center; word-break: break-all;">${inform_setVO.is_cont}</td>
+							<td style="text-align: center;">${inform_setVO.emp_no} ${pageScope.empSvc.getOneEmp(inform_setVO.emp_no).emp_name}</td>
+							<td style="text-align: center;"><fmt:formatDate value="${inform_setVO.is_date}" pattern="yyyy-MM-dd" /></td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+			</p>
 		</div>
 	</div>
 
@@ -220,7 +244,6 @@
 			});
 		});
 	</script>
-	
 	<div id="fun" style="display:none">
 		<c:forEach var="fun_authVO2" items="${fun_authVO2}">
 			<span class="fun">${fun_authVO2.fun_name}</span><br>

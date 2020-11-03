@@ -19,7 +19,8 @@ public interface Front_InformDAO_interface{
 	public Integer updateReadSts(String mem_no);
 	public List<Front_InformVO> findAll();
 	
-	
+	// 取得特殊通知
+	public List<Front_InformVO> findByInfoSts(Integer info_sts);
 	
 	// for pollingThread_FI_Backup
 	public Integer countData();

@@ -3,15 +3,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
+<%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.emp_auth.model.*"%>
 <%@ page import="com.fun_auth.model.*"%>
 
-<%
+<%	
 	EmpVO empVO2 = (EmpVO) session.getAttribute("empVO2");
+	Inform_SetVO isVO = (Inform_SetVO) request.getAttribute("isVO");
 	List<Emp_authVO> emp_authVO2 = (List<Emp_authVO>) session.getAttribute("emp_authVO2");
 	List<Fun_authVO> fun_authVO2 = (List<Fun_authVO>) session.getAttribute("fun_authVO2");
 %>
-<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
+
+<jsp:useBean id="isSvc" scope="page" class="com.inform_set.model.Inform_SetService"></jsp:useBean>
+<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +23,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>主管員工專區</title>
+<title>通知設定管理-查詢</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/bootstrap-4.1.0.min.css">
@@ -32,22 +36,14 @@
 <script defer src="<%=request.getContextPath()%>/back-end/js/fontawesome.js"></script>
 
 <style>
-.manager>ul>li>a:hover{
-	color: #dea554;
-	text-decoration:underline;
-	font-weight: 800;
-}
-@media (max-width: 992px) {
-	#sidebar, #sidebarCollapse, #sidebarCollapse span, #titleBig {
-		display: none;
-	}
-	#content, #content.active {
-    	width: 100%;
-	}
-	#rwdShow, #titleSmall {
-		display: inline-block;
-		vertical-align: middle;
-	}
+#table-1, #table-1 td {
+	background: #555;
+    color: #fff;
+	border: 0;
+	width: 100%;
+	border-radius: 5px;
+	text-align: center;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .unshow{
  	display: none;
@@ -144,7 +140,6 @@
 						<div id="titleSmall" style="padding-left: 10px; font-size: 30px; font-weight: 800;"><a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a></div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
-								<!-- 員工編號 ${empVO.emp_no}  員工姓名 ${empVO.emp_name} -->
 								<li class="nav-item active"><a class="nav-link" href="#"
 									id="empId" style="cursor: default;">
 									<c:choose>
@@ -154,7 +149,7 @@
 										<c:otherwise>
 											<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}，您好！</span>
 										</c:otherwise>
-									</c:choose>
+									</c:choose>	
 								</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
@@ -177,30 +172,80 @@
 					</div>
 				</div>
 			</nav>
-			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
+
+			<h5 style="font-weight: 900; display: inline-block;">一般員工專區</h5><span> - 查看通知</span>
 			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
-			<div class="manager">
+			<p>
+				<table id="table-1">
+					<tr>
+						<td>
+							<h3 style="margin-bottom:0;">查詢所有通知</h3>
+						</td>
+					</tr>
+				</table>
+				<br>
 				<ul>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
-					<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
-					<li class="fun2"><a href="#">食材消耗統計</a></li>
-					<li class="fun2"><a href="#">紅利商品管理</a></li>
+					<%-- empCheckAllInform.jsp --%>
+					<li><a href='<%=request.getContextPath()%>/back-end/front_inform/empCheckAllInform.jsp' style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">顯示所有通知</a><br><br></li>
 				</ul>
-			</div>
+				
+				<%-- 查詢通知 --%>
+				<table id="table-1">
+					<tr>
+						<td><h3 style="margin-bottom:0;">查詢通知</h3></td>
+					</tr>
+				</table>
+				<br>
+				<%-- 錯誤表列 --%>
+				<c:if test="${not empty errorMsgs}">
+					<font style="color: red">請修正以下錯誤:</font>
+					<ul>
+						<c:forEach var="message" items="${errorMsgs}">
+							<li style="color: red">${message}</li>
+						</c:forEach>
+					</ul>
+					<br>
+				</c:if>
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front_inform/fi.do" >
+					<ul>
+						<li>
+							<b>輸入會員編號 (例如MEM0001)：</b>
+							<input type="text" name="mem_no">
+						<br><br></li>
+						<li>
+							<b>選擇通知狀態:</b>
+							<select size="1" name="info_sts" >
+								<option value="">
+								<c:choose>
+									<c:when test="${front_informVO.info_sts == 0}">一般通知</c:when>
+									<c:when test="${front_informVO.info_sts == 1}">確認用餐</c:when>
+									<c:when test="${front_informVO.info_sts == 2}">尚未回覆</c:when>
+									<c:when test="${front_informVO.info_sts == 3}">取消訂位</c:when>
+								</c:choose>
+							</select><br>
+						</li>
+						<li>
+							<b>選擇日期：</b>
+							<b>起 </b><input type="text" id="is_date_startDate" name="is_date_startDate" class="hasDatepicker2">
+							<b>訖 </b><input type="text" id="is_date_stopDate" name="is_date_stopDate" class="hasDatepicker2"><br>
+						<br></li>
+					</ul>
+					<div style="display: inline-block; position: relative; left: 5%;">
+						<input type="hidden" name="action" value="empGetSpecialInform">
+						<input type="submit" value="開始查詢" style="margin-right: 20px;">
+						<input type="reset" value="重新填寫">
+					</div>
+				</FORM>
+				<br>
+			</p>	
 		</div>
 	</div>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="<%=request.getContextPath()%>/back-end/js/jquery-3.3.1.slim.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<!-- Popper.JS -->
 	<script src="<%=request.getContextPath()%>/back-end/js/popper-2018.min.js"></script>
 	<!-- Bootstrap JS -->
@@ -218,6 +263,33 @@
 				$('.collapse.in').toggleClass('in');
 				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
 			});
+		});
+		$( function() {
+			var dateFormat = "mm/dd/yy",
+			from = $( "#is_date_startDate" ).datepicker({
+				defaultDate: "+1w",
+				changeMonth: true,
+				numberOfMonths: 1
+			}).on( "change", function() {
+				to.datepicker( "option", "minDate", getDate( this ) );
+			}),
+			to = $( "#is_date_stopDate" ).datepicker({
+				defaultDate: "+1w",
+				changeMonth: true,
+				numberOfMonths: 1
+			}).on( "change", function() {
+				from.datepicker( "option", "maxDate", getDate( this ) );
+			});
+		 
+			function getDate( element ) {
+				var date;
+				try {
+					date = $.datepicker.parseDate( dateFormat, element.value );
+				} catch( error ) {
+					date = null;
+				}
+				return date;
+			}
 		});
 	</script>
 	

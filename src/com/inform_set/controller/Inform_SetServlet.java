@@ -404,7 +404,7 @@ public class Inform_SetServlet extends HttpServlet {
 				java.sql.Date is_date_stopDate = null;
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				if ("".equals(stopDate)) {
-					is_date_stopDate = new java.sql.Date(System.currentTimeMillis());
+					is_date_stopDate = new java.sql.Date(System.currentTimeMillis()+63072000000L);
 					stopDate = sdf.format(is_date_stopDate);
 				}
 				if (stopDate != null && !"".equals(stopDate)) {
