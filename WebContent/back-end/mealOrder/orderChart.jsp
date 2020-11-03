@@ -53,10 +53,10 @@ text-decoration: underline;
 .container{
 
 }
-#myChart{
+#myChart,#myChart2{
 width: 100%;
 height:450px;
-display: block;
+display: inline;
 }
 </style>
 
@@ -298,9 +298,10 @@ display: block;
 	<!-- jQuery Custom Scroller CDN -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+	
 <%-- <script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.js"></script> --%>
 <script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.full.js"></script>
-	
+<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 	
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -334,8 +335,39 @@ display: block;
 //            maxDate:               new Date(now.getFullYear(),(now.getMonth()+1),now.getDate())  // 去除今日(不含)之後
         });
         
+//         function getRandomColor() {
+//         	  var letters = '0123456789ABCDEF';
+//         	  var color = '#';
+//         	  for (var i = 0; i < 6; i++) {
+//         	    color += letters[Math.floor(Math.random() * 16)];
+//         	  }
+        	  
+//         	  return color;
+//         	}
+        
+        function random_bg_color() {
+            var x = Math.floor(Math.random() * 256);
+            var y = Math.floor(Math.random() * 256);
+            var z = Math.floor(Math.random() * 256);
+            var bgColor = "rgb(" + x + "," + y + "," + z + ",0.5)";
+            return bgColor;
+            }
+        
+
+        Chart.defaults.global.defaultFontSize = 18;
+        
         $("#submit").click(function(e){
         	e.preventDefault();
+        	console.log($('#table-2').find('input[name="order_time"]').length);
+        	console.log($($('#table-2').find('input[name="order_time"]')[0]).val());
+        	console.log($($('#table-2').find('input[name="order_time"]')[1]).val());
+        	var orderTime = [];
+        	orderTime.push($($('#table-2').find('input[name="order_time"]')[0]).val());
+        	orderTime.push($($('#table-2').find('input[name="order_time"]')[1]).val());
+        	var pickupTime = [];
+        	pickupTime.push($($('#table-2').find('input[name="pickup_time"]')[0]).val());
+        	pickupTime.push($($('#table-2').find('input[name="pickup_time"]')[1]).val());
+        	console.log(orderTime);
         	$.ajax({
                 url: "${pageContext.request.contextPath}/MealOrderServlet.do",
                 type: "POST",
@@ -347,8 +379,8 @@ display: block;
                     noti_sts:$('#table-2').find('input[name="noti_sts"]').val(),
                     pay_sts:$('#table-2').find('input[name="pay_sts"]').val(),
                     meal_order_sts:$('#table-2').find('input[name="meal_order_sts"]').val(),
-                    order_time:[$('#table-2').find('input[name="order_time"]').val(),$('#table-2').find('input[name="order_time"]').val()],
-                    pickup_time:[$('#table-2').find('input[name="pickup_time"]').val(),$('#table-2').find('input[name="pickup_time"]').val()]
+                    order_time:JSON.stringify(orderTime),
+                    pickup_time:JSON.stringify(pickupTime)
                     
                 },
                 dataType: "JSON",
@@ -361,94 +393,68 @@ display: block;
                 	console.log(setLen);
                 	var mealKeys = Object.keys(e.mealMap);
                 	var setKeys = Object.keys(e.mealSetMap);
-                	
+                	console.log(mealKeys[0]);
+                	var bgcolor = [];
+                	var dataPrice = [];
+                	var dataQty =[];
                 	var dataset =[]; 
-                		for(let i =0,i<mealLen,i++){
-                		var mealObj[i] =
-                		
- 	               		{
- 	               		label:e.mealMap.mealKeys[i].meal_name,
-                        data: [120, 0, 30, 50, 20, 30,75,66,132,260,88,364],
-                        fill: false,
-                        backgroundColor: [
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)',
-                            'rgba(0, 0, 0, 1)'
-                        ],
-                        borderColor: [
-                            'rgba(0, 0, 0, 1)',
-                        ],
-                        borderWidth: 1
+                		for(let i = 0;i < mealLen;i++){
+                		let keys = mealKeys[i];
+                		console.log(e.mealMap[mealKeys[i]].meal_name);
+                		dataset.push(e.mealMap[mealKeys[i]].meal_name);
+                		console.log(e.mealMap[mealKeys[i]].meal_qty);
+                		dataQty.push(e.mealMap[mealKeys[i]].meal_qty);
+                		console.log(e.mealMap[mealKeys[i]].meal_qty * e.mealMap[mealKeys[i]].meal_price);
+                		dataPrice.push(e.mealMap[mealKeys[i]].meal_qty * e.mealMap[mealKeys[i]].meal_price);
+                		bgcolor.push(random_bg_color());
                 		}
- 	               		};
-                		
-                		
-                
-                	
-                	
+                		console.log(dataset);
+                		for(let i = 0;i < setLen;i++){
+                			dataset.push(e.mealSetMap[setKeys[i]].meal_set_name);
+                			dataQty.push(e.mealSetMap[setKeys[i]].meal_set_qty);
+                			dataPrice.push(e.mealSetMap[setKeys[i]].meal_set_qty * e.mealSetMap[setKeys[i]].meal_set_price);
+                			bgcolor.push(random_bg_color());
+                		}
+                		console.log(dataset);
+                		$(".container").empty();
+                	var canvas = document.createElement("canvas");
+                	var canvas2 = document.createElement("canvas");
+                	$(canvas).attr('id','myChart');
+                	$(canvas2).attr('id','myChart2');
+                	$(".container").append(canvas);
+                	$(".container").append(canvas2);
                 	
                 	var ctx = document.getElementById('myChart').getContext('2d');
                     var myChart = new Chart(ctx, {
-                        type: 'line',
+                        type: 'pie',
                         data: {
-                            labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                            labels: dataset,
                             datasets: [{
-                                label: '${mealMap.get("MEAL0001").meal_name}',
-                                data: [120, 0, 30, 50, 20, 30,75,66,132,260,88,364],
+                                label: '銷售總量',
+                                data: dataQty,
                                 fill: false,
-                                backgroundColor: [
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)',
-                                    'rgba(0, 0, 0, 1)'
-                                ],
-                                borderColor: [
-                                    'rgba(0, 0, 0, 1)',
-                                ],
-                                borderWidth: 1
-                            },{
-                                label: 'second',
-                                data: [66, 124, 28, 177, 37, 12,33,175,98,222,67,227],
-                                fill: false,
-                                backgroundColor: [
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)',
-                                    'rgba(0, 0, 255, 1)'
-                                ],
-                                borderColor: [
-                                    'rgba(0, 0, 255, 1)',
-                                ],
-                                borderWidth: 1
+                                backgroundColor:bgcolor,
+                                borderColor: bgcolor,
+                                borderWidth: 3
                             }],
                            
                         },
                         options: {
+                        	plugins:{
+                        		labels: [{
+                        		render: 'label',
+                        		fontColor:'black',
+                        		position: 'outside',
+                        		fontSize: 14,
+                        		outsidePadding: 2,
+                        		arc: true,
+                        		},{
+                        		render:'percentage',
+                        		fontColor:'black',
+                        		precision: 2,
+                        		fontSize: 14,
+                        		}]
+                        		},
                             scales: {
                                 yAxes: [{
                                     ticks: {
@@ -459,6 +465,45 @@ display: block;
                             }
                         }
                     });
+                    
+                    var ctx2 = document.getElementById('myChart2').getContext('2d');
+                    var myChart2 = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: dataset,
+                            datasets: [{
+                                label: '銷售總額',
+                                data: dataPrice,
+                                fill: false,
+                                backgroundColor:bgcolor,
+                                borderColor:bgcolor,
+                                borderWidth: 3
+                            }],
+                           
+                        },
+                        options: {
+                        	plugins:{
+                        		labels: {
+                        		render: 'value',
+                        		fontColor: ['green', 'black', 'red'],
+                        		arc: true,
+                        		}
+                        		},
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                    	stepSize: 3000,
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });	
+                		
+                		
+                		
+                		
+                		
                 }
             });
 	        	

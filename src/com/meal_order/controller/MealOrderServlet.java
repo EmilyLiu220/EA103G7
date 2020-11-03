@@ -25,6 +25,8 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import org.json.JSONArray;
+
 import com.front_inform.model.*;
 import com.google.gson.Gson;
 import com.meal.model.*;
@@ -369,40 +371,52 @@ public class MealOrderServlet extends HttpServlet {
 		if ("orderChart".equals(action)) {
 
 			Map<String, String[]> map = (HashMap) session.getAttribute("orderChart");
-//			if (map == null || map.isEmpty()) {
 			if (req.getParameter("whichPage") == null) {
 				Map<String, String[]> map2 = new HashMap<>(req.getParameterMap());
+
+				JSONArray orderArr = new JSONArray(map2.get("order_time")[0]);
+				JSONArray pickArr = new JSONArray(map2.get("pickup_time")[0]);
+				String[] orderStrArray = (String[]) orderArr.toList().toArray(new String[orderArr.length()]);
+				String[] pickStrArray = (String[]) pickArr.toList().toArray(new String[pickArr.length()]);
+				map2.put("order_time", orderStrArray);
+				map2.put("pickup_time", pickStrArray);
+
+				System.out.println("stringArray.length=" + map2.get("order_time").length);
+
 				session.setAttribute("orderChart", map2);
 				map = map2;
-
 			}
-//			}
+
 			MealOrderService mealOrderSrv = new MealOrderService();
 			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
-//			List<MealOrderDetailVO> detailList = new ArrayList<>();
 			MealOrderDetailService detailSrv = new MealOrderDetailService();
 			MealService mealSrv = new MealService();
 			MealSetService mealSetSrv = new MealSetService();
-//			Map <String,MealVO> mealMap = new HashMap<>();
-//			for(MealVO mealVO : mealSrv.getAll()) {
-//			mealMap.put(mealVO.getMeal_no(),mealVO);						;
-//			}
 
 			Map<String, Object> mealMap = mealSrv.getAll().stream()
 					.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
 			Map<String, Object> mealSetMap = mealSetSrv.getAll().stream()
 					.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
+			Set<String> mealKeys = mealMap.keySet();
+			Set<String> mealSetKeys = mealSetMap.keySet();
+			
+			for (String key : mealKeys) {
+				((MealVO) mealMap.get(key)).setMeal_qty(0);
+			}
+			for (String key : mealSetKeys) {
+				((MealSetVO) mealSetMap.get(key)).setMeal_set_qty(0);
+			}
 
 			for (MealOrderVO mealOrderVO : orderList) {
 				for (MealOrderDetailVO detailVO : detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no())) {
-					if (detailVO.getMeal_no() != null) {
-						if (detailVO.getMeal_no().equals(mealMap.get(detailVO.getMeal_no()))) {
-							((MealVO) mealMap.get(detailVO.getMeal_no())).setMeal_qty(
-									((MealVO) mealMap.get(detailVO.getMeal_no())).getMeal_qty() + detailVO.getQty());
+					for (String key : mealKeys) {
+						if (key.equals(detailVO.getMeal_no())) {
+							((MealVO) mealMap.get(key))
+									.setMeal_qty(((MealVO) mealMap.get(key)).getMeal_qty() + detailVO.getQty());
 						}
 					}
-					if (detailVO.getMeal_set_no() != null) {
-						if (detailVO.getMeal_set_no().equals(mealSetMap.get(detailVO.getMeal_set_no()))) {
+					for (String key : mealSetKeys) {
+						if (key.equals(detailVO.getMeal_set_no())) {
 							((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).setMeal_set_qty(
 									((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).getMeal_set_qty()
 											+ detailVO.getQty());
@@ -411,29 +425,29 @@ public class MealOrderServlet extends HttpServlet {
 				}
 			}
 
-			int amount;
-			int mealCount = 0;
-			int mealSetCount = 0;
-
-			for (MealOrderVO mealOrderVO : orderList) {
-				mealCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
-						.filter(d -> (d.getMeal_no() != null)).mapToInt(d -> d.getQty()).sum();
-				mealSetCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
-						.filter(d -> (d.getMeal_set_no() != null)).mapToInt(d -> d.getQty()).sum();
-			}
-			amount = orderList.stream().mapToInt(m -> m.getAmount()).sum();
+//			int amount;
+//			int mealCount = 0;
+//			int mealSetCount = 0;
+//
+//			for (MealOrderVO mealOrderVO : orderList) {
+//				mealCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
+//						.filter(d -> (d.getMeal_no() != null)).mapToInt(d -> d.getQty()).sum();
+//				mealSetCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
+//						.filter(d -> (d.getMeal_set_no() != null)).mapToInt(d -> d.getQty()).sum();
+//			}
+//			amount = orderList.stream().mapToInt(m -> m.getAmount()).sum();
 			Map<String, Map<String, Object>> jsonMap = new HashMap<>();
 			jsonMap.put("mealMap", mealMap);
-			jsonMap.put("mealSetMap",mealSetMap);
+			jsonMap.put("mealSetMap", mealSetMap);
 			Gson gson = new Gson();
 			String jsondata = gson.toJson(jsonMap);
 			res.setContentType("application/json; charset=utf-8");
 			PrintWriter out = res.getWriter();
 			out.write(jsondata);
 			System.out.println(jsondata);
-			
-			req.setAttribute("mealMap", mealMap);
-			req.setAttribute("mealSetMap", mealSetMap);
+
+//			req.setAttribute("mealMap", mealMap);
+//			req.setAttribute("mealSetMap", mealSetMap);
 			req.setAttribute("orderList", orderList);
 //			req.getRequestDispatcher("/back-end/mealOrder/orderChart.jsp").forward(req, res);
 
