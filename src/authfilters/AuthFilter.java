@@ -55,7 +55,7 @@ public class AuthFilter implements Filter {
 		
 		
 		List<String> fa0003 = new ArrayList<>();
-		fa0003.add(req.getContextPath() + "/back-end/message_record/message_record.do");
+		fa0003.add(req.getContextPath() + "/back-end/message_record/msg.do");
 		fa0003.add(req.getContextPath() + "/back-end/message_record/backEndChatRoom.jsp");
 		
 		List<String> fa0004 = new ArrayList<>();
@@ -63,7 +63,6 @@ public class AuthFilter implements Filter {
 		fa0004.add(req.getContextPath() + "/back-end/front_inform/select_fi.jsp");
 		fa0004.add(req.getContextPath() + "/back-end/front_inform/listByComplex_fi.jsp");
 		fa0004.add(req.getContextPath() + "/back-end/front_inform/empCheckAllInform.jsp");
-		fa0004.add(req.getContextPath() + "/back-end/front_inform/errorPage.jsp");
 		
 		List<String> fa0005 = new ArrayList<>();
 		List<String> fa0006 = new ArrayList<>();
@@ -116,7 +115,6 @@ public class AuthFilter implements Filter {
 		List<String> fa0018 = new ArrayList<>();
 		fa0018.add(req.getContextPath() + "/back-end/inform_set/is.do");
 		fa0018.add(req.getContextPath() + "/back-end/inform_set/add_is.jsp");
-		fa0018.add(req.getContextPath() + "/back-end/inform_set/errorPage.jsp");
 		fa0018.add(req.getContextPath() + "/back-end/inform_set/listAll_is.jsp");
 		fa0018.add(req.getContextPath() + "/back-end/inform_set/listByComplex_is.jsp");
 		fa0018.add(req.getContextPath() + "/back-end/inform_set/listOne_is.jsp");
