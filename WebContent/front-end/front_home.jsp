@@ -6,6 +6,7 @@
 <%@ page import="com.message_record.model.*"%>
 <%@ page import="com.mem.model.*"%>
 <%@ page import="com.ad.model.*"%>
+<%@ page import="com.news.model.*"%>
 <%
 	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
 %>
@@ -13,6 +14,11 @@
 	AdService adSvc = new AdService(); 
      List<AdVO> list = adSvc.find_adsts(1); 
      request.setAttribute("list",list);
+%>
+<%
+	NewsService newsSvc = new NewsService();
+	List<NewsVO> list2 = newsSvc.frontNews_sts(1);
+	request.setAttribute("list2", list2);
 %>
 <!DOCTYPE html>
 <html>
@@ -78,12 +84,13 @@
 	width: 50%;
 	height: 750px;
 /* 	margin: 0px auto; */ 
-left:750px;
-	
+	left:750px;
+	text-align:center;
+	top:100px;
 }
 
 .ad3 {
-	height:850px;
+	height:600px;
 	background-image:
 		url('<%=request.getContextPath()%>/front-end/images/newsBg.jpg');
 	
@@ -96,11 +103,50 @@ left:750px;
 
 .adimg {
 	position: relative;
-	top: 300px;
+	top: 100px;
 	left: 400px;
+	
+}
+.carousel-inner.ad2 {
+    top: -250px;
 }
 
+.adat{
+color:#fff;
+}
+
+.dh2{
+color:#fff;
+}
 </style>
+ <style>
+        .div1 {
+            width: 500px;
+            height: 200px;
+            overflow: hidden;
+            margin: auto;
+            position: relative;
+        }
+        @keyframes anis {
+            100% {
+                transform: translateY(-200px)
+            }
+        }
+        img {
+            position: absolute;
+        }
+        .div2 {
+            animation: anis 10s linear infinite;
+            width:500px;
+        }
+        .div2:hover {
+            animation-play-state: paused;
+        }
+        .newsdata{
+        color:#fff;
+        }
+    </style>
+
 
 </head>
 
@@ -222,7 +268,7 @@ left:750px;
 					<li class="nav-item"><a href="" class="nav-link">Menu</a></li>
 					<li class="nav-item"><a
 						href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp"
-						class="nav-link">店訊新訊</a></li>
+						class="nav-link">店內新訊</a></li>
 					<li class="nav-item"><a
 						href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp"
 						class="nav-link">最新活動</a></li>
@@ -242,7 +288,7 @@ left:750px;
 	<%-- 以下為輪播的地方 --%>
 	<section class="home-slider owl-carousel js-fullheight">
 		<div class="slider-item js-fullheight"
-			style="background-image: url(<%=request.getContextPath()%>/front-end/images/carousel_1.jpg);">
+			style="background-image: url(<%=request.getContextPath()%>/front-end/images/front_home.jpg);">
 			<div class="overlay"></div>
 			<div class="container">
 				<div
@@ -250,7 +296,7 @@ left:750px;
 					data-scrollax-parent="true">
 					<div class="col-md-12 col-sm-12 text-center ftco-animate">
 						<span class="subheading">吃胖吧</span>
-						<h1 class="mb-4">Best Restaurant</h1>
+						<h1 class="mb-4">PoT</h1>
 					</div>
 				</div>
 			</div>
@@ -264,7 +310,7 @@ left:750px;
 					data-scrollax-parent="true">
 					<div class="col-md-12 col-sm-12 text-center ftco-animate">
 						<span class="subheading">吃胖吧</span>
-						<h1 class="mb-4">Nutritious &amp; Tasty</h1>
+						<h1 class="mb-4">PoT</h1>
 					</div>
 				</div>
 			</div>
@@ -278,7 +324,7 @@ left:750px;
 					data-scrollax-parent="true">
 					<div class="col-md-12 col-sm-12 text-center ftco-animate">
 						<span class="subheading">吃胖吧</span>
-						<h1 class="mb-4">Delicious Specialties</h1>
+						<h1 class="mb-4">PoT</h1>
 					</div>
 				</div>
 			</div>
@@ -355,20 +401,29 @@ left:750px;
 		<div class="container">
 			<div class="row">
 				<div class="col-md-7 d-flex">
-					<div class="img img-1 mr-md-2"
-						style="background-image: url(<%=request.getContextPath()%>/front-end/images/HA.gif);"></div>
-					<div class="img img-2 ml-md-2"
-						style="background-image: url(<%=request.getContextPath()%>/front-end/images/HA.gif);"></div>
+					    <div class="div1">
+        <div class="div2 newsdata">
+       
+												
+													<c:forEach var="newsVO" items="${list2}">
+														
+															<p class="data">${newsVO.news_cont}</p>
+															<p class="data" id="date"
+																style="padding-left: 0px; padding-right: 0px">${newsVO.news_date}</p>
+														
+													</c:forEach>
+												
+        </div>
+    </div>
 				</div>
 				<div class="col-md-5 wrap-about pt-5 pt-md-5 pb-md-3 ftco-animate">
 					<div class="heading-section mb-4 my-5 my-md-0">
 						<span class="subheading">About</span>
-						<h2 class="mb-4">吃胖吧PoT</h2>
+						<h2 class="mb-4 dh2">吃胖吧PoT</h2>
 					</div>
-					<p>這裡可以放我們餐廳的介紹ㄎㄎ</p>
-					<p class="time">
+					<p class="time dh2" >
 						<span>Mon - Fri <strong>8AM - 11 PM</strong></span> <span><a
-							href="#">+ 1-978-123-4567</a></span>
+							href="#">+ 55688</a></span>
 					</p>
 				</div>
 			</div>
@@ -401,14 +456,14 @@ left:750px;
 									alt="">
 								</label>
 
-								<div>${adVO.ad_add_date}</div>
+								<div class=adat>${adVO.ad_add_date}</div>
 
 								<FORM METHOD="post"
 									ACTION="<%=request.getContextPath()%>/ad/ad.do">
-									<label for="${adVO.ad_no}" class="d-block mb-4 h-100 "
+									<label for="${adVO.ad_no}" class="d-block mb-4 h-100 adat"
 										style="font-size: 20px" id="ad_title">${adVO.ad_title}<br>
 										<button type="submit" id="${adVO.ad_no}"
-											class="btn btn-outline-dark" style="border-radius: 100%"
+											class="btn btn-outline-dark adat" style="border-radius: 100%"
 											name="action" value="getFrontOne_For_Display">詳</button>
 									</label> <input type="hidden" name="ad_no" value="${adVO.ad_no}">
 								</FORM>
@@ -1377,5 +1432,14 @@ ada.classList.add("active");
 <!--為了顯示地址選單用 -->
 <script
 	src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
+	
+	<script>
+$('.carousel').carousel({
+	  interval: 1000  
+	
+	})
+	
+</script>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <%-- script 結束 --%>
 </html>
