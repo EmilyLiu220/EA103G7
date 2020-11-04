@@ -2,14 +2,55 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.util.stream.Collectors"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
+<%@ page import="com.meal.model.*"%>
+<%@ page import="com.meal_set.model.*"%>
 <%@ page import="com.meal_order.model.*"%>
+<%@ page import="com.meal_order_detail.model.*"%>
 
 <% 
 	MealOrderService mealOrderSrv = new MealOrderService();
-	List<MealOrderVO> list = mealOrderSrv.getAll();
+	List<MealOrderVO> list = mealOrderSrv.searchToday(new Date());
+	MealOrderDetailService detailSrv = new MealOrderDetailService();
+	MealService mealSrv = new MealService();
+	MealSetService mealSetSrv = new MealSetService();
+
+	Map<String, Object> mealMap = mealSrv.getAll().stream()
+			.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
+	Map<String, Object> mealSetMap = mealSetSrv.getAll().stream()
+			.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
+	Set<String> mealKeys = mealMap.keySet();
+	Set<String> mealSetKeys = mealSetMap.keySet();
+	
+	for (String key : mealKeys) {
+		((MealVO) mealMap.get(key)).setMeal_qty(0);
+	}
+	for (String key : mealSetKeys) {
+		((MealSetVO) mealSetMap.get(key)).setMeal_set_qty(0);
+	}
+
+	for (MealOrderVO mealOrderVO : list) {
+		for (MealOrderDetailVO detailVO : detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no())) {
+			for (String key : mealKeys) {
+				if (key.equals(detailVO.getMeal_no())) {
+					((MealVO) mealMap.get(key))
+							.setMeal_qty(((MealVO) mealMap.get(key)).getMeal_qty() + detailVO.getQty());
+				}
+			}
+			for (String key : mealSetKeys) {
+				if (key.equals(detailVO.getMeal_set_no())) {
+					((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).setMeal_set_qty(
+							((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).getMeal_set_qty()
+									+ detailVO.getQty());
+				}
+			}
+		}
+	}
 	pageContext.setAttribute("list", list);
+	pageContext.setAttribute("mealMap",mealMap);
+	pageContext.setAttribute("mealSetMap",mealSetMap);
 
 %>
 
@@ -485,7 +526,7 @@ display: inline;
                         	plugins:{
                         		labels: {
                         		render: 'value',
-                        		fontColor: ['green', 'black', 'red'],
+                        		fontColor:'black',
                         		arc: true,
                         		}
                         		},
@@ -510,6 +551,12 @@ display: inline;
         	
         	
         })
+//         var todayData = [];
+//         var todayLabels = [];
+//         var todayMealLen = Object.keys(${mealMap}).length;
+//     	var todaySetLen = Object.keys(${mealSetMap}).length;
+        
+        
         
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
