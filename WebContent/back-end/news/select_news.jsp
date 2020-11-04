@@ -71,18 +71,18 @@
 					data-toggle="collapse" aria-expanded="false"
 					class="dropdown-toggle">主管員工專區</a>
 					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
-						<li><a href="#">食材消耗統計</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
+						<li class="fun2"><a href="#">食材消耗統計</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
 					</ul></li>
 				<li><a href="#homeSubmenu" data-toggle="collapse"
 					aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
@@ -273,6 +273,43 @@
 			</ul>
 		</div>
 	</div>
+	
+	<div id="fun" style="display:none">
+		<c:forEach var="fun_authVO2" items="${fun_authVO2}">
+			<span class="fun">${fun_authVO2.fun_name}</span><br>
+		</c:forEach>
+	</div>
+		
+	<script>
+		// 判斷員工擁有哪些權限可以點選
+		var fun = document.getElementsByClassName("fun");
+		var arr1 = [];
+		for (let i = 0; i < fun.length; i++) {
+			var x = fun[i].innerText;
+			arr1.push(x);
+		}
+		
+		var fun2 = document.getElementsByClassName("fun2");
+		var arr2 = [];
+		for (let i = 0; i < fun2.length; i++) {
+			var y = fun2[i].innerText;
+			arr2.push(y);
+		}
+		
+		for (let i = 0; i < arr2.length; i++) {
+			var allow = true;
+			for (let j = 0; j < arr1.length; j++) {
+				if (arr2[i] === arr1[j]) {
+					allow = false;
+					break;
+				}
+			}
+			if (allow) {
+				fun2[i].classList.add('unshow');
+			}
+		}
+		
+	</script>
 </body>
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
