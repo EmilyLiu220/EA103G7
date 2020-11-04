@@ -3,18 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
-<%@ page import="com.inform_set.model.*"%>
+<%@ page import="com.front_inform.model.*"%>
 <%@ page import="com.emp_auth.model.*"%>
 <%@ page import="com.fun_auth.model.*"%>
 
 <%	
 	EmpVO empVO2 = (EmpVO) session.getAttribute("empVO2");
-	Inform_SetVO isVO = (Inform_SetVO) request.getAttribute("isVO");
+	Front_InformVO fiVO = (Front_InformVO) request.getAttribute("fiVO");
 	List<Emp_authVO> emp_authVO2 = (List<Emp_authVO>) session.getAttribute("emp_authVO2");
 	List<Fun_authVO> fun_authVO2 = (List<Fun_authVO>) session.getAttribute("fun_authVO2");
 %>
 
-<jsp:useBean id="isSvc" scope="page" class="com.inform_set.model.Inform_SetService"></jsp:useBean>
+<jsp:useBean id="fiSvc" scope="page" class="com.front_inform.model.Front_InformService"></jsp:useBean>
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
 
 <!DOCTYPE html>
@@ -215,14 +215,12 @@
 						<li>
 							<b>選擇通知狀態:</b>
 							<select size="1" name="info_sts" >
-								<option value="">
-								<c:choose>
-									<c:when test="${front_informVO.info_sts == 0}">一般通知</c:when>
-									<c:when test="${front_informVO.info_sts == 1}">確認用餐</c:when>
-									<c:when test="${front_informVO.info_sts == 2}">尚未回覆</c:when>
-									<c:when test="${front_informVO.info_sts == 3}">取消訂位</c:when>
-								</c:choose>
-							</select><br>
+								<option value="請選擇">請選擇</option>
+								<option value="一般通知">一般通知</option>
+								<option value="確認用餐">確認用餐</option>
+								<option value="尚未回覆">尚未回覆</option>
+								<option value="取消訂位">取消訂位</option>
+							</select><br><br>
 						</li>
 						<li>
 							<b>選擇日期：</b>
@@ -266,14 +264,14 @@
 		});
 		$( function() {
 			var dateFormat = "mm/dd/yy",
-			from = $( "#is_date_startDate" ).datepicker({
+			from = $( "#fi_date_startDate" ).datepicker({
 				defaultDate: "+1w",
 				changeMonth: true,
 				numberOfMonths: 1
 			}).on( "change", function() {
 				to.datepicker( "option", "minDate", getDate( this ) );
 			}),
-			to = $( "#is_date_stopDate" ).datepicker({
+			to = $( "#fi_date_stopDate" ).datepicker({
 				defaultDate: "+1w",
 				changeMonth: true,
 				numberOfMonths: 1
