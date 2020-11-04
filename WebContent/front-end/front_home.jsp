@@ -89,6 +89,12 @@
 	margin-top: 100px;
 	left: 500px;
 }
+
+.adimg {
+	position: relative;
+	top: 500px;
+	left: 500px;
+}
 </style>
 
 </head>
@@ -364,19 +370,19 @@
 		</div>
 	</section>
 	<!-- 		------------------------------ -->
-
-	<!-- ----------------------------------------- -->
 	<div id="carouselExampleIndicators" class="carousel slide"
 		data-ride="carousel">
-		
+
 		<ol class="carousel-indicators">
 			<li data-target="#carouselExampleIndicators" data-slide-to="0"
 				class="active"></li>
 			<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 			<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 		</ol>
-		<div class="ad3">
-		
+		<%-- 		<img src="<%=request.getContextPath()%>/front-end/images/null2.jpg" class="adimg"> --%>
+		<div class="ad3 ">
+			<img src="<%=request.getContextPath()%>/front-end/images/null2.jpg"
+				class="adimg">
 			<div class="carousel-inner ad2">
 				<%@ include file="/front-end/front/page1-1.file"%>
 				<div class="row text-center text-lg-left">
@@ -389,7 +395,7 @@
 									src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"
 									alt="">
 								</label>
-								
+
 								<div>${adVO.ad_add_date}</div>
 
 								<FORM METHOD="post"
@@ -409,8 +415,8 @@
 
 		</div>
 
-		
-<!-- 		------------------------------------------- -->
+
+		<!-- 		------------------------------------------- -->
 		<a class="carousel-control-prev" href="#carouselExampleIndicators"
 			role="button" data-slide="prev"> <span
 			class="carousel-control-prev-icon" aria-hidden="true"></span> <span
@@ -424,78 +430,7 @@
 
 	<!-- 		------------------------------ -->
 
-	<section class="ftco-section img"
-		style="background-image: url(<%=request.getContextPath()%>/front-end/images/carousel_3.jpg)"
-		data-stellar-background-ratio="0.5">
-		<div class="container">
-			<div class="row d-flex">
-				<div
-					class="col-md-7 ftco-animate makereservation p-4 px-md-5 pb-md-5">
-					<div class="heading-section ftco-animate mb-5 text-center">
-						<span class="subheading">Book a table</span>
-						<h2 class="mb-4">我要訂位</h2>
-					</div>
-					<form action="#">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="">Name</label> <input type="text"
-										class="form-control" placeholder="Your Name">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="">Email</label> <input type="text"
-										class="form-control" placeholder="Your Email">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="">Phone</label> <input type="text"
-										class="form-control" placeholder="Phone">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="">Phone</label> <input type="text"
-										class="form-control" id="book_date" placeholder="Date">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="">Time</label> <input type="text"
-										class="form-control" id="book_time" placeholder="Time">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="">Person</label>
-									<div class="select-wrap one-third">
-										<div class="icon">
-											<span class="ion-ios-arrow-down"></span>
-										</div>
-										<select name="" id="" class="form-control">
-											<option value="">Person</option>
-											<option value="">1</option>
-											<option value="">2</option>
-											<option value="">3</option>
-											<option value="">4+</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12 mt-3">
-								<div class="form-group text-center">
-									<input type="submit" value="Make a Reservation"
-										class="btn btn-primary py-3 px-5">
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</section>
+
 	<footer class="ftco-footer ftco-bg-dark ftco-section">
 		<div class="container">
 			<div class="row mb-5">
