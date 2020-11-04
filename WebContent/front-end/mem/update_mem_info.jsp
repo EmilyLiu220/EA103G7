@@ -70,16 +70,16 @@
 	<FORM METHOD="post" ACTION="mem.do" name="form1">
 	
 	<ul>
-		<li>會員姓名:<font color=red><b>*</b></font><input type="text" name="mem_name" size="45" value="${memVO.mem_name}" required/></li>
+		<li>會員姓名:<font color=red><b>*</b></font><input type="text" name="mem_name" size="45" value="${memVO.mem_name}" required/></li><p><p>
 		
-		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" name="mem_psw1" size="45" value="" required/></li>
-		<li>密碼確認:<font color=red><b>*</b></font><input type="password" name="mem_psw2" size="45" value="" required/></li>
+		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" name="mem_psw1" size="45" value="" required/></li><p><p>
+		<li>密碼確認:<font color=red><b>*</b></font><input type="password" name="mem_psw2" size="45" value="" required/></li><p><p>
 		<li>性別:&emsp;&emsp;&emsp;<label><input type="radio" name="mem_gen" size="45" value="男" />男</label>
  				<label><input type="radio" name="mem_gen" size="45" value="女" />女</label>
- 				<label><input type="radio" name="mem_gen" size="45" value="其他" />其他</label></li>
-		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" name="mem_bir" size="45" value="${memVO.mem_bir}" required/></li>
-		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" name="mem_tel" size="45" value="${memVO.mem_tel}" required/></li>
-		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" name="mem_mail" size="45" value="${memVO.mem_mail}" required/></li>
+ 				<label><input type="radio" name="mem_gen" size="45" value="其他" />其他</label></li><p><p>
+		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" name="mem_bir" size="45" value="${memVO.mem_bir}" required/></li><p><p>
+		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" name="mem_tel" size="45" value="${memVO.mem_tel}" required/></li><p><p>
+		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" name="mem_mail" size="45" value="${memVO.mem_mail}" required/></li><p><p>
 		<li>地址:
 			<div id="zipcode3" style="width: 800px">
  			<div class="f3" data-role="county" name="city"></div>
