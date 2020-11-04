@@ -72,6 +72,16 @@
                 color: black;
             }
         }
+ #submit{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#submit:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
 </style>
 
 </head>
@@ -252,7 +262,7 @@
     														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td>
     						
     						<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 3 and (mealOrderVO.pay_sts == 1 or mealOrderVO.pay_sts ==0)}">
-    														<input type="submit" value="完成訂單"/>
+    														<input id="submit" type="submit" value="完成訂單"/>
     														<input type="hidden" name="action" value="update"/>
 <!--     														<input type="hidden" name="queryString" value="asignQuery"/> -->
     														<input type="hidden" name="reqURL" value="<%= request.getServletPath()%>"/>

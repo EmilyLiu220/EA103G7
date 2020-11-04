@@ -396,9 +396,12 @@ public class MealOrderServlet extends HttpServlet {
 				session.setAttribute("orderChart", map2);
 				map = map2;
 			}
-
 			MealOrderService mealOrderSrv = new MealOrderService();
 			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
+			Map <String,Object> listMap = new HashMap<>();
+			int ranNumPeople = (int)((Math.random()*2+1)*orderList.size());
+			listMap.put("orderList", new Integer(orderList.size()));
+			listMap.put("ranNumPeople", ranNumPeople);
 			MealOrderDetailService detailSrv = new MealOrderDetailService();
 			MealService mealSrv = new MealService();
 			MealSetService mealSetSrv = new MealSetService();
@@ -412,9 +415,11 @@ public class MealOrderServlet extends HttpServlet {
 			
 			for (String key : mealKeys) {
 				((MealVO) mealMap.get(key)).setMeal_qty(0);
+				((MealVO) mealMap.get(key)).setMeal_img(null);
 			}
 			for (String key : mealSetKeys) {
 				((MealSetVO) mealSetMap.get(key)).setMeal_set_qty(0);
+				((MealSetVO) mealSetMap.get(key)).setMeal_set_img(null);
 			}
 
 			for (MealOrderVO mealOrderVO : orderList) {
@@ -449,6 +454,8 @@ public class MealOrderServlet extends HttpServlet {
 			Map<String, Map<String, Object>> jsonMap = new HashMap<>();
 			jsonMap.put("mealMap", mealMap);
 			jsonMap.put("mealSetMap", mealSetMap);
+			jsonMap.put("orderList", listMap);
+			
 			Gson gson = new Gson();
 			String jsondata = gson.toJson(jsonMap);
 			res.setContentType("application/json; charset=utf-8");

@@ -48,6 +48,16 @@
 color:blue;
 text-decoration: underline;
 }
+#submit{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#submit:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
 </style>
 
 </head>
@@ -220,7 +230,7 @@ text-decoration: underline;
 				取餐時間：<input type="text" name="pickup_time" class="f_date1"/>
 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td>
 				<td>
-				<input type="submit" value="查詢結果"/>
+				<input id="submit" type="submit" value="查詢結果"/>
 				<input type="hidden" name="action" value="queryAll"/></td>
 				</tr>
 				

@@ -48,6 +48,16 @@
 color:blue;
 text-decoration: underline;
 }
+#submit{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#submit:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
 </style>
 
 </head>
@@ -255,7 +265,7 @@ text-decoration: underline;
                 </c:forEach></td>
 							<td style="text-align: center;">${mealVO.meal_sts == 0?'<font color="red">已下架</font>':'<font color="green">上架中</font>'}</td>
 							<td style="text-align: center;"><FORM METHOD="post" ACTION="<%= request.getContextPath() %>/meal/meal.do" style="margin-bottom: 0px;">
-			     											<input type="submit" value="修改餐點">
+			     											<input id="submit" type="submit" value="修改餐點">
 			     											<input type="hidden" name="meal_no"  value="${mealVO.meal_no}">
 			     											<input type="hidden" name="action"	value="getOneupdate"></FORM></td>
 						</tr>

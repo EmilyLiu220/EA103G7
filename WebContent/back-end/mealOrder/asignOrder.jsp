@@ -59,6 +59,27 @@ text-decoration: underline;
 margin-left: auto;
 margin-right: auto;
 }
+#submit{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#submit:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
+#assign{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#assign:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
+
 </style>
 
 </head>
@@ -231,7 +252,7 @@ margin-right: auto;
 				取餐時間：<input type="text" name="pickup_time" class="f_date1"/>
 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td>
 				<td>
-				<input type="submit" value="查詢結果"/>
+				<input id="submit" type="submit" value="查詢結果"/>
 				<input type="hidden" name="action" value="asignQuery"/></td>
 				</tr>
 				
@@ -274,7 +295,7 @@ margin-right: auto;
     														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td>
     						
     						<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 1}">
-    														<input type="submit" value="派工製作"/>
+    														<input id="assign" type="submit" value="派工製作"/>
     														<input type="hidden" name="action" value="update"/>
     														<input type="hidden" name="queryString" value="<%= request.getAttribute("action")%>"/>
     														<input type="hidden" name="reqURL" value="<%= request.getServletPath()%>"/>

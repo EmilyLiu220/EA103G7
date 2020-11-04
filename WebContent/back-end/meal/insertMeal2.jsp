@@ -51,6 +51,26 @@ color:red;
 font-weight: bolder;
 font-size: 14px;
 }
+#add{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#add:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
+#remove,#submit2{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#remove:hover,#submit2:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
 </style>
 
 </head>
@@ -237,7 +257,7 @@ font-size: 14px;
 				</table>
 				<br>
 				<input type="hidden" name="action" value="insert">
-				<input type="submit" value="新增餐點"></FORM>
+				<input id="submit2" type="submit" value="新增餐點"></FORM>
 			</p>
 		</div>
 	</div>

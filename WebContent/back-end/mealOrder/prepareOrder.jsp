@@ -357,7 +357,7 @@
 				 '<input type="hidden" name="pay_sts" value="'+jsonObj.mealOrderVO.pay_sts +'"/>'
 				+ '<input type="hidden" name="noti_sts" value="'+jsonObj.mealOrderVO.noti_sts +'"/>'
 				+ '<thead style="text-align: center;"><tr><th style="width: 10%;">check</th><th style="width: 25%;">餐點名稱</th>	<th style="width: 25%;">餐點數量</th></tr></thead>'
-				+ '<tbody class="'+jsonObj.mealOrderVO.meal_order_no+'body">';
+				+ '<tbody class="'+jsonObj.mealOrderVO.meal_order_no+'body2">';
 				
 				$("#content").append(table);
 				table.after(table2);
@@ -366,7 +366,7 @@
 					var row ='<tr><td style="text-align: center;"><input class="checkbox" type="checkbox"/><input type="hidden" value="'+jsonObj.mealOrderVO.meal_order_no+'"/></td>'
 					+	'<td style="text-align: center;">'+ detailVO.meal_name +'</td>'
 					+ '	<td style="text-align: center;">'+detailVO.qty+'</td></tr>';
-					$("."+jsonObj.mealOrderVO.meal_order_no+"body").append(row);
+					$("."+jsonObj.mealOrderVO.meal_order_no+"body2").append(row);
 			});
 				$(".checkbox").change(sendOrder);
 				count = document.getElementsByClassName("table").length;

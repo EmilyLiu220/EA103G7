@@ -55,6 +55,16 @@ img{
 width: 512px;
 height: 410px;
 }
+#add,#remove,#submit{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#add:hover,#remove:hover,#submit:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
+}
 </style>
 
 </head>
@@ -238,7 +248,7 @@ height: 410px;
 				<br>
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="meal_no" value="<%= mealVO.getMeal_no()%>">
-<input type="submit" value="送出修改"></FORM>
+<input id="submit" type="submit" value="送出修改"></FORM>
 			</p>
 		</div>
 	</div>
