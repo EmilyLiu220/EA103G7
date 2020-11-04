@@ -185,7 +185,7 @@
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front_home.jsp" class="nav-link">Home</a></li>
 					<li class="nav-item"><a href="" class="nav-link">Menu</a></li>
-					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp" class="nav-link">店訊新訊</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp" class="nav-link">店內新訊</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp" class="nav-link">最新活動</a></li>
 					<li class="nav-item"><a href="" class="nav-link">評價總覽</a></li>
 					<li class="nav-item"><a href="" class="nav-link">餐廳資訊</a></li>
@@ -211,7 +211,7 @@
 				class="row no-gutters slider-text align-items-end justify-content-center">
 				<div class="col-md-9 ftco-animate text-center mb-4"
 					style="height: 230px;">
-					<h1 class="mb-2 bread"><span id="title">最新活動</span></h1>
+					<h1 class="mb-2 bread"><span id="title">吃胖吧  PoT</span></h1>
 					<p class="breadcrumbs">
 						<span class="mr-2"><a
 							href="<%=request.getContextPath()%>/front-end/front_home.jsp">Home
