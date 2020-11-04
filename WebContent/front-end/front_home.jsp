@@ -83,17 +83,16 @@
 .ad2 {
 	width: 50%;
 	height: 750px;
-/* 	margin: 0px auto; */ 
-	left:750px;
-	text-align:center;
-	top:100px;
+	/* 	margin: 0px auto; */
+	left: 750px;
+	text-align: center;
+	top: 100px;
 }
 
 .ad3 {
-	height:600px;
+	height: 600px;
 	background-image:
 		url('<%=request.getContextPath()%>/front-end/images/newsBg.jpg');
-	
 }
 
 .ad {
@@ -105,47 +104,51 @@
 	position: relative;
 	top: 100px;
 	left: 400px;
-	
 }
+
 .carousel-inner.ad2 {
-    top: -250px;
+	top: -250px;
 }
 
-.adat{
-color:#fff;
+.adat {
+	color: #fff;
 }
 
-.dh2{
-color:#fff;
+.dh2 {
+	color: #fff;
 }
 </style>
- <style>
-        .div1 {
-            width: 500px;
-            height: 200px;
-            overflow: hidden;
-            margin: auto;
-            position: relative;
-        }
-        @keyframes anis {
-            100% {
-                transform: translateY(-200px)
-            }
-        }
-        img {
-            position: absolute;
-        }
-        .div2 {
-            animation: anis 10s linear infinite;
-            width:500px;
-        }
-        .div2:hover {
-            animation-play-state: paused;
-        }
-        .newsdata{
-        color:#fff;
-        }
-    </style>
+<style>
+.div1 {
+	width: 500px;
+	height: 200px;
+	overflow: hidden;
+	margin: auto;
+	position: relative;
+}
+
+@keyframes anis { 100% {
+	transform: translateY(-200px)
+}
+
+}
+img {
+	position: absolute;
+}
+
+.div2 {
+	animation: anis 10s linear infinite;
+	width: 500px;
+}
+
+.div2:hover {
+	animation-play-state: paused;
+}
+
+.newsdata {
+	color: #fff;
+}
+</style>
 
 
 </head>
@@ -394,34 +397,30 @@ color:#fff;
 			</div>
 		</div>
 	</section>
-
+<%-- 以下為輪播news的地方 --%>
 	<section class="ftco-section img"
 		style="background-image: url(<%=request.getContextPath()%>/front-end/images/storeBg.jpg)"
 		data-stellar-background-ratio="0.5">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-7 d-flex">
-					    <div class="div1">
-        <div class="div2 newsdata">
-       
-												
-													<c:forEach var="newsVO" items="${list2}">
-														
-															<p class="data">${newsVO.news_cont}</p>
-															<p class="data" id="date"
-																style="padding-left: 0px; padding-right: 0px">${newsVO.news_date}</p>
-														
-													</c:forEach>
-												
-        </div>
-    </div>
+					<div class="div1">
+						<div class="div2 newsdata">
+
+							<c:forEach var="newsVO" items="${list2}">
+								<p class="data">${newsVO.news_cont}</p>
+								<p class="data" id="date"
+									style="padding-left: 0px; padding-right: 0px">${newsVO.news_date}</p>
+							</c:forEach>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-5 wrap-about pt-5 pt-md-5 pb-md-3 ftco-animate">
 					<div class="heading-section mb-4 my-5 my-md-0">
 						<span class="subheading">About</span>
 						<h2 class="mb-4 dh2">吃胖吧PoT</h2>
 					</div>
-					<p class="time dh2" >
+					<p class="time dh2">
 						<span>Mon - Fri <strong>8AM - 11 PM</strong></span> <span><a
 							href="#">+ 55688</a></span>
 					</p>
@@ -430,6 +429,7 @@ color:#fff;
 		</div>
 	</section>
 	<!-- 		------------------------------ -->
+	<%-- 以下為輪播ad的地方 --%>
 	<div id="carouselExampleIndicators" class="carousel slide "
 		data-ride="carousel">
 
@@ -445,7 +445,7 @@ color:#fff;
 				class="adimg">
 			<div class="carousel-inner ad2">
 				<%@ include file="/front-end/front/page1-1.file"%>
-				<div class="row text-center text-lg-left" >
+				<div class="row text-center text-lg-left">
 					<c:forEach var="adVO" items="${list}">
 						<div class="carousel-item ad">
 
@@ -1432,8 +1432,8 @@ ada.classList.add("active");
 <!--為了顯示地址選單用 -->
 <script
 	src="<%=request.getContextPath()%>/front-end/js/jquery.twzipcode.min.js"></script>
-	
-	<script>
+
+<script>
 $('.carousel').carousel({
 	  interval: 1000  
 	
