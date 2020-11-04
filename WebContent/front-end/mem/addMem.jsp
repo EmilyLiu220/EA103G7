@@ -69,17 +69,17 @@
 	<FORM METHOD="post" ACTION="mem.do" name="form1">
 	
 	<ul>
-		<li>會員姓名:<font color=red><b>*</b></font><input type="text" id="mem_name2" name="mem_name" size="45" value="${memVO.mem_name}" required/></li>
+		<li>會員姓名:<font color=red><b>*</b></font><input type="text" id="mem_name2" name="mem_name" size="45" value="${memVO.mem_name}" required/></li><p><p>
 		
-		<li>帳號:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_act2" name="mem_act" size="45" value="${memVO.mem_act}" required/></li>
-		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" id="mem_psw1" name="mem_psw1" size="45" value="" required/></li>
-		<li>密碼確認:<font color=red><b>*</b></font><input type="password" id="mem_psw2"  name="mem_psw2" size="45" value="" required/></li>
+		<li>帳號:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_act2" name="mem_act" size="45" value="${memVO.mem_act}" required/></li><p><p>
+		<li>密碼:<font color=red><b>*</b></font>&emsp;&emsp;<input type="password" id="mem_psw1" name="mem_psw1" size="45" value="" required/></li><p><p>
+		<li>密碼確認:<font color=red><b>*</b></font><input type="password" id="mem_psw2"  name="mem_psw2" size="45" value="" required/></li><p><p>
 		<li>性別:&emsp;&emsp;&emsp;<label><input type="radio" name="mem_gen2" size="45" value="男" />男</label>
  				<label><input type="radio" name="mem_gen2" size="45" value="女" />女</label>
- 				<label><input type="radio" name="mem_gen2" size="45" value="其他" checked/>其他</label></li>
-		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" id="mem_bir2" name="mem_bir" size="45" value="${memVO.mem_bir}" required/></li>
-		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_tel2" name="mem_tel" size="45" value="${memVO.mem_tel}" required/></li>
-		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" id="mem_mail2" name="mem_mail" size="45" value="${memVO.mem_mail}" required/></li>
+ 				<label><input type="radio" name="mem_gen2" size="45" value="其他" checked/>其他</label></li><p><p>
+		<li>生日:<font color=red><b>*</b></font>&emsp;&emsp;&ensp;<input type="date" id="mem_bir2" name="mem_bir" size="45" value="${memVO.mem_bir}" required/></li><p><p>
+		<li>手機:<font color=red><b>*</b></font>&emsp;&emsp;<input type="text" id="mem_tel2" name="mem_tel" size="45" value="${memVO.mem_tel}" required/></li><p><p>
+		<li>e-mail:<font color=red><b>*</b></font>&ensp;<input type="email" id="mem_mail2" name="mem_mail" size="45" value="${memVO.mem_mail}" required/></li><p><p>
 		<li>地址:
 			<div id="zipcode3" style="width: 800px">
  			<div class="f4" data-role="county" name="city"></div>

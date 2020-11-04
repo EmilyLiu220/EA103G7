@@ -92,7 +92,7 @@ public class AuthFilter implements Filter {
 		fa0010.add(req.getContextPath() + "/back-end/seat/editSeat.jsp");
 		fa0010.add(req.getContextPath() + "/back-end/seat_obj/seat_obj.do");
 		fa0010.add(req.getContextPath() + "/back-end/seat_obj/addSeatObj.jsp");
-		fa0010.add(req.getContextPath() + "/back-end/seat_obj/ssetSeatObj.jsp");
+		fa0010.add(req.getContextPath() + "/back-end/seat_obj/setSeatObj.jsp");
 		fa0010.add(req.getContextPath() + "/back-end/seat_obj/updateSeatObj.jsp");
 		
 		List<String> fa0013 = new ArrayList<>();
