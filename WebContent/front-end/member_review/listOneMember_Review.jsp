@@ -12,7 +12,7 @@
 
 <html>
 <head>
-<title>評價資料 - listOneMember_Review.jsp</title>
+<title>會員評價資料</title>
 
 <style>
   table#table-1 {

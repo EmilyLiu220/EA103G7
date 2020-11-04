@@ -259,7 +259,7 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				report_con); // 呼叫Service內addReport_Appraise的方法
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				req.setAttribute("report_appraiseVO", report_appraiseVO);
-				String url = "/front-end/report_appraise/listOneReport_Appraise.jsp";
+				String url = "/front-end/report_appraise/listAllReport_Appraise.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);
 

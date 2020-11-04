@@ -89,6 +89,7 @@ public class AuthFilter implements Filter {
 		fa0011.add(req.getContextPath() + "/back-end/bonus_order/forwarded");
 		fa0011.add(req.getContextPath() + "/back-end/bonus_order_detail/forwarded");
 		fa0011.add(req.getContextPath() + "/back-end/bonus/addBonus.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus/listOneBonus.jsp");
 		fa0011.add(req.getContextPath() + "/back-end/bonus/listAllBonus.jsp");
 		fa0011.add(req.getContextPath() + "/back-end/bonus/select_page.jsp");
 		fa0011.add(req.getContextPath() + "/back-end/bonus/update_bonus_input.jsp");

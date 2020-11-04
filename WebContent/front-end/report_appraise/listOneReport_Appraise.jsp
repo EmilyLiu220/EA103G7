@@ -19,7 +19,7 @@
 
 <html>
 <head>
-<title>員工資料 - listOneReport_Appraise.jsp</title>
+<title>評價檢舉新增</title>
 
 <style>
   table#table-1 {
@@ -70,8 +70,8 @@
 		<td><%=report_appraiseVO.getReview_no()%></td>
 		<td><%=report_appraiseVO.getMem_no()%></td>
 		<td><%=report_appraiseVO.getEmp_no()%></td>
-		<td><%=report_appraiseVO.getReport_date()%></td>
 		<td><%=report_appraiseVO.getReport_con()%></td>
+		<td><%=report_appraiseVO.getReport_date()%></td>
 	</tr>
 </table>
 <%@ include file="/front-end/footer.jsp"%>
