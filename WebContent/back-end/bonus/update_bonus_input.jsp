@@ -242,7 +242,7 @@
 <input type="hidden" name="action" value="updateBonus">
 <input type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
 <input type="submit" value="送出修改"></FORM>
-</body>
+
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
 
@@ -324,4 +324,41 @@
         //      }});
         
 </script>
+<div id="fun" style="display:none">
+	<c:forEach var="fun_authVO2" items="${fun_authVO2}">
+		<span class="fun">${fun_authVO2.fun_name}</span><br>
+	</c:forEach>
+</div>
+	
+<script>
+	// 判斷員工擁有哪些權限可以點選
+	var fun = document.getElementsByClassName("fun");
+	var arr1 = [];
+	for (let i = 0; i < fun.length; i++) {
+		var x = fun[i].innerText;
+		arr1.push(x);
+	}
+	
+	var fun2 = document.getElementsByClassName("fun2");
+	var arr2 = [];
+	for (let i = 0; i < fun2.length; i++) {
+		var y = fun2[i].innerText;
+		arr2.push(y);
+	}
+	
+	for (let i = 0; i < arr2.length; i++) {
+		var allow = true;
+		for (let j = 0; j < arr1.length; j++) {
+			if (arr2[i] === arr1[j]) {
+				allow = false;
+				break;
+			}
+		}
+		if (allow) {
+			fun2[i].classList.add('unshow');
+		}
+	}
+	
+</script>
+</body>
 </html>
