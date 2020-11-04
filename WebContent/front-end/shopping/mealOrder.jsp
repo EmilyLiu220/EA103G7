@@ -3,14 +3,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.meal_order.model.*" %>
 <%@ page import="com.meal_order_detail.model.*" %>
+<%@ page import="com.mem.model.*"%>
 <%@ page import="java.util.*" %>
 
 <% 
-	String mem_no = "MEM0001";				//模擬假資料
+	//String mem_no = "MEM0001";				//模擬假資料
+	MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
+	String mem_no = memVO2.getMem_no();
 	MealOrderService mealOrderSrv = new MealOrderService();
 	List<MealOrderVO> list = mealOrderSrv.searchByMemNo(mem_no);
 	request.setAttribute("list", list);
-	request.setAttribute("mem_no",mem_no);	//模擬假資料
+	//request.setAttribute("mem_no",mem_no);	//模擬假資料
 %>
 <jsp:useBean id="mealOrderSrv2" scope="page" class="com.meal_order.model.MealOrderService"/>
 <!DOCTYPE html>

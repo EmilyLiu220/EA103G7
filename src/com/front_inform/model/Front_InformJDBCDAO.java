@@ -591,18 +591,34 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 		StringBuilder builder = new StringBuilder();
 		List<String> params = new ArrayList<String>();
 		builder.append(Get_Complex);
-		
-		
-		
-		
-		
-		
-		
+		if(mem_no != null && !mem_no.isEmpty()) {
+			builder.append(" AND MEM_NO=?");
+			params.add("MEM_NO," + mem_no);
+		}
+		if(info_sts != null && info_sts!=4 ) { // 4 代表未填此欄
+			builder.append(" AND INFO_STS=?");
+			params.add("INFO_STS," + info_sts);
+		}
+		if(startDate != null && !startDate.isEmpty()) {
+			builder.append(" AND INFO_DATE BETWEEN to_date(?,'yyyy-mm-dd')");
+			params.add("STARTDATE," + startDate);
+		}
+		if(stopDate != null && !stopDate.isEmpty()) {
+			builder.append(" AND to_date(?,'yyyy-mm-dd')");
+			params.add("STOPDATE," + stopDate);
+		}
+		builder.append(" ORDER BY INFO_NO DESC");
+		// 開始取得連線
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
-			pstmt = con.prepareStatement(Get_Complex);
-			pstmt.setInt(1, info_sts);
+			pstmt = con.prepareStatement(builder.toString());
+			// 將 params 切割並 set 進相對應的 ? 中
+			for(int i=0; i<params.size(); i++) {
+				String str = params.get(i);
+				String[] arr = str.split(",");
+				pstmt.setString(i+1, arr[1]);
+			}
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				front_informVO = new Front_InformVO();
@@ -810,7 +826,7 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 //		System.out.println("-----------------------------------------------------------------------------------");
 //	
 		// 取得特殊通知
-		List<Front_InformVO> list3 = dao.findByComplex("MEM0010", 3, "2020-01-01", "2020-10-10");
+		List<Front_InformVO> list3 = dao.findByComplex("MEM0032", 4, "2019-01-01", "2020-10-10");
 		for(Front_InformVO afiVO : list3) {
 			System.out.print(afiVO.getInfo_no() + ", ");
 			System.out.print(afiVO.getMem_no() + ", ");
