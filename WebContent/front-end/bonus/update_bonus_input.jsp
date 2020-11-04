@@ -12,7 +12,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>紅利商品管理-listAllBonus.jsp</title>
+<title>紅利商品管理</title>
 
 <%
   BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)

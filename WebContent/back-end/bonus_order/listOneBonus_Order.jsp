@@ -25,7 +25,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>紅利商品訂單明細-listAllBonus_Order.jsp</title>
+<title>紅利商品訂單明細</title>
 
 <!-- Bootstrap CSS CDN -->
 <link rel="stylesheet"

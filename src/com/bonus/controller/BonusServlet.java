@@ -164,7 +164,7 @@ public class BonusServlet extends HttpServlet {
 				}
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("bonusVO", bonusVO); // 資料庫取出的empVO物件,存入req
-				String url = "/front-end/bonus/listOneBonus.jsp";
+				String url = "/back-end/bonus/listOneBonus.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 				/*************************** 其他可能的錯誤處理 *************************************/

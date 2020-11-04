@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>檢舉評價修改 - update_report_appraise_input.jsp</title>
+<title>檢舉評價修改</title>
 
 <style>
   table#table-1 {

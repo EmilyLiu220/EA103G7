@@ -279,7 +279,7 @@
 	  <url-pattern>/front-end/shopping/*</url-pattern>
 	  <url-pattern>/front-end/bonus/*</url-pattern>
 	  <url-pattern>/front-end/bonus_order/*</url-pattern>
-	  <url-pattern>/front-end/bonus_order_detail/*</url-pattern>
+	  <url-pattern>/front-end/bonus_order_detail*</url-pattern>
 	  <url-pattern></url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
@@ -299,7 +299,6 @@
 	  <url-pattern>/front-end/shopping/*</url-pattern>
 	  <url-pattern>/front-end/member_review/*</url-pattern>
 	  <url-pattern>/front-end/report_appraise/*</url-pattern>
-	  <url-pattern></url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>

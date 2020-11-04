@@ -267,7 +267,7 @@
 										onMouseOver="this.style.background='#ba2214'"
 										onMouseOut="this.style.background='#6b2822'"> <input
 										type="hidden" name="bo_no" value="${bonus_orderVO.bo_no}">
-									<input type="hidden" name="action" value="deleteBonusOrderDetail">
+									<input type="hidden" name="action" value="deleteBonusOrder">
 								</FORM>
 							</td>
 
