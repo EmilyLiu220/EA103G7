@@ -75,37 +75,35 @@ font-size: 14px;
 			</div>
 
 			<ul class="list-unstyled components">
-				<li><a href="#">現場點餐</a></li>
-				<li><a href="#">現場劃位</a></li>
-				<li><a href="#">訂單結帳</a></li>
-				<li><a href="#">候位管理</a></li>
+				<c:choose>
+					<c:when test="${empVO2.emp_no!=null}">
+						<li style="font-size:20px;"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=Update_info&emp_no=${empVO2.emp_no}">員工個資修改</a></li>
+					</c:when>
+				</c:choose>
+				<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
+				<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 				<li class="active"><a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">主管員工專區</a>
 					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li><a href="#">員工管理</a></li>
-						<li><a href="#">會員管理</a></li>
-						<li><a href="#">廣告管理</a></li>
-						<li><a href="#">最新消息管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-						<li><a href="#">評價管理</a></li>
-						<li><a href="#">用餐時段管理</a></li>
-						<li><a href="#">桌位管理</a></li>
-						<li><a href="#">菜單管理</a></li>
-						<li><a href="#">食材管理</a></li>
-						<li><a href="#">餐點組成管理</a></li>
-						<li><a href="#">食材消耗統計</a></li>
-						<li><a href="#">紅利商品管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
+						<li class="fun2"><a href="#">食材消耗統計</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
 					</ul>
 				</li>
 				<li><a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
-						<li><a href="#">訂單派工</a></li>
-						<li><a href="#">出餐管理</a></li>
-						<li><a href="#">訂餐訂單處理</a></li>
-						<li><a href="#">訂餐管理</a></li>
-						<li><a href="#">訂單管理</a></li>
-						<li><a href="#">訂位管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/res_order/resOrderManage.jsp">訂位管理</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -116,7 +114,7 @@ font-size: 14px;
 						<li><a href="<%=request.getContextPath()%>/back-end/emp/login.jsp" id="logIn">Log in</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="#" id="logOut">Log out</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout" id="logOut">Log out</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -153,19 +151,17 @@ font-size: 14px;
 										</c:otherwise>
 									</c:choose>
 								</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">訂單結帳</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">候位管理</a></li>
+								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
+								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
 								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
 								<li class="nav-item active" style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
 									<c:choose>
 										<c:when test="${empVO2.emp_no==null}">
-											<div id="topLogIn" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">Log in</div>
+											<div id="topLogIn" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log in</a></div>
 										</c:when>
 										<c:otherwise>
-											<div id="topLogOut" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">Log out</div>
+											<div id="topLogOut" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout">Log out</a></div>
 										</c:otherwise>
 									</c:choose>
 								</li>
@@ -330,5 +326,42 @@ font-size: 14px;
 		
 	
 	</script>
+	<div id="fun" style="display:none">
+		<c:forEach var="fun_authVO2" items="${fun_authVO2}">
+			<span class="fun">${fun_authVO2.fun_name}</span><br>
+		</c:forEach>
+	</div>
+		
+	<script>
+		// 判斷員工擁有哪些權限可以點選
+		var fun = document.getElementsByClassName("fun");
+		var arr1 = [];
+		for (let i = 0; i < fun.length; i++) {
+			var x = fun[i].innerText;
+			arr1.push(x);
+		}
+		
+		var fun2 = document.getElementsByClassName("fun2");
+		var arr2 = [];
+		for (let i = 0; i < fun2.length; i++) {
+			var y = fun2[i].innerText;
+			arr2.push(y);
+		}
+		
+		for (let i = 0; i < arr2.length; i++) {
+			var allow = true;
+			for (let j = 0; j < arr1.length; j++) {
+				if (arr2[i] === arr1[j]) {
+					allow = false;
+					break;
+				}
+			}
+			if (allow) {
+				fun2[i].classList.add('unshow');
+			}
+		}
+		
+	</script>
+	
 </body>
 </html>
