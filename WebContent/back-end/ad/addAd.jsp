@@ -329,7 +329,7 @@ width:100px;
 			getAd_re_date = new java.sql.Date(System.currentTimeMillis());
 		}
 	%>
-</body>
+
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -416,6 +416,44 @@ $(function(){
 	 });
 });
 </script>
+
+<div id="fun" style="display:none">
+	<c:forEach var="fun_authVO2" items="${fun_authVO2}">
+		<span class="fun">${fun_authVO2.fun_name}</span><br>
+	</c:forEach>
+</div>
+	
+<script>
+	// 判斷員工擁有哪些權限可以點選
+	var fun = document.getElementsByClassName("fun");
+	var arr1 = [];
+	for (let i = 0; i < fun.length; i++) {
+		var x = fun[i].innerText;
+		arr1.push(x);
+	}
+	
+	var fun2 = document.getElementsByClassName("fun2");
+	var arr2 = [];
+	for (let i = 0; i < fun2.length; i++) {
+		var y = fun2[i].innerText;
+		arr2.push(y);
+	}
+	
+	for (let i = 0; i < arr2.length; i++) {
+		var allow = true;
+		for (let j = 0; j < arr1.length; j++) {
+			if (arr2[i] === arr1[j]) {
+				allow = false;
+				break;
+			}
+		}
+		if (allow) {
+			fun2[i].classList.add('unshow');
+		}
+	}
+	
+</script>
+</body>
 </html>
 
 
