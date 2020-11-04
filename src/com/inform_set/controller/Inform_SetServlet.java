@@ -328,6 +328,7 @@ public class Inform_SetServlet extends HttpServlet {
 						return;
 					}
 				}
+				
 
 				/**************************************** 得員工編號 emp_no ( String ) ****************************************/
 				// 取得員工編號參數
@@ -403,6 +404,14 @@ public class Inform_SetServlet extends HttpServlet {
 				String stopDate = req.getParameter("is_date_stopDate").trim();
 				java.sql.Date is_date_stopDate = null;
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				
+				// 若都沒填，直接重導向到 listAll_is.jsp
+				if("".equals(is_no) && "".equals(emp_no) && "".equals(tempIs_cont) && "1970-01-01".equals(startDate) && "".equals(stopDate)) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/inform_set/listAll_is.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
 				if ("".equals(stopDate)) {
 					is_date_stopDate = new java.sql.Date(System.currentTimeMillis()+63072000000L);
 					stopDate = sdf.format(is_date_stopDate);
