@@ -96,7 +96,7 @@ font-weight: bolder;
     <div class="col-2"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=memOrder&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></div>
 <%--     <div class="col-2">${mealOrderVO.mem_no}</div> --%>
     <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</div>
-    <div class="col-2">${mealOrderSrv2.dateFormat(mealOrderVO.pickup_time)}</div>
+    <div class="col-2">${mealOrderVO.pickup_time!=null?mealOrderSrv2.dateFormat(mealOrderVO.pickup_time):'現場用餐'}</div>
     <div class="col">${mealOrderVO.amount}</div>
     <div class="col">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</div>
     <div class="col">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</div>
