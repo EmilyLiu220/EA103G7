@@ -179,20 +179,20 @@
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">查詢所有通知</h3>
+							<h3 style="margin-bottom:0;">查詢所有前檯通知</h3>
 						</td>
 					</tr>
 				</table>
 				<br>
 				<ul>
 					<%-- empCheckAllInform.jsp --%>
-					<li><a href='<%=request.getContextPath()%>/back-end/front_inform/empCheckAllInform.jsp' style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">顯示所有通知</a><br><br></li>
+					<li><a href='<%=request.getContextPath()%>/back-end/front_inform/empCheckAllInform.jsp' style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">顯示所有前檯通知</a><br><br></li>
 				</ul>
 				
 				<%-- 查詢通知 --%>
 				<table id="table-1">
 					<tr>
-						<td><h3 style="margin-bottom:0;">查詢通知</h3></td>
+						<td><h3 style="margin-bottom:0;">查詢前檯通知</h3></td>
 					</tr>
 				</table>
 				<br>
