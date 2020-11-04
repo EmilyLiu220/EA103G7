@@ -34,6 +34,7 @@ import com.meal_order.model.*;
 import com.meal_order_detail.model.MealOrderDetailService;
 import com.meal_order_detail.model.MealOrderDetailVO;
 import com.meal_set.model.*;
+import com.mem.model.MemVO;
 import com.res_order.model.ResOrderService;
 import com.res_order.model.ResOrderVO;
 
@@ -68,12 +69,13 @@ public class MealOrderServlet extends HttpServlet {
 		Map<String, String> errormsgs = new HashMap<>();
 
 		if ("checkout".equals(action)) {
-			String memNo = null;
+			MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
+			String memNo = memVO2.getMem_no();
 			String empNo = (String) session.getAttribute("emp_no");
 			String resNo = req.getParameter("res_no");
-			if (session.getAttribute("mem_no") != null) {
-				memNo = (String) session.getAttribute("mem_no");
-			}
+//			if (session.getAttribute("mem_no") != null) {
+//				memNo = (String) session.getAttribute("mem_no");
+//			}
 
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);
@@ -146,10 +148,9 @@ public class MealOrderServlet extends HttpServlet {
 			pushMsg.put("mealOrderVO", mealOrderVO);
 			String jsonMap = gson.toJson(pushMsg);
 			webSocket.onMessage(jsonMap);
-			
 			// 加入訂餐完成通知
 			Front_InformService fiSvc = new Front_InformService();
-			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "訂餐成功，點選查看訂餐訂單");
+			fiSvc.addNormalFI(memNo, "訂餐成功，點選查看訂餐訂單");
 			
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
