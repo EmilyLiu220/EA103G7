@@ -15,9 +15,7 @@
 <title>紅利商品管理-listAllBonus.jsp</title>
 
 <%
-	BonusService bonusSvc = new BonusService();
-	List<BonusVO> list = bonusSvc.getAll();
-	pageContext.setAttribute("list", list);
+  BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
 %>
 
 <!-- Bootstrap CSS CDN -->
@@ -226,96 +224,122 @@
 				</ul>
 			</c:if>
 
-			<table class="table table-hover" style="width: 100%; font-size: 90%;">
-				<thead style="text-align: center;">
-					<tr>
-						<th style="width: 20%;">紅利商品編號</th>
-						<th style="width: 20%;">紅利商品名稱</th>
-						<th style="width: 20%;">紅利商品價格</th>
-						<th style="width: 20%;">庫存量</th>
-						<th style="width: 20%;">有效日期</th>
-						<th style="width: 20%;">兌換狀態</th>
-						<th style="width: 20%;">圖片</th>
-					</tr>
-				</thead>
-				<%@ include file="page1.file"%>
-				<tbody>
-					<c:forEach var="bonusVO" items="${list}" begin="<%=pageIndex%>"
-						end="<%=pageIndex+rowsPerPage-1%>">
-						<tr>
-							<td style="text-align: center;">${bonusVO.bns_no}</td>
-							<td style="text-align: center;">${bonusVO.bns_name}</td>
-							<td style="text-align: center;">${bonusVO.bns_price}</td>
-							<td style="text-align: center;">${bonusVO.bns_stks}</td>
-							<td style="text-align: center;"><fmt:formatDate
-									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
-							<td style="text-align: center;">${bonusVO.bns_sts}</td>
-							<td>
-							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
+<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded" name="form1" enctype="multipart/form-data">
+<table>
+	<tr>
+		<td>紅利商品編號:<font color=red><b>*</b></font></td>
+		<td><%=bonusVO.getBns_no()%></td>
+	</tr>
+	<tr>
+		<td>紅利商品名稱:</td>
+		<td><input type="TEXT" name="bns_name" size="45" value="<%=bonusVO.getBns_name()%>" /></td>
+	</tr>
+	<tr>
+		<td>紅利商品價格:</td>
+		<td><input type="TEXT" name="bns_price" size="45"	value="<%=bonusVO.getBns_price()%>" /></td>
+	</tr>
+	<tr>
+		<td>庫存量:</td>
+		<td><input type="TEXT" name="bns_stks" size="45"	value="<%=bonusVO.getBns_stks()%>" /></td>
+	</tr>
+	<tr>
+		<td>有效日期:</td>
+		<td><input name="bns_date" id="f_date1" type="text" ></td>
+	</tr>
+	<tr>
+		<td>紅利商品狀態:</td>
+		<td><input type="TEXT" name="bns_sts" size="45" value="<%=bonusVO.getBns_sts()%>" /></td>
+	</tr>
+	<tr>
+		<td>紅利商品圖片:</td>
+		<td><input type="file" name="bns_img" id="img"></td>
+	</tr>
 
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="修改" id="update"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#c4b029'"
-										onMouseOut="this.style.background='#8f801d'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="update">
-								</FORM>
-							</td>
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="下架" id="delete"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#ba2214'"
-										onMouseOut="this.style.background='#6b2822'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="deleteBonus">
-								</FORM>
-							</td>
-
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<%@ include file="page2.file"%>
-			</p>
-		</div>
-	</div>
-
-	<!-- jQuery CDN - Slim version (=without AJAX) -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<!-- Popper.JS -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-		integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-		crossorigin="anonymous"></script>
-	<!-- Bootstrap JS -->
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-		integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-		crossorigin="anonymous"></script>
-	<!-- jQuery Custom Scroller CDN -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#sidebar").mCustomScrollbar({
-				theme : "minimal"
-			});
-
-			$('#sidebarCollapse').on('click', function() {
-				$('#sidebar, #content').toggleClass('active');
-				$('.collapse.in').toggleClass('in');
-				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
-			});
-		});
-	</script>
+</table>
+<br>
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
+<input type="submit" value="送出修改"></FORM>
 </body>
+
+<!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
+
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+
+<style>
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+           width:  300px;   /* width:  300px; */
+  }
+  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+           height: 151px;   /* height:  151px; */
+  }
+</style>
+
+<script>
+        $.datetimepicker.setLocale('zh');
+        $('#f_date1').datetimepicker({
+           theme: '',              //theme: 'dark',
+ 	       timepicker:false,       //timepicker:true,
+ 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
+ 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
+ 		   value: '<%=bonusVO.getBns_date()%>', // value:   new Date(),
+           //disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+           //startDate:	            '2017/07/10',  // 起始日
+           //minDate:               '-1970-01-01', // 去除今日(不含)之前
+           //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
+        });
+        
+        
+   
+        // ----------------------------------------------------------以下用來排定無法選擇的日期-----------------------------------------------------------
+
+        //      1.以下為某一天之前的日期無法選擇
+        //      var somedate1 = new Date('2017-06-15');
+        //      $('#f_date1').datetimepicker({
+        //          beforeShowDay: function(date) {
+        //        	  if (  date.getYear() <  somedate1.getYear() || 
+        //		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+        //		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+        //              ) {
+        //                   return [false, ""]
+        //              }
+        //              return [true, ""];
+        //      }});
+
+        
+        //      2.以下為某一天之後的日期無法選擇
+        //      var somedate2 = new Date('2017-06-15');
+        //      $('#f_date1').datetimepicker({
+        //          beforeShowDay: function(date) {
+        //        	  if (  date.getYear() >  somedate2.getYear() || 
+        //		           (date.getYear() == somedate2.getYear() && date.getMonth() >  somedate2.getMonth()) || 
+        //		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() > somedate2.getDate())
+        //              ) {
+        //                   return [false, ""]
+        //              }
+        //              return [true, ""];
+        //      }});
+
+
+        //      3.以下為兩個日期之外的日期無法選擇 (也可按需要換成其他日期)
+        //      var somedate1 = new Date('2017-06-15');
+        //      var somedate2 = new Date('2017-06-25');
+        //      $('#f_date1').datetimepicker({
+        //          beforeShowDay: function(date) {
+        //        	  if (  date.getYear() <  somedate1.getYear() || 
+        //		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+        //		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+        //		             ||
+        //		            date.getYear() >  somedate2.getYear() || 
+        //		           (date.getYear() == somedate2.getYear() && date.getMonth() >  somedate2.getMonth()) || 
+        //		           (date.getYear() == somedate2.getYear() && date.getMonth() == somedate2.getMonth() && date.getDate() > somedate2.getDate())
+        //              ) {
+        //                   return [false, ""]
+        //              }
+        //              return [true, ""];
+        //      }});
+        
+</script>
 </html>

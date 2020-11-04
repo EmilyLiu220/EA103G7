@@ -4,7 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.member_review.model.*"%>
-<%@ page import="com.bonus.model.*"%>
+<%@ page import="com.report_appraise.model.*"%>
 
 <!DOCTYPE html>
 <html>
@@ -12,13 +12,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>紅利商品管理-listAllBonus.jsp</title>
+<title>評價檢舉管理-listAllMember_Review.jsp</title>
 
 <%
-	BonusService bonusSvc = new BonusService();
-	List<BonusVO> list = bonusSvc.getAll();
+	Report_AppraiseService report_appraiseSvc = new Report_AppraiseService();
+	List<Report_AppraiseVO> list = report_appraiseSvc.getAll();
 	pageContext.setAttribute("list", list);
 %>
+
+<%-- <jsp:useBean id="report_appraiseSvc" scope="page" class="com.report_appraise.model.Report_AppraiseService"></jsp:useBean> --%>
 
 <!-- Bootstrap CSS CDN -->
 <link rel="stylesheet"
@@ -97,8 +99,7 @@
 						<li><a href="#">食材管理</a></li>
 						<li><a href="#">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
+						<li><a href="#">紅利商品管理</a></li>
 					</ul></li>
 				<li><a href="#homeSubmenu" data-toggle="collapse"
 					aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
@@ -202,16 +203,13 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 紅利商品管理</span> <a
-				href="<%=request.getContextPath()%>/back-end/back-index_New.jsp"
-				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
-				onMouseOver="this.style.color='#ffbc5e';"
-				onMouseOut="this.style.color='#dea554';">返回首頁</a>
+			<span> - 會員評價管理</span>
+			<%-- 			<a href="<%=request.getContextPath()%>/back-end/back-index_New.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			 --%>
 			<p>
 			<table id="table-1">
 				<tr>
 					<td>
-						<h3 style="margin-bottom: 0;">紅利商品總覽</h3>
+						<h3 style="margin-bottom: 0;">查看評價檢舉紀錄</h3>
 					</td>
 				</tr>
 			</table>
@@ -226,58 +224,70 @@
 				</ul>
 			</c:if>
 
-			<table class="table table-hover" style="width: 100%; font-size: 90%;">
+			<table class="table table-hover" style="width: 120%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 20%;">紅利商品編號</th>
-						<th style="width: 20%;">紅利商品名稱</th>
-						<th style="width: 20%;">紅利商品價格</th>
-						<th style="width: 20%;">庫存量</th>
-						<th style="width: 20%;">有效日期</th>
-						<th style="width: 20%;">兌換狀態</th>
-						<th style="width: 20%;">圖片</th>
+						<th style="width: 20%;">檢舉編號</th>
+						<th style="width: 20%;">評價編號</th>
+						<th style="width: 20%;">會員編號</th>
+						<th style="width: 20%;">員工編號</th>
+						<th style="width: 20%;">檢舉內容</th>
+						<th style="width: 20%;">檢舉日期</th>
 					</tr>
 				</thead>
 				<%@ include file="page1.file"%>
 				<tbody>
-					<c:forEach var="bonusVO" items="${list}" begin="<%=pageIndex%>"
-						end="<%=pageIndex+rowsPerPage-1%>">
+					<c:forEach var="report_appraiseVO" items="${list}"
+						begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 						<tr>
-							<td style="text-align: center;">${bonusVO.bns_no}</td>
-							<td style="text-align: center;">${bonusVO.bns_name}</td>
-							<td style="text-align: center;">${bonusVO.bns_price}</td>
-							<td style="text-align: center;">${bonusVO.bns_stks}</td>
+							<td style="text-align: center;">${report_appraiseVO.report_no}</td>
+							<td style="text-align: center;">${report_appraiseVO.review_no}</td>
+							<td style="text-align: center;">${report_appraiseVO.mem_no}</td>
+							<td style="text-align: center;">${report_appraiseVO.emp_no}</td>
+							<td style="text-align: center;">${report_appraiseVO.report_con}</td>
 							<td style="text-align: center;"><fmt:formatDate
-									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
-							<td style="text-align: center;">${bonusVO.bns_sts}</td>
+									value="${report_appraiseVO.report_date}" pattern="yyyy-MM-dd" /></td>
 							<td>
-							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
-
-							<td style="text-align: center;">
 								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
+									ACTION="<%=request.getContextPath()%>/back-end/member_review/forwarded"
 									style="margin-bottom: 0px;">
-									<input type="submit" value="修改" id="update"
+									<input type="submit" value="審核" id="audit"
 										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
 										onMouseOver="this.style.background='#c4b029'"
 										onMouseOut="this.style.background='#8f801d'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="update">
+										type="hidden" name="review_no"
+										value="${report_appraiseVO.review_no}"> <input
+										type="hidden" name="action" value="getOneForReview">
 								</FORM>
 							</td>
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="下架" id="delete"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#ba2214'"
-										onMouseOut="this.style.background='#6b2822'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="deleteBonus">
-								</FORM>
-							</td>
+							
+<!-- 							<td> -->
 
+<!-- 								<FORM METHOD="post" -->
+<%-- 									ACTION="<%=request.getContextPath()%>/back-end/report_appraise/forwarded" --%>
+<!-- 									style="margin-bottom: 0px;"> -->
+<!-- 									<input type="submit" value="審核" id="audit" -->
+<!-- 										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" -->
+<!-- 										onMouseOver="this.style.background='#c4b029'" -->
+<!-- 										onMouseOut="this.style.background='#8f801d'"> <input -->
+<!-- 										type="hidden" name="report_no" -->
+<%-- 										value="${report_appraiseVO.report_no}"> <input --%>
+<!-- 										type="hidden" name="action" value="getOne_For_Display"> -->
+<!-- 								</FORM> -->
+<!-- 							</td> -->
+							<!-- 							<td> -->
+							<!-- 								<FORM METHOD="post" -->
+							<%-- 									ACTION="<%=request.getContextPath()%>/back-end/report_appraise/forwarded" --%>
+							<!-- 									style="margin-bottom: 0px;"> -->
+							<!-- 									<input type="submit" value="刪除" id="delete" -->
+							<!-- 										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" -->
+							<!-- 										onMouseOver="this.style.background='#ba2214'" -->
+							<!-- 										onMouseOut="this.style.background='#6b2822'"> <input -->
+							<!-- 										type="hidden" name="report_no" -->
+							<%-- 										value="${report_appraiseVO.report_no}"> <input --%>
+							<!-- 										type="hidden" name="action" value="delete"> -->
+							<!-- 								</FORM> -->
+							<!-- 							</td> -->
 						</tr>
 					</c:forEach>
 				</tbody>

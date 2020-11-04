@@ -4,7 +4,14 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.member_review.model.*"%>
-<%@ page import="com.bonus.model.*"%>
+
+<%
+	Member_ReviewVO member_reviewVO = (Member_ReviewVO) request.getAttribute("member_reviewVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
+%>
+
+<jsp:useBean id="member_reviewSvc" scope="page"
+	class="com.member_review.model.Member_ReviewService" />
+
 
 <!DOCTYPE html>
 <html>
@@ -12,13 +19,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>紅利商品管理-listAllBonus.jsp</title>
-
-<%
-	BonusService bonusSvc = new BonusService();
-	List<BonusVO> list = bonusSvc.getAll();
-	pageContext.setAttribute("list", list);
-%>
+<title>通知設定管理-update_member_review.jsp</title>
 
 <!-- Bootstrap CSS CDN -->
 <link rel="stylesheet"
@@ -50,6 +51,15 @@
 	border-radius: 5px;
 	text-align: center;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+</style>
+<style>
+.xdsoft_datetimepicker .xdsoft_datepicker {
+	width: 300px; /* width:  300px; */
+}
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+	height: 151px; /* height:  151px; */
 }
 </style>
 
@@ -97,8 +107,7 @@
 						<li><a href="#">食材管理</a></li>
 						<li><a href="#">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
+						<li><a href="#">紅利商品管理</a></li>
 					</ul></li>
 				<li><a href="#homeSubmenu" data-toggle="collapse"
 					aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
@@ -183,15 +192,19 @@
 											<div id="topLogIn"
 												style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
 												onMouseOver="this.style.color='#fff'; this.style.background='#000';"
-												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">Log
-												in</div>
+												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">
+												<a
+													href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log
+													in</a>
+											</div>
 										</c:when>
 										<c:otherwise>
 											<div id="topLogOut"
 												style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
 												onMouseOver="this.style.color='#fff'; this.style.background='#000';"
-												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">Log
-												out</div>
+												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">
+												<a href="">Log out</a>
+											</div>
 										</c:otherwise>
 									</c:choose>
 								</li>
@@ -202,7 +215,7 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 紅利商品管理</span> <a
+			<span> - 通知設定管理</span> <a
 				href="<%=request.getContextPath()%>/back-end/back-index_New.jsp"
 				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
 				onMouseOver="this.style.color='#ffbc5e';"
@@ -211,11 +224,13 @@
 			<table id="table-1">
 				<tr>
 					<td>
-						<h3 style="margin-bottom: 0;">紅利商品總覽</h3>
+						<h3 style="margin-bottom: 0;">修改活動通知設定</h3>
 					</td>
 				</tr>
 			</table>
+
 			<br>
+
 			<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<font style="color: red">請修正以下錯誤:</font>
@@ -226,66 +241,85 @@
 				</ul>
 			</c:if>
 
-			<table class="table table-hover" style="width: 100%; font-size: 90%;">
-				<thead style="text-align: center;">
+			<FORM METHOD="post" ACTION="forwarded" name="form1">
+				<table class="table table-hover"
+					style="width: 100%; font-size: 90%;">
 					<tr>
-						<th style="width: 20%;">紅利商品編號</th>
-						<th style="width: 20%;">紅利商品名稱</th>
-						<th style="width: 20%;">紅利商品價格</th>
-						<th style="width: 20%;">庫存量</th>
-						<th style="width: 20%;">有效日期</th>
-						<th style="width: 20%;">兌換狀態</th>
-						<th style="width: 20%;">圖片</th>
+						<td>評價編號:<font color=red><b></b></font></td>
+						<td><%=member_reviewVO.getReview_no()%></td>
 					</tr>
-				</thead>
-				<%@ include file="page1.file"%>
-				<tbody>
-					<c:forEach var="bonusVO" items="${list}" begin="<%=pageIndex%>"
-						end="<%=pageIndex+rowsPerPage-1%>">
-						<tr>
-							<td style="text-align: center;">${bonusVO.bns_no}</td>
-							<td style="text-align: center;">${bonusVO.bns_name}</td>
-							<td style="text-align: center;">${bonusVO.bns_price}</td>
-							<td style="text-align: center;">${bonusVO.bns_stks}</td>
-							<td style="text-align: center;"><fmt:formatDate
-									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
-							<td style="text-align: center;">${bonusVO.bns_sts}</td>
-							<td>
-							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
-
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="修改" id="update"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#c4b029'"
-										onMouseOut="this.style.background='#8f801d'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="update">
-								</FORM>
-							</td>
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="下架" id="delete"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#ba2214'"
-										onMouseOut="this.style.background='#6b2822'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="deleteBonus">
-								</FORM>
-							</td>
-
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<%@ include file="page2.file"%>
+					<tr>
+						<td>訂餐編號:<font color=red><b></b></font></td>
+						<c:choose>
+							<c:when test="${member_reviewVO.meal_order_no==null}">
+								<td><input type="TEXT" name="meal_order_no" size="45"
+									value="<%=member_reviewVO.getMeal_order_no()%>" /></td>
+							</c:when>
+							<c:otherwise>
+								<td><input type="TEXT" name="meal_order_no" size="45"
+									value="${empVO2.emp_no}" /></td>
+							</c:otherwise>
+						</c:choose>
+					</tr>
+					<tr>
+						<td>評價內容:<font color=red><b></b></font></td>
+						<br>
+						<td><textarea style="width: 400px; height: 100px;"
+								name="mem_review_con"
+								value="<%=member_reviewVO.getMem_review_con()%>"></textarea></td>
+					</tr>
+					<tr>
+						<td>評價日期:<font color=red><b></b></font></td>
+						<td><input type="TEXT" name="review_date" id="f_date1" /></td>
+					</tr>
+				</table>
+				<br>
+				<div
+					style="display: block; position: absolute; right: 10%; top: 80%;">
+					<input type="hidden" name="review_no"
+						value="<%=member_reviewVO.getReview_no()%>" /> <input
+						type="hidden" name="action" value="update" /> <input
+						type="submit" value="送出修改"
+						style="cursor: pointer; margin-right: 10px; background: #c8a97e; color: #fff; border: 0; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;"
+						onMouseOver="this.style.background='#ffbc5e'"
+						onMouseOut="this.style.background='#c8a97e'" />
+				</div>
+			</FORM>
+			<div
+				style="display: block; position: absolute; right: 20%; top: 80%;">
+				<FORM METHOD="post" ACTION="forwarded" name="form1">
+					<input type="hidden" name="review_no"
+						value="<%=member_reviewVO.getReview_no()%>" /> <input
+						type="hidden" name="action" value="getOne_For_Display" /> <input
+						type="submit" value="取消修改"
+						style="cursor: pointer; margin-right: 10px; background: #c8a97e; color: #fff; border: 0; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;"
+						onMouseOver="this.style.background='#ffbc5e'"
+						onMouseOut="this.style.background='#c8a97e'" />
+				</FORM>
+			</div>
 			</p>
 		</div>
 	</div>
+
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
+	<script
+		src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.full.js"></script>
+
+	<script>
+	 	$.datetimepicker.setLocale('zh');
+		$('#f_date1').datetimepicker({
+			theme: 'dark',
+			timepicker:false,
+			step: 1,
+			format:'Y-m-d',
+			value: '<%=member_reviewVO.getReview_date()%>',
+			minDate : new Date()
+		// 去除今日(不含)之前
+		});
+	</script>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -317,5 +351,6 @@
 			});
 		});
 	</script>
+
 </body>
 </html>

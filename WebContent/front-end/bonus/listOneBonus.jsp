@@ -1,10 +1,19 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.member_review.model.*"%>
+<%@ page import="com.report_appraise.model.*"%>
 <%@ page import="com.bonus.model.*"%>
+
+<%
+	BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO"); //EmpServlet.java (Concroller) ¦s¤JreqªºempVOª«¥ó (¥]¬AÀ°¦£¨ú¥XªºempVO, ¤]¥]¬A¿é¤J¸ê®Æ¿ù»~®ÉªºempVOª«¥ó)
+%>
+
+<jsp:useBean id="bonuswSvc" scope="page"
+	class="com.bonus.model.BonusService" />
+
 
 <!DOCTYPE html>
 <html>
@@ -12,13 +21,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>ç´…åˆ©å•†å“ç®¡ç†-listAllBonus.jsp</title>
-
-<%
-	BonusService bonusSvc = new BonusService();
-	List<BonusVO> list = bonusSvc.getAll();
-	pageContext.setAttribute("list", list);
-%>
+<title>³qª¾³]©wºŞ²z-listOneMember_Review.jsp</title>
 
 <!-- Bootstrap CSS CDN -->
 <link rel="stylesheet"
@@ -41,18 +44,6 @@
 	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
 	crossorigin="anonymous"></script>
 
-<style>
-#table-1, #table-1 td {
-	background: #555;
-	color: #fff;
-	border: 0;
-	width: 100%;
-	border-radius: 5px;
-	text-align: center;
-	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-</style>
-
 </head>
 <body>
 
@@ -64,53 +55,53 @@
 				<h3>
 					<c:choose>
 						<c:when test="${empVO2.emp_no==null}">
-							å—¨
+							¶Ù
 						</c:when>
 						<c:otherwise>
 							 ${empVO2.emp_no}<br>${empVO2.emp_name}
 						</c:otherwise>
 					</c:choose>
-					ï¼Œæ‚¨å¥½ï¼
+					¡A±z¦n¡I
 				</h3>
 			</div>
 
 			<ul class="list-unstyled components">
-				<li><a href="#">ç¾å ´é»é¤</a></li>
-				<li><a href="#">ç¾å ´åŠƒä½</a></li>
-				<li><a href="#">è¨‚å–®çµå¸³</a></li>
-				<li><a href="#">å€™ä½ç®¡ç†</a></li>
+				<li><a href="#">²{³õÂIÀ\</a></li>
+				<li><a href="#">²{³õ¹º¦ì</a></li>
+				<li><a href="#">­q³æµ²±b</a></li>
+				<li><a href="#">­Ô¦ìºŞ²z</a></li>
 				<li class="active"><a href="#pageSubmenu"
 					data-toggle="collapse" aria-expanded="false"
-					class="dropdown-toggle">ä¸»ç®¡å“¡å·¥å°ˆå€</a>
+					class="dropdown-toggle">¥DºŞ­û¤u±M°Ï</a>
 					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li><a href="#">å“¡å·¥ç®¡ç†</a></li>
-						<li><a href="#">æœƒå“¡ç®¡ç†</a></li>
-						<li><a href="#">å»£å‘Šç®¡ç†</a></li>
-						<li><a href="#">æœ€æ–°æ¶ˆæ¯ç®¡ç†</a></li>
+						<li><a href="#">­û¤uºŞ²z</a></li>
+						<li><a href="#">·|­ûºŞ²z</a></li>
+						<li><a href="#">¼s§iºŞ²z</a></li>
+						<li><a href="#">³Ì·s®ø®§ºŞ²z</a></li>
 						<li><a
-							href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">é€šçŸ¥è¨­å®šç®¡ç†</a></li>
+							href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">³qª¾³]©wºŞ²z</a></li>
 						<li><a
-							href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">è©•åƒ¹ç®¡ç†</a></li>
-						<li><a href="#">ç”¨é¤æ™‚æ®µç®¡ç†</a></li>
-						<li><a href="#">æ¡Œä½ç®¡ç†</a></li>
-						<li><a href="#">èœå–®ç®¡ç†</a></li>
-						<li><a href="#">é£Ÿæç®¡ç†</a></li>
-						<li><a href="#">é¤é»çµ„æˆç®¡ç†</a></li>
-						<li><a href="#">é£Ÿææ¶ˆè€—çµ±è¨ˆ</a></li>
+							href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">µû»ùºŞ²z</a></li>
+						<li><a href="#">¥ÎÀ\®É¬qºŞ²z</a></li>
+						<li><a href="#">®à¦ìºŞ²z</a></li>
+						<li><a href="#">µæ³æºŞ²z</a></li>
+						<li><a href="#">­¹§÷ºŞ²z</a></li>
+						<li><a href="#">À\ÂI²Õ¦¨ºŞ²z</a></li>
+						<li><a href="#">­¹§÷®ø¯Ó²Î­p</a></li>
 						<li><a
-							href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">ç´…åˆ©å•†å“ç®¡ç†</a></li>
+							href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">¬õ§Q°Ó«~ºŞ²z</a></li>
 					</ul></li>
 				<li><a href="#homeSubmenu" data-toggle="collapse"
-					aria-expanded="false" class="dropdown-toggle">ä¸€èˆ¬å“¡å·¥å°ˆå€</a>
+					aria-expanded="false" class="dropdown-toggle">¤@¯ë­û¤u±M°Ï</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
 						<li><a
-							href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform_New.jsp">æŸ¥çœ‹é€šçŸ¥</a></li>
-						<li><a href="#">è¨‚å–®æ´¾å·¥</a></li>
-						<li><a href="#">å‡ºé¤ç®¡ç†</a></li>
-						<li><a href="#">è¨‚é¤è¨‚å–®è™•ç†</a></li>
-						<li><a href="#">è¨‚é¤ç®¡ç†</a></li>
-						<li><a href="#">è¨‚å–®ç®¡ç†</a></li>
-						<li><a href="#">è¨‚ä½ç®¡ç†</a></li>
+							href="<%=request.getContextPath()%>/back-end/front_inform/empCheckInform_New.jsp">¬d¬İ³qª¾</a></li>
+						<li><a href="#">­q³æ¬£¤u</a></li>
+						<li><a href="#">¥XÀ\ºŞ²z</a></li>
+						<li><a href="#">­qÀ\­q³æ³B²z</a></li>
+						<li><a href="#">­qÀ\ºŞ²z</a></li>
+						<li><a href="#">­q³æºŞ²z</a></li>
+						<li><a href="#">­q¦ìºŞ²z</a></li>
 					</ul></li>
 			</ul>
 
@@ -140,8 +131,8 @@
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
 						<a
-							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">åƒ
-							Pot å§ï¼å“¡å·¥å°ˆå€</a>
+							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">¦Y
+							Pot §a¡I­û¤u±M°Ï</a>
 					</div>
 					<div id="rwdShow">
 						<button type="button" id="topbarCollapse" class="btn btn-dark"
@@ -153,29 +144,29 @@
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
 							<a
-								href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">åƒ
-								Pot å§ï¼å“¡å·¥å°ˆå€</a>
+								href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">¦Y
+								Pot §a¡I­û¤u±M°Ï</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
 								<li class="nav-item active"><a class="nav-link" href="#"
 									id="empId" style="cursor: default;"> <c:choose>
 											<c:when test="${empVO2.emp_no==null}">
-												<span style="color: red; margin-top: 1rem;">å—¨ï¼Œæ‚¨å¥½ï¼è«‹è¨˜å¾—ç™»å…¥å–”ï¼</span>
+												<span style="color: red; margin-top: 1rem;">¶Ù¡A±z¦n¡I½Ğ°O±oµn¤J³á¡I</span>
 											</c:when>
 											<c:otherwise>
-												<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}ï¼Œæ‚¨å¥½ï¼</span>
+												<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}¡A±z¦n¡I</span>
 											</c:otherwise>
 										</c:choose>
 								</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">ç¾å ´é»é¤</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">ç¾å ´åŠƒä½</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">è¨‚å–®çµå¸³</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">å€™ä½ç®¡ç†</a></li>
+								<li class="nav-item active"><a class="nav-link" href="#">²{³õÂIÀ\</a></li>
+								<li class="nav-item active"><a class="nav-link" href="#">²{³õ¹º¦ì</a></li>
+								<li class="nav-item active"><a class="nav-link" href="#">­q³æµ²±b</a></li>
+								<li class="nav-item active"><a class="nav-link" href="#">­Ô¦ìºŞ²z</a></li>
 								<li class="nav-item active"><a class="nav-link"
-									href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">ä¸»ç®¡å“¡å·¥å°ˆå€</a></li>
+									href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">¥DºŞ­û¤u±M°Ï</a></li>
 								<li class="nav-item active"><a class="nav-link"
-									href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">ä¸€èˆ¬å“¡å·¥å°ˆå€</a></li>
+									href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">¤@¯ë­û¤u±M°Ï</a></li>
 								<li class="nav-item active"
 									style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
 									<c:choose>
@@ -183,15 +174,19 @@
 											<div id="topLogIn"
 												style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
 												onMouseOver="this.style.color='#fff'; this.style.background='#000';"
-												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">Log
-												in</div>
+												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">
+												<a
+													href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log
+													in</a>
+											</div>
 										</c:when>
 										<c:otherwise>
 											<div id="topLogOut"
 												style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
 												onMouseOver="this.style.color='#fff'; this.style.background='#000';"
-												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">Log
-												out</div>
+												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">
+												<a href="">Log out</a>
+											</div>
 										</c:otherwise>
 									</c:choose>
 								</li>
@@ -201,24 +196,15 @@
 				</div>
 			</nav>
 
-			<h5 style="font-weight: 900; display: inline-block;">ä¸»ç®¡å“¡å·¥å°ˆå€</h5>
-			<span> - ç´…åˆ©å•†å“ç®¡ç†</span> <a
+			<h5 style="font-weight: 900; display: inline-block;">¥DºŞ­û¤u±M°Ï</h5>
+			<span> - ¬õ§Q°Ó«~ºŞ²z</span> <a
 				href="<%=request.getContextPath()%>/back-end/back-index_New.jsp"
 				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
 				onMouseOver="this.style.color='#ffbc5e';"
-				onMouseOut="this.style.color='#dea554';">è¿”å›é¦–é </a>
-			<p>
-			<table id="table-1">
-				<tr>
-					<td>
-						<h3 style="margin-bottom: 0;">ç´…åˆ©å•†å“ç¸½è¦½</h3>
-					</td>
-				</tr>
-			</table>
-			<br>
-			<%-- éŒ¯èª¤è¡¨åˆ— --%>
+				onMouseOut="this.style.color='#dea554';">ªğ¦^­º­¶</a>
+
+			<%-- ¿ù»~ªí¦C --%>
 			<c:if test="${not empty errorMsgs}">
-				<font style="color: red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 				<ul>
 					<c:forEach var="message" items="${errorMsgs}">
 						<li style="color: red">${message}</li>
@@ -226,64 +212,56 @@
 				</ul>
 			</c:if>
 
-			<table class="table table-hover" style="width: 100%; font-size: 90%;">
+			<%-- data table --%>
+			<table class="table table-hover" style="width: 120%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 20%;">ç´…åˆ©å•†å“ç·¨è™Ÿ</th>
-						<th style="width: 20%;">ç´…åˆ©å•†å“åç¨±</th>
-						<th style="width: 20%;">ç´…åˆ©å•†å“åƒ¹æ ¼</th>
-						<th style="width: 20%;">åº«å­˜é‡</th>
-						<th style="width: 20%;">æœ‰æ•ˆæ—¥æœŸ</th>
-						<th style="width: 20%;">å…Œæ›ç‹€æ…‹</th>
-						<th style="width: 20%;">åœ–ç‰‡</th>
+						<th style="width: 20%;">¬õ§Q°Ó«~½s¸¹</th>
+						<th style="width: 20%;">¬õ§Q°Ó«~¦WºÙ</th>
+						<th style="width: 20%;">¬õ§Q°Ó«~»ù®æ</th>
+						<th style="width: 20%;">®w¦s¶q</th>
+						<th style="width: 20%;">¦³®Ä¤é´Á</th>
+						<th style="width: 20%;">§I´«ª¬ºA</th>
+						<th style="width: 20%;">¹Ï¤ù</th>
 					</tr>
 				</thead>
-				<%@ include file="page1.file"%>
 				<tbody>
-					<c:forEach var="bonusVO" items="${list}" begin="<%=pageIndex%>"
-						end="<%=pageIndex+rowsPerPage-1%>">
-						<tr>
-							<td style="text-align: center;">${bonusVO.bns_no}</td>
-							<td style="text-align: center;">${bonusVO.bns_name}</td>
-							<td style="text-align: center;">${bonusVO.bns_price}</td>
-							<td style="text-align: center;">${bonusVO.bns_stks}</td>
-							<td style="text-align: center;"><fmt:formatDate
-									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
-							<td style="text-align: center;">${bonusVO.bns_sts}</td>
-							<td>
-							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
-
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="ä¿®æ”¹" id="update"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#c4b029'"
-										onMouseOut="this.style.background='#8f801d'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="update">
-								</FORM>
-							</td>
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="ä¸‹æ¶" id="delete"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#ba2214'"
-										onMouseOut="this.style.background='#6b2822'"> <input
-										type="hidden" name="bns_no" value="${bonusVO.bns_no}">
-									<input type="hidden" name="action" value="deleteBonus">
-								</FORM>
-							</td>
-
-						</tr>
-					</c:forEach>
+					<tr>
+						<td style="text-align: center;"><%=bonusVO.getBns_no()%></td>
+						<td style="text-align: center;"><%=bonusVO.getBns_name()%></td>
+						<td style="text-align: center;"><%=bonusVO.getBns_price()%></td>
+						<td style="text-align: center;"><%=bonusVO.getBns_stks()%></td>
+						<td style="text-align: center;"><%=bonusVO.getBns_date()%></td>
+						<td style="text-align: center;"><%=bonusVO.getBns_sts()%></td>
+						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
+						
+						<td style="text-align: center;">
+							<FORM METHOD="post"
+								ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
+								style="margin-bottom: 0px;">
+								<input type="submit" value="­×§ï" id="update"
+									style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
+									onMouseOver="this.style.background='#c4b029'"
+									onMouseOut="this.style.background='#8f801d'"> <input
+									type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
+								<input type="hidden" name="action" value="updateBonus">
+							</FORM>
+						</td>
+						<td style="text-align: center;">
+							<FORM METHOD="post"
+								ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
+								style="margin-bottom: 0px;">
+								<input type="submit" value="¤U¬[" id="delete"
+									style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
+									onMouseOver="this.style.background='#ba2214'"
+									onMouseOut="this.style.background='#6b2822'"> <input
+									type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
+								<input type="hidden" name="action" value="deleteBonus">
+							</FORM>
+						</td>					
+					</tr>
 				</tbody>
 			</table>
-			<%@ include file="page2.file"%>
-			</p>
 		</div>
 	</div>
 
@@ -316,6 +294,25 @@
 				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
 			});
 		});
+	<%-- ·Q°µ...click §R°£¨Æ¥ó --%>
+		//function confirmDel(is_no){
+		//	alert("¬O§_½T©w§R°£");
+		//	$.ajax({
+		//		 url:'is.do',
+		//		 method:"POST",
+		//		 dataType:"json",
+		//		 data:{
+		//			 action: 'deleteIs',
+		//			 is_no: is_no,
+		//		 },
+		//		 success:function(res){
+		//			 alert("§R°£§¹²¦");
+		//		 },
+		//		 error:function(err){
+		//			 
+		//		 },	
+		//	});
+		//}
 	</script>
 </body>
 </html>
