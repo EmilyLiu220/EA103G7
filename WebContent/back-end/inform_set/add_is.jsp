@@ -21,7 +21,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>通知設定管理-新增</title>
+<title>通知管理</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/bootstrap-4.1.0.min.css">
@@ -180,14 +180,14 @@
 				</div>
 			</nav>
 
-			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5><span> - 通知設定管理</span>
+			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5><span> - 通知管理</span>
 			<a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回查詢頁面</a>		
 			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			
 			<p>
 				<table id="table-1">
 					<tr>
 						<td>
-							<h3 style="margin-bottom:0;">新增群發通知設定</h3>
+							<h3 style="margin-bottom:0;">新增群發通知</h3>
 						</td>
 					</tr>
 				</table>

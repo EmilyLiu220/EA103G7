@@ -23,7 +23,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>通知設定管理-查詢</title>
+<title>通知管理-查詢</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/bootstrap-4.1.0.min.css">
@@ -245,7 +245,7 @@
 				<br>
 				<%-- add_is.jsp --%>
 				<ul>
-					<li><a href="<%=request.getContextPath()%>/back-end/inform_set/add_is.jsp" style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">新增通知設定</a></li>
+					<li><a href="<%=request.getContextPath()%>/back-end/inform_set/add_is.jsp" style="color: #dea554; font-weight: 600;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">新增群發通知</a></li>
 				</ul>
 			</p>	
 		</div>
