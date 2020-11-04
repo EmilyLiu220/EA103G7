@@ -2,14 +2,62 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.util.stream.Collectors"%>
+<%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
+<%@ page import="com.meal.model.*"%>
+<%@ page import="com.meal_set.model.*"%>
 <%@ page import="com.meal_order.model.*"%>
+<%@ page import="com.meal_order_detail.model.*"%>
 
 <% 
 	MealOrderService mealOrderSrv = new MealOrderService();
-	List<MealOrderVO> list = mealOrderSrv.getAll();
+	List<MealOrderVO> list = mealOrderSrv.searchToday(new Date());
+	MealOrderDetailService detailSrv = new MealOrderDetailService();
+	MealService mealSrv = new MealService();
+	MealSetService mealSetSrv = new MealSetService();
+
+	Map<String, Object> mealMap = mealSrv.getAll().stream()
+			.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
+	Map<String, Object> mealSetMap = mealSetSrv.getAll().stream()
+			.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
+	Set<String> mealKeys = mealMap.keySet();
+	Set<String> mealSetKeys = mealSetMap.keySet();
+	
+	for (String key : mealKeys) {
+		((MealVO) mealMap.get(key)).setMeal_qty(0);
+	}
+	for (String key : mealSetKeys) {
+		((MealSetVO) mealSetMap.get(key)).setMeal_set_qty(0);
+	}
+
+	for (MealOrderVO mealOrderVO : list) {
+		for (MealOrderDetailVO detailVO : detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no())) {
+			for (String key : mealKeys) {
+				if (key.equals(detailVO.getMeal_no())) {
+					((MealVO) mealMap.get(key))
+							.setMeal_qty(((MealVO) mealMap.get(key)).getMeal_qty() + detailVO.getQty());
+				}
+			}
+			for (String key : mealSetKeys) {
+				if (key.equals(detailVO.getMeal_set_no())) {
+					((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).setMeal_set_qty(
+							((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).getMeal_set_qty()
+									+ detailVO.getQty());
+				}
+			}
+		}
+	}
+	
+	Map<String, Map<String, Object>> jsonMap = new HashMap<>();
+	jsonMap.put("mealMap", mealMap);
+	jsonMap.put("mealSetMap", mealSetMap);
+	Gson gson = new Gson();
+	String jsondata = gson.toJson(jsonMap);
+	
 	pageContext.setAttribute("list", list);
+	pageContext.setAttribute("jsondata",jsondata);
 
 %>
 
@@ -53,10 +101,14 @@ text-decoration: underline;
 .container{
 
 }
-#myChart,#myChart2{
+/* #myChart,#myChart2{ */
+/* width: 100%; */
+/* height:450px; */
+/* display: inline; */
+/* } */
+.chart-container{
+height: 360px;
 width: 100%;
-height:450px;
-display: inline;
 }
 </style>
 
@@ -247,7 +299,9 @@ display: inline;
 <!-- 					</ul> -->
 <%-- 				</c:if> --%>
 				<div class="container">
-				<canvas id="myChart" width="400" height="400"></canvas>
+				<div class="chart-container">
+				<canvas id="myChart"></canvas>
+				</div>
 				</div>
 <!-- 				<table class="table table-hover" style="width: 100%; font-size: 90%;"> -->
 <!-- 					<thead style="text-align: center;"> -->
@@ -416,13 +470,13 @@ display: inline;
                 			bgcolor.push(random_bg_color());
                 		}
                 		console.log(dataset);
-                		$(".container").empty();
+                		$(".chart-container").empty();
                 	var canvas = document.createElement("canvas");
                 	var canvas2 = document.createElement("canvas");
                 	$(canvas).attr('id','myChart');
                 	$(canvas2).attr('id','myChart2');
-                	$(".container").append(canvas);
-                	$(".container").append(canvas2);
+                	$(".chart-container").append(canvas);
+                	$(".chart-container").append(canvas2);
                 	
                 	var ctx = document.getElementById('myChart').getContext('2d');
                     var myChart = new Chart(ctx, {
@@ -485,7 +539,7 @@ display: inline;
                         	plugins:{
                         		labels: {
                         		render: 'value',
-                        		fontColor: ['green', 'black', 'red'],
+                        		fontColor:'black',
                         		arc: true,
                         		}
                         		},
@@ -511,63 +565,59 @@ display: inline;
         	
         })
         
+        var jsonObj = ${jsondata};
+        console.log(jsonObj);
+		var todaybgcolor =[];
+        var todayLabels = [];
+        var todayDataPrice = [];
+    	var todayDataQty =[];
+        var todayMealKeys = Object.keys(jsonObj.mealMap);
+    	var todaySetKeys = Object.keys(jsonObj.mealSetMap);
+        var todayMealLen = Object.keys(jsonObj.mealMap).length;
+    	var todaySetLen = Object.keys(jsonObj.mealSetMap).length;
+        
+    	for(let i = 0;i < todayMealLen;i++){
+    		let keys = todayMealKeys[i];
+    		todayLabels.push(jsonObj.mealMap[todayMealKeys[i]].meal_name);
+    		todayDataQty.push(jsonObj.mealMap[todayMealKeys[i]].meal_qty);
+    		todayDataPrice.push(jsonObj.mealMap[todayMealKeys[i]].meal_qty * jsonObj.mealMap[todayMealKeys[i]].meal_price);
+    		todaybgcolor.push(random_bg_color());
+    		}
+    		console.log(todayLabels);
+    		for(let i = 0;i < todaySetLen;i++){
+    			todayLabels.push(jsonObj.mealSetMap[todaySetKeys[i]].meal_set_name);
+    			todayDataQty.push(jsonObj.mealSetMap[todaySetKeys[i]].meal_set_qty);
+    			todayDataPrice.push(jsonObj.mealSetMap[todaySetKeys[i]].meal_set_qty * jsonObj.mealSetMap[todaySetKeys[i]].meal_set_price);
+    			todaybgcolor.push(random_bg_color());
+    		}
+        
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                labels: todayLabels,
                 datasets: [{
-                    label: '${mealMap.get("MEAL0001").meal_name}',
-                    data: [120, 0, 30, 50, 20, 30,75,66,132,260,88,364],
+                    label: '今日營業額',
+                    data: todayDataPrice,
                     fill: false,
-                    backgroundColor: [
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)',
-                        'rgba(0, 0, 0, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 0, 0, 1)',
-                    ],
-                    borderWidth: 1
-                },{
-                    label: 'second',
-                    data: [66, 124, 28, 177, 37, 12,33,175,98,222,67,227],
-                    fill: false,
-                    backgroundColor: [
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 0, 255, 1)',
-                    ],
-                    borderWidth: 1
+                    backgroundColor:todaybgcolor,
+                    borderColor:todaybgcolor,
+                    borderWidth: 3
                 }],
                
             },
             options: {
+            	plugins:{
+            		labels: {
+            		render: 'value',
+            		fontColor:'black',
+            		arc: true,
+            		}
+            		},
                 scales: {
                     yAxes: [{
                         ticks: {
-                        	stepSize: 30,
+                        	stepSize: 500,
                             beginAtZero: true
                         }
                     }]
