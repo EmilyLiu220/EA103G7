@@ -44,7 +44,7 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO";	
 	
 	// 員工取得特殊通知
-	private static final String GET_INFOSTS_123 = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE INFO_STS=? ORDER BY INFO_NO DESC";
+	private static String Get_Complex = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE 1=1";
 	
 	@Override
 	public Front_InformVO findByFiNo(String info_no) {
@@ -582,16 +582,26 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 	}
 
 	@Override
-	public List<Front_InformVO> findByInfoSts(Integer info_sts) {
+	public List<Front_InformVO> findByComplex(String mem_no, Integer info_sts, String startDate, String stopDate) {
 		List<Front_InformVO> list = new ArrayList<Front_InformVO>();
 		Front_InformVO front_informVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		StringBuilder builder = new StringBuilder();
+		List<String> params = new ArrayList<String>();
+		builder.append(Get_Complex);
+		
+		
+		
+		
+		
+		
+		
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL, USER, PASSWORD);
-			pstmt = con.prepareStatement(GET_INFOSTS_123);
+			pstmt = con.prepareStatement(Get_Complex);
 			pstmt.setInt(1, info_sts);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -800,7 +810,7 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 //		System.out.println("-----------------------------------------------------------------------------------");
 //	
 		// 取得特殊通知
-		List<Front_InformVO> list3 = dao.findByInfoSts(3);
+		List<Front_InformVO> list3 = dao.findByComplex("MEM0010", 3, "2020-01-01", "2020-10-10");
 		for(Front_InformVO afiVO : list3) {
 			System.out.print(afiVO.getInfo_no() + ", ");
 			System.out.print(afiVO.getMem_no() + ", ");
