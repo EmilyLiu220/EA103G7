@@ -5,6 +5,7 @@
 <%@ page import="java.util.stream.Collectors"%>
 <%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.emp.model.*"%>
+<%@ page import="com.res_order.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.meal.model.*"%>
 <%@ page import="com.meal_set.model.*"%>
@@ -17,6 +18,18 @@
 	MealOrderDetailService detailSrv = new MealOrderDetailService();
 	MealService mealSrv = new MealService();
 	MealSetService mealSetSrv = new MealSetService();
+	ResOrderService resOrderSrv = new ResOrderService();
+	int nop = 0;
+	
+	for(ResOrderVO resOrderVO : resOrderSrv.getAll()){
+		for(MealOrderVO mealOrderVO : list ){
+			if(resOrderVO.getSeat_sts() == 1 && resOrderVO.getMeal_order_no().equals(mealOrderVO.getMeal_order_no())){
+				nop += resOrderVO.getPeople();
+			}else{
+				nop += 1;
+			}
+		}
+	}
 
 	Map<String, Object> mealMap = mealSrv.getAll().stream()
 			.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
@@ -24,6 +37,8 @@
 			.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
 	Set<String> mealKeys = mealMap.keySet();
 	Set<String> mealSetKeys = mealSetMap.keySet();
+	int amount = 0;
+	int qty = 0;
 	
 	for (String key : mealKeys) {
 		((MealVO) mealMap.get(key)).setMeal_qty(0);
@@ -33,15 +48,19 @@
 	}
 
 	for (MealOrderVO mealOrderVO : list) {
+		amount += mealOrderVO.getAmount();
 		for (MealOrderDetailVO detailVO : detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no())) {
 			for (String key : mealKeys) {
 				if (key.equals(detailVO.getMeal_no())) {
+					qty += ((MealVO) mealMap.get(key)).getMeal_qty() + detailVO.getQty();
 					((MealVO) mealMap.get(key))
 							.setMeal_qty(((MealVO) mealMap.get(key)).getMeal_qty() + detailVO.getQty());
 				}
 			}
 			for (String key : mealSetKeys) {
 				if (key.equals(detailVO.getMeal_set_no())) {
+					qty += ((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).getMeal_set_qty()
+							+ detailVO.getQty();
 					((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).setMeal_set_qty(
 							((MealSetVO) mealSetMap.get(detailVO.getMeal_set_no())).getMeal_set_qty()
 									+ detailVO.getQty());
@@ -57,6 +76,9 @@
 	String jsondata = gson.toJson(jsonMap);
 	
 	pageContext.setAttribute("list", list);
+	pageContext.setAttribute("amount", amount);
+	pageContext.setAttribute("qty", qty);
+// 	pageContext.setAttribute("nop", nop);
 	pageContext.setAttribute("jsondata",jsondata);
 
 %>
@@ -68,7 +90,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>訂單管理-listAll</title>
-
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
 <jsp:useBean id="mealOrderSrv2" scope="page" class="com.meal_order.model.MealOrderService"/>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.css" />
@@ -106,9 +127,41 @@ text-decoration: underline;
 /* height:450px; */
 /* display: inline; */
 /* } */
-.chart-container{
-height: 360px;
+.chart-container,.chart-container2{
+height: 480px;
 width: 100%;
+display: block;
+}
+.chart-content,.chart-content2{
+height:150px;
+max-width:100%;
+/* background-color: gray; */
+margin-left: 20px;
+/* border: 1px solid black;  */
+}
+canvas{
+display: block;
+}
+.chart-content .col-4,.chart-content2 .col-4{
+background-color: rgba(0, 0, 0, 0.9);
+height: 40px;
+color:#dea554;
+font-weight: bolder;
+border: 1px solid #fff;
+}
+.chart-content span,.chart-content2 span{
+color:white;
+
+}
+#submit{
+    font-weight: bolder;
+    background: #dea554;
+    color: #fff;
+    border-radius: 15px;
+}
+#submit:hover{
+background-color: #ffbc5e;
+border: 2px solid darkgray;
 }
 </style>
 
@@ -302,45 +355,44 @@ width: 100%;
 				<div class="chart-container">
 				<canvas id="myChart"></canvas>
 				</div>
+				<p></p>
+				<p></p>
+				<div class="row chart-content justify-content-around">
+					<div class="col">
+						<div class="row">
+						<div class="col-4">總銷售額：<span>${amount}&nbsp;元</span></div>
+						<div class="col-4">總銷售量：<span>${qty}&nbsp;個</span></div>
+						<div class="col-4">訂單數量：<span>${list.size()}&nbsp;筆</span></div>
+						</div>
+						<div class="row">
+						<fmt:parseNumber  parseLocale="#" integerOnly="true" value="${amount/list.size()}" var="result" />
+						<div class="col-4">平均訂單金額：<span><c:if test="${amount !=0 and list.size()!=0}"><c:out value="${result}"/></c:if>&nbsp;/&nbsp;筆</span></div>
+						<div class="col-4">平均客單價：<span>&nbsp;/&nbsp;人</span></div>
+						</div>
+					</div>
+				
 				</div>
-<!-- 				<table class="table table-hover" style="width: 100%; font-size: 90%;"> -->
-<!-- 					<thead style="text-align: center;"> -->
-<!-- 						<tr> -->
-<!-- 							<th style="width: 10%;">訂餐編號</th> -->
-<!-- 							<th style="width: 10%;">員工編號</th> -->
-<!-- 							<th style="width: 10%;">會員編號</th> -->
-<!-- 							<th style="width: 15%;">訂餐時間</th> -->
-<!-- 							<th style="width: 15%;">預計取餐時間</th> -->
-<!-- 							<th style="width: 10%;">訂單金額</th> -->
-<!-- 							<th style="width: 10%;">通知狀態</th> -->
-<!-- 							<th style="width: 10%;">付款狀態</th> -->
-<!-- 							<th style="width: 10%;">訂單狀態</th> -->
-<!-- 						</tr> -->
-<!-- 					</thead> -->
-<%-- 					<%@ include file="page1.file"%> --%>
-<!-- 					<tbody> -->
-<%-- 					<c:forEach var="mealOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> --%>
-<%-- 						<tr ${(mealOrderVO.meal_order_no == param.meal_order_no) ? 'bgcolor=#c8a97e':''}> --%>
-<%-- 							<td style="text-align: center;"><a href="<%= request.getContextPath() %>/MealOrderServlet.do?meal_order_no=${mealOrderVO.meal_order_no}&action=search&reqURL=<%= request.getServletPath()%>&whichPage=<%= whichPage%>">${mealOrderVO.meal_order_no}</a></td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderVO.emp_no}</td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderVO.mem_no!=null ? mealOrderVO.mem_no :'非會員顧客'}</td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderSrv2.dateFormat(mealOrderVO.order_time)}</td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderVO.pickup_time !=null ? mealOrderSrv2.dateFormat(mealOrderVO.pickup_time) : '現場用餐'}</td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderVO.amount}</td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderVO.noti_sts == 0 ?'<font color="red">未通知</font>':'<font color="green">已通知</font>'}</td> --%>
-<%-- 							<td style="text-align: center;">${mealOrderVO.pay_sts == 0?'<font color="red">未付款</font>':'<font color="green">已付款</font>'}</td> --%>
-<%-- 							<td style="text-align: center;"><c:if test="${mealOrderVO.meal_order_sts == 0}"><font color="red">已取消</font></c:if> --%>
-<%--    														 	<c:if test="${mealOrderVO.meal_order_sts == 1}">未派工</c:if> --%>
-<%--    														 	<c:if test="${mealOrderVO.meal_order_sts == 2}">已派工</c:if> --%>
-<%--     														<c:if test="${mealOrderVO.meal_order_sts == 3}">已出餐</c:if> --%>
-<%--     														<c:if test="${mealOrderVO.meal_order_sts == 4}"><font color="green">已完成</font></c:if></td> --%>
-<!-- 						</tr> -->
-<%-- 					</c:forEach> --%>
-<!-- 					</tbody> -->
-<!-- 				</table> -->
-<%-- 				<%@ include file="page2.file"%> --%>
-<!-- 			</p> -->
-<!-- 		</div> -->
+				
+				<div class="chart-container2">
+				<canvas id="myChart2"></canvas>
+				</div>
+				<p></p>
+				<p></p>
+<!-- 				<div class="row chart-content2 justify-content-around"> -->
+<!-- 					<div class="col"> -->
+<!-- 						<div class="row"> -->
+<!-- 						<div class="col">總銷售額：<span>123</span></div> -->
+<!-- 						<div class="col">總銷售量：<span>123</span></div> -->
+<!-- 						<div class="col">共有幾筆訂單：<span>123</span></div> -->
+<!-- 						</div> -->
+<!-- 						<div class="row"> -->
+<!-- 						<div class="col">測試標題：<span>123</span></div> -->
+<!-- 						<div class="col">測試標題：<span>123</span></div> -->
+<!-- 						<div class="col">測試標題：<span>123</span></div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+				
+<!-- 				</div> -->
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -400,9 +452,9 @@ width: 100%;
 //         	}
         
         function random_bg_color() {
-            var x = Math.floor(Math.random() * 256);
-            var y = Math.floor(Math.random() * 256);
-            var z = Math.floor(Math.random() * 256);
+            var x = Math.floor(Math.random() * 155+100);
+            var y = Math.floor(Math.random() * 155+100);
+            var z = Math.floor(Math.random() * 155+100);
             var bgColor = "rgb(" + x + "," + y + "," + z + ",0.5)";
             return bgColor;
             }
@@ -430,9 +482,9 @@ width: 100%;
                     meal_order_no:$('#table-2').find('input[name="meal_order_no"]').val(),
                     mem_no:$('#table-2').find('input[name="mem_no"]').val(),
                     emp_no:$('#table-2').find('input[name="emp_no"]').val(),
-                    noti_sts:$('#table-2').find('input[name="noti_sts"]').val(),
-                    pay_sts:$('#table-2').find('input[name="pay_sts"]').val(),
-                    meal_order_sts:$('#table-2').find('input[name="meal_order_sts"]').val(),
+                    noti_sts:$('#table-2').find('select[name="noti_sts"]').val(),
+                    pay_sts:$('#table-2').find('select[name="pay_sts"]').val(),
+                    meal_order_sts:$('#table-2').find('select[name="meal_order_sts"]').val(),
                     order_time:JSON.stringify(orderTime),
                     pickup_time:JSON.stringify(pickupTime)
                     
@@ -452,31 +504,46 @@ width: 100%;
                 	var dataPrice = [];
                 	var dataQty =[];
                 	var dataset =[]; 
+                	var amount = 0;
+                	var qty = 0;
                 		for(let i = 0;i < mealLen;i++){
                 		let keys = mealKeys[i];
                 		console.log(e.mealMap[mealKeys[i]].meal_name);
                 		dataset.push(e.mealMap[mealKeys[i]].meal_name);
                 		console.log(e.mealMap[mealKeys[i]].meal_qty);
                 		dataQty.push(e.mealMap[mealKeys[i]].meal_qty);
+                		qty += e.mealMap[mealKeys[i]].meal_qty;
                 		console.log(e.mealMap[mealKeys[i]].meal_qty * e.mealMap[mealKeys[i]].meal_price);
                 		dataPrice.push(e.mealMap[mealKeys[i]].meal_qty * e.mealMap[mealKeys[i]].meal_price);
+                		amount += e.mealMap[mealKeys[i]].meal_qty * e.mealMap[mealKeys[i]].meal_price;
                 		bgcolor.push(random_bg_color());
+                		
                 		}
                 		console.log(dataset);
                 		for(let i = 0;i < setLen;i++){
                 			dataset.push(e.mealSetMap[setKeys[i]].meal_set_name);
                 			dataQty.push(e.mealSetMap[setKeys[i]].meal_set_qty);
+                			qty += e.mealMap[mealKeys[i]].meal_qty;
                 			dataPrice.push(e.mealSetMap[setKeys[i]].meal_set_qty * e.mealSetMap[setKeys[i]].meal_set_price);
+                			amount += e.mealMap[mealKeys[i]].meal_qty * e.mealMap[mealKeys[i]].meal_price;
                 			bgcolor.push(random_bg_color());
                 		}
                 		console.log(dataset);
                 		$(".chart-container").empty();
+                		$(".chart-container2").empty();
                 	var canvas = document.createElement("canvas");
                 	var canvas2 = document.createElement("canvas");
                 	$(canvas).attr('id','myChart');
                 	$(canvas2).attr('id','myChart2');
                 	$(".chart-container").append(canvas);
-                	$(".chart-container").append(canvas2);
+                	$(".chart-container2").append(canvas2);
+                	
+                	$($(".chart-content").find("span")[0]).text(amount + ' 元');
+                	$($(".chart-content").find("span")[1]).text(qty + ' 份');
+                	$($(".chart-content").find("span")[2]).text(e.orderList['orderList'] + ' 筆');
+                	$($(".chart-content").find("span")[3]).text(Math.round((amount/e.orderList['orderList'])) + ' 元/筆');
+                	$($(".chart-content").find("span")[4]).text(Math.round((amount/e.orderList['ranNumPeople'])) + ' 元/人');
+                	
                 	
                 	var ctx = document.getElementById('myChart').getContext('2d');
                     var myChart = new Chart(ctx, {
@@ -494,6 +561,8 @@ width: 100%;
                            
                         },
                         options: {
+                        	responsive: true,
+                            maintainAspectRatio: false,
                         	plugins:{
                         		labels: [{
                         		render: 'label',
@@ -508,15 +577,15 @@ width: 100%;
                         		precision: 2,
                         		fontSize: 14,
                         		}]
-                        		},
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                    	stepSize: 30,
-                                        beginAtZero: true
-                                    }
-                                }]
-                            }
+                        		}
+//                             scales: {
+//                                 yAxes: [{
+//                                     ticks: {
+//                                     	stepSize: 30,
+//                                         beginAtZero: true
+//                                     }
+//                                 }]
+//                             }
                         }
                     });
                     
@@ -536,6 +605,8 @@ width: 100%;
                            
                         },
                         options: {
+//                         	responsive: true,
+                            maintainAspectRatio: false,
                         	plugins:{
                         		labels: {
                         		render: 'value',
@@ -546,7 +617,7 @@ width: 100%;
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                    	stepSize: 3000,
+                                    	stepSize: 500,
                                         beginAtZero: true
                                     }
                                 }]
@@ -567,6 +638,8 @@ width: 100%;
         
         var jsonObj = ${jsondata};
         console.log(jsonObj);
+        var todayAmount = 0;
+        var todayQty = 0;
 		var todaybgcolor =[];
         var todayLabels = [];
         var todayDataPrice = [];
@@ -580,7 +653,9 @@ width: 100%;
     		let keys = todayMealKeys[i];
     		todayLabels.push(jsonObj.mealMap[todayMealKeys[i]].meal_name);
     		todayDataQty.push(jsonObj.mealMap[todayMealKeys[i]].meal_qty);
+    		todayQty += jsonObj.mealMap[todayMealKeys[i]].meal_qty;
     		todayDataPrice.push(jsonObj.mealMap[todayMealKeys[i]].meal_qty * jsonObj.mealMap[todayMealKeys[i]].meal_price);
+    		todayAmount += jsonObj.mealMap[todayMealKeys[i]].meal_qty * jsonObj.mealMap[todayMealKeys[i]].meal_price;
     		todaybgcolor.push(random_bg_color());
     		}
     		console.log(todayLabels);
@@ -607,6 +682,8 @@ width: 100%;
                
             },
             options: {
+//             	responsive: true,
+                maintainAspectRatio: false,
             	plugins:{
             		labels: {
             		render: 'value',
@@ -622,6 +699,50 @@ width: 100%;
                         }
                     }]
                 }
+            }
+        });
+        
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: todayLabels,
+                datasets: [{
+                    label: '銷售總量',
+                    data: todayDataQty,
+                    fill: false,
+                    backgroundColor:todaybgcolor,
+                    borderColor: todaybgcolor,
+                    borderWidth: 3
+                }],
+               
+            },
+            options: {
+            	responsive: true,
+                maintainAspectRatio: false,
+            	plugins:{
+            		labels: [{
+            		render: 'label',
+            		fontColor:'black',
+            		position: 'outside',
+            		fontSize: 14,
+            		outsidePadding: 2,
+            		arc: true,
+            		},{
+            		render:'percentage',
+            		fontColor:'black',
+            		precision: 2,
+            		fontSize: 14,
+            		}]
+            		}
+//                 scales: {
+//                     yAxes: [{
+//                         ticks: {
+//                         	stepSize: 30,
+//                             beginAtZero: true
+//                         }
+//                     }]
+//                 }
             }
         });
         
