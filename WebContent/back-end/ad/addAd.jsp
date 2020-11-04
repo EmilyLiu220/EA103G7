@@ -103,8 +103,7 @@ width:100px;
 						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
 						<li><a href="#">評價管理</a></li>
 						<li><a href="#">用餐時段管理</a></li>
-						<li><a
-							href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
 						<li><a href="#">食材管理</a></li>
 						<li><a href="#">餐點組成管理</a></li>
