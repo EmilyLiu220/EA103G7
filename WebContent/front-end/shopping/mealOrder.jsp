@@ -41,7 +41,7 @@ text-align:center;
 }
 .row{
 /*   border:1px solid green; */
-  height:100px; 
+  /*height:100px;*//*這個導致畫面跑版，已加到下方 line 82 標籤裡*/ 
   
 }
 .col,.col-4,.col-2{
@@ -79,7 +79,7 @@ font-weight: bolder;
 <body class="mybody">
 <jsp:include page="/front-end/headfinish.jsp" flush="true"/>
 <div class="container mycontainer">
-<div class="row title"><div class="col">${mem_no} 的訂餐訂單</div></div>
+<div class="row title" style="height: 100px;"><div class="col">${memVO2.mem_no} 的訂餐訂單</div></div>
   <div id="header" class="row">
     <div class="col-2">訂餐編號：</div>
 <!--     <div class="col-2">會員編號：</div> -->
