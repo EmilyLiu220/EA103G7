@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
-<%@ page import="com.inform_set.model.*"%>
 <%@ page import="com.front_inform.model.*"%>
 <%@ page import="com.emp_auth.model.*"%>
 <%@ page import="com.fun_auth.model.*"%>
@@ -18,6 +18,7 @@
 %>
 
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"></jsp:useBean>
+<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService"></jsp:useBean>
 
 <!DOCTYPE html>
 <html>
@@ -200,13 +201,45 @@
 							<th style="width: 10%;">讀取狀態</th>
 						</tr>
 					</thead>
+					<%@ include file="listByComplexFipage1.file"%>
 					<tbody>
 					<c:forEach var="fiVO" items="${list}">
 						<tr>
-							<td style="text-align: center;">${fiVO.is_no}</td>
-							<td style="text-align: center; word-break: break-all;">${fiVO.is_cont}</td>
-							<td style="text-align: center;">${inform_setVO.emp_no} ${pageScope.empSvc.getOneEmp(fiVO.emp_no).emp_name}</td>
+							<td style="text-align: center;">${fiVO.info_no}</td>
+							<td style="text-align: center;">${fiVO.mem_no} ${pageScope.memSvc.getOneMem(fiVO.mem_no).mem_name}</td>
+							<td style="text-align: center;">${fiVO.res_no}</td>
+							<td style="text-align: center;">
+								<c:choose>
+									<c:when test="${fiVO.info_cont eq '提醒您，因您多次訂位且多次點按確認當天用餐按鈕，但皆未至本餐廳用餐，您的訂位功能將於 3 天後恢復'}">暫停訂位功能通知</c:when>
+									<c:when test="${fiVO.info_cont eq '提醒您，因您多次訂餐付款但皆未至本餐廳取餐，您的訂餐功能將於 3 天後恢復'}">暫停訂餐功能通知</c:when>
+									<c:when test="${fiVO.info_cont eq '提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉功能將於 7 天後恢復'}">暫停檢舉功能通知</c:when>
+									<c:when test="${fiVO.info_cont eq '提醒您，因您有多則評價被檢舉成功，您的評價功能將於 14 天後恢復'}">暫停評價功能通知</c:when>
+									<c:when test="${fiVO.info_cont eq '提醒您，您將於 1 分鐘後被停權'}">會員停權通知</c:when>
+									<c:when test="${fiVO.info_cont eq '訂位成功，點選查看訂位訂單'}">訂位成功通知</c:when>
+									<c:when test="${fiVO.info_cont eq '訂位訂單修改成功，點選查看訂位訂單'}">訂位修改通知</c:when>
+									<c:when test="${fiVO.info_cont eq '訂餐成功，點選查看訂餐訂單'}">訂餐成功通知</c:when>
+									<c:when test="${fiVO.info_cont eq '餐點已完成，請至本餐廳取餐(點選可查看訂單)'}">取餐通知</c:when>
+									<c:when test="${fiVO.info_cont eq '您的訂餐已取消'}">訂餐取消通知</c:when>
+									<c:when test="${fiVO.info_cont eq '您的訂位已取消'}">訂位取消通知</c:when>
+									<c:when test="${fn:contains(fiVO.info_cont, '是否確認今日用餐')}">${fiVO.info_cont}</c:when>
+									<c:otherwise>活動推播通知</c:otherwise>
+								</c:choose>
+							</td>
 							<td style="text-align: center;"><fmt:formatDate value="${fiVO.info_date}" pattern="yyyy-MM-dd" /></td>
+							<td style="text-align: center;">
+								<c:choose>
+									<c:when test="${fiVO.info_sts == 0}">一般通知</c:when>
+									<c:when test="${fiVO.info_sts == 1}">確認用餐</c:when>
+									<c:when test="${fiVO.info_sts == 2}">尚未回覆</c:when>
+									<c:when test="${fiVO.info_sts == 3}">取消訂位</c:when>
+								</c:choose>
+							</td>
+							<td style="text-align: center;">
+								<c:choose>
+									<c:when test="${fiVO.read_sts == 0}">未讀</c:when>
+									<c:when test="${fiVO.read_sts == 1}">已讀</c:when>
+								</c:choose>
+							</td>
 						</tr>
 					</c:forEach>
 					</tbody>

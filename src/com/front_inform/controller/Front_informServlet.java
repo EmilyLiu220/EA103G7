@@ -363,6 +363,12 @@ public class Front_informServlet extends HttpServlet {
 				String stopDate = req.getParameter("fi_date_stopDate").trim();
 				java.sql.Date fi_date_stopDate = null;
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				// 若都沒填，直接重導向到 empCheckAllInform.jsp
+				if("".equals(mem_no) && info_sts==4 && "1970-01-01".equals(startDate) && "".equals(stopDate)) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/front_inform/empCheckAllInform.jsp");
+					failureView.forward(req, res);
+					return;
+				}
 				if ("".equals(stopDate)) {
 					fi_date_stopDate = new java.sql.Date(System.currentTimeMillis()+63072000000L);
 					stopDate = sdf.format(fi_date_stopDate);
@@ -387,7 +393,7 @@ public class Front_informServlet extends HttpServlet {
 				req.setAttribute("fiVOs", fiVOs); // 資料庫取出的 fiVOs ,存入req
 				HttpSession session = req.getSession();
 				session.setAttribute("fiVOs", fiVOs);
-				String url = "/back-end/inform_set/listByComplex_fi.jsp";
+				String url = "/back-end/front_inform/listByComplex_fi.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 listByComplex_fi.jsp
 				successView.forward(req, res);
 				

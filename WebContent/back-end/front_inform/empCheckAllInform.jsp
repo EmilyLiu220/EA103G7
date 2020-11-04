@@ -182,15 +182,6 @@
 				</tr>
 			</table>
 			<br>
-			<%-- 錯誤表列 --%>
-			<c:if test="${not empty errorMsgs}">
-				<font style="color: red">請修正以下錯誤:</font>
-				<ul>
-					<c:forEach var="message" items="${errorMsgs}">
-						<li style="color: red">${message}</li>
-					</c:forEach>
-				</ul>
-			</c:if>
 			
 			<table class="table table-hover" style="width: 100%; font-size: 90%;">
 				<thead style="text-align: center;">
