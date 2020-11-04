@@ -63,6 +63,10 @@
 		<servlet-name>Member_ReviewServlet</servlet-name>
 		<url-pattern>/back-end/member_review/forwarded</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Member_ReviewServlet</servlet-name>
+		<url-pattern>/front-end/member_review/forwarded</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>Report_AppraiseServlet</servlet-name>
@@ -71,6 +75,10 @@
 	<servlet-mapping>
 		<servlet-name>Report_AppraiseServlet</servlet-name>
 		<url-pattern>/back-end/report_appraise/forwarded</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>Report_AppraiseServlet</servlet-name>
+		<url-pattern>/front-end/report_appraise/forwarded</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -81,6 +89,23 @@
 		<servlet-name>BonusServlet</servlet-name>
 		<url-pattern>/back-end/bonus/forwarded</url-pattern>
 	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>BonusServlet</servlet-name>
+		<url-pattern>/front-end/bonus/forwarded</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ShoppingServlet</servlet-name>
+		<servlet-class>com.bonus.controller.ShoppingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShoppingServlet</servlet-name>
+		<url-pattern>/back-end/shopping/forwarded</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>ShoppingServlet</servlet-name>
+		<url-pattern>/front-end/shopping/forwarded</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>Bonus_OrderServlet</servlet-name>
@@ -89,6 +114,10 @@
 	<servlet-mapping>
 		<servlet-name>Bonus_OrderServlet</servlet-name>
 		<url-pattern>/back-end/bonus_order/forwarded</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>Bonus_OrderServlet</servlet-name>
+		<url-pattern>/front-end/bonus_order/forwarded</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -248,9 +277,9 @@
 	  <url-pattern>/front-end/mem/update_mem_info.jsp</url-pattern>
 	  <url-pattern>/front-end/res_order/*</url-pattern>
 	  <url-pattern>/front-end/shopping/*</url-pattern>
-	  <url-pattern></url-pattern>
-	  <url-pattern></url-pattern>
-	  <url-pattern></url-pattern>
+	  <url-pattern>/front-end/bonus/*</url-pattern>
+	  <url-pattern>/front-end/bonus_order/*</url-pattern>
+	  <url-pattern>/front-end/bonus_order_detail/*</url-pattern>
 	  <url-pattern></url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
@@ -268,8 +297,8 @@
 	  <filter-name>mem_stsFilter</filter-name>
 	  <url-pattern>/front-end/res_order/*</url-pattern>
 	  <url-pattern>/front-end/shopping/*</url-pattern>
-	  <url-pattern></url-pattern>
-	  <url-pattern></url-pattern>
+	  <url-pattern>/front-end/member_review/*</url-pattern>
+	  <url-pattern>/front-end/report_appraise/*</url-pattern>
 	  <url-pattern></url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
@@ -304,6 +333,11 @@
 	  <url-pattern>/back-end/res_order/*</url-pattern>
 	  <url-pattern>/back-end/seat/*</url-pattern>
 	  <url-pattern>/back-end/seat_obj/*</url-pattern>
+	  <url-pattern>/back-end/member_review/*</url-pattern>
+	  <url-pattern>/back-end/report_appraise/*</url-pattern>
+	  <url-pattern>/back-end/bonus/*</url-pattern>
+	  <url-pattern>/back-end/bonus_order/*</url-pattern>
+	  <url-pattern>/back-end/bonus_order_detail/*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>
@@ -334,6 +368,11 @@
 	  <url-pattern>/back-end/res_order/*</url-pattern>
 	  <url-pattern>/back-end/seat/*</url-pattern>
 	  <url-pattern>/back-end/seat_obj/*</url-pattern>
+	  <url-pattern>/back-end/member_review/*</url-pattern>
+	  <url-pattern>/back-end/report_appraise/*</url-pattern>
+	  <url-pattern>/back-end/bonus/*</url-pattern>
+	  <url-pattern>/back-end/bonus_order/*</url-pattern>
+	  <url-pattern>/back-end/bonus_order_detail/*</url-pattern>
 	  <dispatcher>REQUEST</dispatcher>
 	  <dispatcher>FORWARD</dispatcher>
 	  <dispatcher>INCLUDE</dispatcher>

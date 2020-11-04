@@ -85,7 +85,18 @@ public class AuthFilter implements Filter {
 		fa0010.add(req.getContextPath() + "/back-end/res_order/orderSeat.jsp");
 		
 		List<String> fa0011 = new ArrayList<>();
-		
+		fa0011.add(req.getContextPath() + "/back-end/bonus/forwarded");
+		fa0011.add(req.getContextPath() + "/back-end/bonus_order/forwarded");
+		fa0011.add(req.getContextPath() + "/back-end/bonus_order_detail/forwarded");
+		fa0011.add(req.getContextPath() + "/back-end/bonus/addBonus.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus/listAllBonus.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus/select_page.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus/update_bonus_input.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus_order/listAllBonus_Order.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus_order/listOneBonus_Order.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus_order/update_bonus_order_input.jsp");
+		fa0011.add(req.getContextPath() + "/back-end/bonus_order_detail/listOneBonus_Order_Detail.jsp");
+
 		List<String> fa0012 = new ArrayList<>();
 		fa0010.add(req.getContextPath() + "/back-end/seat/seat.do");
 		fa0010.add(req.getContextPath() + "/back-end/seat/editSeat_include.jsp");
@@ -111,6 +122,14 @@ public class AuthFilter implements Filter {
 		fa0016.add(req.getContextPath() + "/back-end/meal_set/updateMealSet2.jsp");
 		
 		List<String> fa0017 = new ArrayList<>();
+		fa0017.add(req.getContextPath() + "/back-end/member_review/forwarded");
+		fa0017.add(req.getContextPath() + "/back-end/report_appraise/forwarded");
+		fa0017.add(req.getContextPath() + "/back-end/member_review/addMember_Review.jsp");
+		fa0017.add(req.getContextPath() + "/back-end/member_review/listAllMember_Review.jsp");
+		fa0017.add(req.getContextPath() + "/back-end/member_review/listOneMember_Review.jsp");
+		fa0017.add(req.getContextPath() + "/back-end/member_review/select_page.jsp");
+		fa0017.add(req.getContextPath() + "/back-end/report_appraise/listAllReport_Appraise.jsp");
+
 		
 		List<String> fa0018 = new ArrayList<>();
 		fa0018.add(req.getContextPath() + "/back-end/inform_set/is.do");
