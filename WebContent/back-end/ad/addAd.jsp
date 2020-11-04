@@ -88,9 +88,12 @@ width:100px;
 				</h3>
 			</div>
 			<ul class="list-unstyled components">
-				<li><a href="#">現場點餐</a></li>
-				<li><a href="#">現場劃位</a></li>
-				<li><a href="#">訂單結帳</a></li>
+				<c:choose>
+					<c:when test="${empVO2.emp_no!=null}">
+						<li style="font-size:20px;"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=Update_info&emp_no=${empVO2.emp_no}">員工個資修改</a></li>
+					</c:when>
+				</c:choose>
+				<li><a href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
 				<li><a href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 				<li class="active"><a href="#pageSubmenu"
 					data-toggle="collapse" aria-expanded="false"
@@ -104,7 +107,7 @@ width:100px;
 						<li><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>
@@ -116,7 +119,7 @@ width:100px;
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
-						<li class="fun2"><a href="#">訂位管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/res_order/resOrderManage.jsp">訂位管理</a></li>
 					</ul></li>
 			</ul>
 
@@ -128,12 +131,7 @@ width:100px;
 							id="logIn">Log in</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><form method="post"
-								action="<%=request.getContextPath()%>/back-end/emp/emp.do">
-								<input type="hidden" name="action" value="logout"> <label
-									style="cursor: pointer"><a id="logOut">Log out</a> <input
-									type="submit" style="display: none"></label>
-							</form></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout" id="logOut">Log out</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -155,7 +153,7 @@ width:100px;
 					</button>
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
-						<a href="/EA103G7/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
+						<a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
 						<button type="button" id="topbarCollapse" class="btn btn-dark"
@@ -172,29 +170,34 @@ width:100px;
 						</button>
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
-							<a href="/EA103G7/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
+							<a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
 								<li class="nav-item active"><a class="nav-link" href="#"
-									id="empId" style="cursor: default;"> <span
-										style="color: red; margin-top: 1rem;">嗨，您好！請記得登入喔！</span>
+									id="empId" style="cursor: default;">
+									<c:choose>
+										<c:when test="${empVO2.emp_no==null}">
+											<span style="color: red; margin-top: 1rem;">嗨，您好！請記得登入喔！</span>
+										</c:when>
+										<c:otherwise>
+											<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}，您好！</span>
+										</c:otherwise>
+									</c:choose>
 								</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">訂單結帳</a></li>
+								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
 								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
 								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
 								<li class="nav-item active" style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
-
-
-									<div id="topLogIn"
-										style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
-										onmouseover="this.style.color='#fff'; this.style.background='#000';"
-										onmouseout="this.style.color='#ccc'; this.style.background='#424242';">
-										<a href="/EA103G7/back-end/emp/login.jsp">Log in</a>
-									</div>
+									<c:choose>
+										<c:when test="${empVO2.emp_no==null}">
+											<div id="topLogIn" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log in</a></div>
+										</c:when>
+										<c:otherwise>
+											<div id="topLogOut" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout">Log out</a></div>
+										</c:otherwise>
+									</c:choose>
 								</li>
 							</ul>
 						</div>

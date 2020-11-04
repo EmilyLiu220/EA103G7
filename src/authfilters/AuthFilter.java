@@ -83,6 +83,7 @@ public class AuthFilter implements Filter {
 		List<String> fa0010 = new ArrayList<>();
 		fa0010.add(req.getContextPath() + "/back-end/res_order/res_order.do");
 		fa0010.add(req.getContextPath() + "/back-end/res_order/orderSeat.jsp");
+		fa0010.add(req.getContextPath() + "/back-end/res_order/resOrderManage.jsp");
 		
 		List<String> fa0011 = new ArrayList<>();
 		
