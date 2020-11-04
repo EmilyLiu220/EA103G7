@@ -52,7 +52,7 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	private static final String GET_NEW_STMT = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM ORDER BY INFO_NO";	
 	
 	// 員工取得特殊通知
-	private static final String GET_INFOSTS_123 = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE INFO_STS=? ORDER BY INFO_NO DESC";
+	private static String Get_Complex = "SELECT INFO_NO, MEM_NO, RES_NO, INFO_CONT, INFO_DATE, INFO_STS, READ_STS FROM FRONT_INFORM WHERE 1=1";
 	
 	@Override
 	public Front_InformVO findByFiNo(String info_no) {
@@ -562,16 +562,36 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	}
 
 	@Override
-	public List<Front_InformVO> findByInfoSts(Integer info_sts) {
+	public List<Front_InformVO> findByComplex(String mem_no, Integer info_sts, String startDate, String stopDate) {
 		List<Front_InformVO> list = new ArrayList<Front_InformVO>();
 		Front_InformVO front_informVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		StringBuilder builder = new StringBuilder();
+		List<String> params = new ArrayList<String>();
+		builder.append(Get_Complex);
+		if(mem_no != null && !mem_no.isEmpty()) {
+			builder.append(" AND MEM_NO=?");
+			params.add("MEM_NO," + mem_no);
+		}
+		if(info_sts != null && info_sts!=4 ) { // 4 代表未填此欄
+			builder.append(" AND INFO_STS=?");
+			params.add("INFO_STS," + info_sts);
+		}
+		if(startDate != null && !startDate.isEmpty()) {
+			builder.append(" AND INFO_DATE BETWEEN to_date(?,'yyyy-mm-dd')");
+			params.add("STARTDATE," + startDate);
+		}
+		if(stopDate != null && !stopDate.isEmpty()) {
+			builder.append(" AND to_date(?,'yyyy-mm-dd') ORDER BY INFO_NO DESC");
+			params.add("STOPDATE," + stopDate);
+		}
+		// 開始取得連線
 		try {
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_INFOSTS_123);
-			pstmt.setInt(1, info_sts);
+			pstmt = con.prepareStatement(builder.toString());
+			// 將 params 切割並 set 進相對應的 ? 中
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				front_informVO = new Front_InformVO();

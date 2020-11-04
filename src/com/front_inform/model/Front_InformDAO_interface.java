@@ -20,7 +20,7 @@ public interface Front_InformDAO_interface{
 	public List<Front_InformVO> findAll();
 	
 	// 取得特殊通知
-	public List<Front_InformVO> findByInfoSts(Integer info_sts);
+	public List<Front_InformVO> findByComplex(String mem_no, Integer info_sts, String startDate, String stopDate);
 	
 	// for pollingThread_FI_Backup
 	public Integer countData();
