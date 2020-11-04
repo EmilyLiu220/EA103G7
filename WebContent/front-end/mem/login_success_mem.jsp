@@ -13,7 +13,7 @@
   padding-top: 50px;
   padding-bottom: 50px;
   margin:0 auto;
-  width: 400px;
+  width: 800px;
 }
 
 </style>
@@ -42,23 +42,55 @@
 <!-- 		<input type="hidden" name="action" value="logout"> -->
 <!-- 	</FORM> -->
 
-	<div class="list-group" style="text-align:center;">
-	  <a class="list-group-item list-group-item-action"><i class="fas fa-users"></i>&ensp;會員功能列表</a>
+<!-- 	<div class="list-group" style="text-align:center;"> -->
+<!-- 	  <a class="list-group-item list-group-item-action"><i class="fas fa-users"></i>&ensp;會員功能列表</a> -->
 	
-	  <a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=Update_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-primary"><i class="fas fa-utensils"></i>&ensp;密碼和個資修改</a>
-	  <a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=check_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-secondary"><i class="fas fa-utensils"></i>&ensp;個資查詢</a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-success"><i class="fas fa-utensils"></i>&ensp;我的訂位</a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-warning"><i class="fas fa-utensils"></i>&ensp;我的訂餐</a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-danger"><i class="fas fa-utensils"></i>&ensp;紅利專區</a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-info"></a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-light"></a>
-	  <a href="#" class="list-group-item list-group-item-action list-group-item-dark"></a>
-	</div>
+<%-- 	  <a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=Update_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-primary"><i class="fas fa-utensils"></i>&ensp;密碼和個資修改</a> --%>
+<%-- 	  <a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=check_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-secondary"><i class="fas fa-utensils"></i>&ensp;個資查詢</a> --%>
+<!-- 	  <a href="#" class="list-group-item list-group-item-action list-group-item-success"><i class="fas fa-utensils"></i>&ensp;我的訂位</a> -->
+<!-- 	  <a href="#" class="list-group-item list-group-item-action list-group-item-warning"><i class="fas fa-utensils"></i>&ensp;我的訂餐</a> -->
+<!-- 	  <a href="#" class="list-group-item list-group-item-action list-group-item-danger"><i class="fas fa-utensils"></i>&ensp;紅利專區</a> -->
+<!-- 	  <a href="#" class="list-group-item list-group-item-action list-group-item-info"></a> -->
+<!-- 	  <a href="#" class="list-group-item list-group-item-action list-group-item-light"></a> -->
+<!-- 	  <a href="#" class="list-group-item list-group-item-action list-group-item-dark"></a> -->
+<!-- 	</div> -->
 
+	<table>
+		<tr>
+			<th colspan="2">
+				<a class="list-group-item list-group-item-action list-group-item-warning" style="text-align: center;"><i class="fas fa-users" style="font-size:80px;"></i><br>會員功能選單</a>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=Update_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-key" style="font-size:80px;"></i><br>密碼個資修改</a>
+			</td>
+			<td>
+				<a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=check_info&mem_no=${memVO2.mem_no}" class="list-group-item list-group-item-action list-group-item-dark" style="text-align: center;"><i class="far fa-address-card" style="font-size:80px;"></i><br>個資查詢</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="#" class="list-group-item list-group-item-action list-group-item-dark" style="text-align: center;"><i class="fas fa-chair" style="font-size:80px;"></i><br>我的訂位</a>
+			</td>
+			<td>
+				<a href="#" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-utensils" style="font-size:80px;"></i><br>我的訂餐</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="#" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-bold" style="font-size:80px;"></i><br>紅利專區</a>
+			</td>
+			<td>
+				<a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=logout" class="list-group-item list-group-item-action list-group-item-dark" style="text-align: center;"><i class="fas fa-sign-out-alt" style="font-size:80px;"></i><br>會員登出</a>
+			</td>
+		</tr>
+	</table>
+		
 	</div>
 	
 <script>
-	// 放在這邊不會有任何作用，小育已測試過...可以刪掉QQ
+	// 放在這邊不會有任何作用，小育已測試過...可以刪掉QQ...刪掉這裡吧~小育已經用 webSocket 做掉了ㄏㄏ
 	//getMyInform 
 	function getInfo() {
 		$.ajax({
