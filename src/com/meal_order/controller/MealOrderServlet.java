@@ -161,12 +161,13 @@ public class MealOrderServlet extends HttpServlet {
 		}
 
 		if ("rsvCheckout".equals(action)) {
-			String memNo = null;
+			MemVO memVO2 = (MemVO) session.getAttribute("memVO2");
+			String memNo = memVO2.getMem_no();
 			String empNo = (String) session.getAttribute("emp_no");
 			String resNo = req.getParameter("res_no");
-			if (session.getAttribute("mem_no") != null) {
-				memNo = (String) session.getAttribute("mem_no");
-			}
+//			if (session.getAttribute("mem_no") != null) {
+//				memNo = (String) session.getAttribute("mem_no");
+//			}
 
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);

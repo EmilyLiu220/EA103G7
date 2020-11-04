@@ -564,10 +564,11 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 	@Override
 	public List<Front_InformVO> findByComplex(String mem_no, Integer info_sts, String startDate, String stopDate) {
 		List<Front_InformVO> list = new ArrayList<Front_InformVO>();
-		Front_InformVO front_informVO = null;
+		Front_InformVO fiVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		// 取得參數，並把從前方傳來的參數條件加入 sql 語法中 ( 若無傳入參數則等同於 list all )
 		StringBuilder builder = new StringBuilder();
 		List<String> params = new ArrayList<String>();
 		builder.append(Get_Complex);
@@ -584,25 +585,31 @@ public class Front_InformDAO implements Front_InformDAO_interface {
 			params.add("STARTDATE," + startDate);
 		}
 		if(stopDate != null && !stopDate.isEmpty()) {
-			builder.append(" AND to_date(?,'yyyy-mm-dd') ORDER BY INFO_NO DESC");
+			builder.append(" AND to_date(?,'yyyy-mm-dd')");
 			params.add("STOPDATE," + stopDate);
 		}
+		builder.append(" ORDER BY INFO_NO DESC");
 		// 開始取得連線
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(builder.toString());
 			// 將 params 切割並 set 進相對應的 ? 中
+			for(int i=0; i<params.size(); i++) {
+				String str = params.get(i);
+				String[] arr = str.split(",");
+				pstmt.setString(i+1, arr[1]);
+			}
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				front_informVO = new Front_InformVO();
-				front_informVO.setInfo_no(rs.getString("INFO_NO"));
-				front_informVO.setMem_no(rs.getString("MEM_NO"));
-				front_informVO.setRes_no(rs.getString("RES_NO"));
-				front_informVO.setInfo_cont(rs.getString("INFO_CONT"));
-				front_informVO.setInfo_date(rs.getDate("INFO_DATE"));
-				front_informVO.setInfo_sts(rs.getInt("INFO_STS"));
-				front_informVO.setRead_sts(rs.getInt("READ_STS"));
-				list.add(front_informVO);
+				fiVO = new Front_InformVO();
+				fiVO.setInfo_no(rs.getString("INFO_NO"));
+				fiVO.setMem_no(rs.getString("MEM_NO"));
+				fiVO.setRes_no(rs.getString("RES_NO"));
+				fiVO.setInfo_cont(rs.getString("INFO_CONT"));
+				fiVO.setInfo_date(rs.getDate("INFO_DATE"));
+				fiVO.setInfo_sts(rs.getInt("INFO_STS"));
+				fiVO.setRead_sts(rs.getInt("READ_STS"));
+				list.add(fiVO);
 			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "+ se.getMessage());

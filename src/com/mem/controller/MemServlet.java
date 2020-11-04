@@ -608,52 +608,45 @@ public class MemServlet extends HttpServlet {
 			
 			String mem_mail = req.getParameter("mem_mail");
 			
-			System.out.println("000");
-			
 			MemService memSvc = new MemService();
 			boolean exist = false;
 			List<MemVO> list2 = memSvc.getAll();
 			for (int i = 0; i < list2.size(); i++) {
-				System.out.println("1"+ mem_mail);
 				if (mem_mail.equals(list2.get(i).getMem_mail())) {
 					exist = true;
-					System.out.println("111");
 					break;
 				}
 			}
 			if (!exist) {
-				errorMsgs.add("查無此email！請重新輸入！");
-				System.out.println("222");
-			}
-			
-			// Send the use back to the form, if there were errors
-			if (!errorMsgs.isEmpty()) {
+//				errorMsgs.add("查無此email！請重新輸入！");
+				String x = "notfound";
+		    	req.setAttribute("x", x);
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front-end/mem/forgetPsw.jsp");
 				failureView.forward(req, res);
-				return; //程式中斷
+				return;
 			}
 			
-			String mem_psw = RandomPsw.genAuthCode(8);
+			// Send the use back to the form, if there were errors
+//			if (!errorMsgs.isEmpty()) {
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/mem/forgetPsw.jsp");
+//				failureView.forward(req, res);
+//				return; //程式中斷
+//			}
 			
-			System.out.println("333");
+			String mem_psw = RandomPsw.genAuthCode(8);
 			
 			MemVO memVO = new MemVO();
 			memVO.setMem_mail(mem_mail);
 			memVO.setMem_psw(mem_psw);
 			
-			System.out.println("444");
-			
 			memVO = memSvc.forgetPsw(mem_psw, mem_mail);
-			
-			System.out.println("555");
 			
 			ForgetPswMail fpm = new ForgetPswMail();
 			String messageText = "請使用此密碼進行登入：" + mem_psw + "\n"
 					+ "點此連結進行登入，並修改密碼:" + "http://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/front-end/mem/login_mem.jsp";
 			fpm.sendMail(mem_mail, "忘記密碼", messageText);
-			
-			System.out.println("666");
 			
 			String x = "mail";
 			
@@ -662,8 +655,6 @@ public class MemServlet extends HttpServlet {
 			String url = "/front-end/mem/login_mem.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
-			
-			System.out.println("777");
 			
 //			res.sendRedirect(req.getContextPath() + "/front-end/mem/login_mem.jsp");
 		}

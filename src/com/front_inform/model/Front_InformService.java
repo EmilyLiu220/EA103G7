@@ -115,4 +115,8 @@ public class Front_InformService {
 		return dao.findAll();
 	}
 	
+	public List<Front_InformVO> getFiByComplex(String mem_no, Integer info_sts, String startDate, String stopDate){
+		return dao.findByComplex(mem_no, info_sts, startDate, stopDate);
+	}
+	
 }

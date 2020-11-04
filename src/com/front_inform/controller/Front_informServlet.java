@@ -2,15 +2,20 @@ package com.front_inform.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import com.front_inform.model.*;
 import com.front_inform.webSocket.Front_InformWS;
 import com.mem.model.*;
@@ -284,8 +289,115 @@ public class Front_informServlet extends HttpServlet {
 			}
 		}
 		
-		if("empGetSpecialInform".equals(action)) {
-			
+		if("empGetInformByComplex".equals(action)) { // 來自 select_fi.jsp 的請求
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			try {
+				/***************************1.接收請求參數，並依據參數查詢資料****************************************/
+				/**************************************** 得會員編號 mem_no ( String ) ****************************************/
+				// 取得會員編號參數
+				String mem_no = req.getParameter("mem_no").trim();
+				// 判斷是否真的有輸入會員編號
+				// 有輸入會員編號
+				if(mem_no != null && mem_no.length() != 0) { 
+					mem_no = mem_no.toUpperCase();
+					String mem_noReg = "M{1}E{1}M{1}[\\d]{4}";
+					Pattern patMem = Pattern.compile(mem_noReg);
+					Matcher matcherMem = patMem.matcher(mem_no.trim());
+					if(!matcherMem.find()) {
+						errorMsgs.add("會員編號格式不正確");
+					}
+					if (!errorMsgs.isEmpty()) {
+						RequestDispatcher failureView = req.getRequestDispatcher("/back-end/front_inform/select_fi.jsp");
+						failureView.forward(req, res);
+						return;
+					}
+					MemService memSvc = new MemService();
+					MemVO memVO = memSvc.getOneMem(mem_no);
+					if (memVO == null) {
+						errorMsgs.add("查無會員");
+					}
+					if (!errorMsgs.isEmpty()) {
+						RequestDispatcher failureView = req.getRequestDispatcher("/back-end/front_inform/select_fi.jsp");
+						failureView.forward(req, res);
+						return;
+					}
+				}
+				
+				/*********************************** 得通知狀態 info_sts ( Integer ) ***********************************/	
+				// 取得通知狀態的參數
+				String tempInfo_sts = req.getParameter("info_sts").trim(); // 取得 0,1,2,3,4 (select 字串)
+				Integer info_sts = null;
+				// 有輸入通知狀態
+				if (tempInfo_sts != null && tempInfo_sts.length() != 0) {
+					if("請選擇".equals(tempInfo_sts)) {
+						info_sts = new Integer(4);
+					}	
+					if("一般通知".equals(tempInfo_sts)) {
+						info_sts = new Integer(0);
+					}	
+					if("確認用餐".equals(tempInfo_sts)) {
+						info_sts = new Integer(1);
+					}
+					if("尚未回覆".equals(tempInfo_sts)) {
+						info_sts = new Integer(2);
+					}
+					if("取消訂位".equals(tempInfo_sts)) {
+						info_sts = new Integer(3);
+					}
+				}
+				
+				/****************************** 起始及結束日期 startDate 和 stopDate ( String ) ******************************/
+				// 判斷是否輸入日期
+				// 起始日期
+				String startDate = req.getParameter("fi_date_startDate").trim();
+				if ("".equals(startDate)) {
+					startDate = "01/01/1970";
+				}
+				if (startDate != null && !"".equals(startDate)) {
+					// 修改傳入字串，將字串由 mm/dd/yyyy 改為 yyyy-mm-dd
+					String[] startDateArr = startDate.split("/");
+					startDate = startDateArr[2]+'-'+startDateArr[0]+'-'+startDateArr[1];
+				}
+				// 結束日期
+				String stopDate = req.getParameter("fi_date_stopDate").trim();
+				java.sql.Date fi_date_stopDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				if ("".equals(stopDate)) {
+					fi_date_stopDate = new java.sql.Date(System.currentTimeMillis()+63072000000L);
+					stopDate = sdf.format(fi_date_stopDate);
+				}
+				if (stopDate != null && !"".equals(stopDate)) {
+					// 修改傳入字串，將字串由 mm/dd/yyyy 改為 yyyy-mm-dd
+					String[] stopDateArr = stopDate.split("/");
+					stopDate = stopDateArr[2]+'-'+stopDateArr[0]+'-'+stopDateArr[1];
+				}
+				/******************************** 2.開始查詢資料，進行可能的錯誤處理 *******************************/
+				Front_InformService fiSvc = new Front_InformService();
+				List<Front_InformVO> fiVOs = fiSvc.getFiByComplex(mem_no, info_sts, startDate, stopDate);
+				if (fiVOs.isEmpty() || fiVOs == null) {
+					errorMsgs.add("查無資料");
+				}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/front_inform/select_fi.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				/******************************** 3.查詢完成,準備轉交(Send the Success view) *****************/
+				req.setAttribute("fiVOs", fiVOs); // 資料庫取出的 fiVOs ,存入req
+				HttpSession session = req.getSession();
+				session.setAttribute("fiVOs", fiVOs);
+				String url = "/back-end/inform_set/listByComplex_fi.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 listByComplex_fi.jsp
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch(Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				e.printStackTrace();
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/front_inform/select_fi.jsp");
+				failureView.forward(req, res);
+			}
 		}
 	}
 	
