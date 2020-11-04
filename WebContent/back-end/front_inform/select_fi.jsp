@@ -226,12 +226,12 @@
 						</li>
 						<li>
 							<b>選擇日期：</b>
-							<b>起 </b><input type="text" id="is_date_startDate" name="is_date_startDate" class="hasDatepicker2">
-							<b>訖 </b><input type="text" id="is_date_stopDate" name="is_date_stopDate" class="hasDatepicker2"><br>
+							<b>起 </b><input type="text" id="fi_date_startDate" name="fi_date_startDate" class="hasDatepicker2">
+							<b>訖 </b><input type="text" id="fi_date_stopDate" name="fi_date_stopDate" class="hasDatepicker2"><br>
 						<br></li>
 					</ul>
 					<div style="display: inline-block; position: relative; left: 5%;">
-						<input type="hidden" name="action" value="empGetSpecialInform">
+						<input type="hidden" name="action" value="empGetInformByComplex">
 						<input type="submit" value="開始查詢" style="margin-right: 20px;">
 						<input type="reset" value="重新填寫">
 					</div>

@@ -4,14 +4,15 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.emp.model.*"%>
 <%@ page import="com.inform_set.model.*"%>
+<%@ page import="com.front_inform.model.*"%>
 <%@ page import="com.emp_auth.model.*"%>
 <%@ page import="com.fun_auth.model.*"%>
 
 <%	
-	List<Inform_SetVO> list = (List<Inform_SetVO>) request.getAttribute("isVOs");
+	List<Front_InformVO> list = (List<Front_InformVO>) request.getAttribute("fiVOs");
 	pageContext.setAttribute("list", list);
 	EmpVO empVO2 = (EmpVO) session.getAttribute("empVO2");
-	Inform_SetVO isVO = (Inform_SetVO) request.getAttribute("isVO");
+	Front_InformVO fiVO = (Front_InformVO) request.getAttribute("fiVO");
 	List<Emp_authVO> emp_authVO2 = (List<Emp_authVO>) session.getAttribute("emp_authVO2");
 	List<Fun_authVO> fun_authVO2 = (List<Fun_authVO>) session.getAttribute("fun_authVO2");
 %>
@@ -186,15 +187,6 @@
 					</tr>
 				</table>
 				<br>
-				<%-- 錯誤表列 --%>
-				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
-						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
 
 				<table class="table table-hover" style="width: 100%; font-size: 90%;">
 					<thead style="text-align: center;">
@@ -209,12 +201,12 @@
 						</tr>
 					</thead>
 					<tbody>
-					<c:forEach var="inform_setVO" items="${list}">
+					<c:forEach var="fiVO" items="${list}">
 						<tr>
-							<td style="text-align: center;">${inform_setVO.is_no}</td>
-							<td style="text-align: center; word-break: break-all;">${inform_setVO.is_cont}</td>
-							<td style="text-align: center;">${inform_setVO.emp_no} ${pageScope.empSvc.getOneEmp(inform_setVO.emp_no).emp_name}</td>
-							<td style="text-align: center;"><fmt:formatDate value="${inform_setVO.is_date}" pattern="yyyy-MM-dd" /></td>
+							<td style="text-align: center;">${fiVO.is_no}</td>
+							<td style="text-align: center; word-break: break-all;">${fiVO.is_cont}</td>
+							<td style="text-align: center;">${inform_setVO.emp_no} ${pageScope.empSvc.getOneEmp(fiVO.emp_no).emp_name}</td>
+							<td style="text-align: center;"><fmt:formatDate value="${fiVO.info_date}" pattern="yyyy-MM-dd" /></td>
 						</tr>
 					</c:forEach>
 					</tbody>
