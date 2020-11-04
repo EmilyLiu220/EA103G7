@@ -1,6 +1,9 @@
 package com.bonus_order.model;
 
 import java.util.List;
+
+import com.bonus_order_detail.model.Bonus_Order_DetailVO;
+
 import java.sql.Connection;
 
 public class Bonus_OrderService {
@@ -11,14 +14,14 @@ public class Bonus_OrderService {
 		dao = new Bonus_OrderDAO();
 	}
 	
-	public Bonus_OrderVO addBonus_Order(String mem_no, java.sql.Date bo_date, String promo_code, Connection outer_con) {
+	public Bonus_OrderVO addBonus_Order(String mem_no, java.sql.Date bo_date, String promo_code, List<Bonus_Order_DetailVO> list) {
 		
 		Bonus_OrderVO bonus_orderVO = new Bonus_OrderVO(); 
 		
 		bonus_orderVO.setMem_no(mem_no);
 		bonus_orderVO.setBo_date(bo_date);
 		bonus_orderVO.setPromo_code(promo_code);
-		dao.insert(bonus_orderVO, outer_con);
+		dao.insert(bonus_orderVO,list);
 		
 		return bonus_orderVO;
 	}

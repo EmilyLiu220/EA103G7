@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import com.bonus_order.model.Bonus_OrderService;
+import com.bonus_order.model.Bonus_OrderVO;
 import com.bonus_order_detail.model.*;
 
 public class Bonus_Order_DetailServlet extends HttpServlet  { // 控制器Servlet收到請求後進入insert方法，再由Service呼叫DAO做事情
@@ -18,8 +21,8 @@ public class Bonus_Order_DetailServlet extends HttpServlet  { // 控制器Servle
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-			
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+				
+		if ("getOne_For_Display".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -84,7 +87,7 @@ public class Bonus_Order_DetailServlet extends HttpServlet  { // 控制器Servle
 		}
 		
 		
-		if ("getOne_For_Update".equals(action)) { // 來自listAllMember_Review.jsp的請求
+		if ("getOne_For_Update".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -115,7 +118,7 @@ public class Bonus_Order_DetailServlet extends HttpServlet  { // 控制器Servle
 		}
 		
 		
-		if ("update".equals(action)) { // 來自update_bonus_order_input.jsp的請求
+		if ("update".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -174,7 +177,7 @@ public class Bonus_Order_DetailServlet extends HttpServlet  { // 控制器Servle
 			}
 		}
 
-        if ("insert".equals(action)) { // 來自addMember_Review.jsp的請求  
+        if ("insert".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -231,35 +234,6 @@ public class Bonus_Order_DetailServlet extends HttpServlet  { // 控制器Servle
 						.getRequestDispatcher("/back-end/bonus_order_detail/addBonus_Order_Detail.jsp");
 				failureView.forward(req, res);
 			}
-		}
-		
-        
-		if ("delete".equals(action)) { // 來自listAllMember_Review.jsp
-			
-			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
-	
-			try {
-				/***************************1.接收請求參數***************************************/
-				String bo_no = new String(req.getParameter("bo_no"));
-				
-				/***************************2.開始刪除資料***************************************/
-				Bonus_Order_DetailService bonus_order_detailSvc = new Bonus_Order_DetailService();
-				bonus_order_detailSvc.deleteBonus_Order_Detail(bo_no); // 呼叫Service內deleteEmp的方法
-				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/back-end/bonus_order_detail/listAllBonus_Order_Detail.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-				successView.forward(req, res);
-				
-				/***************************其他可能的錯誤處理**********************************/
-			} catch (Exception e) {
-				errorMsgs.add("刪除資料失敗:"+e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/bonus_order_detail/listAllBonus_Order_Detail.jsp");
-				failureView.forward(req, res);
-			}
-		}
+		}		
 	}
 }

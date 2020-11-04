@@ -337,7 +337,7 @@ public class Bonus_Order_DetailJDBCDAO implements Bonus_Order_DetailDAO_interfac
 //		System.out.print(bonus_order_detailVO3.getQuantity() + ",");
 //		System.out.println("---------------------");
 //
-// 		查詢
+//// 		查詢
 		List<Bonus_Order_DetailVO> list = dao.getAll();
 		for (Bonus_Order_DetailVO aBod : list) {
 			System.out.print(aBod.getBo_no() + ",");

@@ -15,13 +15,12 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 	private static final String INSERT_STMT = "INSERT INTO bonus_order (bo_no,mem_no,bo_date,promo_code) VALUES ('BO'||LPAD(SEQ_BO_NO.NEXTVAL,4,0), ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT bo_no,mem_no,to_char(bo_date,'yyyy-mm-dd') bo_date, promo_code FROM bonus_order order by bo_no";
 	private static final String GET_ONE_STMT = "SELECT bo_no,mem_no,to_char(bo_date,'yyyy-mm-dd') bo_date, promo_code FROM bonus_order where bo_no = ?";
-	private static final String GET_Bonus_Order_Detail_ByBo_no_STMT = "SELECT bo_no,bns_no,quantity FROM bonus_order_detail where bo_no = ? order by bo_no";
 	private static final String DELETE_BONUS_ORDER_DETAIL = "DELETE FROM bonus_order_detail where bo_no = ?";
 	private static final String DELETE_BONUS_ORDER = "DELETE FROM bonus_order where bo_no = ?";
 	private static final String UPDATE = "UPDATE bonus_order set mem_no=?, bo_date=?, promo_code=? where bo_no = ?";
 
 	@Override
-	public void insert(Bonus_OrderVO bonus_orderVO, Connection outer_con) {
+	public void insert(Bonus_OrderVO bonus_orderVO) {
 		// TODO Auto-generated method stub
 
 		Connection con = null;
@@ -297,64 +296,6 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public Set<Bonus_Order_DetailVO> getBonus_Order_DetailByBo_no(Integer bo_no) {
-		Set<Bonus_Order_DetailVO> set = new HashSet<Bonus_Order_DetailVO>();
-		Bonus_Order_DetailVO bonus_order_detailVO = null;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(GET_Bonus_Order_Detail_ByBo_no_STMT);
-			pstmt.setInt(1, bo_no);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				bonus_order_detailVO = new Bonus_Order_DetailVO();
-				bonus_order_detailVO.setBo_no(rs.getString("bo_no"));
-				bonus_order_detailVO.setBns_no(rs.getString("ename"));
-				bonus_order_detailVO.setQuantity(rs.getInt("quantity"));
-
-				set.add(bonus_order_detailVO); // Store the row in the vector
-			}
-
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
-			// Handle any SQL errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return set;
-	}
-
-	@Override
 	public void insertWithBonus_Order_Detail(Bonus_OrderVO bonus_orderVO, List<Bonus_Order_DetailVO> list) {
 
 		Connection con = null;
@@ -445,15 +386,15 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 
 		List<Bonus_Order_DetailVO> testList = new ArrayList<Bonus_Order_DetailVO>(); 
 		Bonus_Order_DetailVO bodXX = new Bonus_Order_DetailVO(); 
-		bodXX.setBns_no("BN0023");
+		bodXX.setBns_no("BN0001");
 		bodXX.setQuantity(1);
 		
-//		Bonus_Order_DetailVO bodYY = new Bonus_Order_DetailVO(); 
-//		bodYY.setBns_no("BN0024");
-//		bodYY.setQuantity(2);
+		Bonus_Order_DetailVO bodYY = new Bonus_Order_DetailVO(); 
+		bodYY.setBns_no("BN0002");
+		bodYY.setQuantity(2);
 
 		testList.add(bodXX);
-//		testList.add(bodYY);
+		testList.add(bodYY);
 
 		dao.insertWithBonus_Order_Detail(bonus_orderVO, testList);
 
@@ -484,13 +425,19 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 //		System.out.println("---------------------");
 
 //		查詢			
-		List<Bonus_OrderVO> list = dao.getAll();
-		for (Bonus_OrderVO aBo : list) {
-			System.out.print(aBo.getBo_no() + ",");
-			System.out.print(aBo.getMem_no() + ",");
-			System.out.print(aBo.getBo_date() + ",");
-			System.out.print(aBo.getPromo_code() + ",");
-			System.out.println();
-		}
+//		List<Bonus_OrderVO> list = dao.getAll();
+//		for (Bonus_OrderVO aBo : list) {
+//			System.out.print(aBo.getBo_no() + ",");
+//			System.out.print(aBo.getMem_no() + ",");
+//			System.out.print(aBo.getBo_date() + ",");
+//			System.out.print(aBo.getPromo_code() + ",");
+//			System.out.println();
+//		}
+	}
+
+	@Override
+	public void insert(Bonus_OrderVO bonus_orderVO, List<Bonus_Order_DetailVO> list) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -21,7 +21,7 @@ public class BonusJDBCDAO implements BonusDAO_interface {
 			"UPDATE bonus set bns_name=?, bns_price=?, bns_stks=?, bns_date=?, bns_sts=?, bns_img=? where bns_no = ?";
 
 		@Override
-		public void insert(BonusVO bonusVO) {
+		public void insertFromBack(BonusVO bonusVO) {
 			// TODO Auto-generated method stub
 			
 			Connection con = null;
@@ -302,7 +302,7 @@ public class BonusJDBCDAO implements BonusDAO_interface {
 			bonusVO1.setBns_date(java.sql.Date.valueOf("2020-12-31"));
 			bonusVO1.setBns_sts(1);
 //			bonusVO1.setBns_img(?);		
-		    dao.insert(bonusVO1);
+		    dao.insertFromBack(bonusVO1);
 			
 //			// 修改	    
 //		    BonusVO bonusVO2 = new BonusVO();

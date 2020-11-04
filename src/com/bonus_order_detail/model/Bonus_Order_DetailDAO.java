@@ -22,7 +22,7 @@ public class Bonus_Order_DetailDAO implements Bonus_Order_DetailDAO_interface {
 	}
 
 	private static final String INSERT_STMT = "INSERT INTO bonus_order_detail (bo_no,bns_no,quantity) VALUES ('BO'||LPAD(SEQ_BO_NO.NEXTVAL,4,0), ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT bo_no,bns_no,quantity FROM bonus_order_detail by bo_no";
+	private static final String GET_ALL_STMT = "SELECT bo_no,bns_no,quantity FROM bonus_order_detail order by bo_no";
 	private static final String GET_ONE_STMT = "SELECT bo_no,bns_no,quantity FROM bonus_order_detail where bo_no = ?";
 	private static final String DELETE = "DELETE FROM bonus_order_detail where bo_no = ?";
 	private static final String UPDATE = "UPDATE bonus_order_detail set bo_no=?, bns_no=?, quantity=? where bo_no = ?";

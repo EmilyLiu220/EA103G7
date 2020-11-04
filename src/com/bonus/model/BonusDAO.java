@@ -21,14 +21,14 @@ public class BonusDAO implements BonusDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO bonus (bns_no,bns_name,bns_price,bns_stks,bns_date,bns_sts,bns_img) VALUES ('BN'||LPAD(SEQ_BNS_NO.NEXTVAL,4,0), ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO bonus (bns_no,bns_name,bns_price,bns_stks,bns_date,bns_img) VALUES ('BN'||LPAD(SEQ_BNS_NO.NEXTVAL,4,0), ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT bns_no,bns_name,bns_price,bns_stks,to_char(bns_date,'yyyy-mm-dd') bns_date,bns_sts,bns_img FROM bonus order by bns_no";
 	private static final String GET_ONE_STMT = "SELECT bns_no,bns_name,bns_price,bns_stks,to_char(bns_date,'yyyy-mm-dd') bns_date,bns_sts,bns_img FROM bonus where bns_no = ?";
 	private static final String DELETE = "DELETE FROM bonus where bns_no = ?";
 	private static final String UPDATE = "UPDATE bonus set bns_name=?, bns_price=?, bns_stks=?, bns_date=?, bns_sts=?, bns_img=? where bns_no = ?";
 
 	@Override
-	public void insert(BonusVO bonusVO) {
+	public void insertFromBack(BonusVO bonusVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -42,8 +42,7 @@ public class BonusDAO implements BonusDAO_interface {
 			pstmt.setInt(2, bonusVO.getBns_price());
 			pstmt.setInt(3, bonusVO.getBns_stks());
 			pstmt.setDate(4, bonusVO.getBns_date());
-			pstmt.setInt(5, bonusVO.getBns_sts());
-			pstmt.setBytes(6, bonusVO.getBns_img());
+			pstmt.setBytes(5, bonusVO.getBns_img());
 
 			pstmt.executeUpdate();
 
@@ -67,7 +66,6 @@ public class BonusDAO implements BonusDAO_interface {
 				}
 			}
 		}
-
 	}
 
 	@Override
