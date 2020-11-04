@@ -34,7 +34,7 @@ public class NewsServlet extends HttpServlet {
 				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 				String str = req.getParameter("news_no");
 				if (str == null || (str.trim()).length() == 0) {
-					errorMsgs.add("請輸入news_no");
+					errorMsgs.add("店訊編號: 請勿空白");
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -140,12 +140,12 @@ public class NewsServlet extends HttpServlet {
 					}
 					
 				}else {
-					errorMsgs.add("emp_no: 請勿空白");
+					errorMsgs.add("員工編號: 請勿空白");
 				}
 
 				String news_cont = req.getParameter("news_cont").trim();
 				if (news_cont == null || news_cont.trim().length() == 0) {
-					errorMsgs.add("最新消息，請勿空白");
+					errorMsgs.add("店訊內容: 請勿空白");
 				}
 
 				java.sql.Date news_date = null;
@@ -153,7 +153,7 @@ public class NewsServlet extends HttpServlet {
 					news_date = java.sql.Date.valueOf(req.getParameter("news_date").trim());
 				} catch (IllegalArgumentException e) {
 					news_date = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
+					errorMsgs.add("請輸入上架日期!");
 				}
 
 				Integer news_sts =  new Integer(req.getParameter("news_sts"));
@@ -205,7 +205,7 @@ public class NewsServlet extends HttpServlet {
 				String emp_no = req.getParameter("emp_no_news");
 //				String emp_noReg = "^[(EMP)[0-9]{4}]$";
 				if (emp_no == null || emp_no.trim().length() == 0) {
-					errorMsgs.add("emp_no: 請勿空白");
+					errorMsgs.add("員工編號: 請勿空白");
 				}
 //				else if (!emp_no.trim().matches(emp_noReg)) { // 以下練習正則(規)表示式(regular-expression)
 //					errorMsgs.add("emp_no: 只能是EMP , 且長度必需在4");
@@ -213,7 +213,7 @@ public class NewsServlet extends HttpServlet {
 
 				String news_cont = req.getParameter("news_cont").trim();
 				if (news_cont == null || news_cont.trim().length() == 0) {
-					errorMsgs.add("消息內容，請勿空白");
+					errorMsgs.add("店訊內容: 請勿空白");
 				}
 
 				java.sql.Date news_date = null;
@@ -221,7 +221,7 @@ public class NewsServlet extends HttpServlet {
 					news_date = java.sql.Date.valueOf(req.getParameter("news_date").trim());
 				} catch (IllegalArgumentException e) {
 					news_date = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
+					errorMsgs.add("請輸入上架日期!");
 				}
 
 //				----------------------

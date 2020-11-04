@@ -49,18 +49,18 @@ public class AdServlet extends HttpServlet {
 				String emp_no = req.getParameter("emp_no");
 
 				if (emp_no == null || (emp_no.trim()).length() == 0) {
-					errorMsgs.add("emp_no: 請勿空白");
+					errorMsgs.add("員工編號: 請勿空白");
 				}
 
 				String ad_title = req.getParameter("ad_title").trim();
 
 				if (ad_title == null || ad_title.trim().length() == 0) {
-					errorMsgs.add("ad_title請勿空白");
+					errorMsgs.add("廣告標題: 請勿空白");
 				}
 				String ad_cont = req.getParameter("ad_cont").trim();
 
 				if (ad_cont == null || ad_cont.trim().length() == 0) {
-					errorMsgs.add("ad_cont請勿空白");
+					errorMsgs.add("廣告內容: 請勿空白");
 				}
 
 				java.sql.Date ad_add_date = null;
@@ -69,7 +69,7 @@ public class AdServlet extends HttpServlet {
 					ad_add_date = java.sql.Date.valueOf(req.getParameter("ad_add_date").trim());
 				} catch (IllegalArgumentException e) {
 					ad_add_date = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
+					errorMsgs.add("請輸入上架日期!");
 				}
 
 				java.sql.Date ad_re_date = null;
@@ -78,10 +78,10 @@ public class AdServlet extends HttpServlet {
 					ad_re_date = java.sql.Date.valueOf(req.getParameter("ad_re_date").trim());
 				} catch (IllegalArgumentException e) {
 					ad_re_date = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
+					errorMsgs.add("請輸入下架日期!");
 				}
 
-				Integer ad_sts = new Integer(0);
+				Integer ad_sts = new Integer(1);
 				
 //			          抓取登入員工
 //				HttpSession session = req.getSession();
@@ -107,7 +107,7 @@ public class AdServlet extends HttpServlet {
 						is.close();
 					}
 				} else {
-					errorMsgs.add("ad_img: 請勿空白");
+					errorMsgs.add("廣告圖片: 請勿空白");
 				}
 //					else {
 //					AdService adSvc= new AdService();
@@ -190,7 +190,7 @@ public class AdServlet extends HttpServlet {
 //				}
 				
 				if (str == null || (str.trim()).length() == 0) {
-					errorMsgs.add("請輸入ad_no");
+					errorMsgs.add("廣告編號: 請勿空白");
 				}
 				
 				// Send the use back to the form, if there were errors
@@ -306,19 +306,19 @@ public class AdServlet extends HttpServlet {
 					}
 					
 				}else {
-					errorMsgs.add("emp_no: 請勿空白");
+					errorMsgs.add("員工編號: 請勿空白");
 				}
 				
 				
 //				System.out.println(emp_no);
 				String ad_title = req.getParameter("ad_title").trim();
 				if (ad_title == null || ad_title.trim().length() == 0) {
-					errorMsgs.add("ad_title: 活動標題，請勿空白");
+					errorMsgs.add("活動標題: 請勿空白");
 				}
 //				System.out.println(ad_title);
 				String ad_cont = req.getParameter("ad_cont").trim();
 				if (ad_cont == null || ad_cont.trim().length() == 0) {
-					errorMsgs.add("ad_cont: 活動內容，請勿空白");
+					errorMsgs.add("活動內容: 請勿空白");
 				}
 
 				java.sql.Date ad_add_date = null;
@@ -326,7 +326,7 @@ public class AdServlet extends HttpServlet {
 					ad_add_date = java.sql.Date.valueOf(req.getParameter("ad_add_date").trim());
 				} catch (IllegalArgumentException e) {
 					ad_add_date = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
+					errorMsgs.add("請輸入上架日期!");
 				}
 //				System.out.println(ad_add_date);
 				java.sql.Date ad_re_date = null;
@@ -334,7 +334,7 @@ public class AdServlet extends HttpServlet {
 					ad_re_date = java.sql.Date.valueOf(req.getParameter("ad_re_date").trim());
 				} catch (IllegalArgumentException e) {
 					ad_re_date = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期!");
+					errorMsgs.add("請輸入下架日期!");
 				}
 //				System.out.println(ad_re_date);
 
