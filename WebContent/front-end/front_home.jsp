@@ -77,12 +77,16 @@
 .ad2 {
 	width: 50%;
 	height: 750px;
-	margin: 0px auto;
+/* 	margin: 0px auto; */ 
+left:750px;
+	
 }
 
 .ad3 {
+	height:850px;
 	background-image:
 		url('<%=request.getContextPath()%>/front-end/images/newsBg.jpg');
+	
 }
 
 .ad {
@@ -92,9 +96,10 @@
 
 .adimg {
 	position: relative;
-	top: 500px;
-	left: 500px;
+	top: 300px;
+	left: 400px;
 }
+
 </style>
 
 </head>
@@ -370,7 +375,7 @@
 		</div>
 	</section>
 	<!-- 		------------------------------ -->
-	<div id="carouselExampleIndicators" class="carousel slide"
+	<div id="carouselExampleIndicators" class="carousel slide "
 		data-ride="carousel">
 
 		<ol class="carousel-indicators">
@@ -381,11 +386,11 @@
 		</ol>
 		<%-- 		<img src="<%=request.getContextPath()%>/front-end/images/null2.jpg" class="adimg"> --%>
 		<div class="ad3 ">
-			<img src="<%=request.getContextPath()%>/front-end/images/null2.jpg"
+			<img src="<%=request.getContextPath()%>/front-end/images/adadt.jpg"
 				class="adimg">
 			<div class="carousel-inner ad2">
 				<%@ include file="/front-end/front/page1-1.file"%>
-				<div class="row text-center text-lg-left">
+				<div class="row text-center text-lg-left" >
 					<c:forEach var="adVO" items="${list}">
 						<div class="carousel-item ad">
 

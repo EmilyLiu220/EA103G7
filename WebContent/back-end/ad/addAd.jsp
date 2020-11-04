@@ -101,26 +101,22 @@ width:100px;
 						<li><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-						<li><a href="#">評價管理</a></li>
-						<li><a href="#">用餐時段管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
 						<li><a href="<%=request.getContextPath()%>/back-end/meal/listAllMeal2.jsp">菜單管理</a></li>
-						<li><a href="#">食材管理</a></li>
-						<li><a href="#">餐點組成管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
 						<li><a href="#">食材消耗統計</a></li>
 						<li><a href="#">紅利商品管理</a></li>
 					</ul></li>
 				<li><a href="#homeSubmenu" data-toggle="collapse"
 					aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li><a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
-						<li><a href="#">訂單派工</a></li>
-						<li><a href="#">出餐管理</a></li>
-						<li><a href="#">訂餐訂單處理</a></li>
-						<li><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
-						<li><a href="#">訂單管理</a></li>
-						<li><a href="#">訂位管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
+						<li class="fun2"><a href="#">訂位管理</a></li>
 					</ul></li>
 			</ul>
 
@@ -187,13 +183,10 @@ width:100px;
 								<li class="nav-item active"><a class="nav-link" href="#">現場點餐</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">現場劃位</a></li>
 								<li class="nav-item active"><a class="nav-link" href="#">訂單結帳</a></li>
-								<li class="nav-item active"><a class="nav-link" href="#">候位管理</a></li>
-								<li class="nav-item active"><a class="nav-link"
-									href="/EA103G7/back-end/back-index_m.jsp">主管員工專區</a></li>
-								<li class="nav-item active"><a class="nav-link"
-									href="/EA103G7/back-end/back-index_e.jsp">一般員工專區</a></li>
-								<li class="nav-item active"
-									style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
+								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
+								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
+								<li class="nav-item active" style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
 
 
 									<div id="topLogIn"
@@ -214,7 +207,7 @@ width:100px;
 				href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp"
 				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
 				onmouseover="this.style.color='#ffbc5e';"
-				onmouseout="this.style.color='#DEA554;';">返回首頁</a>
+				onmouseout="this.style.color='#DEA554;';">返回上一頁</a>
 			<p></p>
 			<table id="table-1">
 				<tbody>
@@ -230,7 +223,7 @@ width:100px;
 			<%-- 錯誤表列 --%>
 
 			<c:if test="${not empty errorMsgs}">
-				<font style="color: red">請修正以下錯誤:</font>
+				<font style="color: red"></font>
 				<ul>
 					<c:forEach var="message" items="${errorMsgs}">
 						<li style="color: red">${message}</li>
@@ -262,21 +255,23 @@ width:100px;
 						<!-- 						</tr> -->
 						<tr>
 							<td>廣告標題:<font color="red"><b>*</b></font></td>
-							<td><input type="TEXT" name="ad_title" size="45"
-								value="<%=(adVO == null) ? "" : adVO.getAd_title()%>" /></td>
+							<td><textarea style="width: 410px; height: 50px;"
+									name="ad_title"  /><%=(adVO == null) ? "" : adVO.getAd_title()%></textarea></td>
 						</tr>
 						<tr>
 							<td>廣告內容:<font color="red"><b>*</b></font></td>
-							<td><textarea style="width: 400px; height: 100px;"
-									name="ad_cont" placeholder="請輸入5字以上、60字以下之內容"></textarea></td>
+							<td><textarea style="width: 410px; height: 100px;"
+									name="ad_cont"   /></textarea></td>
 						</tr>
 						<tr>
 							<td>上架日期:<font color="red"><b>*</b></font></td>
-							<td><input name="ad_add_date" id="ad_date" type="text"></td>
+							<td><input name="ad_add_date" id="ad_date" type="text"
+							value="<%=(adVO == null) ? "" : adVO.getAd_add_date()%>" /></td>
 						</tr>
 						<tr>
 							<td>下架日期:<font color="red"><b>*</b></font></td>
-							<td><input name="ad_re_date" id="re_date" type="text"></td>
+							<td><input name="ad_re_date" id="re_date" type="text"
+							value="<%=(adVO == null) ? "" : ""%>" /></td>
 						</tr>
 					</tbody>
 				</table>
