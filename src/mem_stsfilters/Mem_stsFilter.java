@@ -40,7 +40,7 @@ public class Mem_stsFilter implements Filter {
 //		String repo = req.getContextPath() + "";
 		
 		List<String> reserve = new ArrayList<>();
-		reserve.add(req.getContextPath() + "/front-end/res_order/res_order.do");
+		reserve.add(req.getContextPath() + "/front-end/res_order/ResOrderServlet.do");
 		reserve.add(req.getContextPath() + "/front-end/res_order/orderSeat.jsp");
 		reserve.add(req.getContextPath() + "/front-end/res_order/getMemberResSeat.jsp");
 		reserve.add(req.getContextPath() + "/front-end/res_order/getMemberResSeatEnd.jsp");
@@ -54,7 +54,7 @@ public class Mem_stsFilter implements Filter {
 		reserve.add(req.getContextPath() + "/front-end/shopping/mealOrder.jsp");
 		reserve.add(req.getContextPath() + "/front-end/shopping/mealOrderOne.jsp");
 		reserve.add(req.getContextPath() + "/front-end/shopping/mealSetMenu.jsp");
-		reserve.add(req.getContextPath() + "/front-end/shopping/mealSetMenu.jsp");
+		reserve.add(req.getContextPath() + "/front-end/shopping/rsvCart.jsp");
 		
 		List<String> review = new ArrayList<>();
 		List<String> repo = new ArrayList<>();

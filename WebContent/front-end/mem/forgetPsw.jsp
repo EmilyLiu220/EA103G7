@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="BIG5"%>
 
+<%
+	String x = (String) request.getAttribute("x");
+%>
+
 <html>
 <head>
 <title>忘記密碼</title>
@@ -17,7 +21,7 @@
 </style>
 
 </head>
-<body>
+<body onload="hint()">
 	
 	<%@ include file="/front-end/headfinish.jsp"%>
 	
@@ -46,8 +50,9 @@
 	</div>
 	
 	<jsp:include page="/front-end/front/footer.jsp" />
-	
-</body>
+
+<!--sweet alert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 
@@ -60,6 +65,22 @@
 // 		}
 // 	});
 
+	var x = `${x}`;
+	console.log(x);
+	function hint() {
+		if (x === "notfound") {
+// 			alert("查無此email！請重新輸入！");
+			swal({
+				  title: "查無此email！請重新輸入！",
+				  text: "3秒後自動關閉。",
+				  icon: "error",
+				  timer: 3000,
+				  showConfirmButton: true
+				});
+		}
+	}
+
 </script>
 
+</body>
 </html>
