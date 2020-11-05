@@ -69,6 +69,7 @@
 	<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" />
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
+	<jsp:useBean id="mealOredrSvc" scope="page" class="com.meal_order.model.MealOrderService" />
 	<c:forEach var="resOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 	<c:if test="${resOrderVO.info_sts lt 3}">
 		<tr style="background: ${param.res_no eq resOrderVO.res_no ? 'LemonChiffon':''};">
@@ -78,7 +79,7 @@
 				</c:forEach>
 			</td>
 			<td>
-				<c:if test="${(not empty resOrderVO.meal_order_no) and (resOrderVO.meal_order.sts ne 1)}">
+				<c:if test="${(not empty resOrderVO.meal_order_no) and mealOredrSvc.searchByOrderNo(resOrderVO.meal_order_no) ne 1)}">
 					<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">
