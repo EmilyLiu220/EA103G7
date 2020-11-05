@@ -205,13 +205,12 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 
 		for(Meal_partVO meal_partVO:list) {
 			try {
-				con.setAutoCommit(false);
 				pstmt = con.prepareStatement(INSERT_STMT);
 				pstmt.setString(1, meal_partVO.getMeal_no());
 				pstmt.setString(2, meal_partVO.getFd_no());
 				pstmt.setDouble(3, meal_partVO.getFd_gw());
 				pstmt.executeUpdate();
-				con.commit();
+				
 			} catch (SQLException se) {
 				try {
 					con.rollback();
@@ -225,13 +224,6 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 						pstmt.close();
 					} catch (SQLException se) {
 						se.printStackTrace(System.err);
-					}
-				}
-				if (con != null) {
-					try {
-						con.close();
-					} catch (Exception e) {
-						e.printStackTrace(System.err);
 					}
 				}
 			}

@@ -361,8 +361,8 @@ border: 2px solid darkgray;
 						<div class="col-4">訂單數量：<span>${list.size()}&nbsp;筆</span></div>
 						</div>
 						<div class="row">
-						<fmt:parseNumber  parseLocale="#" integerOnly="true" value="${amount/list.size()}" var="result" />
-						<div class="col-4">平均訂單金額：<span><c:if test="${amount !=0 and list.size()!=0}"><c:out value="${result}"/></c:if>&nbsp;/&nbsp;筆</span></div>
+						<fmt:parseNumber  parseLocale="#" integerOnly="true" value="${amount !=0 and list.size()!=0?amount/list.size():''}" var="result" />
+						<div class="col-4">平均訂單金額：<span><c:out value="${result}"/>&nbsp;/&nbsp;筆</span></div>
 						<div class="col-4">平均客單價：<span>&nbsp;/&nbsp;人</span></div>
 						</div>
 					</div>
