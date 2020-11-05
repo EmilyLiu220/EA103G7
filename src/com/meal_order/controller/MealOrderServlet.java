@@ -151,7 +151,7 @@ public class MealOrderServlet extends HttpServlet {
 			// 加入訂餐完成通知
 			Front_InformService fiSvc = new Front_InformService();
 			fiSvc.addNormalFI(memNo, "訂餐成功，點選查看訂餐訂單");
-			
+
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "front-end/shopping/mealOrderOne.jsp";
@@ -224,11 +224,11 @@ public class MealOrderServlet extends HttpServlet {
 			resOrderSvc.updateResOrder(resNo, mealOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
 					resOrderVO.getTime_peri_no(), resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
-			
+
 			// 加入訂餐完成通知
 			Front_InformService fiSvc = new Front_InformService();
 			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "訂餐成功，點選查看訂餐訂單");
-			
+
 			req.setAttribute("res_no", resNo);
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
@@ -295,8 +295,12 @@ public class MealOrderServlet extends HttpServlet {
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = returnPath;
-			RequestDispatcher success = req.getRequestDispatcher(url);
-			success.forward(req, res);
+			if ("update".equals(req.getParameter("queryString"))) {
+				req.getRequestDispatcher("/back-end/mealOrder/asignOrder.jsp").forward(req, res);
+			} else {
+				RequestDispatcher success = req.getRequestDispatcher(url);
+				success.forward(req, res);
+			}
 
 		}
 
@@ -398,8 +402,8 @@ public class MealOrderServlet extends HttpServlet {
 			}
 			MealOrderService mealOrderSrv = new MealOrderService();
 			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
-			Map <String,Object> listMap = new HashMap<>();
-			int ranNumPeople = (int)((Math.random()*2+1)*orderList.size());
+			Map<String, Object> listMap = new HashMap<>();
+			int ranNumPeople = (int) ((Math.random() * 2 + 1) * orderList.size());
 			listMap.put("orderList", new Integer(orderList.size()));
 			listMap.put("ranNumPeople", ranNumPeople);
 			MealOrderDetailService detailSrv = new MealOrderDetailService();
@@ -412,7 +416,7 @@ public class MealOrderServlet extends HttpServlet {
 					.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
 			Set<String> mealKeys = mealMap.keySet();
 			Set<String> mealSetKeys = mealSetMap.keySet();
-			
+
 			for (String key : mealKeys) {
 				((MealVO) mealMap.get(key)).setMeal_qty(0);
 				((MealVO) mealMap.get(key)).setMeal_img(null);
@@ -455,7 +459,7 @@ public class MealOrderServlet extends HttpServlet {
 			jsonMap.put("mealMap", mealMap);
 			jsonMap.put("mealSetMap", mealSetMap);
 			jsonMap.put("orderList", listMap);
-			
+
 			Gson gson = new Gson();
 			String jsondata = gson.toJson(jsonMap);
 			res.setContentType("application/json; charset=utf-8");

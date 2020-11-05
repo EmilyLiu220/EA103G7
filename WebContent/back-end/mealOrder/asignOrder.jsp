@@ -373,7 +373,7 @@ border: 2px solid darkgray;
     	webSocket.onmessage = function (e){
     		var jsonObj = JSON.parse(e.data);
     		if(jsonObj.reload === 'asignOrder')
-    		window.location.reload();
+    		window.location.assign('${pageContext.request.contextPath}/back-end/mealOrder/asignOrder.jsp');
     		if(jsonObj.action === 'insert'){
 //     			var now = new Date();
 				console.log(new Date().getMonth());
