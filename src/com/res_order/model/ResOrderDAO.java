@@ -535,7 +535,7 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_BY_RES_DATE);
-			pstmt.setDate(1, java.sql.Date.valueOf(res_date));
+			pstmt.setString(1, res_date);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				resOrderVO = new ResOrderVO();

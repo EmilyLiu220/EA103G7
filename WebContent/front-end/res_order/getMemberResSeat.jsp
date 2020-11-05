@@ -168,7 +168,7 @@
 <%@ include file="pages/page2.file"%>
 	    </c:otherwise>
 </c:choose>
-<input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/back-end/seat_obj/addSeatObj.jsp'">
+<input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/front-end/front_home.jsp'">
 <input class="btn btn-secondary" type="button" value="回桌訂位畫面" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp'">
 
 </div>

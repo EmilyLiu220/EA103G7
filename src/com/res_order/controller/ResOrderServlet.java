@@ -21,9 +21,11 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.ad.model.AdDAO;
 import com.front_inform.model.Front_InformService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.meal_order.model.MealOrderService;
 import com.mem.model.MemService;
 import com.mem.model.MemVO;
 import com.res_detail.model.ResDetailService;
@@ -288,6 +290,61 @@ public class ResOrderServlet extends HttpServlet {
 			return;
 		}
 
+		if ("get_Res_Order_Today_For_Back".equals(action)) {
+
+			PrintWriter out = res.getWriter();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+			Map<String, JSONArray> thisResOrderInfo = new HashMap<String, JSONArray>();
+			List<String> seatNOList = new ArrayList<String>();
+			List<String> seated = new ArrayList<String>();
+
+			String res_date = req.getParameter("res_date");
+			String time_peri_no = req.getParameter("time_peri_no");
+
+			ResOrderService resOrderSvc = new ResOrderService();
+			ResDetailService resDetailSvc = new ResDetailService();
+			SeatService seatSvc = new SeatService();
+
+			if (!"-1".equals(time_peri_no) && res_date != null) {
+				List<ResOrderVO> resOrderList = resOrderSvc.getResDate_And_TimePeri_getAll(res_date, time_peri_no);
+				// 取得訂位訂單
+				for (ResOrderVO resOrderVO : resOrderList) {
+					// 判斷是否被取消
+					if (resOrderVO.getInfo_sts() != 3) {
+						List<ResDetailVO> resDetailList = resDetailSvc.getAllResNO(resOrderVO.getRes_no());
+						// 如果桌位編號有在訂單內，回傳並將該桌號disabled
+						for (ResDetailVO resDetailVO : resDetailList) {
+							if (req.getParameter("floor") != null) {
+								Integer floor = Integer.parseInt(req.getParameter("floor"));
+								if (seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
+									seatNOList.add(resDetailVO.getSeat_no());
+								}
+								if (resOrderVO.getSeat_sts() == 1) {
+									seated.add(resDetailVO.getSeat_no());
+								}
+							} else {
+								System.out.println(12312);
+							}
+						}
+					}
+				}
+				
+				thisResOrderInfo.put("seatNoList", new JSONArray(seatNOList.toString()));
+				thisResOrderInfo.put("seated", new JSONArray(seated.toString()));
+				String JSONSeatVOList = gson.toJson(thisResOrderInfo);
+				res.setContentType("text/plain");
+				res.setCharacterEncoding("UTF-8");
+				out.print(JSONSeatVOList);
+				out.flush();
+				out.close();
+			} else {
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "請選擇正確時段");
+				return;
+			}
+			return;
+		}
+
 		/********************** 取得所有桌位，可容納之人數 **********************/
 		if ("get_All_Seat_People".equals(action)) {
 
@@ -452,26 +509,26 @@ public class ResOrderServlet extends HttpServlet {
 
 		if ("get_res_info".equals(action)) {
 
-			String res_date = req.getParameter("res_date");
-			String time_peri_no = req.getParameter("time_peri_no");
-			String seat_no = req.getParameter("seat_no");
-			Integer floor = Integer.parseInt(req.getParameter("floor"));
-
-			System.out.println(res_date);
-			System.out.println(time_peri_no);
-			System.out.println(seat_no);
-			System.out.println(floor);
-
 			ResDetailService resDetailSvc = new ResDetailService();
 			ResOrderService resOrderSvc = new ResOrderService();
 			MemService memSvc = new MemService();
 			SeatService seatSvc = new SeatService();
 			TimePeriService timePeriSvc = new TimePeriService();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
-			List<String> seatNoList = new ArrayList<String>();
+			List<String> seated = new ArrayList<String>();
+
 			Map<String, String> thisResOrderInfo = new HashMap<String, String>();
 
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+			String res_date = req.getParameter("res_date");
+			String time_peri_no = req.getParameter("time_peri_no");
+			String seat_no = req.getParameter("seat_no");
+			Integer floor = Integer.parseInt(req.getParameter("floor"));
+
+//			System.out.println(res_date);
+//			System.out.println(time_peri_no);
+//			System.out.println(seat_no);
+//			System.out.println(floor);
 
 			if (!"-1".equals(time_peri_no) && res_date != null) {
 				List<ResOrderVO> resOrderVOList = resOrderSvc.getResDate_And_TimePeri_getAll(res_date, time_peri_no);
@@ -485,27 +542,78 @@ public class ResOrderServlet extends HttpServlet {
 						for (ResDetailVO resDetailVO : resDetailList) {
 							if (floor != null
 									&& seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
-								seatNoList.add(resDetailVO.getSeat_no());
+
 								if (resOrderVO.getRes_no().equals(resDetailVO.getRes_no())
 										&& resDetailVO.getSeat_no().equals(seat_no)) {
 									MemVO memVO = memSvc.getOneMem(resOrderVO.getMem_no());
 									TimePeriVO timePeriVO = timePeriSvc.getOneTimePeri(resOrderVO.getTime_peri_no());
-									
+
 									thisResOrderInfo.put("res_order", gson.toJson(resOrderVO).toString());
 									thisResOrderInfo.put("mem", gson.toJson(memVO).toString());
 									thisResOrderInfo.put("res_detail", gson.toJson(resDetailList).toString());
 									thisResOrderInfo.put("time_peri", gson.toJson(timePeriVO).toString());
+								}
+								if (resOrderVO.getSeat_sts() == 1) {
+									seated.add(resDetailVO.getSeat_no());
 								}
 							}
 						}
 					}
 				}
 			}
+			thisResOrderInfo.put("seated", gson.toJson(seated).toString());
 			String JSONSeatVOList = gson.toJson(thisResOrderInfo);
 			PrintWriter out = res.getWriter();
 			res.setContentType("text/plain");
 			res.setCharacterEncoding("UTF-8");
 			out.print(JSONSeatVOList);
+			out.flush();
+			out.close();
+			return;
+		}
+
+		// 入座
+		if ("take_a_seat".equals(action)) {
+			hs.removeAttribute("insert");
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			String res_no = req.getParameter("res_no");
+			String res_date = req.getParameter("res_date");
+			String time_peri_no = req.getParameter("time_peri_no");
+			String meal_order_no = req.getParameter("meal_order_no");
+//			System.out.println(res_no);
+//			System.out.println(res_date);
+//			System.out.println(time_peri_no);
+
+			if ("--請選擇日期--".equals(res_date)) {
+				errorMsgs.add("請選擇訂位日期");
+			}
+
+			if ("-1".equals(time_peri_no)) {
+				errorMsgs.add("請選擇訂位時段");
+			}
+
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/orderSeat.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+
+			ResOrderService resOrderSvc = new ResOrderService();
+			MealOrderService mealOrderSvc = new MealOrderService();
+			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
+
+			resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
+					resOrderVO.getEmp_no(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), time_peri_no,
+					resOrderVO.getInfo_sts(), 1, null);
+			
+			mealOrderSvc.updatePickupTime(meal_order_no);
+
+			PrintWriter out = res.getWriter();
+			res.setContentType("text/plain");
+			res.setCharacterEncoding("UTF-8");
+			out.print("成功入座");
 			out.flush();
 			out.close();
 			return;
