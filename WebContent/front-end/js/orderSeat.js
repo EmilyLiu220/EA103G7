@@ -117,7 +117,7 @@ $(document).ready(function() {
 						},
 						success: function(messages) {
 							var jsonArray = JSON.parse(messages);
-							// console.log(jsonArray);
+//							console.log(jsonArray);
 							var $myCheckbox = $(".myCheckbox");
 
 							$.each($myCheckbox, function(_index, item) {
@@ -414,7 +414,7 @@ $(document).ready(function() {
 			},
 			success: function(messages) {
 				var jsonArray = JSON.parse(messages);
-				// console.log(jsonArray);
+				console.log(jsonArray);
 				var $myCheckbox = $(".myCheckbox");
 
 				$.each($myCheckbox, function(_index, item) {

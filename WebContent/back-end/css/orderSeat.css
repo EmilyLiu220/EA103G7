@@ -59,11 +59,12 @@ div#container.container {
 }
 
 .drag .myCheckbox {
-	width: 20px;
-	height: 20px;
+	width: 0px;
+	height: 0px;
 	position: absolute;
 	bottom: 15px;
 	right: 0px;
+	display: none;
 }
 
 /* label { */
@@ -145,7 +146,7 @@ div.modal-body {
 }
 
 div.popover {
-	width: 250px;
+	width: 450px;
 }
 
 div.buttonDiv {
