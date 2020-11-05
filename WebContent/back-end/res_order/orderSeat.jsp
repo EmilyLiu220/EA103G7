@@ -59,7 +59,7 @@ input, select {
 						條件四：<input type="text" >　條件五：<input type="text" >　條件五：<input type="text" ><br>
 						條件六：<input type="text" >　條件七：<input type="text" >　條件八：<input type="text" ><br>
 					</div>
-					<button id="orderSearch" name="action" value="order_search" class="btn btn-warning" onclick='return false;'>查詢</button>
+					<button id="orderSearch_a" name="action" value="order_search" class="btn btn-warning" onclick='return false;'>查詢</button>
 				</form>
 				<table id="table-1">
 					<tr>

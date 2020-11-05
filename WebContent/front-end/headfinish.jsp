@@ -186,14 +186,9 @@
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front_home.jsp" class="nav-link">Home</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp" class="nav-link">店內新訊</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp" class="nav-link">最新活動</a></li>
-<<<<<<< HEAD
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/member_review/select_page.jsp" class="nav-link">評價總覽</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/wait_seat/wait_seat.jsp" class="nav-link">候位狀況</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/bonus/listAllBonus.jsp" class="nav-link">紅利商品</a></li>
-=======
-					<li class="nav-item"><a href="" class="nav-link">評價總覽</a></li>
-					<li class="nav-item"><a href="" class="nav-link">候位狀況</a></li>
->>>>>>> refs/heads/JaredH_1105
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/shopping/mealMenu2.jsp" class="nav-link" id="meal">我要訂餐</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp" class="nav-link" id="res">我要訂位</a></li>
 				</ul>
@@ -448,7 +443,7 @@
 			}
 		} else if ("read" === jsonObj.type){
 			console.log("收到 "+jsonObj.sender+" read 訊息");
-			document.querySelectorAll('.chat_unread').forEach( (e)=>{
+			document.querySelectorAll('.chat_unread').forEach( (e)=> {
 				e.innerText = " 已讀";
 				e.classList.remove("chat_unread");
 			})
