@@ -4,8 +4,12 @@ import java.io.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import com.bonus.model.BonusService;
+import com.bonus.model.BonusVO;
 import com.bonus_order.model.*;
 import com.bonus_order_detail.model.*;
+import com.mem.model.MemVO;
 
 public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到請求後進入insert方法，再由Service呼叫DAO做事情
 
@@ -18,11 +22,10 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 
-		if ("bonusOrderDetailsFront".equals(action)) { // 來自select_page.jsp的請求
+		if ("bonusOrderDetailsFront".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
+
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
@@ -188,39 +191,54 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 			}
 		}
 
-		if ("insert".equals(action)) { // 來自addMember_Review.jsp的請求
+		if ("insert".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
+
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
-				String mem_no = req.getParameter("mem_no");
+				String bns_no = req.getParameter("bns_no");
+				
+				HttpSession session = req.getSession();
+				MemVO memVO = (MemVO) session.getAttribute("memVO2");
+				
+				String mem_no = memVO.getMem_no();
 				if (mem_no == null || mem_no.trim().length() == 0) {
 					errorMsgs.add("會員編號：請勿空白");
 				}
-				
-//				String bns_name = req.getParameter("bns_name");
-//				
-//				if ("".equals(bns_name) || bns_name.trim().length() == 0) {
-//					errorMsgs.add("請選擇紅利商品");
-//				}
 
-				String promo_code = req.getParameter("promo_code");
+//				String promo_code = req.getParameter("promo_code");
+				int[] array = new int [62];
+				for (int i = 0; i < array.length; i ++)
+					if (i < 10) array[i] = 48 + i;	
+					else if (i < 36) array[i] = 55 + i;	
+					else  array[i] = 61 + i;		
+		 
+				int arrayBlength = 10;			
+				int[] arrayB = new int[arrayBlength];
+				Random r = new Random();
+				for (int i = 0; i < arrayBlength; i ++)	
+					arrayB[i] = array[r.nextInt(62)];	
+				
+				String arrayCode = "";	
+				for (int i = 0; i < arrayBlength; i ++) 
+					arrayCode += (char)arrayB[i];
+						
+				String promo_code = arrayCode;			
 				String promo_codeReg = "^[(a-zA-Z0-9)]{10}$";
 				if (promo_code == null || promo_code.trim().length() == 0) {
 					errorMsgs.add("優惠代碼: 請勿空白");
 				} else if (!promo_code.trim().matches(promo_codeReg)) { // 以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("優惠代碼: 只能是英文字母和數字，且長度必須為10");
 				}
-
+				
 				java.sql.Date bo_date = null;
+				bo_date = new java.sql.Date(System.currentTimeMillis());
 				try {
-					bo_date = java.sql.Date.valueOf(req.getParameter("bo_date").trim());
-				} catch (IllegalArgumentException e) {
 					bo_date = new java.sql.Date(System.currentTimeMillis());
+				} catch (IllegalArgumentException e) {
 					errorMsgs.add("請輸入日期!");
 				}
 
@@ -238,7 +256,10 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 					return; // 程式中斷
 				}
 				
-				List<Bonus_Order_DetailVO>list = new ArrayList<>();
+				List<BonusVO>list = new ArrayList<>();
+				BonusService svc = new BonusService();
+				BonusVO bonusVO = svc.getOneBonus(bns_no);
+				list.add(bonusVO);
 
 				/*************************** 2.開始新增資料 ***************************************/
 				Bonus_OrderService bonus_orderSvc = new Bonus_OrderService();
@@ -246,7 +267,7 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				req.setAttribute("bonus_orderVO", bonus_orderVO);
-				String url = "/front-end/bonus_order/listAllBonus_Order.jsp";
+				String url = "/front-end/bonus_order/listOneBonus_Order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);
 
@@ -258,11 +279,10 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 			}
 		}
 
-		if ("deleteBonusOrder".equals(action)) { // 來自listAllMember_Review.jsp
+		if ("deleteBonusOrder".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
+
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {

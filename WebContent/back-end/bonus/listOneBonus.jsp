@@ -196,10 +196,10 @@
 						<th style="width: 20%;">紅利商品編號</th>
 						<th style="width: 20%;">紅利商品名稱</th>
 						<th style="width: 20%;">紅利商品價格</th>
-						<th style="width: 20%;">庫存量</th>
-						<th style="width: 20%;">有效日期</th>
-						<th style="width: 20%;">兌換狀態</th>
-						<th style="width: 20%;">圖片</th>
+						<th style="width: 10%;">庫存量</th>
+						<th style="width: 10%;">有效日期</th>
+						<th style="width: 10%;">兌換狀態</th>
+						<th style="width: 10%;">圖片</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -210,32 +210,7 @@
 						<td style="text-align: center;"><%=bonusVO.getBns_stks()%></td>
 						<td style="text-align: center;"><%=bonusVO.getBns_date()%></td>
 						<td style="text-align: center;"><%=bonusVO.getBns_sts()%></td>
-						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
-						
-						<td style="text-align: center;">
-							<FORM METHOD="post"
-								ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-								style="margin-bottom: 0px;">
-								<input type="submit" value="修改" id="update"
-									style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-									onMouseOver="this.style.background='#c4b029'"
-									onMouseOut="this.style.background='#8f801d'"> <input
-									type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
-								<input type="hidden" name="action" value="updateBonus">
-							</FORM>
-						</td>
-						<td style="text-align: center;">
-							<FORM METHOD="post"
-								ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded"
-								style="margin-bottom: 0px;">
-								<input type="submit" value="下架" id="delete"
-									style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-									onMouseOver="this.style.background='#ba2214'"
-									onMouseOut="this.style.background='#6b2822'"> <input
-									type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
-								<input type="hidden" name="action" value="deleteBonus">
-							</FORM>
-						</td>					
+						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}" width="250"></td>	
 					</tr>
 				</tbody>
 			</table>

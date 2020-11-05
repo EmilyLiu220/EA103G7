@@ -290,7 +290,7 @@ public class Member_ReviewServlet extends HttpServlet { // 控制器Servlet收�
 			}
 		}
 
-		if ("insert".equals(action)) { // 來自addMember_Review.jsp的請求
+		if ("insertMemberReview".equals(action)) { // 來自addMember_Review.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -337,8 +337,8 @@ public class Member_ReviewServlet extends HttpServlet { // 控制器Servlet收�
 				Member_ReviewService member_reviewSvc = new Member_ReviewService();
 				member_reviewVO = member_reviewSvc.addMember_Review(meal_order_no, mem_review_con, review_date); // 呼叫Service內addMember_Review的方法
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-//				req.setAttribute("member_reviewVO", member_reviewVO);
-				String url = "/front-end/member_review/listAllMember_Review.jsp";
+				req.setAttribute("member_reviewVO", member_reviewVO);
+				String url = "/front-end/member_review/listOneMember_Review.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);
 				/*************************** 其他可能的錯誤處理 **********************************/

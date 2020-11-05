@@ -209,10 +209,10 @@
 			<table class="table table-hover" style="width: 120%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 20%;">檢舉編號</th>
-						<th style="width: 20%;">評價編號</th>
-						<th style="width: 20%;">會員編號</th>
-						<th style="width: 20%;">員工編號</th>
+						<th style="width: 15%;">檢舉編號</th>
+						<th style="width: 15%;">評價編號</th>
+						<th style="width: 15%;">會員編號</th>
+						<th style="width: 15%;">員工編號</th>
 						<th style="width: 20%;">檢舉內容</th>
 						<th style="width: 20%;">檢舉日期</th>
 					</tr>

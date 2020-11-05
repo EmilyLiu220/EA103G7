@@ -3,102 +3,110 @@
 <%@ page import="com.report_appraise.model.*"%>
 
 <%
-  Report_AppraiseVO report_appraiseVO = (Report_AppraiseVO) request.getAttribute("report_appraiseVO");
+	Report_AppraiseVO report_appraiseVO = (Report_AppraiseVO) request.getAttribute("report_appraiseVO");
 %>
-<%-- <%= report_appraiseVO==null%> --%>
+<jsp:useBean id="report_appraiseSvc" scope="page"
+	class="com.report_appraise.model.Report_AppraiseService" />
+
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>檢舉評價新增</title>
 
 <style>
-  table#table-1 {
+table#table-1 {
 	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+	border: 2px solid black;
+	text-align: center;
+}
+
+table#table-1 h4 {
+	color: red;
+	display: block;
+	margin-bottom: 1px;
+}
+
+h4 {
+	color: blue;
+	display: inline;
+}
 </style>
 
 <style>
-  table {
+table {
 	width: 450px;
 	background-color: white;
 	margin-top: 1px;
 	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
+}
+
+table, th, td {
+	border: 0px solid #CCCCFF;
+}
+
+th, td {
+	padding: 1px;
+}
 </style>
-	<%@ include file="/front-end/headfinish.jsp"%>
+<%@ include file="/front-end/headfinish.jsp"%>
 </head>
 <body bgcolor='white'>
-<h3>檢舉評價新增:</h3>
+	<%-- 錯誤表列 --%>
+	<c:if test="${not empty errorMsgs}">
+		<font style="color: red">請修正以下錯誤：</font>
+		<ul>
+			<c:forEach var="message" items="${errorMsgs}">
+				<li style="color: red">${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
 
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤：</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+	<FORM METHOD="post"
+		ACTION="<%=request.getContextPath()%>/front-end/report_appraise/forwarded"
+		name="form1">
+		<table align="center">
+			<tr>
+				<td>評價編號：</td>
+				<td><input type="TEXT" name="review_no" size="45"
+					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getReview_no()%>" /></td>
+			</tr>
 
-<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front-end/report_appraise/forwarded" name="form1">
-<table>
-	<tr>
-		<td>評價編號：</td>
-		<td><input type="TEXT" name="review_no" size="45" 
-			 value="<%= (report_appraiseVO==null)? "" : report_appraiseVO.getReview_no()%>" /></td>
-	</tr>
-	
-	<tr>
-		<td>會員編號：</td>
-		<td><input type="TEXT" name="mem_no" size="45"
-			 value="<%= (report_appraiseVO==null)? "" : report_appraiseVO.getMem_no()%>" /></td>
-	</tr>
-	
-	<tr>
-		<td>員工編號：</td>
-		<td><input type="TEXT" name="emp_no" size="45"
-			 value="<%= (report_appraiseVO==null)? "" : report_appraiseVO.getEmp_no()%>" /></td>
-	</tr>
-	
-	<tr>
-		<td>檢舉日期:</td>
-		<td><input name="report_date" id="f_date1" type="text"></td>
-	</tr>
-	
-	<tr>
-		<td>檢舉內容：</td>
-		<td><input type="TEXT" name="report_con" size="45"
-			 value="<%= (report_appraiseVO==null)? "" : report_appraiseVO.getReport_con()%>" /></td>
-	</tr>
-	
-</table>
-<br>
-<input type="hidden" name="action" value="insertReportAppraise">
-<input type="submit" value="送出新增"></FORM>
+			<tr>
+				<td>會員編號：</td>
+				<td><input type="TEXT" name="mem_no" size="45"
+					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getMem_no()%>" /></td>
+			</tr>
+
+			<tr>
+				<td>員工編號：</td>
+				<td><input type="TEXT" name="emp_no" size="45"
+					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getEmp_no()%>" /></td>
+			</tr>
+
+			<tr>
+				<td>檢舉內容：</td>
+				<td><input type="TEXT" name="report_con" size="45"
+					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getReport_con()%>" /></td>
+			</tr>
+
+			<tr>
+				<td>檢舉日期:</td>
+				<td><input name="report_date" id="f_date1" type="text"></td>
+			</tr>
+
+		</table>
+		<br>
+		<div align="center">
+			<input type="hidden" name="action" value="insertReportAppraise">
+			<input type="submit" value="送出新增">
+		</div>
+	</FORM>
 </body>
 <%@ include file="/front-end/footer.jsp"%>
 
 
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
-
 <% 
   java.sql.Date hiredate = null;
   try {

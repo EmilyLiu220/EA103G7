@@ -8,6 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.bonus.model.BonusVO;
 import com.bonus_order_detail.model.Bonus_Order_DetailDAO;
 import com.bonus_order_detail.model.Bonus_Order_DetailVO;
 
@@ -243,7 +244,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public void insert(Bonus_OrderVO bonus_orderVO, List<Bonus_Order_DetailVO> list) {
+	public void insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -276,10 +277,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 			// 再同時新增訂單明細
 			Bonus_Order_DetailDAO dao = new Bonus_Order_DetailDAO();
 			System.out.println("list.size()-A=" + list.size());
-			for (Bonus_Order_DetailVO aBod : list) {
-				aBod.setBo_no(new String(next_bo_no));
-				dao.insert2(aBod, con);
-			}
+				dao.insert2(next_bo_no, con, list);
 
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
@@ -320,7 +318,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public void insertWithBonus_Order_Detail(Bonus_OrderVO bonus_orderVO, List<Bonus_Order_DetailVO> list) {
+	public void insertWithBonus_Order_Detail(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -329,4 +327,6 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 	public void insert(Bonus_OrderVO bonus_orderVO) {
 		// TODO Auto-generated method stub
 		
-	}	}
+	}
+}
+		

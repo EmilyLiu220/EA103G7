@@ -74,15 +74,14 @@ th, td {
 		</ul>
 	</c:if>
 
-	<table>
+	<table align="center">
 		<tr>
-			<th>紅利商品編號</th>
-			<th>紅利商品名稱</th>
-			<th>紅利商品價格</th>
-			<th>有效日期</th>
-			<th>商品預覽</th>
-			<th></th>
-
+			<th style="width: 20%;">紅利商品編號</th>
+			<th style="width: 20%;">紅利商品名稱</th>
+			<th style="width: 20%;">紅利商品價格</th>
+			<th style="width: 20%;">有效日期</th>
+			<th style="width: 20%;">商品預覽</th>
+			<th style="width: 0%;"></th>			
 		</tr>
 		<%@ include file="page1.file"%>
 		<c:forEach var="bonusVO" items="${list}" begin="<%=pageIndex%>"
@@ -92,10 +91,7 @@ th, td {
 				<td>${bonusVO.bns_name}</td>
 				<td>${bonusVO.bns_price}</td>
 				<td>${bonusVO.bns_date}</td>
-				<td><img
-					src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
-			</tr>
-			<td>
+				<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
 			<td>
 				<FORM METHOD="post"
 					ACTION="<%=request.getContextPath()%>/front-end/bonus_order/forwarded"
@@ -103,9 +99,9 @@ th, td {
 					<input type="submit" value="兌換" id="insert"
 						style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #8f801d; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
 						onMouseOver="this.style.background='#c4b029'"
-						onMouseOut="this.style.background='#8f801d'"> <input
-						type="hidden" name="bns_no" value="${bonusVO.bns_no}"> <input
-						type="hidden" name="action" value="insert">
+						onMouseOut="this.style.background='#8f801d'"> 
+						<input type="hidden" name="bns_no" value="${bonusVO.bns_no}"> 
+						<input type="hidden" name="action" value="insert">
 				</FORM>
 			</td>
 		</c:forEach>

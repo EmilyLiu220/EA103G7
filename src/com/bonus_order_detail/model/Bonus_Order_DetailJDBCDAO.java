@@ -1,6 +1,9 @@
 package com.bonus_order_detail.model;
 
 import java.util.*;
+
+import com.bonus.model.BonusVO;
+
 import java.sql.*;
 
 public class Bonus_Order_DetailJDBCDAO implements Bonus_Order_DetailDAO_interface {
@@ -269,7 +272,7 @@ public class Bonus_Order_DetailJDBCDAO implements Bonus_Order_DetailDAO_interfac
 	}
 
 	@Override
-	public void insert2(Bonus_Order_DetailVO bonus_order_detailVO, Connection con) {
+	public void insert2(String bo_no, Connection con, List<BonusVO> list) {
 
 		PreparedStatement pstmt = null;
 
@@ -277,9 +280,9 @@ public class Bonus_Order_DetailJDBCDAO implements Bonus_Order_DetailDAO_interfac
 
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, bonus_order_detailVO.getBo_no());
-			pstmt.setString(2, bonus_order_detailVO.getBns_no());
-			pstmt.setInt(3, bonus_order_detailVO.getQuantity());
+			pstmt.setString(1, bo_no);
+			pstmt.setString(2, list.get(0).getBns_no());
+			pstmt.setInt(3,1);
 
 			pstmt.executeUpdate();
 
