@@ -118,8 +118,9 @@ select#time_peri_no, select#floor_list, input#people, input#people, input#res_da
 	width: 180px;
 	height: 40px;
 	font-size: 20px;
-	text-align: center;
 	position: relative;
+	text-align: center;
+	text-align-last: center;
 }
 
 input#chooseSeatPeople {
