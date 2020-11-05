@@ -78,7 +78,7 @@
 				</c:forEach>
 			</td>
 			<td>
-				<c:if test="${not empty resOrderVO.meal_order_no}">
+				<c:if test="${(not empty resOrderVO.meal_order_no) and (resOrderVO.meal_order.sts ne 1)}">
 					<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">

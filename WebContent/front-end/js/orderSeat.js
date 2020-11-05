@@ -11,6 +11,7 @@ $(document).ready(function() {
 	var lock_people = true;// 防止重複提交定義鎖
 	$("#people").change(function(e) {
 		e.stopPropagation();
+		console.log(123);
 		if ($("#people").val() > 20 || $("#people").val() < 1) {
 			swal("輸入的值超出範圍!", "請輸入1～20的數字!", "info");
 			$("#people").val("");
@@ -51,8 +52,9 @@ $(document).ready(function() {
 				 ************************************
 				 */
 				$("#people").change(function(e) {
+					console.log(33);
 					chooseSeatPeople = 0;
-					e.stopPropagation();
+					e.stopImmediatePropagation();
 					if(!lock_people) {
 						return false;
 					}
@@ -95,8 +97,8 @@ $(document).ready(function() {
 								});
 							});
 							zeroChooseSeatPeople(0);
-							lock_people_change = true;// 如果業務執行成功，修改鎖狀態
 							$(".labelTwo").css("display", "inline-block");
+							return false;
 						},
 						error: function(xhr, ajaxOptions, thrownError) {
 							lock_people_change = true;// 如果業務執行失敗，修改鎖狀態
@@ -116,24 +118,10 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-	var jsonArray_people;
-	function setJSONArray_people(value) {
-		jsonArray_people = value;
-	}
-	var chooseSeatPeople = 0;
-	function addChooseSeatPeople(value) {
-		chooseSeatPeople += value;
-	}
-	function lessChooseSeatPeople(value) {
-		chooseSeatPeople -= value;
-	}
-	function zeroChooseSeatPeople(value) {
-		chooseSeatPeople = value;
-	}
 	/** ***************************** 人數 ****************************** */
 	var lock_checked = true;
 	$(".myCheckbox").change(function(e) {
-		e.stopImmediatePropagation();
+		e.stopPropagation();
 		// 如果被選擇，該區塊div套濾鏡
 		if ($(this).is(":checked")) {
 			$(this).closest(".drag").css({
@@ -204,7 +192,19 @@ $(document).ready(function() {
 		console.log(chooseSeatPeople);
 		return false;
 	});
-
+	function setJSONArray_people(value) {
+		jsonArray_people = value;
+	}
+	var chooseSeatPeople = 0;
+	function addChooseSeatPeople(value) {
+		chooseSeatPeople += value;
+	}
+	function lessChooseSeatPeople(value) {
+		chooseSeatPeople -= value;
+	}
+	function zeroChooseSeatPeople(value) {
+		chooseSeatPeople = value;
+	}
 	/*
 	 * 換樓層選擇座位區更換成該樓層座位
 	 * ******************************
