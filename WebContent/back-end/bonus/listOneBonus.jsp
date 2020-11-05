@@ -125,7 +125,7 @@
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
 						<a
-							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
+							href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
 							Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
@@ -138,7 +138,7 @@
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
 							<a
-								href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
+								href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
 								Pot 吧！員工專區</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
