@@ -54,11 +54,26 @@ h4 {
 <div align="center">
 <br>
 	<h3>新增評價</h3>
-		<li><a href='addMember_Review.jsp'>Add</a> a new Member Review</li>
+		<li><a href='addMember_Review.jsp' id="review">Add</a> a new Member Review</li>
 	<br>
 	<h3>查詢所有評價</h3>
 		<li><a href='listAllMember_Review.jsp'>Search</a> all MemberReview</li>
 </div>
 	<%@ include file="/front-end/footer.jsp"%>
+	
+<script>
+	var mem_repo = `${memVO2.mem_repo}`;
+	var review = document.getElementById("review");
+	if (mem_no !== '' && mem_review == 0) {
+		review.addEventListener("click", function() {
+			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
+	if (mem_no === '') {
+		review.addEventListener("click", function() {
+			alert("請先登入會員喔！");
+		});
+	}
+</script>
 </body>
 </html>

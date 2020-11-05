@@ -1010,8 +1010,8 @@
 	
 	var res = document.getElementById("res");
 	var meal = document.getElementById("meal");
-// 	var review = document.getElementById("review");
-// 	var repo = document.getElementById("repo");
+	var review = document.getElementById("review");
+	var repo = document.getElementById("repo");
 	
 	if (mem_no !== '' && mem_od_r == 0) {
 		res.addEventListener("click", function() {
@@ -1024,16 +1024,16 @@
 			alert("Sorry！您沒有訂餐權限！" + "\n" + "有任何疑問請洽客服。");
 		});
 	}
-// 	if (mem_no !== '' && mem_review == 0) {
-// 		review.addEventListener("click", function() {
-// 			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
-// 		});
-// 	}
-// 	if (mem_no !== '' && mem_repo == 0) {
-// 		repo.addEventListener("click", function() {
-// 			alert("Sorry！您沒有檢舉權限！" + "\n" + "有任何疑問請洽客服。");
-// 		});
-// 	}
+	if (mem_no !== '' && mem_review == 0) {
+		review.addEventListener("click", function() {
+			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
+	if (mem_no !== '' && mem_repo == 0) {
+		repo.addEventListener("click", function() {
+			alert("Sorry！您沒有檢舉權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
 	
 // 	if (mem_no === '') {
 // 		res.addEventListener("click", function() {
