@@ -73,9 +73,6 @@ public class MealOrderServlet extends HttpServlet {
 			String memNo = memVO2.getMem_no();
 			String empNo = (String) session.getAttribute("emp_no");
 			String resNo = req.getParameter("res_no");
-//			if (session.getAttribute("mem_no") != null) {
-//				memNo = (String) session.getAttribute("mem_no");
-//			}
 
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);
@@ -366,14 +363,12 @@ public class MealOrderServlet extends HttpServlet {
 		if ("queryAll".equals(action)) {
 
 			Map<String, String[]> map = (HashMap) session.getAttribute("queryAllMap");
-//			if (map == null || map.isEmpty()) {
 			if (req.getParameter("whichPage") == null) {
 				Map<String, String[]> map2 = new HashMap<>(req.getParameterMap());
 				session.setAttribute("queryAllMap", map2);
 				map = map2;
 
 			}
-//			}
 			MealOrderService mealOrderSrv = new MealOrderService();
 			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
 			req.setAttribute("action", action);
@@ -383,7 +378,6 @@ public class MealOrderServlet extends HttpServlet {
 		}
 
 		if ("orderChart".equals(action)) {
-
 			Map<String, String[]> map = (HashMap) session.getAttribute("orderChart");
 			if (req.getParameter("whichPage") == null) {
 				Map<String, String[]> map2 = new HashMap<>(req.getParameterMap());
@@ -443,18 +437,6 @@ public class MealOrderServlet extends HttpServlet {
 					}
 				}
 			}
-
-//			int amount;
-//			int mealCount = 0;
-//			int mealSetCount = 0;
-//
-//			for (MealOrderVO mealOrderVO : orderList) {
-//				mealCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
-//						.filter(d -> (d.getMeal_no() != null)).mapToInt(d -> d.getQty()).sum();
-//				mealSetCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
-//						.filter(d -> (d.getMeal_set_no() != null)).mapToInt(d -> d.getQty()).sum();
-//			}
-//			amount = orderList.stream().mapToInt(m -> m.getAmount()).sum();
 			Map<String, Map<String, Object>> jsonMap = new HashMap<>();
 			jsonMap.put("mealMap", mealMap);
 			jsonMap.put("mealSetMap", mealSetMap);
@@ -467,10 +449,7 @@ public class MealOrderServlet extends HttpServlet {
 			out.write(jsondata);
 			System.out.println(jsondata);
 
-//			req.setAttribute("mealMap", mealMap);
-//			req.setAttribute("mealSetMap", mealSetMap);
 			req.setAttribute("orderList", orderList);
-//			req.getRequestDispatcher("/back-end/mealOrder/orderChart.jsp").forward(req, res);
 
 		}
 
