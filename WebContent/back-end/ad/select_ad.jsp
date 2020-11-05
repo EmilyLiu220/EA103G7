@@ -228,7 +228,6 @@
 						</c:forEach>
 					</ul>
 				</c:if>
-			<br>
 			<ul>
 				<li>
 					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">

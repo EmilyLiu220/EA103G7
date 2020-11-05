@@ -204,7 +204,10 @@
 					</tr>
 				</tbody>
 			</table>
-			<%-- 錯誤表列 --%>
+			<br>
+		 <span
+				style="position: relative; left: 4%; font-weight: 600;">可自由輸入欲查詢之條件</span><br>
+		<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<font style="color: red"></font>
 				<ul>
@@ -213,9 +216,7 @@
 					</c:forEach>
 				</ul>
 			</c:if>
-			<br> <span
-				style="position: relative; left: 4%; font-weight: 600;">可自由輸入欲查詢之條件</span><br>
-			<br>
+			
 			<ul>
 				<li>
 					<FORM METHOD="post"

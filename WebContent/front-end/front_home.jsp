@@ -128,16 +128,14 @@
 }
 
 @keyframes anis { 100% {
-	transform: translateY(-200px)
+	transform: translateY(-600px)
 }
 
 }
-img {
-	position: absolute;
-}
+
 
 .div2 {
-	animation: anis 10s linear infinite;
+	animation: anis 15s linear infinite;
 	width: 500px;
 }
 
@@ -448,16 +446,13 @@ img {
 				<div class="row text-center text-lg-left">
 					<c:forEach var="adVO" items="${list}">
 						<div class="carousel-item ad">
-
 							<div class="col-lg-3 col-md-4 col-6">
 								<label for="${adVO.ad_no}" class="d-block mb-4 h-100"> <img
 									class="img-fluid img-thumbnail"
 									src="<%=request.getContextPath() %>/ad/ad.do?add_no=${adVO.ad_no}"
 									alt="">
 								</label>
-
 								<div class=adat>${adVO.ad_add_date}</div>
-
 								<FORM METHOD="post"
 									ACTION="<%=request.getContextPath()%>/ad/ad.do">
 									<label for="${adVO.ad_no}" class="d-block mb-4 h-100 adat"
@@ -1178,12 +1173,9 @@ img {
 				// 把兩個 td 都放進 tr 中
 				informTr.appendChild(informTdCont);
 				informTr.appendChild(informTdDate);
-				informArea.scrollTop = 0;
-				
-			}
-			
-		}
-		
+				informArea.scrollTop = 0;			
+			}		
+		}	
 	};
 				
 	webSocket_Inform.onclose = function(event) {
@@ -1400,8 +1392,7 @@ img {
 <script>
 var ad=$(".ad").get(0);
 ad.classList.add("active");
-var ada=$(".ada").get(0);
-ada.classList.add("active");
+
 </script>
 
 <script

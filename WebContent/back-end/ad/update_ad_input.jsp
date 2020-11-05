@@ -240,7 +240,7 @@
 					<tr>
 						<td>員工編號:<font color=red><b>*</b></font></td>
 						<td><input type="TEXT" name="emp_no" size="45"
-							value="<%=(empVO2==null)? "EMP0001" : empVO2.getEmp_no()%>"/></td>
+							value="<%=(empVO2==null)? "EMP0001" : adVO.getEmp_no()%>"/></td>
 
 					</tr>
 					<tr>
