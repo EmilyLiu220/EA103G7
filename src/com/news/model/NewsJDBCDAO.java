@@ -20,7 +20,7 @@ public class NewsJDBCDAO implements NewsDAO_interface {
 	private static final String DELETE = "DELETE FROM NEWS where NEWS_NO = ?";
 	private static final String UPDATE = "UPDATE NEWS SET EMP_NO=? ,NEWS_CONT=? ,NEWS_DATE=? ,NEWS_STS=? WHERE NEWS_NO=?";
 	private static final String GET_news_STMT = "SELECT * FROM news where NEWS_NO =? order by news_no DESC";
-	private static final String GET_NEWS_STS = "select * from news where news_sts =?";
+	private static final String GET_NEWS_STS = "select * from news where news_sts =? ORDER BY news_NO DESC";
 	
 	// 新增
 	@Override

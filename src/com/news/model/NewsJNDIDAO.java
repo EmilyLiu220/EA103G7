@@ -30,7 +30,7 @@ public class NewsJNDIDAO implements NewsDAO_interface {
 	private static final String DELETE = "DELETE FROM NEWS where NEWS_NO = ?";
 	private static final String UPDATE = "UPDATE NEWS SET EMP_NO=? ,NEWS_CONT=? ,NEWS_DATE=?,NEWS_STS=? WHERE NEWS_NO=?";
 	private static final String GET_NEWS_STMT = "SELECT * FROM news where NEWS_NO =? order by news_no DESC";
-	private static final String GET_NEWS_STS = "SELECT NEWS_NO ,EMP_NO ,NEWS_CONT ,to_char(NEWS_DATE,'yyyy-mm-dd') NEWS_DATE,NEWS_STS FROM NEWS WHERE NEWS_STS=?";
+	private static final String GET_NEWS_STS = "SELECT NEWS_NO ,EMP_NO ,NEWS_CONT ,to_char(NEWS_DATE,'yyyy-mm-dd') NEWS_DATE,NEWS_STS FROM NEWS WHERE NEWS_STS=? ORDER BY news_NO DESC";
 	
 	public void insert(NewsVO newsVO) {
 

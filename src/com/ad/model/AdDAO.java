@@ -34,7 +34,7 @@ public class AdDAO implements AdDAO_interface {
 	private static final String UPDATE = "UPDATE AD SET EMP_NO=? , AD_TITLE=? ,AD_CONT=? ,AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_IMG=?,AD_STS=? WHERE AD_NO=? ";
 	private static final String GET_AD_STMT = "SELECT * FROM AD WHERE emp_NO =? order by ad_NO DESC";
 //	private static final String UPAD = "UPDATE AD SET EMP_NO=? , AD_ADD_DATE=? ,AD_RE_DATE=? ,AD_STS=? WHERE AD_NO=?";
-	private static final String SEARCH_ADSTS = "select * from ad where ad_sts =?";
+	private static final String SEARCH_ADSTS = "select * from ad where ad_sts =?ORDER BY AD_NO DESC";
 	@Override
 	public List<AdVO> getadno(String emp_no) {
 		List<AdVO> list = new ArrayList<AdVO>();
