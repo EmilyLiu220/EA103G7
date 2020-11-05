@@ -79,7 +79,7 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="#" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-bold" style="font-size:80px;"></i><br>紅利專區</a>
+				<a href="<%=request.getContextPath() %>/front-end/bonus_order/listOneBonus_Order.jsp" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-bold" style="font-size:80px;"></i><br>紅利專區</a>
 			</td>
 			<td>
 				<a href="<%=request.getContextPath() %>/front-end/mem/mem.do?action=logout" class="list-group-item list-group-item-action list-group-item-dark" style="text-align: center;"><i class="fas fa-sign-out-alt" style="font-size:80px;"></i><br>會員登出</a>
@@ -89,23 +89,7 @@
 		
 	</div>
 	
-<script>
-	// 放在這邊不會有任何作用，小育已測試過...可以刪掉QQ...刪掉這裡吧~小育已經用 webSocket 做掉了ㄏㄏ
-	//getMyInform 
-	function getInfo() {
-		$.ajax({
-		     url:'<%=request.getContextPath() %>/front_inform/fi.do',
-		     method:"POST",
-		     dataType:"text",
-		     data:{
-		         action: 'getMyInform',
-		     },
-		     success:function(res){ },
-		     error:function(err){},
-		});
-	}
-	
-</script>
+
 	
 	<jsp:include page="/front-end/front/footer.jsp" />
 	
