@@ -339,12 +339,11 @@
 							<div class="col-md-3">
 								<div class="featured-menus ftco-animate">
 									<div class="menu-img img"
-										style="background-image: url(<%=request.getContextPath()%>/front-end/front/images/wait.gif);"></div>
+										style="background-image: url(<%=request.getContextPath()%>/meal_Img/hotpot1.PNG);"></div>
 									<div class="text text-center">
-										<h3>套餐A</h3>
+										<h3>麻辣鍋</h3>
 										<p>
-											<span>Meat</span>, <span>Potatoes</span>, <span>Rice</span>,
-											<span>Tomatoe</span>
+											<span>鴨血</span>, <span>豆腐</span>, <span>爽辣</span>
 										</p>
 									</div>
 								</div>
@@ -352,12 +351,11 @@
 							<div class="col-md-3">
 								<div class="featured-menus ftco-animate">
 									<div class="menu-img img"
-										style="background-image: url(<%=request.getContextPath()%>/front-end/front/images/wait.gif);"></div>
+										style="background-image: url(<%=request.getContextPath()%>/meal_Img/hotpot2.PNG);"></div>
 									<div class="text text-center">
-										<h3>套餐B</h3>
+										<h3>養生鍋</h3>
 										<p>
-											<span>Meat</span>, <span>Potatoes</span>, <span>Rice</span>,
-											<span>Tomatoe</span>
+											<span>中藥</span>, <span>茶葉</span>, <span>爽口</span>
 										</p>
 									</div>
 								</div>
@@ -365,12 +363,11 @@
 							<div class="col-md-3">
 								<div class="featured-menus ftco-animate">
 									<div class="menu-img img"
-										style="background-image: url(<%=request.getContextPath()%>/front-end/front/images/wait.gif);"></div>
+										style="background-image: url(<%=request.getContextPath()%>/meal_Img/hotpot3.PNG);"></div>
 									<div class="text text-center">
-										<h3>套餐C</h3>
+										<h3>鴛鴦鍋</h3>
 										<p>
-											<span>Meat</span>, <span>Potatoes</span>, <span>Rice</span>,
-											<span>Tomatoe</span>
+											<span>9</span>, <span>4</span>, <span>5桑</span>
 										</p>
 									</div>
 								</div>
@@ -378,12 +375,11 @@
 							<div class="col-md-3">
 								<div class="featured-menus ftco-animate">
 									<div class="menu-img img"
-										style="background-image: url(<%=request.getContextPath()%>/front-end/front/images/wait.gif);"></div>
+										style="background-image: url(<%=request.getContextPath()%>/meal_Img/hotpot4.PNG);"></div>
 									<div class="text text-center">
-										<h3>套餐D</h3>
+										<h3>特色鍋</h3>
 										<p>
-											<span>Meat</span>, <span>Potatoes</span>, <span>Rice</span>,
-											<span>Tomatoe</span>
+											<span>9</span>, <span>4</span>, <span>87</span>
 										</p>
 									</div>
 								</div>
@@ -491,8 +487,8 @@
 				<div class="col-md-6 col-lg-3">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">吃 Pot 吧</h2>
-						<p>Far far away, behind the word mountains, far from the
-							countries Vokalia and Consonantia, there live the blind texts.</p>
+						<p>大衛seafood讚耶~真讚耶~~~</p>
+						<p>Peter大神好勁~有得頂~~~</p>
 						<ul
 							class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
 							<li class="ftco-animate"><a href="#"><span
@@ -508,51 +504,53 @@
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">營業時間</h2>
 						<ul class="list-unstyled open-hours">
-							<li class="d-flex"><span>週一</span><span>9:00 - 24:00</span></li>
-							<li class="d-flex"><span>週二</span><span>9:00 - 24:00</span></li>
-							<li class="d-flex"><span>週三</span><span>公休時間</span></li>
-							<li class="d-flex"><span>週四</span><span>9:00 - 24:00</span></li>
-							<li class="d-flex"><span>週五</span><span>9:00 - 02:00</span></li>
-							<li class="d-flex"><span>週六</span><span>9:00 - 02:00</span></li>
-							<li class="d-flex"><span>週七</span><span>9:00 - 02:00</span></li>
+							<li class="d-flex"><span>週一</span><span>11:00AM - 01:00AM</span></li>
+							<li class="d-flex"><span>週二</span><span>11:00AM - 01:00AM</span></li>
+							<li class="d-flex"><span>週三</span><span>11:00AM - 01:00AM</span></li>
+							<li class="d-flex"><span>週四</span><span>11:00AM - 01:00AM</span></li>
+							<li class="d-flex"><span>週五</span><span>11:00AM - 01:00AM</span></li>
+							<li class="d-flex"><span>週六</span><span>11:00AM - 01:00AM</span></li>
+							<li class="d-flex"><span>週日</span><span>11:00AM - 01:00AM</span></li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
 					<div class="ftco-footer-widget mb-4">
-						<h2 class="ftco-heading-2">Instagram</h2>
+						<h2 class="ftco-heading-2">新鮮單點</h2>
 						<div class="thumb d-sm-flex">
 							<a href="#" class="thumb-menu img"
-								style="background-image: url(<%=request.getContextPath()%>/front-end/images/insta-1.jpg);">
+								style="background-image: url(<%=request.getContextPath()%>/meal_Img/meal9.PNG);">
 							</a> <a href="#" class="thumb-menu img"
-								style="background-image: url(<%=request.getContextPath()%>/front-end/images/insta-2.jpg);">
+								style="background-image: url(<%=request.getContextPath()%>/meal_Img/meal5.PNG);">
 							</a> <a href="#" class="thumb-menu img"
-								style="background-image: url(<%=request.getContextPath()%>/front-end/images/insta-3.jpg);">
+								style="background-image: url(<%=request.getContextPath()%>/meal_Img/igd5.PNG);">
 							</a>
 						</div>
 						<div class="thumb d-flex">
 							<a href="#" class="thumb-menu img"
-								style="background-image: url(<%=request.getContextPath()%>/front-end/images/insta-4.jpg);">
+								style="background-image: url(<%=request.getContextPath()%>/meal_Img/meal6.PNG);">
 							</a> <a href="#" class="thumb-menu img"
-								style="background-image: url(<%=request.getContextPath()%>/front-end/images/insta-5.jpg);">
+								style="background-image: url(<%=request.getContextPath()%>/meal_Img/meal3.jpg);">
 							</a> <a href="#" class="thumb-menu img"
-								style="background-image: url(<%=request.getContextPath()%>/front-end/images/insta-6.jpg);">
+								style="background-image: url(<%=request.getContextPath()%>/meal_Img/meal4.jpg);">
 							</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
 					<div class="ftco-footer-widget mb-4">
-						<h2 class="ftco-heading-2">Newsletter</h2>
-						<p>Far far away, behind the word mountains, far from the
-							countries.</p>
-						<form action="#" class="subscribe-form">
-							<div class="form-group">
-								<input type="text" class="form-control mb-2 text-center"
-									placeholder="Enter email address"> <input type="submit"
-									value="Subscribe" class="form-control submit px-3">
-							</div>
-						</form>
+						<h2 class="ftco-heading-2">強烈推薦</h2>
+						<p>全台唯一一間全年無休的美味火鍋店！！！</p>
+						<p>( 除了春節 XD )</p>
+						<div class="thumb d-flex">
+							<a href="#" class="thumb-menu img"
+								style="background-image: url(<%=request.getContextPath()%>/front-end/images/BW.png);">
+							</a> <a href="#" class="thumb-menu img"
+								style="background-image: url(<%=request.getContextPath()%>/front-end/images/smallWu.jpg);">
+							</a> <a href="#" class="thumb-menu img"
+								style="background-image: url(<%=request.getContextPath()%>/back-end/images/kou.jpg);">
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
