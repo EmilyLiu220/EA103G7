@@ -205,9 +205,8 @@
 					</td>
 				</tr>
 			</table>
-
 			<br>
-
+			<br>
 			<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<font style="color: red">請修正以下錯誤:</font>
@@ -217,37 +216,37 @@
 					</c:forEach>
 				</ul>
 			</c:if>
-
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded" name="form1" enctype="multipart/form-data">
-<table>
+<table align="center">
 	<tr>
 		<td>紅利商品名稱:</td>
 		<td><input type="TEXT" name="bns_name" size="45" 
-			 value="<%= (bonusVO==null)? "" : bonusVO.getBns_name()%>" /></td>
+			 value="<%= (bonusVO==null)? "" : bonusVO.getBns_name()%>" /><p></td>
 	</tr>
 	<tr>
 		<td>紅利商品價格:</td>
 		<td><input type="TEXT" name="bns_price" size="45"
-			 value="<%= (bonusVO==null)? "" : bonusVO.getBns_price()%>" /></td>
+			 value="<%= (bonusVO==null)? "" : bonusVO.getBns_price()%>" /><p></td>
 	</tr>
 	<tr>
 		<td>庫存量:</td>
 		<td><input type="TEXT" name="bns_stks" size="45"
-			 value="<%= (bonusVO==null)? "" : bonusVO.getBns_stks()%>" /></td>
+			 value="<%= (bonusVO==null)? "" : bonusVO.getBns_stks()%>" /><p></td>
 	</tr>
 	<tr>
 		<td>有效日期:</td>
-		<td><input name="bns_date" id="f_date1" type="text"></td>
+		<td><input name="bns_date" id="f_date1" type="text"><p></td>
 	</tr>
 	<tr>
 		<td>紅利商品圖片:</td>
-		<td><input type="file" name="bns_img" id="img"></td>
+		<td><input type="file" name="bns_img" id="img"><p></td>
 	</tr>
 </table>
 <br>
-
+<div align="center">
 <input type="hidden" name="action" value="insertFromBack">
 <input type="submit" value="送出新增">
+</div>
 </FORM>
 </div>
 </div>

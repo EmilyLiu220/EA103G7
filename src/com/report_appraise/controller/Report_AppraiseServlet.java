@@ -22,11 +22,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Display".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
@@ -50,12 +48,12 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				}
 
 				/*************************** 2.開始查詢資料 *****************************************/
-				Report_AppraiseService report_appraiseSvc = new Report_AppraiseService(); // 呼叫回傳參數的建構子
-				Report_AppraiseVO report_appraiseVO = report_appraiseSvc.getOneReport_Appraise(report_no); // 呼叫Service內getOneEmp的方法
+				Report_AppraiseService report_appraiseSvc = new Report_AppraiseService(); 
+				Report_AppraiseVO report_appraiseVO = report_appraiseSvc.getOneReport_Appraise(report_no); 
 				if (report_appraiseVO == null) {
 					errorMsgs.add("查無資料！");
 				}
-				// Send the use back to the form, if there were errors
+
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/report_appraise/select_page.jsp");
 					failureView.forward(req, res);
@@ -63,9 +61,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				}
 
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-				req.setAttribute("report_appraiseVO", report_appraiseVO); // 資料庫取出的empVO物件,存入req
+				req.setAttribute("report_appraiseVO", report_appraiseVO);
 				String url = "/back-end/member_review/listOneMember_Review.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 *************************************/
@@ -76,11 +74,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 			}
 		}
 
-		if ("getOne_For_Update".equals(action)) { // 來自listAllReport_Appraise.jsp的請求
-
+		if ("getOne_For_Update".equals(action)) { 
+			
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
@@ -106,11 +102,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 			}
 		}
 
-		if ("update".equals(action)) { // 來自update_report_appraise_input.jsp的請求
+		if ("update".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
@@ -162,7 +156,6 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				report_appraiseVO.setReport_con(report_con);
 				report_appraiseVO.setReply_sts(reply_sts);
 
-				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("report_appraiseVO", report_appraiseVO); // 含有輸入格式錯誤的empVO物件,也存入req
 					RequestDispatcher failureView = req
@@ -177,9 +170,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 						report_date, report_con, reply_sts); // 呼叫Service內updateEmp的方法
 
 				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-				req.setAttribute("report_appraiseVO", report_appraiseVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				req.setAttribute("report_appraiseVO", report_appraiseVO); 
 				String url = "/back-end/report_appraise/listOneReport_Appraise.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 *************************************/
@@ -192,11 +185,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 			}
 		}
 
-		if ("insertReportAppraise".equals(action)) { // 來自addReport_Appraise.jsp的請求
+		if ("insertReportAppraise".equals(action)) {
 
-			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
+			List<String> errorMsgs = new LinkedList<String>();		
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
@@ -245,7 +236,6 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				report_appraiseVO.setReport_date(report_date);
 				report_appraiseVO.setReport_con(report_con);
 
-				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("report_appraiseVO", report_appraiseVO); // 含有輸入格式錯誤的empVO物件,也存入req
 					RequestDispatcher failureView = req
@@ -256,11 +246,11 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				/*************************** 2.開始新增資料 ***************************************/
 				Report_AppraiseService report_appraiseSvc = new Report_AppraiseService();
 				report_appraiseVO = report_appraiseSvc.addReport_Appraise(review_no, mem_no, emp_no, report_date,
-				report_con); // 呼叫Service內addReport_Appraise的方法
+				report_con); 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				req.setAttribute("report_appraiseVO", report_appraiseVO);
-				String url = "/front-end/report_appraise/listAllReport_Appraise.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+				String url = "/front-end/report_appraise/listOneReport_Appraise.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 **********************************/
@@ -272,11 +262,9 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 			}
 		}
 
-		if ("delete".equals(action)) { // 來自listAllReport_Appraise.jsp
+		if ("delete".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
@@ -285,7 +273,7 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 
 				/*************************** 2.開始刪除資料 ***************************************/
 				Report_AppraiseService report_appraiseSvc = new Report_AppraiseService();
-				report_appraiseSvc.deleteReport_Appraise(report_no); // 呼叫Service內deleteEmp的方法
+				report_appraiseSvc.deleteReport_Appraise(report_no);
 				/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
 				String url = "/back-end/report_appraise/listAllReport_Appraise.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁

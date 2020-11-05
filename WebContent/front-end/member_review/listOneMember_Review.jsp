@@ -49,26 +49,21 @@
 <%@ include file="/front-end/headfinish.jsp"%>
 </head>
 <body bgcolor='white'>
-<table id="table-1">
-	<tr><td>
-		 <h3>評價資料 - listOneMember_Review.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
-	</td></tr>
-</table>
-
-<table>
+<br>
+<table align="center">
 	<tr>
-		<th>評價編號</th>
+<!-- 		<th>評價編號</th> -->
 		<th>訂餐編號</th>
 		<th>評價內容</th>
 		<th>評價日期</th>
+		<th>狀態</th>
 	</tr>
 	<tr>
-		<td><%=member_reviewVO.getReview_no()%></td>
+<%-- 		<td><%=member_reviewVO.getReview_no()%></td> --%>
 		<td><%=member_reviewVO.getMeal_order_no()%></td>
 		<td><%=member_reviewVO.getMem_review_con()%></td>
 		<td><%=member_reviewVO.getReview_date()%></td>
-	</tr>
+		<td><font color="red">評價新增成功</font></td>
 </table>
 <%@ include file="/front-end/footer.jsp"%>
 </body>

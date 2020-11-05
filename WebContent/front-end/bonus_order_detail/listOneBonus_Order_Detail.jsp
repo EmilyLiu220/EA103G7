@@ -8,6 +8,14 @@
 <%@ page import="com.bonus_order_detail.model.*"%>
 
 <%
+	BonusService bonusSvc = new BonusService();
+	List<BonusVO> list = bonusSvc.getAll();
+	pageContext.setAttribute("list", list);
+%>
+<jsp:useBean id="detailSvc" scope="page"
+	class="com.bonus_order_detail.model.Bonus_Order_DetailService" />
+	
+<%
 	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
 %>
 <jsp:useBean id="bonus_orderSvc" scope="page"
@@ -25,7 +33,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>紅利商品訂單明細-listOneBonus_Order.jsp</title>
+<title>紅利商品訂單明細</title>
 
 <style>
   table#table-1 {
@@ -75,16 +83,18 @@
 			<table class="table table-hover" style="width: 100%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 20%;">紅利商品訂單編號</th>
-						<th style="width: 20%;">紅利商品</th>
-						<th style="width: 20%;">數量</th>
+						<th style="width: 25%;">紅利商品訂單編號</th>
+						<th style="width: 25%;">紅利商品</th>
+						<th style="width: 25%;">圖片預覽</th>
+						<th style="width: 25%;">狀態</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td style="text-align: center;"><%=bonus_order_detailVO.getBo_no()%></td>
 						<td style="text-align: center;"><%=bonus_order_detailVO.getBns_no()%></td>
-						<td style="text-align: center;"><%=bonus_order_detailVO.getQuantity()%></td>
+						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
+						<td style="text-align: center;">兌換成功</td>
 					</tr>
 				</tbody>
 			</table>

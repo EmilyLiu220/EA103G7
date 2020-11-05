@@ -211,11 +211,11 @@
 					<tr>
 						<th style="width: 20%;">紅利商品編號</th>
 						<th style="width: 20%;">紅利商品名稱</th>
-						<th style="width: 20%;">紅利商品價格</th>
-						<th style="width: 20%;">庫存量</th>
-						<th style="width: 20%;">有效日期</th>
-						<th style="width: 20%;">兌換狀態</th>
-						<th style="width: 20%;">圖片</th>
+						<th style="width: 15%;">紅利商品價格</th>
+						<th style="width: 15%;">庫存量</th>
+						<th style="width: 15%;">有效日期</th>
+						<th style="width: 15%;">兌換狀態</th>
+						<th style="width: 0%;">圖片</th>
 					</tr>
 				</thead>
 				<%@ include file="page1.file"%>
@@ -231,7 +231,7 @@
 									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
 							<td style="text-align: center;">${bonusVO.bns_sts}</td>
 							<td>
-							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
+							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}" width="250"></td>
 
 							<td style="text-align: center;">
 								<FORM METHOD="post"
@@ -257,7 +257,6 @@
 									<input type="hidden" name="action" value="deleteBonus">
 								</FORM>
 							</td>
-
 						</tr>
 					</c:forEach>
 				</tbody>

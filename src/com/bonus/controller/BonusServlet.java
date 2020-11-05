@@ -133,7 +133,7 @@ public class BonusServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus/listAllBonus.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
 					failureView.forward(req, res);
 					return; // 程式中斷
 				}
@@ -146,7 +146,7 @@ public class BonusServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus/listAllBonus.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
@@ -158,7 +158,7 @@ public class BonusServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus/listAllBonus.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
@@ -170,7 +170,36 @@ public class BonusServlet extends HttpServlet {
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus/listAllBonus.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
+				failureView.forward(req, res);
+			}
+		}
+
+		if ("getOne_For_Update".equals(action)) { // 來自listAllBonus.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/*************************** 1.接收請求參數 ****************************************/
+				String bns_no = new String(req.getParameter("bns_no"));
+
+				/*************************** 2.開始查詢資料 ****************************************/
+				BonusService bonusSvc = new BonusService();
+				BonusVO bonusVO = bonusSvc.getOneBonus(bns_no); // 呼叫Service內getOneEmp的方法
+
+				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
+				req.setAttribute("bonusVO", bonusVO); // 資料庫取出的empVO物件,存入req
+				String url = "/back-end/bonus/update_bonus_input.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
+				successView.forward(req, res);
+
+				/*************************** 其他可能的錯誤處理 **********************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
 				failureView.forward(req, res);
 			}
 		}

@@ -51,22 +51,14 @@ h4 {
 			</c:forEach>
 		</ul>
 	</c:if>
-
+<div align="center">
+<br>
 	<h3>新增評價</h3>
-
-	<ul>
-		<li><a href='addMember_Review.jsp'>Add</a> a new Member Review.</li>
-	</ul>
-
+		<li><a href='addMember_Review.jsp'>Add</a> a new Member Review</li>
 	<br>
-
 	<h3>查詢所有評價</h3>
-
-	<ul>
-		<li><a href='listAllMember_Review.jsp'>Search</a> all Member
-			Review</li>
-	</ul>
-	
+		<li><a href='listAllMember_Review.jsp'>Search</a> all MemberReview</li>
+</div>
 	<%@ include file="/front-end/footer.jsp"%>
 </body>
 </html>

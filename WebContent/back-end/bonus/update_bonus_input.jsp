@@ -207,7 +207,7 @@
 			</c:if>
 
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/back-end/bonus/forwarded" name="form1" enctype="multipart/form-data">
-<table>
+<table align="center">
 	<tr>
 		<td>紅利商品編號:<font color=red><b>*</b></font></td>
 		<td><%=bonusVO.getBns_no()%></td>
@@ -239,9 +239,12 @@
 
 </table>
 <br>
+<div align="center">
 <input type="hidden" name="action" value="updateBonus">
 <input type="hidden" name="bns_no" value="<%=bonusVO.getBns_no()%>">
-<input type="submit" value="送出修改"></FORM>
+<input type="submit" value="送出修改">
+</div>
+</FORM>
 
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->

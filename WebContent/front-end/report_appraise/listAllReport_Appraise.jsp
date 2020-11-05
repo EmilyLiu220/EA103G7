@@ -69,7 +69,7 @@ th, td {
 		</ul>
 	</c:if>
 
-	<table>
+	<table align="center">
 		<tr>
 			<th>評價編號</th>
 			<th>會員編號</th>
