@@ -38,7 +38,6 @@ $(document).ready(function() {
 				jsonArray_people = JSON.parse(messages);
 				setJSONArray_people(jsonArray_people);
 				$("#container").css("display", "block");
-				$("#orderSeat").css("display", "inline-block");
 				/*
 				 *************** 以下 ***************
 				 ********** 如果人數有變動 **********
@@ -484,59 +483,59 @@ $(document).ready(function() {
 //		});
 //		return false;
 //	});
-	$("#orderSeat").click(function(e) {
-		if(chooseSeatPeople < parseInt($("#people").val())){
-			swal("來店人數還大於選擇座位人數唷！", "請在選擇座位，直到座位足夠容納來店人數", "info");
-			return false;
-		}
-		var form = $(this).parents('form');
-		swal({
-			title: "請問要順便訂餐嗎?",
-			text: "訂餐方便又簡單～",
-			icon: "warning",
-			buttons: {
-			    cancel: "取消!",
-			    catch: {
-			    	text: "訂位就好",
-			    	value: "res_seat",
-			    },
-			    defeat: {
-			    	text: "我要訂餐～",
-			    	value: "res_meal",
-			    },
-			}
-		}).then((value) => {
-			switch (value) {
-			 case "res_meal":
-				 swal("來去訂餐吧～", {
-						icon: "success",
-				 }).then(function() {
-					 $("<input>").attr({
-						type: "hidden",
-						name: "goMeal",
-						value: "carry_on_res_meal",
-					}).appendTo("div#orderSeatCondition.container");
-					form.submit();
-				});
-			     break;
-			 case "res_seat":
-				swal("即將完成訂位", {
-					icon: "success",
-				}).then(function() {
-					form.submit();
-				});
-			    break;
-			 default:
-				 swal("不做任何選項～", "再考慮考慮吧！", "info");
-			}
-		});
-		e.preventDefault();
-		e.stopImmediatePropagation();
-	});
+//	$("#orderSeat").click(function(e) {
+//		if(chooseSeatPeople < parseInt($("#people").val())){
+//			swal("來店人數還大於選擇座位人數唷！", "請在選擇座位，直到座位足夠容納來店人數", "info");
+//			return false;
+//		}
+//		var form = $(this).parents('form');
+//		swal({
+//			title: "請問要順便訂餐嗎?",
+//			text: "訂餐方便又簡單～",
+//			icon: "warning",
+//			buttons: {
+//			    cancel: "取消!",
+//			    catch: {
+//			    	text: "訂位就好",
+//			    	value: "res_seat",
+//			    },
+//			    defeat: {
+//			    	text: "我要訂餐～",
+//			    	value: "res_meal",
+//			    },
+//			}
+//		}).then((value) => {
+//			switch (value) {
+//			 case "res_meal":
+//				 swal("來去訂餐吧～", {
+//						icon: "success",
+//				 }).then(function() {
+//					 $("<input>").attr({
+//						type: "hidden",
+//						name: "goMeal",
+//						value: "carry_on_res_meal",
+//					}).appendTo("div#orderSeatCondition.container");
+//					form.submit();
+//				});
+//			     break;
+//			 case "res_seat":
+//				swal("即將完成訂位", {
+//					icon: "success",
+//				}).then(function() {
+//					form.submit();
+//				});
+//			    break;
+//			 default:
+//				 swal("不做任何選項～", "再考慮考慮吧！", "info");
+//			}
+//		});
+//		e.preventDefault();
+//		e.stopImmediatePropagation();
+//	});
 	// popover menu
 	$('#myPopover').on('show.bs.popover', function () {
 		  
-	})
+	});
 	var lock_popover = true;
 	var seat_no = $('[data-toggle="popover"]').popover({
         trigger: 'click',
@@ -560,30 +559,30 @@ $(document).ready(function() {
         		return false;
         	}
         	lock_popover = false;
-        	var nowDay = new Date();
-        	function formatDate(nowDay) {
-			         month = '' + (nowDay.getMonth() + 1),
-			         day = '' + nowDay.getDate(),
-			         year = nowDay.getFullYear();
-			     if (month.length < 2) month = '0' + month;
-			     if (day.length < 2) day = '0' + day;
-			     return [year, month, day].join('-');
-			}
-			function getTimePeriNo (time) {
-				if(10 <= time && time < 13){
-					return "TP0001";
-				} else if (13 <= time && time < 15) {
-					return "TP0002";
-				} else if (15 <= time && time < 17) {
-					return "TP0003";
-				} else if (17 <= time && time < 19) {
-					return "TP0004";
-				} else if (19 <= time && time < 21) {
-					return "TP0005";
-				} else if (21 <= time && time < 23) {
-					return "TP0006";
-				} else return TP0007;
-			}
+//        	var nowDay = new Date();
+//        	function formatDate(nowDay) {
+//			         month = '' + (nowDay.getMonth() + 1),
+//			         day = '' + nowDay.getDate(),
+//			         year = nowDay.getFullYear();
+//			     if (month.length < 2) month = '0' + month;
+//			     if (day.length < 2) day = '0' + day;
+//			     return [year, month, day].join('-');
+//			}
+//			function getTimePeriNo (time) {
+//				if(10 <= time && time < 13){
+//					return "TP0001";
+//				} else if (13 <= time && time < 15) {
+//					return "TP0002";
+//				} else if (15 <= time && time < 17) {
+//					return "TP0003";
+//				} else if (17 <= time && time < 19) {
+//					return "TP0004";
+//				} else if (19 <= time && time < 21) {
+//					return "TP0005";
+//				} else if (21 <= time && time < 23) {
+//					return "TP0006";
+//				} else return "TP0007";
+//			}
         	var jsonStr = $.ajax({
     			// url is servlet url, ?archive_seat is tell servlet execute which
     			// one judgment
@@ -595,8 +594,8 @@ $(document).ready(function() {
     				"action":"get_res_info",
     				"floor": floor,
     				"seat_no": seat_no,
-    				"res_date": formatDate(nowDay),
-    				"time_peri_no": getTimePeriNo(nowDay.getHours()),
+    				"res_date": res_date,
+    				"time_peri_no": time_peri_no,
     			},
     			success: function(messages) {
     				jsonStr = JSON.parse(messages);
@@ -699,13 +698,9 @@ $(document).ready(function() {
     $(document).on('click', '#order_meal', function() {
     	$('[data-toggle="popover"]').popover('hide');
     });
-    
     $("#orderSearch").click(function(e) {
-    	var lock_time_peri_no = true;// 防止重複提交定義鎖
-    	if (!lock_time_peri_no) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
-    		return false;
-    	}
-    	lock_time_peri_no = false; // 3.進來後，立馬把鎖鎖住
+    	e.stopImmediatePropagation();
+    	
     	var time_peri_no = $("#time_peri_no").val();
     	var res_date = $("#res_date").val();
 //    	var nowDay = new Date();
