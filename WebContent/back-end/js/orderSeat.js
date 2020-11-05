@@ -51,7 +51,7 @@ $(document).ready(function() {
 						return false;
 					}
 					lock_people = false;
-					console.log("people2");
+//					console.log("people2");
 					var res_date = $("#res_date").val();
 					var time_peri_no = $("#time_peri_no").val();
 					$.ajax({
@@ -641,7 +641,7 @@ $(document).ready(function() {
 					} 
 				});
 			});
-        	console.log(path);
+//        	console.log(path);
         	return '<div class="res_info">姓名：'+ mem.mem_name +'</div>' +
             '<div class="res_info">桌名：' + $("#floor_list").val() +"樓"+"_"+$(this).closest(".drag").children(".seatLabel").find(".seatName").val()+"桌"+ '</div>' +
             '<div class="res_info">時段：' + time_peri.time_start +'</div>' +
@@ -742,7 +742,7 @@ $(document).ready(function() {
     			"action":"get_Res_Order_Today_For_Back",
     		},
     		success: function(messages) {
-    			console.log(messages);
+//    			console.log(messages);
     			$.getScript(contextPath + "/back-end/js/orderSeat.js");
     			var jsonArray = JSON.parse(messages);
     			var $myCheckbox = $(".myCheckbox");
