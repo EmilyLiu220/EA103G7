@@ -85,6 +85,7 @@
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
+						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/Statistics.jsp">食材消耗統計</a></li>
 						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
 					</ul>
 				</li>
@@ -124,7 +125,7 @@
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
 						<a
-							href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
+							href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
 							Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
@@ -137,7 +138,7 @@
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
 							<a
-								href="<%=request.getContextPath()%>/back-end/back-index_New.jsp">吃
+								href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
 								Pot 吧！員工專區</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
