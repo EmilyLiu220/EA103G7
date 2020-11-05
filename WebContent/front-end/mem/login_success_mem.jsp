@@ -71,10 +71,10 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="#" class="list-group-item list-group-item-action list-group-item-dark" style="text-align: center;"><i class="fas fa-chair" style="font-size:80px;"></i><br>我的訂位</a>
+				<a href="<%=request.getContextPath() %>/front-end/res_order/getMemberResSeat.jsp" class="list-group-item list-group-item-action list-group-item-dark" style="text-align: center;"><i class="fas fa-chair" style="font-size:80px;"></i><br>我的訂位</a>
 			</td>
 			<td>
-				<a href="#" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-utensils" style="font-size:80px;"></i><br>我的訂餐</a>
+				<a href="<%=request.getContextPath() %>/front-end/shopping/mealOrder.jsp" class="list-group-item list-group-item-action list-group-item-light" style="text-align: center;"><i class="fas fa-utensils" style="font-size:80px;"></i><br>我的訂餐</a>
 			</td>
 		</tr>
 		<tr>

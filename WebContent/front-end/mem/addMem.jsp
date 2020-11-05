@@ -113,14 +113,14 @@
 	var address2 = document.getElementById("address2");
 	
 	button2.addEventListener("click", function(e) {	
-		mem_name2.value = "吳永志";
+		mem_name2.value = "郭大俠";
 		mem_act2.value = "zzz111";
 		mem_psw1_2.value = "zzz111";
 		mem_psw2_2.value = "zzz111";
 		mem_gen2[0].checked = true;
 		mem_bir2.value = "1990-08-08";
 		mem_tel2.value = "0988168168";
-		mem_mail2.value = "steve199203@gmail.com";
+		mem_mail2.value = "ea103g7@gmail.com";
 		address2.value = "中大路300號";
 	});
 	

@@ -134,7 +134,7 @@ public class EmpServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+							.getRequestDispatcher("/back-end/emp/listAllEmp.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -163,7 +163,7 @@ public class EmpServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/emp/select_page.jsp");
+							.getRequestDispatcher("/back-end/emp/listAllEmp.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -189,7 +189,7 @@ public class EmpServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/emp/select_page.jsp");
+						.getRequestDispatcher("/back-end/emp/listAllEmp.jsp");
 				failureView.forward(req, res);
 			}
 		}
