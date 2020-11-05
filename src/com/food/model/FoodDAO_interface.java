@@ -10,4 +10,5 @@ public interface FoodDAO_interface {
 	public List<FoodVO> getAll();
 	public String getFdnameByFdno(String fd_no);
 	public List<List<String>> Statistics();
+	public List<List<String>> eachMonthFoodStatistics();
 }

@@ -71,6 +71,6 @@ public class FoodService {
 	}
 	
 	public List<List<String>> Statistics(){
-		return dao.Statistics();
+		return dao.eachMonthFoodStatistics();
 	}
 }

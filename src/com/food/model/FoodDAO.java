@@ -11,6 +11,7 @@ import java.sql.*;
 
 public class FoodDAO implements FoodDAO_interface {
 	private static DataSource ds = null;
+	
 	static {
 		try {
 			Context ctx = new InitialContext();
@@ -54,7 +55,7 @@ public class FoodDAO implements FoodDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 			pstmt.setString(1, foodVO.getFd_name());
 			pstmt.setInt(2, foodVO.getFd_isdel());
@@ -95,7 +96,7 @@ public class FoodDAO implements FoodDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
 			pstmt.setString(1, foodVO.getFd_name());
@@ -140,7 +141,7 @@ public class FoodDAO implements FoodDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(DELETE);
 			pstmt.setString(1, fd_no);
 			pstmt.executeUpdate();
@@ -177,7 +178,7 @@ public class FoodDAO implements FoodDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, fd_no);
@@ -237,7 +238,7 @@ public class FoodDAO implements FoodDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
@@ -255,6 +256,7 @@ public class FoodDAO implements FoodDAO_interface {
 				foodVO.setFat(rs.getDouble("FAT"));	
 				list.add(foodVO);
 			}
+
 			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -292,7 +294,7 @@ public class FoodDAO implements FoodDAO_interface {
 		ResultSet rs = null;
 		
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 			pstmt.setString(1, fd_no);
 			rs = pstmt.executeQuery();
@@ -326,6 +328,55 @@ public class FoodDAO implements FoodDAO_interface {
 		}
 	}
 	
+	public List<List<String>> eachMonthFoodStatistics(){
+		FoodDAO dao=new FoodDAO();
+		List<List<String>> list =dao.Statistics();
+		List<List<String>> statList=new ArrayList<>();
+		List<String> statData=null; //統整資料，一筆資料就有1~12個月(為了前端畫統計圖的元件需要)
+		List<FoodVO> fList=dao.getAll();
+		for(int i=0;i<fList.size();i++) {
+			statData=new ArrayList<>();
+			statData.add(fList.get(i).getFd_no());//編號
+			statData.add(fList.get(i).getFd_name());//食材名稱
+			statData.add("2020");//年，寫死，只有一年
+			for(int j=0;j<12;j++) {
+				statData.add("0");//使用量初始化，1~12個月
+			}
+			statList.add(statData);				
+		}
+		//--------------------------------------------
+//		for(List<String> l: statList) {
+//			for(int i=0;i<l.size();i++) {
+//				System.out.printf("%10s",l.get(i));
+//			}
+//			System.out.println();
+//		}
+		//--------------------------------------------
+		for(int i=0;i<list.size();i++) {
+			for(int j=0;j<statList.size();j++) {
+//				System.out.println("list="+list.get(i).get(0));
+//				System.out.println("statList"+statList.get(j).get(0) );
+				if(list.get(i).get(0).equals( statList.get(j).get(0) )) {
+					int month=Integer.valueOf(list.get(i).get(3));
+//					System.out.println(month);
+//					System.out.println(list.get(i).get(3));
+					if(statList.get(j).get(month+2).equals("0")) {
+						statList.get(j).set(month+2,list.get(i).get(4));
+						break;
+					}else {
+						statList.get(j).set(month+2,list.get(i).get(4)+Double.valueOf(statList.get(j).get(month+3)));
+						break;
+					}
+				}
+			}
+		}
+//		System.out.println(statList);
+//		for(List<String> data1:list) {
+//			System.out.println("編號"+data1.get(0)+" 食材"+data1.get(1)+"年分"+data1.get(2)+"月份"+data1.get(3)+"使用量"+data1.get(4));
+//		}
+		return statList;
+	}
+	
 	@Override
 	public List<List<String>> Statistics() {
 		Connection con = null;
@@ -333,22 +384,47 @@ public class FoodDAO implements FoodDAO_interface {
 		ResultSet rs = null;
 		List<String> data;
 		List<List<String>> list=new ArrayList<>();
+		List<List<String>> statList=null;
 		try {
-			con = ds.getConnection();
+			con=ds.getConnection();
 			pstmt = con.prepareStatement(Statistics);
 			rs = pstmt.executeQuery();
 			boolean flag=false;
-
+			//select f.fd_no,fd_name,to_char(order_time,'yyyy')as s_year,to_char(order_time,'mm') as s_month, sum(qty)*fd_gw as qty
+			FoodDAO dao=new FoodDAO();
+			List<FoodVO> fList=dao.getAll();
+			for(int i=0;i<fList.size();i++) {
+				for(int j=1;j<13;j++) {//12月
+					data=new ArrayList<>();
+					data.add(fList.get(i).getFd_no());//編號
+					data.add(fList.get(i).getFd_name());//食材名稱
+					data.add("2020");//年，寫死，只有一年
+					data.add("0");//初始化
+					data.add("0");//使用量初始化
+					if(j<10)data.set(3,"0"+j);
+					else data.set(3,""+j);
+					list.add(data);
+				}
+			}
+//			System.out.println("------------------------------------------------");
+//			for(List l:list) {
+//				System.out.print("編號="+l.get(0));
+//				System.out.print("  名稱="+l.get(1));
+//				System.out.print("  年份="+l.get(2));
+//				System.out.print("  月份="+l.get(3));
+//				System.out.println("  使用量="+l.get(4));
+//			}
+//			System.out.println("------------------------------------------------");
 			while(rs.next()) {
 
 				flag=false;
 				int index=0;
 				data=new ArrayList<>();
-				data.add(rs.getString(1));//編號
-				data.add(rs.getString(2));//食材名稱
-				data.add(rs.getString(3));//年
-				data.add(rs.getString(4));//月
-				data.add(rs.getString(5));
+				data.add(rs.getString("fd_no"));//編號
+				data.add(rs.getString("fd_name"));//食材名稱
+				data.add(rs.getString("s_year"));//年
+				data.add(rs.getString("s_month"));//月
+				data.add(rs.getString("qty"));
 				for(int i=0;i<list.size();i++) {//檢查有沒有這項
 					if(//如果已經有值
 						list.get(i).get(0).equals(data.get(0)) &&
@@ -362,10 +438,23 @@ public class FoodDAO implements FoodDAO_interface {
 				if(flag) { //已經有此項了
 					Double temp=rs.getDouble(5)+Double.valueOf(list.get(index).get(4));
 					list.get(index).set(4,temp.toString());
+//					System.out.println(list.get(index).set(4,temp.toString()));
 				}else {
+//					System.out.println("-------"+data+"-------");
 					list.add(data);
 				}
+//				System.out.println(list.get(index).get(3)+"   "+list.get(index).get(4));
 			}
+//			System.out.println("------------------------------------------------");
+//			for(List<String> l:list) {
+//				System.out.print("編號="+l.get(0));
+//				System.out.print("  名稱="+l.get(1));
+//				System.out.print("  年份="+l.get(2));
+//				System.out.print("  月份="+l.get(3));
+//				System.out.println("  使用量="+l.get(4));
+//			}
+//			System.out.println("------------------------------------------------");
+			
 		} catch (SQLException se) {
 				throw new RuntimeException("A database error occured. " + se.getMessage());
 				// Clean up JDBC resources
