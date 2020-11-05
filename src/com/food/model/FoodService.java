@@ -1,5 +1,6 @@
 package com.food.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,5 +68,9 @@ public class FoodService {
 	
 	public Double get_cal_by_VO(FoodVO foodVO) {
 		return foodVO.getCal();
+	}
+	
+	public List<List<String>> Statistics(){
+		return dao.Statistics();
 	}
 }

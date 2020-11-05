@@ -19,9 +19,23 @@ public class FoodJDBCDAO implements FoodDAO_interface {
 			"SELECT FD_NAME,FD_ISDEL,FD_STK,STK_LL,CAL,PROT,CARB,FAT FROM FOOD WHERE FD_NO = ? AND FD_ISDEL='1'";
 	private static final String UPDATE = 
 			"UPDATE FOOD SET FD_NAME=?,FD_ISDEL=?,FD_STK=?,STK_LL=?,CAL=?,PROT=?,CARB=?,FAT=? WHERE FD_NO = ?";
-//	private static final String GET_FOOD_NAME_STMT = 
-//			"SELECT FD_NAME FROM FOOD WHERE FD_NO=?";
-	
+	private static final String Statistics =
+			"select f.fd_no,fd_name,to_char(order_time,'yyyy')as s_year,to_char(order_time,'mm') as s_month, sum(qty)*fd_gw as qty from meal_order_detail meod " +
+			"join meal_order mo on mo.meal_order_no=meod.meal_order_no " +
+			"join meal_part mp on mp.meal_no=meod.meal_no " +
+			"join food f on f.fd_no=mp.fd_no " +
+			"where meod.meal_no is not null " +
+			"group by meod.meal_no,to_char(order_time,'yyyy'),to_char(order_time,'mm'),f.fd_no ,fd_name,fd_gw " +
+			"union all " +
+			"select to_char(order_time,'yyyy')as s_year,to_char(order_time,'mm')as s_month,f.fd_no,fd_name, sum(qty)*msc.meal_qty*fd_gw as qty from meal_order_detail meod " +
+			"join meal_order mo on mo.meal_order_no=meod.meal_order_no " +
+			"join meal_set_consist msc on msc.meal_set_no=meod.meal_set_no " +
+			"join meal_part mp on mp.meal_no=msc.meal_no " +
+			"join food f on f.fd_no=mp.fd_no " +
+			"where meod.meal_set_no is not null " +
+			"group by msc.meal_no,to_char(order_time,'yyyy'),to_char(order_time,'mm'),meal_qty,f.fd_no ,fd_name,fd_gw " +
+			"order by fd_no,s_year,s_month";
+	 
 	@Override
 	public void insert(FoodVO foodVO) {
 
@@ -70,7 +84,6 @@ public class FoodJDBCDAO implements FoodDAO_interface {
 
 	@Override
 	public void update(FoodVO foodVO) {
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -331,6 +344,83 @@ public class FoodJDBCDAO implements FoodDAO_interface {
 		}
 	}
 	
+	@Override
+	public List<List<String>> Statistics() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<String> data;
+		List<List<String>> list=new ArrayList<>();
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(Statistics);
+			rs = pstmt.executeQuery();
+			boolean flag=false;
+
+			int count=0;
+			while(rs.next()) {
+
+				count++;
+				flag=false;
+				int index=0;
+				data=new ArrayList<>();
+				data.add(rs.getString(1));//編號
+				data.add(rs.getString(2));//食材名稱
+				data.add(rs.getString(3));//年
+				data.add(rs.getString(4));//月
+				data.add(rs.getString(5));
+				for(int i=0;i<list.size();i++) {//檢查有沒有這項
+					if(//如果已經有值
+						list.get(i).get(0).equals(data.get(0)) &&
+						list.get(i).get(2).equals(data.get(2)) && 
+						list.get(i).get(3).equals(data.get(3)) ) {
+						flag=true; //已經有此項了
+						index=i;
+						break;
+					}
+				}
+				if(flag) { //已經有此項了
+					Double temp=rs.getDouble(5)+Double.valueOf(list.get(index).get(4));
+					list.get(index).set(4,temp.toString());
+				}else {
+					list.add(data);
+				}
+			}
+//			for(List<String> data1:list) {
+//				System.out.println("編號"+data1.get(0)+" 食材"+data1.get(1)+"年分"+data1.get(2)+"月份"+data1.get(3)+"使用量"+data1.get(4));
+//			}
+		}catch (SQLException se) {
+				throw new RuntimeException("A database error occured. " + se.getMessage());
+				// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
 	public static void main(String[] args) {
 
 		FoodJDBCDAO dao = new FoodJDBCDAO();
@@ -364,34 +454,46 @@ public class FoodJDBCDAO implements FoodDAO_interface {
 //		dao.delete("FD0020");
 
 		// 查詢
-		FoodVO foodVO3 = dao.findByPrimaryKey("FD0003");
-		System.out.print(foodVO3.getFd_no() + ",");
-		System.out.print(foodVO3.getFd_name() + ",");
-		System.out.print(foodVO3.getFd_isdel() + ",");
-		System.out.print(foodVO3.getFd_stk() + ",");
-		System.out.print(foodVO3.getStk_ll());
-		System.out.print(foodVO3.getCal());
-		System.out.print(foodVO3.getProt());
-		System.out.print(foodVO3.getCarb());
-		System.out.print(foodVO3.getFat());
-		System.out.println();
-		System.out.println("---------------------");
+//		FoodVO foodVO3 = dao.findByPrimaryKey("FD0003");
+//		System.out.print(foodVO3.getFd_no() + ",");
+//		System.out.print(foodVO3.getFd_name() + ",");
+//		System.out.print(foodVO3.getFd_isdel() + ",");
+//		System.out.print(foodVO3.getFd_stk() + ",");
+//		System.out.print(foodVO3.getStk_ll());
+//		System.out.print(foodVO3.getCal());
+//		System.out.print(foodVO3.getProt());
+//		System.out.print(foodVO3.getCarb());
+//		System.out.print(foodVO3.getFat());
+//		System.out.println();
+//		System.out.println("---------------------");
 
 		// 查詢
-		List<FoodVO> list = dao.getAll();
-		for (FoodVO aFood : list) {
-			System.out.print(aFood.getFd_no() + ",");
-			System.out.print(aFood.getFd_name() + ",");
-			System.out.print(aFood.getFd_isdel() + ",");
-			System.out.print(aFood.getFd_stk() + ",");
-			System.out.print(aFood.getStk_ll() + ",");
-			System.out.print(aFood.getCal() + ",");
-			System.out.print(aFood.getProt() + ",");
-			System.out.print(aFood.getCarb() + ",");
-			System.out.print(aFood.getFat());
-			System.out.println();
-		}
+//		List<FoodVO> list = dao.getAll();
+//		for (FoodVO aFood : list) {
+//			System.out.print(aFood.getFd_no() + ",");
+//			System.out.print(aFood.getFd_name() + ",");
+//			System.out.print(aFood.getFd_isdel() + ",");
+//			System.out.print(aFood.getFd_stk() + ",");
+//			System.out.print(aFood.getStk_ll() + ",");
+//			System.out.print(aFood.getCal() + ",");
+//			System.out.print(aFood.getProt() + ",");
+//			System.out.print(aFood.getCarb() + ",");
+//			System.out.print(aFood.getFat());
+//			System.out.println();
+//		}
 		//查詢
-		System.out.print(dao.getFdnameByFdno("FD0003"));
+//		System.out.print(dao.getFdnameByFdno("FD0003"));
+
+		//統計
+//		List<List<String>> list=dao.StatisticsForMeal();
+//		for(List<String> str:list) {
+//			System.out.println("編號:"+str.get(0)+" 食材:"+str.get(1)+" 年分:"+str.get(2)+" 月份:"+str.get(3)+" 使用量:"+str.get(4));
+//		}
+		//統計
+		List<List<String>> list2=dao.Statistics();
+		for(List<String> str:list2) {
+			System.out.println("編號:"+str.get(0)+"  食材:"+str.get(1)+"  年分:"+str.get(2)+"  月份:"+str.get(3)+"  使用量:"+str.get(4));
+		}
+		
 	}
 }

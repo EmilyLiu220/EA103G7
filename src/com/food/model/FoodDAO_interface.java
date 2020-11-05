@@ -9,4 +9,5 @@ public interface FoodDAO_interface {
 	public FoodVO findByPrimaryKey(String fd_no);
 	public List<FoodVO> getAll();
 	public String getFdnameByFdno(String fd_no);
+	public List<List<String>> Statistics();
 }
