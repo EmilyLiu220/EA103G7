@@ -146,6 +146,11 @@
 .newsdata {
 	color: #fff;
 }
+
+
+
+
+
 </style>
 
 
@@ -330,7 +335,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="ftco-section ftco-no-pt ftco-no-pb">
+	<section class="ftco-section ftco-no-pt ftco-no-pb  ">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
