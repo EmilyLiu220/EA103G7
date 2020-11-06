@@ -44,8 +44,8 @@ text-decoration: underline;
 margin: 10px auto;
 }
 figure{
-width:260px;
-height: 260px;
+width:200px;
+height: 200px;
 margin: auto 50px;
 display: inline-block;
  overflow: hidden;
@@ -261,6 +261,7 @@ figure figcaption {
 				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/asignOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/3.png"/></a><figcaption>派工管理</figcaption></figure>
 				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/prepareOrder.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/7.png"/></a><figcaption>出餐管理</figcaption></figure>
 				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/OrderDone.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/9.png"/></a><figcaption>待完成訂單</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/mealOrder/orderChart.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/9.png"/></a><figcaption>統計圖表</figcaption></figure>
 				</div>
 			</p>
 		</div> <!-- content -->

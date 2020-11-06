@@ -245,7 +245,7 @@ public class MealOrderServlet extends HttpServlet {
 			ResOrderService resOrderSvc = new ResOrderService();
 			ResOrderVO resOrderVO = resOrderSvc.findByMealOrderNO(mealOrderVO.getMeal_order_no());
 			
-			if (resOrderVO.getMeal_order_no() != null) {
+			if (resOrderVO != null) {
 				resOrderSvc.updateResOrder(resOrderVO.getRes_no(), null, resOrderVO.getMem_no(), resOrderVO.getEmp_no(),
 						resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
 						resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
