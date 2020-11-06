@@ -118,7 +118,7 @@ input, select {
 <script type="text/javascript">var path = "<%=request.getServletPath()%>";</script>
 <script type="text/javascript">var meal_order_no = "<a href=${pageContext.request.contextPath}/MealOrderServlet.do?action=memOrder&reqURL=${pageContext.request.contextPath}&"</script>
 <script type="text/javascript">var meal_order_no2 ="${requestScope['javax.servlet.forward.servlet_path']}"</script>
-<script>var meal_order_no3 = "${pageContext.request.contextPath}/MealOrderServlet.do?action=memOrder&reqURL="</script>
+<script>var meal_order_no3 = "${pageContext.request.contextPath}/MealOrderServlet.do?action=search&reqURL="</script>
 <script src="<%=request.getContextPath()%>/back-end/js/jquery-1.12.4.js"></script>
 <jsp:include page="/back-end/siderbar/siderbar_for_editSeat.jsp" />
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
