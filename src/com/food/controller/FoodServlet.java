@@ -62,7 +62,7 @@ public class FoodServlet extends HttpServlet {
 					} else if (!stk_ll_str[i].trim().matches(fd_stkReg)) { 
 						updateErrorMsgs.add("食材編號"+fd_no[i]+"修改錯誤，庫存底線只能數字, 且長度必需在1到5之間");
 					}
-					Integer stk_ll = new Integer(fd_stk_str[i].trim()); //已經檢查了，直接轉型
+					Integer stk_ll = new Integer(stk_ll_str[i].trim()); //已經檢查了，直接轉型
 					
 					String calReg = "^[0-9]{1,5}[.]?[0-9]?$"; //只給輸入1~5位數+小數點+小數點後1位數
 					if (cal_str[i] == null || cal_str[i].trim().length() == 0) {
