@@ -94,7 +94,7 @@ th, td {
 						onMouseOut="this.style.background='#6b2822'"> <input
 						type="hidden" name="review_no"
 						value="${member_reviewVO.review_no}"> 
-						<input type="hidden" name="action" value="insertReportAppraise">
+						<input type="hidden" name="action" value="getOneForReportAppraise">
 				</FORM>
 			</td>
 		</c:forEach>
