@@ -71,29 +71,35 @@
 			</td>
 			<td>
 				<c:if test="${not empty resOrderVO.meal_order_no}">
-					<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
+					<c:choose>    
+						<c:when test="${mealOrderSvc.searchByOrderNo(resOrderVO.meal_order_no).meal_order_sts ne 0}">  
+							<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
+						</c:when>
+						<c:otherwise>
+							<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
+								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
+								<font color="red">未訂餐</font><br>
+								<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
+							</form>
+						</c:otherwise>
+					</c:choose>
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">
-					<c:if test="${resOrderVO.info_sts gt 1}">  
-						<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-						<font color="red">未訂餐</font><br>
-					</c:if>
+					<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
+						<c:choose>    
+							<c:when test="${resOrderVO.info_sts ne 3}">  
+									<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
+									<font color="red">未訂餐</font><br>
+									<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
+							</c:when>
+							<c:otherwise>
+								<font color="red">未訂餐</font><br>
+								<button type="submit" class="btn btn-primary" disabled="disabled" style="cursor: not-allowed;">我要訂餐</button>
+							</c:otherwise>
+						</c:choose>
+					</form>
 				</c:if>
 			</td>
-<!-- 			<td> -->
-<%-- 				${resOrderVO.mem_no} --%>
-<!-- 			</td> -->
-<!-- 			<td> -->
-<%-- 				<c:if test="${not empty resOrderVO.emp_no}"> --%>
-<%-- 					${resOrderVO.emp_no} --%>
-<%-- 				</c:if>  --%>
-<%-- 				<c:if test="${empty resOrderVO.emp_no}"> --%>
-<!-- 					無 -->
-<%-- 				</c:if> --%>
-<!-- 			</td> -->
-<!-- 			<td> -->
-<%-- 				<fmt:formatDate value="${resOrderVO.res_time}" pattern="yyyy-MM-dd HH:mm:ss"/> --%>
-<!-- 			</td> -->
 			<td>
 				${resOrderVO.res_date}
 			</td>
@@ -105,12 +111,13 @@
 			</td>
 			<td>
 				<c:forEach  var="item" items="${map_info_sts}">
-					<c:if test="${item.key eq resOrderVO.info_sts}">
+					<c:if test="${item.key eq resOrderVO.info_sts or resOrderVO.seat_sts eq 0}">
 						<c:if test="${item.key eq 3}">
 							<font style="color: red" >${item.value}</font>
 						</c:if>
-						<c:if test="${item.key ne 3}">
-							<font style="color: blue" >${item.value}</font>
+						<c:if test="${item.key ne 3 or resOrderVO.seat_sts eq 1}">
+							<font style="color: blue" >${item.value}
+							</font>
 						</c:if>
 					</c:if>
 				</c:forEach>
