@@ -75,7 +75,7 @@ td {
 				</td>
 				<td>
 					<p align=left>
-						<input type=text name="account" value="" size=20 required>
+						<input type=text name="account" value="${memVO2.mem_act}" size=20 required>
 				</td>
 			</tr>
 			<tr>

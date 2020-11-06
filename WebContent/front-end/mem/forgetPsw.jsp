@@ -40,7 +40,7 @@
 	
 	<form method="post" action="<%=request.getContextPath()%>/front-end/mem/mem.do">
 		<span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;½Ð¿é¤Jemail:</span>
-		<input type="email" name="mem_mail" value="" required>
+		<input type="email" name="mem_mail" value="${memVO2.mem_mail}" required>
 		<p><p>
 		<input type="submit" id="ok" value="°e¥X" style="margin-left:275px">
 		<input type="hidden" name="action" value="forget_psw">

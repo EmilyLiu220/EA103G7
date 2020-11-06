@@ -484,6 +484,11 @@ public class EmpServlet extends HttpServlet {
 				EmpService empSvc = new EmpService();
 				empVO = empSvc.updateBySv(emp_sts, emp_no);
 				
+				Emp_authService emp_authSvc = new Emp_authService();
+				if (emp_sts == 0) {
+					emp_authSvc.deleteEmp_auth(emp_no);
+				}
+				
 				empVO.setEmp_name(emp_name);
 				
 				for (int i = 0; i < fun_no.length; i++) {
