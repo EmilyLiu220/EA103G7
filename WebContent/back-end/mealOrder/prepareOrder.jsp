@@ -314,6 +314,7 @@
 //                 dataType: "JSON",
                 success: function () {
 					 $("."+mealOrderNo).remove();
+					 $(".checkbox").change(sendOrder);
 					 count = document.getElementsByClassName("table").length;
 						$("#table-1").find("span").html('目 前 共 有  <font color="red" size="5">' + count  + ' 筆   </font>未 完 成 餐 點 的 訂 單');
                 }
@@ -368,7 +369,7 @@
 				count = document.getElementsByClassName("table").length;
 				$("#table-1").find("span").html('目 前 共 有 <font color="red" size="5">' + count  + ' 筆   </font>未 完 成 餐 點 的 訂 單');
 		}
-		
+		$(".checkbox").change(sendOrder);
 	}
 	
 	window.onbeforeunload = function (e) {

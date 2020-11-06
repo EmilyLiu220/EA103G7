@@ -80,7 +80,7 @@ public class MealOrderServlet extends HttpServlet {
 			Integer amount = new Integer(req.getParameter("amount"));
 			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Timestamp pickupTime = null;
-			System.out.println(req.getParameter("pickup_time"));
+//			System.out.println(req.getParameter("pickup_time"));
 			if (req.getParameter("res_no") == null) {
 
 				try {
@@ -397,7 +397,7 @@ public class MealOrderServlet extends HttpServlet {
 				map2.put("order_time", orderStrArray);
 				map2.put("pickup_time", pickStrArray);
 
-				System.out.println("stringArray.length=" + map2.get("order_time").length);
+//				System.out.println("stringArray.length=" + map2.get("order_time").length);
 
 				session.setAttribute("orderChart", map2);
 				map = map2;
@@ -455,7 +455,7 @@ public class MealOrderServlet extends HttpServlet {
 			res.setContentType("application/json; charset=utf-8");
 			PrintWriter out = res.getWriter();
 			out.write(jsondata);
-			System.out.println(jsondata);
+//			System.out.println(jsondata);
 
 			req.setAttribute("orderList", orderList);
 
