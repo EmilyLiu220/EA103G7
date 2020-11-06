@@ -199,11 +199,16 @@
 						<td style="text-align: center;">${front_informVO.res_no}</td>
 						<td style="text-align: center;">
 							<c:choose>
-								<c:when test="${front_informVO.info_cont eq '提醒您，因您多次訂位且多次點按確認當天用餐按鈕，但皆未至本餐廳用餐，您的訂位功能將於 3 天後恢復'}">暫停訂位功能通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '提醒您，因您多次訂餐付款但皆未至本餐廳取餐，您的訂餐功能將於 3 天後恢復'}">暫停訂餐功能通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉功能將於 7 天後恢復'}">暫停檢舉功能通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '提醒您，因您有多則評價被檢舉成功，您的評價功能將於 14 天後恢復'}">暫停評價功能通知</c:when>
-								<c:when test="${front_informVO.info_cont eq '提醒您，您將於 1 分鐘後被停權'}">會員停權通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '提醒您，因您多次訂位但皆未至本餐廳用餐，您的訂位權限將被暫停使用'}">暫停訂位功能通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '您的訂位權限已恢復喔~點選查看訂位頁面'}">訂位功能恢復通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '提醒您，因您多次訂餐付款但皆未至本餐廳取餐，您的訂餐權限將被暫停使用'}">暫停訂餐功能通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '您的訂餐權限已恢復喔~點選查看訂餐頁面'}">訂餐功能恢復通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉權限將被暫停使用'}">暫停檢舉功能通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '您的檢舉權限已恢復喔~'}">檢舉功能恢復通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '提醒您，因您有多則評價被檢舉成功，您的評價權限將被暫停使用'}">暫停評價功能通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '您的評價權限已恢復喔~'}">評價功能恢復通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '提醒您，您已被停權'}">會員停權通知</c:when>
+								<c:when test="${front_informVO.info_cont eq '歡迎您回來~'}">取消停權通知</c:when>
 								<c:when test="${front_informVO.info_cont eq '訂位成功，點選查看訂位訂單'}">訂位成功通知</c:when>
 								<c:when test="${front_informVO.info_cont eq '訂位訂單修改成功，點選查看訂位訂單'}">訂位修改通知</c:when>
 								<c:when test="${front_informVO.info_cont eq '訂餐成功，點選查看訂餐訂單'}">訂餐成功通知</c:when>
