@@ -48,6 +48,7 @@ public class Mem_stsFilter implements Filter {
 		
 		List<String> meal = new ArrayList<>();
 		reserve.add(req.getContextPath() + "/front-end/shopping/shopping.do");
+		reserve.add(req.getContextPath() + "/front-end/shopping/icon/8.png");
 		reserve.add(req.getContextPath() + "/front-end/shopping/cart.jsp");
 		reserve.add(req.getContextPath() + "/front-end/shopping/checkout.jsp");
 		reserve.add(req.getContextPath() + "/front-end/shopping/mealMenu2.jsp");
