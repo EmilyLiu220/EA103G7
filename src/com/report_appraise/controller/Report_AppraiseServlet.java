@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import com.report_appraise.model.*;
+import com.mem.model.MemVO;
 import com.member_review.model.Member_ReviewService;
 import com.member_review.model.Member_ReviewVO;
 
@@ -192,22 +193,27 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 
 			try {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
-				String review_no = req.getParameter("review_no");
-				String review_noReg = "^[(MR0-9)]{6}$";
-				if (review_no == null || review_no.trim().length() == 0) {
-					errorMsgs.add("評價編號：請勿空白");
-				} else if (!review_no.trim().matches(review_noReg)) {
-					errorMsgs.add("評價編號: 只能是英文字母MR和數字，且長度必須為6");
-				}
+				String review_no = new String(req.getParameter("review_no").trim());
 
-				String mem_no = req.getParameter("mem_no");
+//				String review_no = req.getParameter("review_no");
+//				String review_noReg = "^[(MR0-9)]{6}$";
+//				if (review_no == null || review_no.trim().length() == 0) {
+//					errorMsgs.add("評價編號：請勿空白");
+//				} else if (!review_no.trim().matches(review_noReg)) {
+//					errorMsgs.add("評價編號: 只能是英文字母MR和數字，且長度必須為6");
+//				}
+
+				HttpSession session = req.getSession();
+				MemVO memVO = (MemVO) session.getAttribute("memVO2");
+				String mem_no = memVO.getMem_no();
 				String mem_noReg = "^[(MEM0-9)]{7}$";
 				if (mem_no == null || mem_no.trim().length() == 0) {
 					errorMsgs.add("會員編號：請勿空白");
 				} else if (!mem_no.trim().matches(mem_noReg)) {
 					errorMsgs.add("會員編號: 只能是英文字母MEM和數字，且長度必須為7");
 				}
-
+				
+				
 				String emp_no = req.getParameter("emp_no");
 				String emp_noReg = "^[(EMP0-9)]{7}$";
 				if (emp_no == null || emp_no.trim().length() == 0) {

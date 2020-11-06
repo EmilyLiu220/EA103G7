@@ -8,7 +8,7 @@
 <%@ page import="com.bonus.model.*"%>
 
 <%
-	BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
+	BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO");
 %>
 
 <jsp:useBean id="bonuswSvc" scope="page"

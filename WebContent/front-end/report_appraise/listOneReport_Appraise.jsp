@@ -62,7 +62,6 @@
 <!-- 		<th>檢舉編號</th> -->
 		<th>評價編號</th>
 		<th>會員編號</th>
-		<th>員工編號</th>
 		<th>檢舉內容</th>
 		<th>檢舉日期</th>
 		<th>狀態</th>
@@ -71,7 +70,6 @@
 <%-- 		<td><%=report_appraiseVO.getReport_no()%></td> --%>
 		<td><%=report_appraiseVO.getReview_no()%></td>
 		<td><%=report_appraiseVO.getMem_no()%></td>
-		<td><%=report_appraiseVO.getEmp_no()%></td>
 		<td><%=report_appraiseVO.getReport_con()%></td>
 		<td><%=report_appraiseVO.getReport_date()%></td>
 		<td><font color="red">評價檢舉成功</font></td>

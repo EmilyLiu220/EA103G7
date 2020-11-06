@@ -71,11 +71,11 @@ th, td {
 					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getReview_no()%>" /></td>
 			</tr>
 
-			<tr>
-				<td>會員編號：</td>
-				<td><input type="TEXT" name="mem_no" size="45"
-					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getMem_no()%>" /></td>
-			</tr>
+<!-- 			<tr> -->
+<!-- 				<td>會員編號：</td> -->
+<!-- 				<td><input type="TEXT" name="mem_no" size="45" -->
+<%-- 					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getMem_no()%>" /></td> --%>
+<!-- 			</tr> -->
 
 			<tr>
 				<td>員工編號：</td>
