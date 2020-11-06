@@ -70,35 +70,14 @@
 				</c:forEach>
 			</td>
 			<td>
-				<c:if test="${not empty resOrderVO.meal_order_no}">
-					<c:choose>    
-						<c:when test="${mealOrderSvc.searchByOrderNo(resOrderVO.meal_order_no).meal_order_sts ne 0}">  
+				<c:choose>    
+					<c:when test="${not empty resOrderVO.meal_order_no}">  
 							<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
-						</c:when>
-						<c:otherwise>
-							<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-								<font color="red">未訂餐</font><br>
-								<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
-							</form>
-						</c:otherwise>
-					</c:choose>
-				</c:if> 
-				<c:if test="${empty resOrderVO.meal_order_no}">
-					<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-						<c:choose>    
-							<c:when test="${resOrderVO.info_sts ne 3}">  
-									<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-									<font color="red">未訂餐</font><br>
-									<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
-							</c:when>
-							<c:otherwise>
-								<font color="red">未訂餐</font><br>
-								<button type="submit" class="btn btn-primary" disabled="disabled" style="cursor: not-allowed;">我要訂餐</button>
-							</c:otherwise>
-						</c:choose>
-					</form>
-				</c:if>
+					</c:when>
+					<c:otherwise>
+						<font color="red">未訂餐</font><br>
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td>
 				${resOrderVO.res_date}
