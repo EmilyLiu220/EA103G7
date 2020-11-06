@@ -58,6 +58,9 @@
 	<jsp:useBean id="map_info_sts" class="java.util.HashMap"/>
 		<c:set target="${map_info_sts}" property="2" value="完成"/>
 		<c:set target="${map_info_sts}" property="3" value="取消訂位"/>
+	<jsp:useBean id="seat_sts" class="java.util.HashMap"/>
+		<c:set target="${seat_sts}" property="0" value="未入座"/>
+		<c:set target="${seat_sts}" property="1" value="已入座"/>
 	<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" />
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
@@ -94,12 +97,11 @@
 						<c:if test="${item.key eq 3}">
 							<font style="color: red" >${item.value}</font>
 						</c:if>
-						<c:if test="${item.key ne 3 or resOrderVO.seat_sts eq 1}">
-							<font style="color: blue" >${item.value}
-							</font>
-						</c:if>
 					</c:if>
 				</c:forEach>
+				<c:if test="${resOrderVO.seat_sts eq 1}">
+					<font style="color: blue" >已入座</font>
+				</c:if>
 			</td>
 		</tr>
 		</c:if>
