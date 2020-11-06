@@ -210,11 +210,11 @@
 			<table class="table table-hover" style="width: 100%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 10%;">評價編號</th>
-						<th style="width: 35%;">訂餐編號</th>
-						<th style="width: 20%;">評價內容</th>
+						<th style="width: 20%;">評價編號</th>
+						<th style="width: 20%;">訂餐編號</th>
+						<th style="width: 40%;">評價內容</th>
 						<th style="width: 20%;">評價日期</th>
-						<th style="width: 20%;">檢舉審核</th>
+						<th style="width: 0%;">檢舉審核</th>
 					</tr>
 				</thead>
 				<tbody>

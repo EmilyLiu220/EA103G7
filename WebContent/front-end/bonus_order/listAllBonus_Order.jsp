@@ -22,84 +22,88 @@
 %>
 
 <style>
-  table#table-1 {
+table#table-1 {
 	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+	border: 2px solid black;
+	text-align: center;
+}
+
+table#table-1 h4 {
+	color: red;
+	display: block;
+	margin-bottom: 1px;
+}
+
+h4 {
+	color: blue;
+	display: inline;
+}
 </style>
 
 <style>
-  table {
+table {
 	width: 800px;
 	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
+}
+
+table, th, td {
+	border: 1px solid #CCCCFF;
+}
+
+th, td {
+	padding: 5px;
+	text-align: center;
+}
 </style>
 <%@ include file="/front-end/headfinish.jsp"%>
 </head>
 <body bgcolor='white'>
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+	<%-- 錯誤表列 --%>
+	<c:if test="${not empty errorMsgs}">
+		<font style="color: red">請修正以下錯誤:</font>
+		<ul>
+			<c:forEach var="message" items="${errorMsgs}">
+				<li style="color: red">${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
 
-			<table align="center">
-					<tr>
-						<th style="width: 33%;">紅利商品訂單編號</th>
-						<th style="width: 33%;">會員編號</th>
-						<th style="width: 33%;">訂單日期</th>
-						<th style="width: 1%;"></th>	
-					</tr>
-				<%@ include file="page1.file"%>
-				<tbody>
-					<c:forEach var="bonus_orderVO" items="${list}"
-						begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-						<tr>
-							<td style="text-align: center;">${bonus_orderVO.bo_no}</td>
-							<td style="text-align: center;">${bonus_orderVO.mem_no}</td>
-							<td style="text-align: center;">${bonus_orderVO.bo_date}</td>
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/front-end/bonus_order/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="明細" id="details"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#ba2214'"
-										onMouseOut="this.style.background='#6b2822'"> <input
-										type="hidden" name="bo_no" value="${bonus_orderVO.bo_no}">
-									<input type="hidden" name="action" value="bonusOrderDetailsFront">
-								</FORM>
-							</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<%@ include file="page2.file"%>
-			</p>
-		</div>
+	<table align="center">
+		<tr>
+			<th style="width: 33%;">紅利商品訂單編號</th>
+			<th style="width: 33%;">會員編號</th>
+			<th style="width: 33%;">訂單日期</th>
+			<th style="width: 1%;"></th>
+		</tr>
+		<%@ include file="page1.file"%>
+		<tbody>
+			<c:forEach var="bonus_orderVO" items="${list}" begin="<%=pageIndex%>"
+				end="<%=pageIndex+rowsPerPage-1%>">
+				<tr>
+					<td style="text-align: center;">${bonus_orderVO.bo_no}</td>
+					<td style="text-align: center;">${bonus_orderVO.mem_no}</td>
+					<td style="text-align: center;">${bonus_orderVO.bo_date}</td>
+					<td style="text-align: center;">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/front-end/bonus_order/forwarded"
+							style="margin-bottom: 0px;">
+							<input type="submit" value="明細" id="details"
+								style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
+								onMouseOver="this.style.background='#ba2214'"
+								onMouseOut="this.style.background='#6b2822'"> <input
+								type="hidden" name="bo_no" value="${bonus_orderVO.bo_no}">
+							<input type="hidden" name="action" value="bonusOrderDetailsFront">
+						</FORM>
+					</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	<%@ include file="page2.file"%>
+	</p>
+	</div>
 	</div>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->

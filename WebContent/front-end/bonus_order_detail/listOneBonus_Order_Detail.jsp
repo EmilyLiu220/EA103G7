@@ -12,17 +12,20 @@
 	List<BonusVO> list = bonusSvc.getAll();
 	pageContext.setAttribute("list", list);
 %>
-<jsp:useBean id="detailSvc" scope="page"
-	class="com.bonus_order_detail.model.Bonus_Order_DetailService" />
+<%
+	BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO");
+%>
+<jsp:useBean id="bonuswSvc" scope="page"
+	class="com.bonus.model.BonusService" />
 	
 <%
-	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
+	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); 
 %>
 <jsp:useBean id="bonus_orderSvc" scope="page"
 	class="com.bonus_order.model.Bonus_OrderService" />
 
 <%
-	Bonus_Order_DetailVO bonus_order_detailVO = (Bonus_Order_DetailVO) request.getAttribute("bonus_order_detailVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
+	Bonus_Order_DetailVO bonus_order_detailVO = (Bonus_Order_DetailVO) request.getAttribute("bonus_order_detailVO");  
 %>
 <jsp:useBean id="bonus_order_detailSvc" scope="page"
 	class="com.bonus_order_detail.model.Bonus_Order_DetailService" />
@@ -79,7 +82,7 @@
 					</c:forEach>
 				</ul>
 			</c:if>
-
+			<br>
 			<table class="table table-hover" style="width: 100%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
@@ -93,8 +96,8 @@
 					<tr>
 						<td style="text-align: center;"><%=bonus_order_detailVO.getBo_no()%></td>
 						<td style="text-align: center;"><%=bonus_order_detailVO.getBns_no()%></td>
-						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
-						<td style="text-align: center;">兌換成功</td>
+						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonus_order_detailVO.bns_no}"></td>
+						<td style="text-align: center;"><span style="color:red;">兌換成功</span></td>
 					</tr>
 				</tbody>
 			</table>
