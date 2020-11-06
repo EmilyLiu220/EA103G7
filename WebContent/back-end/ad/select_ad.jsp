@@ -233,7 +233,7 @@
 					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ad/ad.do">
 						<b>廣告編號 (AD0001):</b> <input type="text" name="ad_no"> <input
 							type="hidden" name="action" value="getOne_For_Display"> <input
-							type="submit" value="送出1">
+							type="submit" value="送出">
 					</FORM>
 				</li>
 				<jsp:useBean id="adSvc" scope="page" class="com.ad.model.AdService" />
@@ -245,7 +245,7 @@
 								<option value="${adVO.ad_no}">${adVO.ad_no}
 							</c:forEach>
 						</select> <input type="hidden" name="action" value="getOne_For_Display">
-						<input type="submit" value="送出2">
+						<input type="submit" value="送出">
 					</FORM>
 				</li>
 				<li>
@@ -258,7 +258,7 @@
 							</c:forEach>
 						</select> 
 						<input type="hidden" name="action" value="getADByEmpNo">
-						<input type="submit" value="送出3">
+						<input type="submit" value="送出">
 					</FORM>
 				</li>
 			</ul>
