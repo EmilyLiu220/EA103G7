@@ -8,6 +8,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.bonus.model.BonusVO;
+
 public class Bonus_Order_DetailDAO implements Bonus_Order_DetailDAO_interface {
 
 	// 一個應用程式中,針對一個資料庫 ,共用一個DataSource即可
@@ -21,7 +23,7 @@ public class Bonus_Order_DetailDAO implements Bonus_Order_DetailDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO bonus_order_detail (bo_no,bns_no,quantity) VALUES ('BO'||LPAD(SEQ_BO_NO.NEXTVAL,4,0), ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO bonus_order_detail (bo_no,bns_no,quantity) VALUES (?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT bo_no,bns_no,quantity FROM bonus_order_detail order by bo_no";
 	private static final String GET_ONE_STMT = "SELECT bo_no,bns_no,quantity FROM bonus_order_detail where bo_no = ?";
 	private static final String DELETE = "DELETE FROM bonus_order_detail where bo_no = ?";
@@ -253,20 +255,20 @@ public class Bonus_Order_DetailDAO implements Bonus_Order_DetailDAO_interface {
 		return list;
 	}
 	@Override
-	public void insert2(Bonus_Order_DetailVO bonus_order_detailVO, Connection con) {
+	public void insert2(String bo_no, Connection con, List<BonusVO> list) {
 
 		PreparedStatement pstmt = null;
 
 		try {
-
+			
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, bonus_order_detailVO.getBo_no());
-			pstmt.setString(2, bonus_order_detailVO.getBns_no());
-			pstmt.setInt(3, bonus_order_detailVO.getQuantity());
+			pstmt.setString(1, bo_no);
+			pstmt.setString(2, list.get(0).getBns_no());
+			pstmt.setInt(3,new Integer(1));
 
 			pstmt.executeUpdate();
-
+			
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			if (con != null) {

@@ -184,12 +184,12 @@
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front_home.jsp" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="" class="nav-link">Menu</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp" class="nav-link">店內新訊</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp" class="nav-link">最新活動</a></li>
-					<li class="nav-item"><a href="" class="nav-link">評價總覽</a></li>
-					<li class="nav-item"><a href="" class="nav-link">候位狀況</a></li>
-					<li class="nav-item"><a href="" class="nav-link" id="meal">我要訂餐</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/member_review/select_page.jsp" class="nav-link">評價總覽</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/wait_seat/wait_seat.jsp" class="nav-link">候位狀況</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/bonus/listAllBonus.jsp" class="nav-link">紅利商品</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/shopping/mealMenu2.jsp" class="nav-link" id="meal">我要訂餐</a></li>
 					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp" class="nav-link" id="res">我要訂位</a></li>
 				</ul>
 			</div>
@@ -443,7 +443,7 @@
 			}
 		} else if ("read" === jsonObj.type){
 			console.log("收到 "+jsonObj.sender+" read 訊息");
-			document.querySelectorAll('.chat_unread').forEach( (e)=>{
+			document.querySelectorAll('.chat_unread').forEach( (e)=> {
 				e.innerText = " 已讀";
 				e.classList.remove("chat_unread");
 			})
@@ -1005,8 +1005,8 @@
 	
 	var res = document.getElementById("res");
 	var meal = document.getElementById("meal");
-// 	var review = document.getElementById("review");
-// 	var repo = document.getElementById("repo");
+	var review = document.getElementById("review");
+	var repo = document.getElementById("repo");
 	
 	if (mem_no !== '' && mem_od_r == 0) {
 		res.addEventListener("click", function() {
@@ -1019,16 +1019,16 @@
 			alert("Sorry！您沒有訂餐權限！" + "\n" + "有任何疑問請洽客服。");
 		});
 	}
-// 	if (mem_no !== '' && mem_review == 0) {
-// 		review.addEventListener("click", function() {
-// 			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
-// 		});
-// 	}
-// 	if (mem_no !== '' && mem_repo == 0) {
-// 		repo.addEventListener("click", function() {
-// 			alert("Sorry！您沒有檢舉權限！" + "\n" + "有任何疑問請洽客服。");
-// 		});
-// 	}
+	if (mem_no !== '' && mem_review == 0) {
+		review.addEventListener("click", function() {
+			alert("Sorry！您沒有評價權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
+	if (mem_no !== '' && mem_repo == 0) {
+		repo.addEventListener("click", function() {
+			alert("Sorry！您沒有檢舉權限！" + "\n" + "有任何疑問請洽客服。");
+		});
+	}
 	
 // 	if (mem_no === '') {
 // 		res.addEventListener("click", function() {

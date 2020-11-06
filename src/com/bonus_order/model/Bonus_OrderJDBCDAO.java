@@ -3,6 +3,7 @@ package com.bonus_order.model;
 import java.util.*;
 import java.sql.*;
 
+import com.bonus.model.BonusVO;
 import com.bonus_order_detail.model.Bonus_Order_DetailJDBCDAO;
 import com.bonus_order_detail.model.Bonus_Order_DetailVO;
 
@@ -296,7 +297,7 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public void insertWithBonus_Order_Detail(Bonus_OrderVO bonus_orderVO, List<Bonus_Order_DetailVO> list) {
+	public void insertWithBonus_Order_Detail(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -329,9 +330,9 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 			// 再同時新增訂單明細
 			Bonus_Order_DetailJDBCDAO dao = new Bonus_Order_DetailJDBCDAO();
 			System.out.println("list.size()-A=" + list.size());
-			for (Bonus_Order_DetailVO aBod : list) {
-				aBod.setBo_no(new String(next_bo_no));
-				dao.insert2(aBod, con);
+			for (BonusVO aBod : list) {
+				aBod.setBns_no(new String(next_bo_no));
+				dao.insert2(next_bo_no, con, list);
 			}
 
 			// 2●設定於 pstm.executeUpdate()之後
@@ -384,17 +385,14 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 		bonus_orderVO.setBo_date(java.sql.Date.valueOf("2020-11-13"));
 		bonus_orderVO.setPromo_code("d4658wadr8w");
 
-		List<Bonus_Order_DetailVO> testList = new ArrayList<Bonus_Order_DetailVO>(); 
-		Bonus_Order_DetailVO bodXX = new Bonus_Order_DetailVO(); 
+		List<BonusVO> testList = new ArrayList<BonusVO>(); 
+		BonusVO bodXX = new BonusVO(); 
 		bodXX.setBns_no("BN0001");
-		bodXX.setQuantity(1);
 		
 		Bonus_Order_DetailVO bodYY = new Bonus_Order_DetailVO(); 
 		bodYY.setBns_no("BN0002");
-		bodYY.setQuantity(2);
 
 		testList.add(bodXX);
-		testList.add(bodYY);
 
 		dao.insertWithBonus_Order_Detail(bonus_orderVO, testList);
 
@@ -436,7 +434,7 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public void insert(Bonus_OrderVO bonus_orderVO, List<Bonus_Order_DetailVO> list) {
+	public void insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
 		// TODO Auto-generated method stub
 		
 	}

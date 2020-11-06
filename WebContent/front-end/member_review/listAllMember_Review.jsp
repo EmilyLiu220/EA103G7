@@ -69,41 +69,36 @@ th, td {
 		</ul>
 	</c:if>
 
-	<table>
+	<table align="center">
 		<tr>
-			<th>評價編號</th>
-			<th>訂餐編號</th>
-			<th>評價內容</th>
-			<th>評價日期</th>
-
-		</tr>
+			<th style="width: 15%;">評價編號</th>
+			<th style="width: 15%;">訂餐編號</th>
+			<th style="width: 50%;">評價內容</th>
+			<th style="width: 30%;">評價日期</th>
+			<th style="width: 0%;"></th>
+		</tr>		
 		<%@ include file="page1.file"%>
 		<c:forEach var="member_reviewVO" items="${list}"
 			begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-
 			<tr>
 				<td>${member_reviewVO.review_no}</td>
 				<td>${member_reviewVO.meal_order_no}</td>
 				<td>${member_reviewVO.mem_review_con}</td>
 				<td>${member_reviewVO.review_date}</td>
-			</tr>
-
 			<td>
 				<FORM METHOD="post"
 					ACTION="<%=request.getContextPath()%>/front-end/report_appraise/forwarded"
 					style="margin-bottom: 0px;">
-					<input type="submit" value="檢舉" id="report"
-						style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
+					<input type="submit" value="檢舉" id="report" style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
 						onMouseOver="this.style.background='#ba2214'"
 						onMouseOut="this.style.background='#6b2822'"> <input
 						type="hidden" name="review_no"
-						value="${member_reviewVO.review_no}"> <input type="hidden"
-						name="action" value="insertReportAppraise">
+						value="${member_reviewVO.review_no}"> 
+						<input type="hidden" name="action" value="insertReportAppraise">
 				</FORM>
 			</td>
-
 		</c:forEach>
-	</table>
+	</table>	
 	<%@ include file="page2.file"%>
 	<%@ include file="/front-end/footer.jsp"%>
 </body>

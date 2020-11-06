@@ -15,6 +15,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.google.gson.Gson;
+import com.meal_order.controller.MealOrderWebSocket;
 import com.meal_order_detail.model.MealOrderDetailDAO;
 import com.meal_order_detail.model.MealOrderDetailJDBCDAO;
 import com.meal_order_detail.model.MealOrderDetailVO;
@@ -45,10 +47,11 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 	private static final String GETBYPAYSTS = "SELECT * FROM MEAL_ORDER WHERE PAY_STS = ?";
 	private static final String GETALL = "SELECT * FROM MEAL_ORDER ORDER BY MEAL_ORDER_NO";
 
-	public Map<String,Object>  insert(MealOrderVO mealOrderVO, List<MealOrderDetailVO> detailList, Connection... rescon) {
-		
-		Map<String,Object> map = new HashMap<>();
-		
+	public Map<String, Object> insert(MealOrderVO mealOrderVO, List<MealOrderDetailVO> detailList,
+			Connection... rescon) {
+
+		Map<String, Object> map = new HashMap<>();
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String orderNo = null;
@@ -88,7 +91,7 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 				detailDAO.insert(detailVO, con);
 			}
 			map.put("mealOrderVO", mealOrderVO);
-			map.put("con",con);
+			map.put("con", con);
 
 			con.commit();
 			return map;
@@ -108,7 +111,7 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 					se.printStackTrace(System.err);
 				}
 			}
-			if (rescon.length == 0&&con != null) {
+			if (rescon.length == 0 && con != null) {
 				try {
 					con.close();
 				} catch (Exception e) {
@@ -151,9 +154,9 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 			}
 		}
 	};
-	
-	public void updatePickupTime (String mealOrderNo) {
-		
+
+	public void updatePickupTime(String mealOrderNo) {
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -163,6 +166,13 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 
 			pstmt.setString(1, mealOrderNo);
 			pstmt.executeUpdate();
+
+			MealOrderWebSocket webSocket = new MealOrderWebSocket();
+			Gson gson = new Gson();
+			Map<String, Object> pushMsg = new HashMap<>();
+			pushMsg.put("reload", "asignOrder");
+			String jsonMap = gson.toJson(pushMsg);
+			webSocket.onMessage(jsonMap);
 
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -182,13 +192,11 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 				}
 			}
 		}
-		
-		
-		
+
 	};
-	
+
 	public List<MealOrderVO> searchByMemNo(String memNo) {
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -242,11 +250,9 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 			}
 		}
 		return list;
-		
-		
-		
+
 	};
-	
+
 	public MealOrderVO searchByOrderNo(String mealOrderNo) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -465,7 +471,7 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 		}
 		return list;
 	};
-	
+
 	public List<MealOrderVO> searchToday(Date today) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -483,7 +489,9 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			String begin = ft.format(today);
 			String end = ft.format(now);
-			String sql = "SELECT * FROM MEAL_ORDER WHERE PICKUP_TIME >= TO_DATE('"+ begin +"','YYYY-MM-DD hh24:mi') AND PICKUP_TIME <= TO_DATE('"+ end +"','YYYY-MM-DD hh24:mi') ORDER BY PICKUP_TIME";
+			String sql = "SELECT * FROM MEAL_ORDER WHERE PICKUP_TIME >= TO_DATE('" + begin
+					+ "','YYYY-MM-DD hh24:mi') AND PICKUP_TIME <= TO_DATE('" + end
+					+ "','YYYY-MM-DD hh24:mi') ORDER BY PICKUP_TIME";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -582,8 +590,8 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 		}
 		return list;
 	};
-	
-	public List<MealOrderVO> getAll(Map<String,String[]> queryMap) {
+
+	public List<MealOrderVO> getAll(Map<String, String[]> queryMap) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -592,7 +600,8 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 
 		try {
 			con = ds.getConnection();
-			String queryAll ="SELECT * FROM MEAL_ORDER " + CompositeQuery.getWhereCondition(queryMap) + "ORDER BY MEAL_ORDER_NO";
+			String queryAll = "SELECT * FROM MEAL_ORDER " + CompositeQuery.getWhereCondition(queryMap)
+					+ "ORDER BY MEAL_ORDER_NO";
 //			System.out.println(queryAll);
 			pstmt = con.prepareStatement(queryAll);
 			rs = pstmt.executeQuery();

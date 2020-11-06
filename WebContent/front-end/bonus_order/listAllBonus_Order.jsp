@@ -66,15 +66,13 @@
 	</ul>
 </c:if>
 
-			<table class="table table-hover" style="width: 100%; font-size: 90%;">
-				<thead style="text-align: center;">
+			<table align="center">
 					<tr>
-						<th style="width: 20%;">紅利商品訂單編號</th>
-						<th style="width: 20%;">會員編號</th>
-						<th style="width: 20%;">訂單日期</th>
-						<th style="width: 20%;">優惠代碼</th>
+						<th style="width: 33%;">紅利商品訂單編號</th>
+						<th style="width: 33%;">會員編號</th>
+						<th style="width: 33%;">訂單日期</th>
+						<th style="width: 1%;"></th>	
 					</tr>
-				</thead>
 				<%@ include file="page1.file"%>
 				<tbody>
 					<c:forEach var="bonus_orderVO" items="${list}"
@@ -83,7 +81,6 @@
 							<td style="text-align: center;">${bonus_orderVO.bo_no}</td>
 							<td style="text-align: center;">${bonus_orderVO.mem_no}</td>
 							<td style="text-align: center;">${bonus_orderVO.bo_date}</td>
-							<td style="text-align: center;">${bonus_orderVO.promo_code}</td>
 							<td style="text-align: center;">
 								<FORM METHOD="post"
 									ACTION="<%=request.getContextPath()%>/front-end/bonus_order/forwarded"

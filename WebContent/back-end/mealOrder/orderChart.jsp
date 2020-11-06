@@ -80,10 +80,19 @@
 	pageContext.setAttribute("qty", qty);
 // 	pageContext.setAttribute("nop", nop);
 	pageContext.setAttribute("jsondata",jsondata);
+	
+	
+	boolean isPdf = request.getParameter("pdf") != null;
+	String contextPath = request.getContextPath();
+	String realPath = request.getServletContext().getRealPath("/");
+  
+	String imageRoot = isPdf ? realPath + "/image" : contextPath + "/image";
+	String cssFile = isPdf ? realPath + "/css/pdf.css" : contextPath + "/css/web.css";
 
 %>
-
+<% if (!isPdf) {%>
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -119,14 +128,6 @@ color:blue;
 color:lightblue;
 text-decoration: underline;
 }
-.container{
-
-}
-/* #myChart,#myChart2{ */
-/* width: 100%; */
-/* height:450px; */
-/* display: inline; */
-/* } */
 .chart-container,.chart-container2{
 height: 480px;
 width: 100%;
@@ -135,9 +136,7 @@ display: block;
 .chart-content,.chart-content2{
 height:150px;
 max-width:100%;
-/* background-color: gray; */
 margin-left: 20px;
-/* border: 1px solid black;  */
 }
 canvas{
 display: block;
@@ -151,17 +150,19 @@ border: 1px solid #fff;
 }
 .chart-content span,.chart-content2 span{
 color:white;
-
 }
-#submit{
+#submit,#download{
     font-weight: bolder;
     background: #dea554;
     color: #fff;
     border-radius: 15px;
 }
-#submit:hover{
+#submit:hover,#download:hover{
 background-color: #ffbc5e;
 border: 2px solid darkgray;
+}
+.container{
+height: auto;
 }
 </style>
 
@@ -332,22 +333,16 @@ border: 2px solid darkgray;
 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td>
 				<td>
 				<input id="submit" type="button" value="查詢結果"/>
+				&nbsp;&nbsp;&nbsp;
+				<button id="download">匯出PDF</button>
+<%-- 				<a href="<%= request.getContextPath()%>/MealOrderServlet.do?"><button id="pdf">匯出PDF</button></a> --%>
 				<input type="hidden" name="action" value="orderChart"/></td>
 				</tr>
 				
 				</table>
 				</form>
 				<br>
-<%-- 				錯誤表列 --%>
-<%-- 				<c:if test="${not empty errorMsgs}"> --%>
-<!-- 					<font style="color: red">請修正以下錯誤:</font> -->
-<!-- 					<ul> -->
-<%-- 						<c:forEach var="message" items="${errorMsgs}"> --%>
-<%-- 							<li style="color: red">${message}</li> --%>
-<%-- 						</c:forEach> --%>
-<!-- 					</ul> -->
-<%-- 				</c:if> --%>
-				<div class="container">
+				<div id="container" class="container">
 				<div class="chart-container">
 				<canvas id="myChart"></canvas>
 				</div>
@@ -361,8 +356,8 @@ border: 2px solid darkgray;
 						<div class="col-4">訂單數量：<span>${list.size()}&nbsp;筆</span></div>
 						</div>
 						<div class="row">
-						<fmt:parseNumber  parseLocale="#" integerOnly="true" value="${amount/list.size()}" var="result" />
-						<div class="col-4">平均訂單金額：<span><c:if test="${amount !=0 and list.size()!=0}"><c:out value="${result}"/></c:if>&nbsp;/&nbsp;筆</span></div>
+						<fmt:parseNumber  parseLocale="#" integerOnly="true" value="${amount !=0 and list.size()!=0?amount/list.size():''}" var="result" />
+						<div class="col-4">平均訂單金額：<span><c:out value="${result}"/>&nbsp;/&nbsp;筆</span></div>
 						<div class="col-4">平均客單價：<span>&nbsp;/&nbsp;人</span></div>
 						</div>
 					</div>
@@ -374,21 +369,6 @@ border: 2px solid darkgray;
 				</div>
 				<p></p>
 				<p></p>
-<!-- 				<div class="row chart-content2 justify-content-around"> -->
-<!-- 					<div class="col"> -->
-<!-- 						<div class="row"> -->
-<!-- 						<div class="col">總銷售額：<span>123</span></div> -->
-<!-- 						<div class="col">總銷售量：<span>123</span></div> -->
-<!-- 						<div class="col">共有幾筆訂單：<span>123</span></div> -->
-<!-- 						</div> -->
-<!-- 						<div class="row"> -->
-<!-- 						<div class="col">測試標題：<span>123</span></div> -->
-<!-- 						<div class="col">測試標題：<span>123</span></div> -->
-<!-- 						<div class="col">測試標題：<span>123</span></div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-				
-<!-- 				</div> -->
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -400,10 +380,12 @@ border: 2px solid darkgray;
 	<!-- jQuery Custom Scroller CDN -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
 <%-- <script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.js"></script> --%>
 <script src="<%=request.getContextPath()%>/front-end/datetimepicker/jquery.datetimepicker.full.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+<script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+<script src="https://cdn.bootcss.com/jspdf/1.3.4/jspdf.debug.js"></script>
 	
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -417,6 +399,9 @@ border: 2px solid darkgray;
 			$('a[aria-expanded=true]').attr('aria-expanded', 'false');
 		});
 	});
+// 		$('#pdf').click(function(e){
+// 			e.preventDefault();
+// 		});
 		
 		var now = new Date();
 // 		var expiry = new Date(now.getFullYear(),(now.getMonth()+1),now.getDay());
@@ -742,6 +727,61 @@ border: 2px solid darkgray;
             }
         });
         
+//         download.addEventListener("click", function (e) {
+//         	e.preventDefault();
+//             var imgData = document.getElementById('container').toDataURL("image/jpeg", 1.0);
+//             var pdf = new jsPDF();
+
+//             pdf.addImage(imgData, 'JPEG', 0, 0);
+//             pdf.save("download.pdf");
+//         }, false);
+
+
+download.addEventListener("click",function (e) {
+	e.preventDefault();
+  var target = document.getElementsByClassName("container")[0];
+  target.style.background = "#FFFFFF";
+
+  html2canvas(target, {
+    onrendered:function(canvas) {
+        var contentWidth = canvas.width;
+        var contentHeight = canvas.height;
+
+        //一頁pdf顯示html頁面生成的canvas高度;
+        var pageHeight = contentWidth / 592.28 * 841.89;
+        //未生成pdf的html頁面高度
+        var leftHeight = contentHeight;
+        //頁面偏移
+        var position = 0;
+        //a4紙的尺寸[595.28,841.89]，html頁面生成的canvas在pdf中圖片的寬高
+        var imgWidth = 595.28;
+        var imgHeight = 592.28/contentWidth * contentHeight;
+
+        var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+        var pdf = new jsPDF('', 'pt', 'a4');
+
+        //有兩個高度需要區分，一個是html頁面的實際高度，和生成pdf的頁面高度(841.89)
+        //當內容未超過pdf一頁顯示的范圍，無需分頁
+        if (leftHeight < pageHeight) {
+        pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+        } else {
+            while(leftHeight > 0) {
+                pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                leftHeight -= pageHeight;
+                position -= 841.89;
+                //避免添加空白頁
+                if(leftHeight > 0) {
+                  pdf.addPage();
+                }
+            }
+        }
+
+        pdf.save("content.pdf");
+    }
+  })
+});
+        
         
 	</script>
 	<div id="fun" style="display:none">
@@ -782,3 +822,12 @@ border: 2px solid darkgray;
 	</script>
 </body>
 </html>
+<%
+	}else{
+%>
+
+
+
+
+
+<% }%>

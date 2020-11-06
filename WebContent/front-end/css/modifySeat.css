@@ -21,7 +21,6 @@ div.container {
 
 div#modifySeatCondition.container {
 	top: 168px;
-	position: sticky;
 	z-index: 500;
 	/* 	background: #FFFFFF; */
 }

@@ -69,6 +69,7 @@
 	<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" />
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
+	<jsp:useBean id="mealOredrSvc" scope="page" class="com.meal_order.model.MealOrderService" />
 	<c:forEach var="resOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 	<c:if test="${resOrderVO.info_sts lt 3}">
 		<tr style="background: ${param.res_no eq resOrderVO.res_no ? 'LemonChiffon':''};">
@@ -79,7 +80,18 @@
 			</td>
 			<td>
 				<c:if test="${not empty resOrderVO.meal_order_no}">
-					<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
+					<c:choose>    
+						<c:when test="${mealOrderSvc.searchByOrderNo(resOrderVO.meal_order_no).meal_order_sts ne 0}">  
+							<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
+						</c:when>
+						<c:otherwise>
+							<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
+								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
+								<font color="red">未訂餐</font><br>
+								<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
+							</form>
+						</c:otherwise>
+					</c:choose>
 				</c:if> 
 				<c:if test="${empty resOrderVO.meal_order_no}">
 					<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
@@ -168,7 +180,7 @@
 <%@ include file="pages/page2.file"%>
 	    </c:otherwise>
 </c:choose>
-<input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/back-end/seat_obj/addSeatObj.jsp'">
+<input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/front-end/front_home.jsp'">
 <input class="btn btn-secondary" type="button" value="回桌訂位畫面" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp'">
 
 </div>

@@ -73,9 +73,6 @@ public class MealOrderServlet extends HttpServlet {
 			String memNo = memVO2.getMem_no();
 			String empNo = (String) session.getAttribute("emp_no");
 			String resNo = req.getParameter("res_no");
-//			if (session.getAttribute("mem_no") != null) {
-//				memNo = (String) session.getAttribute("mem_no");
-//			}
 
 			Integer mealOrderSts = new Integer(1);
 			Integer notiSts = new Integer(0);
@@ -151,7 +148,7 @@ public class MealOrderServlet extends HttpServlet {
 			// 加入訂餐完成通知
 			Front_InformService fiSvc = new Front_InformService();
 			fiSvc.addNormalFI(memNo, "訂餐成功，點選查看訂餐訂單");
-			
+
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = "front-end/shopping/mealOrderOne.jsp";
@@ -224,11 +221,11 @@ public class MealOrderServlet extends HttpServlet {
 			resOrderSvc.updateResOrder(resNo, mealOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(),
 					resOrderVO.getTime_peri_no(), resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
-			
+
 			// 加入訂餐完成通知
 			Front_InformService fiSvc = new Front_InformService();
 			fiSvc.addNormalFI(mealOrderVO.getMem_no(), "訂餐成功，點選查看訂餐訂單");
-			
+
 			req.setAttribute("res_no", resNo);
 			req.setAttribute("amount", amount);
 			req.setAttribute("mealOrderVO", mealOrderVO);
@@ -245,6 +242,14 @@ public class MealOrderServlet extends HttpServlet {
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
+			ResOrderService resOrderSvc = new ResOrderService();
+			ResOrderVO resOrderVO = resOrderSvc.findByMealOrderNO(mealOrderVO.getMeal_order_no());
+			
+			if (resOrderVO.getMeal_order_no() != null) {
+				resOrderSvc.updateResOrder(resOrderVO.getRes_no(), null, resOrderVO.getMem_no(), resOrderVO.getEmp_no(),
+						resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
+						resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
+			}
 
 			if (mealOrderVO.getMeal_order_sts() >= 2 || mealOrderVO.getMeal_order_sts() == 0) {
 				errormsgs.put("orderUpdate", "餐點已派工或已取消，無法取消訂單!");
@@ -295,8 +300,12 @@ public class MealOrderServlet extends HttpServlet {
 			req.setAttribute("returnPath", returnPath);
 			req.setAttribute("mealOrderVO", mealOrderVO);
 			String url = returnPath;
-			RequestDispatcher success = req.getRequestDispatcher(url);
-			success.forward(req, res);
+			if ("update".equals(req.getParameter("queryString"))) {
+				req.getRequestDispatcher("/back-end/mealOrder/asignOrder.jsp").forward(req, res);
+			} else {
+				RequestDispatcher success = req.getRequestDispatcher(url);
+				success.forward(req, res);
+			}
 
 		}
 
@@ -362,14 +371,12 @@ public class MealOrderServlet extends HttpServlet {
 		if ("queryAll".equals(action)) {
 
 			Map<String, String[]> map = (HashMap) session.getAttribute("queryAllMap");
-//			if (map == null || map.isEmpty()) {
 			if (req.getParameter("whichPage") == null) {
 				Map<String, String[]> map2 = new HashMap<>(req.getParameterMap());
 				session.setAttribute("queryAllMap", map2);
 				map = map2;
 
 			}
-//			}
 			MealOrderService mealOrderSrv = new MealOrderService();
 			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
 			req.setAttribute("action", action);
@@ -379,7 +386,6 @@ public class MealOrderServlet extends HttpServlet {
 		}
 
 		if ("orderChart".equals(action)) {
-
 			Map<String, String[]> map = (HashMap) session.getAttribute("orderChart");
 			if (req.getParameter("whichPage") == null) {
 				Map<String, String[]> map2 = new HashMap<>(req.getParameterMap());
@@ -398,8 +404,8 @@ public class MealOrderServlet extends HttpServlet {
 			}
 			MealOrderService mealOrderSrv = new MealOrderService();
 			List<MealOrderVO> orderList = mealOrderSrv.getAll(map);
-			Map <String,Object> listMap = new HashMap<>();
-			int ranNumPeople = (int)((Math.random()*2+1)*orderList.size());
+			Map<String, Object> listMap = new HashMap<>();
+			int ranNumPeople = (int) ((Math.random() * 2 + 1) * orderList.size());
 			listMap.put("orderList", new Integer(orderList.size()));
 			listMap.put("ranNumPeople", ranNumPeople);
 			MealOrderDetailService detailSrv = new MealOrderDetailService();
@@ -412,7 +418,7 @@ public class MealOrderServlet extends HttpServlet {
 					.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));
 			Set<String> mealKeys = mealMap.keySet();
 			Set<String> mealSetKeys = mealSetMap.keySet();
-			
+
 			for (String key : mealKeys) {
 				((MealVO) mealMap.get(key)).setMeal_qty(0);
 				((MealVO) mealMap.get(key)).setMeal_img(null);
@@ -439,23 +445,11 @@ public class MealOrderServlet extends HttpServlet {
 					}
 				}
 			}
-
-//			int amount;
-//			int mealCount = 0;
-//			int mealSetCount = 0;
-//
-//			for (MealOrderVO mealOrderVO : orderList) {
-//				mealCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
-//						.filter(d -> (d.getMeal_no() != null)).mapToInt(d -> d.getQty()).sum();
-//				mealSetCount += detailSrv.searchByOrderNo(mealOrderVO.getMeal_order_no()).stream()
-//						.filter(d -> (d.getMeal_set_no() != null)).mapToInt(d -> d.getQty()).sum();
-//			}
-//			amount = orderList.stream().mapToInt(m -> m.getAmount()).sum();
 			Map<String, Map<String, Object>> jsonMap = new HashMap<>();
 			jsonMap.put("mealMap", mealMap);
 			jsonMap.put("mealSetMap", mealSetMap);
 			jsonMap.put("orderList", listMap);
-			
+
 			Gson gson = new Gson();
 			String jsondata = gson.toJson(jsonMap);
 			res.setContentType("application/json; charset=utf-8");
@@ -463,10 +457,7 @@ public class MealOrderServlet extends HttpServlet {
 			out.write(jsondata);
 			System.out.println(jsondata);
 
-//			req.setAttribute("mealMap", mealMap);
-//			req.setAttribute("mealSetMap", mealSetMap);
 			req.setAttribute("orderList", orderList);
-//			req.getRequestDispatcher("/back-end/mealOrder/orderChart.jsp").forward(req, res);
 
 		}
 

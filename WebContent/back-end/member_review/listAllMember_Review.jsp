@@ -213,12 +213,11 @@
 			<table class="table table-hover" style="width: 100%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 10%;">評價編號</th>
-						<th style="width: 40%;">訂餐編號</th>
-						<th style="width: 20%;">評價內容</th>
+						<th style="width: 20%;">評價編號</th>
+						<th style="width: 20%;">訂餐編號</th>
+						<th style="width: 30%;">評價內容</th>
 						<th style="width: 20%;">評價日期</th>
-						<th style="width: 5%;"></th>
-						<th style="width: 5%;"></th>
+						<th style="width: 0%;"></th>
 					</tr>
 				</thead>
 				<%@ include file="page1.file"%>

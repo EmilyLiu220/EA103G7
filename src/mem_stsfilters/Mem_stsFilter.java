@@ -66,7 +66,8 @@ public class Mem_stsFilter implements Filter {
 		List<String> repo = new ArrayList<>();
 		repo.add(req.getContextPath() + "/front-end/report_appraise/forwarded");
 		repo.add(req.getContextPath() + "/front-end/report_appraise/addReport_Appraise.jsp");
-		repo.add(req.getContextPath() + "/front-end/report_appraise/listOneReport_Appraise");
+		repo.add(req.getContextPath() + "/front-end/report_appraise/listOneReport_Appraise.jsp");
+		repo.add(req.getContextPath() + "/front-end/report_appraise/listAllReport_Appraise.jsp");
 		
 		Integer mem_od_r = memVO.getMem_od_r();
 		Integer mem_od_m = memVO.getMem_od_m();

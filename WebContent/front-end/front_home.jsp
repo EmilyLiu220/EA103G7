@@ -146,6 +146,11 @@
 .newsdata {
 	color: #fff;
 }
+
+
+
+
+
 </style>
 
 
@@ -263,22 +268,14 @@
 			</button>
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a
-						href="<%=request.getContextPath()%>/front-end/front_home.jsp"
-						class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="" class="nav-link">Menu</a></li>
-					<li class="nav-item"><a
-						href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp"
-						class="nav-link">店內新訊</a></li>
-					<li class="nav-item"><a
-						href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp"
-						class="nav-link">最新活動</a></li>
-					<li class="nav-item"><a href="" class="nav-link">評價總覽</a></li>
-					<li class="nav-item"><a href="" class="nav-link">候位狀況</a></li>
-					<li class="nav-item"><a href="" class="nav-link" id="meal">我要訂餐</a></li>
-					<li class="nav-item"><a
-						href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp"
-						class="nav-link" id="res">我要訂位</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front_home.jsp" class="nav-link">Home</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_news-11.jsp" class="nav-link">店內新訊</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/front/front_ad_new.jsp" class="nav-link">最新活動</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/member_review/select_page.jsp" class="nav-link">評價總覽</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/wait_seat/wait_seat.jsp" class="nav-link">候位狀況</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/bonus/listAllBonus.jsp" class="nav-link">紅利商品</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/shopping/mealMenu2.jsp" class="nav-link" id="meal">我要訂餐</a></li>
+					<li class="nav-item"><a href="<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp" class="nav-link" id="res">我要訂位</a></li>
 				</ul>
 			</div>
 		</div>
@@ -330,7 +327,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="ftco-section ftco-no-pt ftco-no-pb">
+	<section class="ftco-section ftco-no-pt ftco-no-pb  ">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
