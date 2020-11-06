@@ -209,10 +209,10 @@
 			<table class="table table-hover" style="width: 100%; font-size: 90%;">
 				<thead style="text-align: center;">
 					<tr>
-						<th style="width: 20%;">紅利商品訂單編號</th>
-						<th style="width: 20%;">會員編號</th>
-						<th style="width: 20%;">訂單日期</th>
-						<th style="width: 20%;">優惠代碼</th>
+						<th style="width: 33%;">紅利商品訂單編號</th>
+						<th style="width: 33%;">會員編號</th>
+						<th style="width: 33%;">訂單日期</th>
+<!-- 						<th style="width: 20%;">優惠代碼</th> -->
 					</tr>
 				</thead>
 				<%@ include file="page1.file"%>
@@ -223,19 +223,19 @@
 							<td style="text-align: center;">${bonus_orderVO.bo_no}</td>
 							<td style="text-align: center;">${bonus_orderVO.mem_no}</td>
 							<td style="text-align: center;">${bonus_orderVO.bo_date}</td>
-							<td style="text-align: center;">${bonus_orderVO.promo_code}</td>
-							<td style="text-align: center;">
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/back-end/bonus_order/forwarded"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="明細" id="details"
-										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
-										onMouseOver="this.style.background='#ba2214'"
-										onMouseOut="this.style.background='#6b2822'"> <input
-										type="hidden" name="bo_no" value="${bonus_orderVO.bo_no}">
-									<input type="hidden" name="action" value="bonusOrderDetailsBack">
-								</FORM>
-							</td>
+<%-- 							<td style="text-align: center;">${bonus_orderVO.promo_code}</td> --%>
+<!-- 							<td style="text-align: center;"> -->
+<!-- 								<FORM METHOD="post" -->
+<%-- 									ACTION="<%=request.getContextPath()%>/back-end/bonus_order/forwarded" --%>
+<!-- 									style="margin-bottom: 0px;"> -->
+<!-- 									<input type="submit" value="明細" id="details" -->
+<!-- 										style="border: 1px solid #c8a97e; border-radius: 5px; color: #fff; background: #6b2822; cursor: pointer; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" -->
+<!-- 										onMouseOver="this.style.background='#ba2214'" -->
+<!-- 										onMouseOut="this.style.background='#6b2822'"> <input -->
+<%-- 										type="hidden" name="bo_no" value="${bonus_orderVO.bo_no}"> --%>
+<!-- 									<input type="hidden" name="action" value="bonusOrderDetailsBack"> -->
+<!-- 								</FORM> -->
+<!-- 							</td> -->
 
 							<td style="text-align: center;">
 								<FORM METHOD="post"

@@ -58,6 +58,9 @@
 	<jsp:useBean id="map_info_sts" class="java.util.HashMap"/>
 		<c:set target="${map_info_sts}" property="2" value="完成"/>
 		<c:set target="${map_info_sts}" property="3" value="取消訂位"/>
+	<jsp:useBean id="seat_sts" class="java.util.HashMap"/>
+		<c:set target="${seat_sts}" property="0" value="未入座"/>
+		<c:set target="${seat_sts}" property="1" value="已入座"/>
 	<jsp:useBean id="timePeriSvc" scope="page" class="com.time_peri.model.TimePeriService" />
 	<jsp:useBean id="resDetailSvc" scope="page" class="com.res_detail.model.ResDetailService" />
 	<jsp:useBean id="seatSvc" scope="page" class="com.seat.model.SeatService" />
@@ -70,35 +73,14 @@
 				</c:forEach>
 			</td>
 			<td>
-				<c:if test="${not empty resOrderVO.meal_order_no}">
-					<c:choose>    
-						<c:when test="${mealOrderSvc.searchByOrderNo(resOrderVO.meal_order_no).meal_order_sts ne 0}">  
+				<c:choose>    
+					<c:when test="${not empty resOrderVO.meal_order_no}">  
 							<a href="<%=request.getContextPath()%>/MealOrderServlet.do?action=memOrder&meal_order_no=${resOrderVO.meal_order_no}&reqURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&queryString=<%=request.getAttribute("action")%>">這筆訂餐</a>
-						</c:when>
-						<c:otherwise>
-							<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-								<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-								<font color="red">未訂餐</font><br>
-								<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
-							</form>
-						</c:otherwise>
-					</c:choose>
-				</c:if> 
-				<c:if test="${empty resOrderVO.meal_order_no}">
-					<form method="post" action="<%=request.getContextPath()%>/res_order/ResOrderServlet.do">
-						<c:choose>    
-							<c:when test="${resOrderVO.info_sts ne 3}">  
-									<input type="hidden" name="res_no" value="${resOrderVO.res_no}">
-									<font color="red">未訂餐</font><br>
-									<button type="submit" id="go_Order_Meal" class="btn btn-primary" onclick='return false;'>我要訂餐</button>
-							</c:when>
-							<c:otherwise>
-								<font color="red">未訂餐</font><br>
-								<button type="submit" class="btn btn-primary" disabled="disabled" style="cursor: not-allowed;">我要訂餐</button>
-							</c:otherwise>
-						</c:choose>
-					</form>
-				</c:if>
+					</c:when>
+					<c:otherwise>
+						<font color="red">未訂餐</font><br>
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td>
 				${resOrderVO.res_date}
@@ -115,12 +97,11 @@
 						<c:if test="${item.key eq 3}">
 							<font style="color: red" >${item.value}</font>
 						</c:if>
-						<c:if test="${item.key ne 3 or resOrderVO.seat_sts eq 1}">
-							<font style="color: blue" >${item.value}
-							</font>
-						</c:if>
 					</c:if>
 				</c:forEach>
+				<c:if test="${resOrderVO.seat_sts eq 1}">
+					<font style="color: blue" >已入座</font>
+				</c:if>
 			</td>
 		</tr>
 		</c:if>
@@ -132,6 +113,7 @@
 </c:choose>
 <input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/back-end/seat_obj/addSeatObj.jsp'">
 <input class="btn btn-secondary" type="button" value="回桌訂位畫面" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp'">
+<input class="btn btn-secondary" type="button" value="回進行中訂單" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/getMemberResSeat.jsp'">
 </div>
 <footer>
 <jsp:include page="/front-end/footer.jsp"></jsp:include>

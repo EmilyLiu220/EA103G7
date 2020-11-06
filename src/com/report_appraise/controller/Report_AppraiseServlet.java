@@ -74,6 +74,50 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				failureView.forward(req, res);
 			}
 		}
+		
+		if ("getOneForReportAppraise".equals(action)) { 
+
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+				String review_no = new String(req.getParameter("review_no").trim());
+				
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_review/listAllMember_Review.jsp");
+					failureView.forward(req, res);
+					return; // 程式中斷
+				}
+				/*************************** 2.開始查詢資料 *****************************************/
+				Member_ReviewService member_reviewSvc = new Member_ReviewService(); 
+				Member_ReviewVO member_reviewVO = member_reviewSvc.getOneMember_Review(review_no); 
+//				Report_AppraiseService report_appraiseSvc = new Report_AppraiseService(); 
+//				Report_AppraiseVO report_appraiseVO = report_appraiseSvc.getOneReport_Appraise(report_no); 
+				if (member_reviewVO == null) {
+					errorMsgs.add("查無資料！");
+				}
+
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_review/listAllMember_Review.jsp");
+					failureView.forward(req, res);
+					return;// 程式中斷
+				}
+
+				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+				req.setAttribute("member_reviewVO", member_reviewVO);
+//				req.setAttribute("report_appraiseVO", report_appraiseVO);
+				String url = "/front-end/report_appraise/addReport_Appraise.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				successView.forward(req, res);
+
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_review/listAllMember_Review.jsp");
+				failureView.forward(req, res);
+			}
+		}
 
 		if ("getOne_For_Update".equals(action)) { 
 			
@@ -185,7 +229,7 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 				failureView.forward(req, res);
 			}
 		}
-
+		
 		if ("insertReportAppraise".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();		
@@ -193,15 +237,15 @@ public class Report_AppraiseServlet extends HttpServlet { // 控制器Servlet收
 
 			try {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
-				String review_no = new String(req.getParameter("review_no").trim());
+//				String review_no = new String(req.getParameter("review_no").trim());
 
-//				String review_no = req.getParameter("review_no");
-//				String review_noReg = "^[(MR0-9)]{6}$";
-//				if (review_no == null || review_no.trim().length() == 0) {
-//					errorMsgs.add("評價編號：請勿空白");
-//				} else if (!review_no.trim().matches(review_noReg)) {
-//					errorMsgs.add("評價編號: 只能是英文字母MR和數字，且長度必須為6");
-//				}
+				String review_no = req.getParameter("review_no");
+				String review_noReg = "^[(MR0-9)]{6}$";
+				if (review_no == null || review_no.trim().length() == 0) {
+					errorMsgs.add("評價編號：請勿空白");
+				} else if (!review_no.trim().matches(review_noReg)) {
+					errorMsgs.add("評價編號: 只能是英文字母MR和數字，且長度必須為6");
+				}
 
 				HttpSession session = req.getSession();
 				MemVO memVO = (MemVO) session.getAttribute("memVO2");

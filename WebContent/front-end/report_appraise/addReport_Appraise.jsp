@@ -78,9 +78,9 @@ th, td {
 <!-- 			</tr> -->
 
 			<tr>
-				<td>­û¤u½s¸¹¡G</td>
-				<td><input type="TEXT" name="emp_no" size="45"
-					value="<%=(report_appraiseVO == null) ? "" : report_appraiseVO.getEmp_no()%>" /></td>
+				
+				<input type="hidden" name="emp_no" size="45" value="EMP0001">
+				
 			</tr>
 
 			<tr>

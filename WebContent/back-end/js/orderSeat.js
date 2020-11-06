@@ -645,7 +645,7 @@ $(document).ready(function() {
         	return '<div class="res_info">姓名：'+ mem.mem_name +'</div>' +
             '<div class="res_info">桌名：' + $("#floor_list").val() +"樓"+"_"+$(this).closest(".drag").children(".seatLabel").find(".seatName").val()+"桌"+ '</div>' +
             '<div class="res_info">時段：' + time_peri.time_start +'</div>' +
-            '<div class="res_info">訂餐：' + (res_order.meal_order_no == undefined ? "未定餐" : '<a href="' + meal_order_no3 + path + "&meal_order_no=" + res_order.meal_order_no + '">這筆訂單</a>' ) +
+            '<div class="res_info">訂餐：' + (res_order.meal_order_no == undefined ? "未訂餐" : '<a href="' + meal_order_no3 + path + "&meal_order_no=" + res_order.meal_order_no + '">這筆訂單</a>' ) +
             '<div class="res_info">人數：' + res_order.people +'</div>' +
             '<div class="buttonDiv">' +
             '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;">' +
