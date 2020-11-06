@@ -51,8 +51,7 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				}
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("bonus_order_detailVO", bonus_order_detailVO); // 資料庫取出的empVO物件,存入req
-				String url = "/front-end/bonus_order_detail/listAllBonus_Order_Detail.jsp";
-
+				String url = ("/front-end/bonus_order_detail/listOneBonus_Order_Detail.jsp");
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 
 				successView.forward(req, res);
@@ -111,7 +110,7 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				}
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("bonus_order_detailVO", bonus_order_detailVO); // 資料庫取出的empVO物件,存入req
-				String url = "/back-end/bonus_order/listOneBonus_Order.jsp";
+				String url = "/back-end/bonus_order_detail/listOneBonus_Order_detail.jsp";
 
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 
@@ -266,6 +265,7 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				req.setAttribute("bonus_orderVO", bonus_orderVO);
+//				String url = ("/front-end/bonus_order_detail/listOneBonus_Order_Detail.jsp");
 				String url = "/front-end/bonus_order/listAllBonus_Order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);
