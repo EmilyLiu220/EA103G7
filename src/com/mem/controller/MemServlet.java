@@ -527,6 +527,9 @@ public class MemServlet extends HttpServlet {
 				Integer mem_repo = new Integer(req.getParameter("mem_repo"));
 				Integer mem_sts = new Integer(req.getParameter("mem_sts"));
 				
+				MemService memSvc = new MemService();
+				MemVO memVOoriginal = memSvc.getOneMem(mem_no);
+				
 				MemVO memVO = new MemVO();
 				memVO.setMem_bns(mem_bns);
 				memVO.setMem_od_m(mem_od_m);
@@ -545,8 +548,34 @@ public class MemServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
-				MemService memSvc = new MemService();
-				memSvc.updateByEmp(mem_bns, mem_od_m, mem_od_r, mem_review, mem_repo, mem_sts, mem_no);
+				MemVO memVOnew = memSvc.updateByEmp(mem_bns, mem_od_m, mem_od_r, mem_review, mem_repo, mem_sts, mem_no);
+				
+				Front_InformService fiSvc = new Front_InformService();
+				if(memVOnew.getMem_od_m()==0 && memVOoriginal.getMem_od_m()!=0) {
+					fiSvc.addNormalFI(mem_no, "提醒您，因您多次訂餐付款但皆未至本餐廳取餐，您的訂餐權限將被暫停使用");
+				} else if(memVOnew.getMem_od_m()==1 && memVOoriginal.getMem_od_m()!=1){
+					fiSvc.addNormalFI(mem_no, "您的訂餐權限已恢復喔~點選查看訂餐頁面");
+				}
+				if(memVOnew.getMem_od_r()==0 && memVOoriginal.getMem_od_r()!=0) {
+					fiSvc.addNormalFI(mem_no, "提醒您，因您多次訂位但皆未至本餐廳用餐，您的訂位權限將被暫停使用");
+				} else if(memVOnew.getMem_od_r()==1 && memVOoriginal.getMem_od_r()!=1){
+					fiSvc.addNormalFI(mem_no, "您的訂位權限已恢復喔~點選查看訂位頁面");
+				}
+				if(memVOnew.getMem_review()==0 && memVOoriginal.getMem_review()!=0) {
+					fiSvc.addNormalFI(mem_no, "提醒您，因您有多則評價被檢舉成功，您的評價權限將被暫停使用");
+				} else if(memVOnew.getMem_review()==1 && memVOoriginal.getMem_review()!=1){
+					fiSvc.addNormalFI(mem_no, "您的評價權限已恢復喔~");
+				}
+				if(memVOnew.getMem_repo()==0 && memVOoriginal.getMem_repo()!=0) {
+					fiSvc.addNormalFI(mem_no, "提醒您，因您檢舉多則評價，但評價內容多數未達不當言論之標準，您的檢舉權限將被暫停使用");
+				} else if(memVOnew.getMem_repo()==1 && memVOoriginal.getMem_repo()!=1){
+					fiSvc.addNormalFI(mem_no, "您的檢舉權限已恢復喔~");
+				}
+				if(memVOnew.getMem_sts()==0 && memVOoriginal.getMem_sts()!=0 ) {
+					fiSvc.addNormalFI(mem_no, "提醒您，您已被停權");
+				} else if( memVOnew.getMem_sts()==1 && memVOoriginal.getMem_sts()!=1 ){
+					fiSvc.addNormalFI(mem_no, "歡迎您回來~");
+				}
 				
 				MemVO memVO2 = memSvc.getOneMem(mem_no);
 				
