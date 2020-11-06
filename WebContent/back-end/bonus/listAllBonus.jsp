@@ -212,8 +212,8 @@
 						<th style="width: 20%;">紅利商品編號</th>
 						<th style="width: 20%;">紅利商品名稱</th>
 						<th style="width: 15%;">紅利商品價格</th>
-						<th style="width: 15%;">庫存量</th>
-						<th style="width: 10%;">有效日期</th>
+						<th style="width: 10%;">庫存量</th>
+						<th style="width: 15%;">有效日期</th>
 						<th style="width: 10%;">兌換狀態</th>
 						<th style="width: 10%;">圖片</th>
 					</tr>
