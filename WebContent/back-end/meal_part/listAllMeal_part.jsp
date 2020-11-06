@@ -164,8 +164,8 @@
 			                	<%  int rowsPerPage = list.size();%>
 			                  	<tr>
 			                    	<th><input type="checkbox" name="chkAll" /></th>
-									<th>餐點編號</th>
-									<th>食材編號</th>
+									<th>餐點名稱</th>
+									<th>食材名稱</th>
 									<th>食材重量</th>
 									<th></th>
 									<th></th>

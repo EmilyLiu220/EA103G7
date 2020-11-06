@@ -7,6 +7,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.food.model.FoodService;
+import com.meal.model.MealService;
+
 import java.sql.*;
 
 public class Meal_partDAO implements Meal_partDAO_interface {
@@ -54,6 +57,11 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			pstmt.executeUpdate();			
 			// Handle any driver errors
 		} catch (SQLException se) {
+			MealService Msvc=new MealService();
+			FoodService FDsvc=new FoodService();
+			if(se.toString().contains("ORA-00001")) {
+				throw new RuntimeException("餐點"+Msvc.searchByNo(meal_partVO.getMeal_no()).getMeal_name()+"已經有使用食材"+FDsvc.getOneFood(meal_partVO.getFd_no()).getFd_name());
+			}
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
