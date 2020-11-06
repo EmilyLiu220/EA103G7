@@ -61,8 +61,9 @@ public class Meal_partDAO implements Meal_partDAO_interface {
 			FoodService FDsvc=new FoodService();
 			if(se.toString().contains("ORA-00001")) {
 				throw new RuntimeException("餐點"+Msvc.searchByNo(meal_partVO.getMeal_no()).getMeal_name()+"已經有使用食材"+FDsvc.getOneFood(meal_partVO.getFd_no()).getFd_name());
+			}else {
+				throw new RuntimeException("A database error occured. " + se.getMessage());
 			}
-			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {

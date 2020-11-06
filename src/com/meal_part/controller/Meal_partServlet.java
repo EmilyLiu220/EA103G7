@@ -51,9 +51,9 @@ public class Meal_partServlet extends HttpServlet {
 					}
 					String fd_gwReg = "[1-9][0-9]{0,7}[.]?[0-9]?";
 					if (fd_gw_str[i] == null || fd_gw_str[i].trim().length() == 0) {
-						updateErrorMsgs.add("第"+(i+1)+"筆的庫存請勿空白");
+						updateErrorMsgs.add("第"+(i+1)+"筆的食材重量請勿空白");
 					} else if (!fd_gw_str[i].trim().matches(fd_gwReg)) { 
-						updateErrorMsgs.add("第"+(i+1)+"筆的庫存必須為數字 , 且開頭不得為0，長度必需在1到10之間");
+						updateErrorMsgs.add("第"+(i+1)+"筆的食材重量必須為數字 , 且開頭不得為0，長度必需在1到10之間");
 					}
 					Double[] fd_gw=new Double[fd_gw_str.length];
 					try {
@@ -119,9 +119,9 @@ public class Meal_partServlet extends HttpServlet {
 					}
 					String fd_gwReg = "[0-9]{1,9}";
 					if (fd_gw_str[i] == null || fd_gw_str[i].trim().length() == 0) {
-						errorMsgs.add("第"+(i+1)+"筆的庫存請勿空白");
+						errorMsgs.add("第"+(i+1)+"筆的食材重量請勿空白");
 					} else if (!fd_gw_str[i].trim().matches(fd_gwReg)) { 
-						errorMsgs.add("第"+(i+1)+"筆的庫存必須為數字 , 且開頭不得為0，長度必需在1到10之間");
+						errorMsgs.add("第"+(i+1)+"筆的食材重量必須為數字 , 且開頭不得為0，長度必需在1到10之間");
 					}					
 					Double[] fd_gw=new Double[fd_gw_str.length];
 					try {
