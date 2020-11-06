@@ -28,6 +28,7 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_NO = ?";
 	private static final String UPDATE = "UPDATE RES_ORDER SET MEAL_ORDER_NO=? ,MEM_NO=? ,EMP_NO=? ,RES_TIME=CURRENT_TIMESTAMP, RES_DATE=? ,PEOPLE=? ,TIME_PERI_NO=? ,INFO_STS=? ,SEAT_STS=? WHERE RES_NO = ?";
 	private static final String GET_ONE_MEM_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEM_NO = ? ORDER BY RES_NO DESC";
+	private static final String GET_ONE_MEAL_ORDER_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE MEAL_ORDER_NO = ? ";
 	private static final String GET_RES_DATE_AND_TIME_PERI_STMT = "SELECT RES_NO, MEAL_ORDER_NO, MEM_NO, EMP_NO, RES_TIME, RES_DATE, PEOPLE, TIME_PERI_NO, INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = ? AND TIME_PERI_NO = ?";
 	private static final String GET_BY_RES_DATE = "SELECT RES_NO ,MEAL_ORDER_NO ,MEM_NO ,EMP_NO ,RES_TIME ,RES_DATE ,PEOPLE ,TIME_PERI_NO ,INFO_STS, SEAT_STS FROM RES_ORDER WHERE RES_DATE = to_date(?,'yyyy-mm-dd') ORDER BY RES_NO";
 	
@@ -579,5 +580,65 @@ public class ResOrderDAO implements ResOrderDAO_interface {
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public ResOrderVO findByMealOrderNO(String meal_order_no) {
+		ResOrderVO resOrderVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_MEAL_ORDER_STMT);
+
+			pstmt.setString(1, meal_order_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				resOrderVO = new ResOrderVO();
+
+				resOrderVO.setRes_no(rs.getString("res_no"));
+				resOrderVO.setMeal_order_no(meal_order_no);
+				resOrderVO.setMem_no(rs.getString("MEM_NO"));
+				resOrderVO.setEmp_no(rs.getString("EMP_NO"));
+				resOrderVO.setRes_time(rs.getTimestamp("RES_TIME"));
+				resOrderVO.setRes_date(rs.getDate("RES_DATE"));
+				resOrderVO.setPeople(rs.getInt("PEOPLE"));
+				resOrderVO.setTime_peri_no(rs.getString("TIME_PERI_NO"));
+				resOrderVO.setInfo_sts(new Integer(rs.getInt("INFO_STS")));
+				resOrderVO.setSeat_sts(new Integer(rs.getInt("SEAT_STS")));
+			}
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return resOrderVO;
 	}
 }

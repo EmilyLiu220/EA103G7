@@ -49,6 +49,9 @@ public class ResOrderService {
 		return resOrderVO;
 
 	}
+	public ResOrderVO findByMealOrderNO(String meal_order_no){
+		return dao.findByMealOrderNO(meal_order_no);
+	}
 
 	public ResOrderVO getOneResOrder(String res_no) {
 		return dao.findByPrimaryKey(res_no);

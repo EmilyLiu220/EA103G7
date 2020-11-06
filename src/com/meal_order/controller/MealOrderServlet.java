@@ -242,6 +242,14 @@ public class MealOrderServlet extends HttpServlet {
 
 			MealOrderService mealOrderSrv = new MealOrderService();
 			MealOrderVO mealOrderVO = mealOrderSrv.searchByOrderNo(mealOrderNo);
+			ResOrderService resOrderSvc = new ResOrderService();
+			ResOrderVO resOrderVO = resOrderSvc.findByMealOrderNO(mealOrderVO.getMeal_order_no());
+			
+			if (resOrderVO.getMeal_order_no() != null) {
+				resOrderSvc.updateResOrder(resOrderVO.getRes_no(), null, resOrderVO.getMem_no(), resOrderVO.getEmp_no(),
+						resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
+						resOrderVO.getInfo_sts(), resOrderVO.getSeat_sts(), null);
+			}
 
 			if (mealOrderVO.getMeal_order_sts() >= 2 || mealOrderVO.getMeal_order_sts() == 0) {
 				errormsgs.put("orderUpdate", "餐點已派工或已取消，無法取消訂單!");

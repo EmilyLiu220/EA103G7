@@ -643,4 +643,10 @@ public class ResOrderJDBCDAO implements ResOrderDAO_interface {
 		
 	}
 
+	@Override
+	public ResOrderVO findByMealOrderNO(String meal_oreder_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
