@@ -63,8 +63,9 @@ img {
 #logout {
 	width: 212px;
 }
-.button{
-width:100px;
+
+.button {
+	width: 100px;
 }
 </style>
 
@@ -90,36 +91,56 @@ width:100px;
 			<ul class="list-unstyled components">
 				<c:choose>
 					<c:when test="${empVO2.emp_no!=null}">
-						<li style="font-size:20px;"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=Update_info&emp_no=${empVO2.emp_no}">員工個資修改</a></li>
+						<li style="font-size: 20px;"><a
+							href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=Update_info&emp_no=${empVO2.emp_no}">員工個資修改</a></li>
 					</c:when>
 				</c:choose>
-				<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
-				<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
+				<li class="fun2"><a
+					href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
+				<li class="fun2"><a
+					href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
 				<li class="active"><a href="#pageSubmenu"
 					data-toggle="collapse" aria-expanded="false"
 					class="dropdown-toggle">主管員工專區</a>
 					<ul class="collapse list-unstyled" id="pageSubmenu">
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/food/Statistics.jsp">食材消耗統計</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/emp/select_page.jsp">員工管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/mem/select_page_mem.jsp">會員管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/ad/select_ad.jsp">廣告管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/news/select_news.jsp">最新消息管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/inform_set/select_is.jsp">通知管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp">評價管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/time/timeSetting.jsp">用餐時段管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/seat/editSeat.jsp">桌位管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/meal/menuManagement.jsp">菜單管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/food/listAllFood.jsp">食材管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/meal_part/listAllMeal_part.jsp">餐點組成管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/food/Statistics.jsp">食材消耗統計</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp">紅利商品管理</a></li>
 					</ul></li>
 				<li><a href="#homeSubmenu" data-toggle="collapse"
 					aria-expanded="false" class="dropdown-toggle">一般員工專區</a>
 					<ul class="collapse list-unstyled" id="homeSubmenu">
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
-						<li class="fun2"><a href="<%=request.getContextPath()%>/back-end/res_order/resOrderManage.jsp">訂位管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/front_inform/select_fi.jsp">查看通知</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/message_record/backEndChatRoom.jsp">後檯即時通訊</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/mealOrder/mealOrderManagement.jsp">訂餐管理</a></li>
+						<li class="fun2"><a
+							href="<%=request.getContextPath()%>/back-end/res_order/resOrderManage.jsp">訂位管理</a></li>
 					</ul></li>
 			</ul>
 
@@ -131,7 +152,9 @@ width:100px;
 							id="logIn">Log in</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout" id="logOut">Log out</a></li>
+						<li><a
+							href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout"
+							id="logOut">Log out</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -153,7 +176,8 @@ width:100px;
 					</button>
 					<div id="titleBig"
 						style="margin: 0 auto; font-size: 30px; font-weight: 800;">
-						<a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
+						<a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
+							Pot 吧！員工專區</a>
 					</div>
 					<div id="rwdShow">
 						<button type="button" id="topbarCollapse" class="btn btn-dark"
@@ -170,32 +194,51 @@ width:100px;
 						</button>
 						<div id="titleSmall"
 							style="padding-left: 10px; font-size: 30px; font-weight: 800;">
-							<a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃 Pot 吧！員工專區</a>
+							<a href="<%=request.getContextPath()%>/back-end/backindex.jsp">吃
+								Pot 吧！員工專區</a>
 						</div>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
 								<li class="nav-item active"><a class="nav-link" href="#"
-									id="empId" style="cursor: default;">
-									<c:choose>
-										<c:when test="${empVO2.emp_no==null}">
-											<span style="color: red; margin-top: 1rem;">嗨，您好！請記得登入喔！</span>
-										</c:when>
-										<c:otherwise>
-											<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}，您好！</span>
-										</c:otherwise>
-									</c:choose>
+									id="empId" style="cursor: default;"> <c:choose>
+											<c:when test="${empVO2.emp_no==null}">
+												<span style="color: red; margin-top: 1rem;">嗨，您好！請記得登入喔！</span>
+											</c:when>
+											<c:otherwise>
+												<span>${empVO2.emp_no}&nbsp;&nbsp;&nbsp;${empVO2.emp_name}，您好！</span>
+											</c:otherwise>
+										</c:choose>
 								</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
-								<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
-								<li class="nav-item active" style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+								<li class="nav-item active"><a class="nav-link"
+									href="<%=request.getContextPath()%>/back-end/res_order/orderSeat.jsp">現場劃位</a></li>
+								<li class="nav-item active"><a class="nav-link"
+									href="<%=request.getContextPath()%>/back-end/wait_seat/listAllWait_seat.jsp">候位管理</a></li>
+								<li class="nav-item active"><a class="nav-link"
+									href="<%=request.getContextPath()%>/back-end/back-index_m.jsp">主管員工專區</a></li>
+								<li class="nav-item active"><a class="nav-link"
+									href="<%=request.getContextPath()%>/back-end/back-index_e.jsp">一般員工專區</a></li>
+								<li class="nav-item active"
+									style="display: block; padding-top: 0.5rem; padding-bottom: 0.5rem;">
 									<c:choose>
 										<c:when test="${empVO2.emp_no==null}">
-											<div id="topLogIn" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log in</a></div>
+											<div id="topLogIn"
+												style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
+												onMouseOver="this.style.color='#fff'; this.style.background='#000';"
+												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">
+												<a
+													href="<%=request.getContextPath()%>/back-end/emp/login.jsp">Log
+													in</a>
+											</div>
 										</c:when>
 										<c:otherwise>
-											<div id="topLogOut" style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;" onMouseOver="this.style.color='#fff'; this.style.background='#000';" onMouseOut="this.style.color='#ccc'; this.style.background='#424242';"><a href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout">Log out</a></div>
+											<div id="topLogOut"
+												style="display: inline-block; width: 90px; text-align: center; margin-left: 10px; border-radius: 5px; background: #424242; color: #ccc; cursor: pointer;"
+												onMouseOver="this.style.color='#fff'; this.style.background='#000';"
+												onMouseOut="this.style.color='#ccc'; this.style.background='#424242';">
+												<a
+													href="<%=request.getContextPath()%>/back-end/emp/emp.do?action=logout">Log
+													out</a>
+											</div>
 										</c:otherwise>
 									</c:choose>
 								</li>
@@ -259,58 +302,62 @@ width:100px;
 						<tr>
 							<td>廣告標題:<font color="red"><b>*</b></font></td>
 							<td><textarea style="width: 410px; height: 50px;"
-									name="ad_title"  /><%=(adVO == null) ? "" : adVO.getAd_title()%></textarea></td>
+									id="ad_title" name="ad_title" /><%=(adVO == null) ? "" : adVO.getAd_title()%></textarea></td>
 						</tr>
 						<tr>
 							<td>廣告內容:<font color="red"><b>*</b></font></td>
 							<td><textarea style="width: 410px; height: 100px;"
-									name="ad_cont"   /></textarea></td>
+									id="cont" name="ad_cont" /><%=(adVO == null) ? "" : adVO.getAd_cont()%></textarea></td>
 						</tr>
 						<tr>
 							<td>上架日期:<font color="red"><b>*</b></font></td>
 							<td><input name="ad_add_date" id="ad_date" type="text"
-							value="<%=(adVO == null) ? "" : adVO.getAd_add_date()%>" /></td>
+								 value="<%=(adVO == null) ? "" : adVO.getAd_add_date()%>" /></td>
 						</tr>
 						<tr>
 							<td>下架日期:<font color="red"><b>*</b></font></td>
 							<td><input name="ad_re_date" id="re_date" type="text"
-							value="<%=(adVO == null) ? "" : ""%>" /></td>
+								value="<%=(adVO == null) ? "" : ""%>" /></td>
 						</tr>
 					</tbody>
 				</table>
-<!-- 				<div> -->
-<!-- 					廣告圖片:<font color="red"><b>*</b></font> -->
-<!-- 					<input type="file" name="ad_img" id="img"> -->
-<!-- 				</div> -->
-<!-- 				<div id="preview"></div> -->
+				<!-- 				<div> -->
+				<!-- 					廣告圖片:<font color="red"><b>*</b></font> -->
+				<!-- 					<input type="file" name="ad_img" id="img"> -->
+				<!-- 				</div> -->
+				<!-- 				<div id="preview"></div> -->
 
-<!-- 				<br> <input type="hidden" name="action" value="insert"> -->
-<%-- 				<input type="hidden" name="emp_no" value="${empVO2.emp_no}"> --%>
-<!-- 				<input type="submit" value="送出新增" -->
-<!-- 					style="cursor: pointer; margin-left: 70%; background: rgb(200, 169, 126); color: rgb(255, 255, 255); border: 0px; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;" -->
-<!-- 					onmouseover="this.style.background='#ffbc5e'" -->
-<!-- 					onmouseout="this.style.background='#c8a97e'"> -->
-					
-					
-							<div class="form-group">
-							<label class="btn btn-secondary info btn-icon-split">
-								<span class="icon text-white-50"><i class="fas fa-image"></i></span>
-								<span class="text">請上傳圖片</span>
-				           		<input type="file" id="img" name=ad_img accept="image/gif, image/jpeg, image/png" style="display:none"/>
-				           	</label>
-				           	<div id="pic">
-								<img id="preview" src="">
-							</div>											         
-				       	</div>
-						
-						<br>
-						<button type="button" class="btn btn-secondary button" onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/select_ad.jsp'">取消</button>
- 					    <button type="submit" class="btn btn-primary button" id="sendMsg"  onclick="sendMsg();">儲存</button>
-						<input type="hidden" name="action" value="insert">
-						<input type="hidden" name="emp_no" value="${empVO2.emp_no}">
-<!-- 						<input type="submit" value="送出新增"> -->
-						<button type="button" id="newad" class="btn btn-info btn-circle btn-sm button">New</button>
+				<!-- 				<br> <input type="hidden" name="action" value="insert"> -->
+				<%-- 				<input type="hidden" name="emp_no" value="${empVO2.emp_no}"> --%>
+				<!-- 				<input type="submit" value="送出新增" -->
+				<!-- 					style="cursor: pointer; margin-left: 70%; background: rgb(200, 169, 126); color: rgb(255, 255, 255); border: 0px; border-radius: 5px; width: 100px; height: 40px; font-weight: 600;" -->
+				<!-- 					onmouseover="this.style.background='#ffbc5e'" -->
+				<!-- 					onmouseout="this.style.background='#c8a97e'"> -->
+
+
+				<div class="form-group">
+					<label class="btn btn-secondary info btn-icon-split"> <span
+						class="icon text-white-50"><i class="fas fa-image"></i></span> <span
+						class="text">請上傳圖片</span> <input type="file" id="img" name=ad_img
+						accept="image/gif, image/jpeg, image/png" style="display: none" />
+					</label>
+					<div id="pic">
+						<img id="preview" src="">
+					</div>
+				</div>
+
+				<br>
+				<button type="button" class="btn btn-secondary button"
+					onclick="javascript:location.href='<%=request.getContextPath()%>/back-end/ad/select_ad.jsp'">取消</button>
+				<button type="submit" class="btn btn-primary button" id="sendMsg"
+					onclick="sendMsg();">儲存</button>
+				<input type="hidden" name="action" value="insert"> <input
+					type="hidden" name="emp_no" value="${empVO2.emp_no}">
+				<!-- 						<input type="submit" value="送出新增"> -->
+				<button type="button" id="newad"
+					class="btn btn-info btn-circle btn-sm button">New</button>
 			</form>
+			<button type="button" id="button" class=""></button>
 		</div>
 	</div>
 	<%
@@ -386,12 +433,13 @@ width:100px;
 		}
 	</script>
 
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.js"></script>
-<script
-	src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.full.js"></script>
-<script>
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.css" />
+	<script
+		src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/back-end/datetimepicker/jquery.datetimepicker.full.js"></script>
+	<script>
 
 $.datetimepicker.setLocale('zh'); // kr ko ja en
 $(function(){
@@ -417,13 +465,14 @@ $(function(){
 });
 </script>
 
-<div id="fun" style="display:none">
-	<c:forEach var="fun_authVO2" items="${fun_authVO2}">
-		<span class="fun">${fun_authVO2.fun_name}</span><br>
-	</c:forEach>
-</div>
-	
-<script>
+	<div id="fun" style="display: none">
+		<c:forEach var="fun_authVO2" items="${fun_authVO2}">
+			<span class="fun">${fun_authVO2.fun_name}</span>
+			<br>
+		</c:forEach>
+	</div>
+
+	<script>
 	// 判斷員工擁有哪些權限可以點選
 	var fun = document.getElementsByClassName("fun");
 	var arr1 = [];
@@ -452,6 +501,23 @@ $(function(){
 		}
 	}
 	
+</script>
+	<script>
+var button = document.getElementById("button");
+var ad_title = document.getElementById("ad_title");
+var ad_cont = document.getElementById("cont");
+var ad_add_date = document.getElementById("ad_date");
+var ad_re_date = document.getElementById("re_date");
+
+button.addEventListener("click", function(e) {
+    e.preventDefault();
+    ad_title.value = "歡慶聖誕節";
+    ad_cont.value = "🌲We wish you a Merry Christmas 🌲氣溫漸涼，越來越有過聖誕的feel了～❄️熱熱的火鍋湯底、頂級豪華的食材、暖暖的心這個聖誕節讓PoT陪伴你度過吧❤️12月起只要2位大人(含)以上同行，升級豪華套餐即可享✨9折優惠✨哦！(服務費另計)";
+    ad_add_date.value = "2020-12-01";
+    ad_re_date.value = "2020-12-31";
+  
+  
+});
 </script>
 </body>
 </html>

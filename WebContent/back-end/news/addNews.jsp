@@ -57,6 +57,9 @@
 #logout {
 	width: 212px
 }
+.butt{
+
+}
 </style>
 
 </head>
@@ -225,12 +228,12 @@
 					<tbody>
 						<tr>
 							<td>消息內容:<font color="red"><b>*</b></font></td>
-							<td><textarea style="width: 400px; height: 100px;"
-									name="news_cont" placeholder="請輸入5字以上、60字以下之內容"></textarea></td>
+							<td><textarea style="width: 400px; height: 100px;" id="news_cont"
+									name="news_cont" placeholder=""></textarea></td>
 						</tr>
 						<tr>
 							<td>新增日期:<font color="red"><b>*</b></font></td>
-							<td><input name="news_date" id="n_date" type="text"></td>
+							<td><input name="news_date" id="n_date" type="text" value="<%=(newsVO == null) ? "" : newsVO.getNews_date()%>"></td>
 						</tr>
 				</table>
 				<br> <input type="hidden" name="action" value="insert">
@@ -240,6 +243,7 @@
 					onmouseover="this.style.background='#ffbc5e'"
 					onmouseout="this.style.background='#c8a97e'">
 			</FORM>
+		<button type="button" id="button" class="butt"></button>
 		</div>
 	</div>
 	
@@ -304,7 +308,7 @@
 	       timepicker:false,       //timepicker:true,
 	       step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
 	       format:'Y-m-d',         //format:'Y-m-d H:i:s',
-		   value: '<%=getNews_date%> ', // value:   new Date(),
+		  
 	//disabledDates:        ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
 	//startDate:	            '2017/07/10',  // 起始日
 	//minDate:               '-1970-01-01', // 去除今日(不含)之前
@@ -351,4 +355,16 @@
 	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
 	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
 	crossorigin="anonymous"></script>
+	<script>
+	var btn = document.getElementById("button");
+	var news_cont = document.getElementById("news_cont");
+	var news_date = document.getElementById("n_date");
+	
+	button.addEventListener("click", function(e){
+		e.preventDefault();
+		news_cont.value ="【臨時休店通知】明天不想努力，2020年11月07日（星期六）店休息一天。";
+		r_date.value = 2020-11-07;
+		
+	});
+	</script>
 </html>
