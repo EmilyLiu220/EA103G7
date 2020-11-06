@@ -182,7 +182,7 @@
 </c:choose>
 <input class="btn btn-primary" type="button" value="回首頁" onclick="location.href='<%=request.getContextPath()%>/front-end/front_home.jsp'">
 <input class="btn btn-secondary" type="button" value="回桌訂位畫面" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/orderSeat.jsp'">
-
+<input class="btn btn-secondary" type="button" value="歷史訂位" onclick="location.href='<%=request.getContextPath()%>/front-end/res_order/getMemberResSeatEnd.jsp'">
 </div>
 
 <jsp:include page="/front-end/footer.jsp"></jsp:include>
