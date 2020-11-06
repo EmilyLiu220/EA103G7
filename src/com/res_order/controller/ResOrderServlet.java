@@ -585,7 +585,7 @@ public class ResOrderServlet extends HttpServlet {
 			String meal_order_no = req.getParameter("meal_order_no");
 //			System.out.println(res_no);
 //			System.out.println(res_date);
-//			System.out.println(time_peri_no);
+//			System.out.println(meal_order_no);
 
 			if ("--請選擇日期--".equals(res_date)) {
 				errorMsgs.add("請選擇訂位日期");
@@ -606,10 +606,12 @@ public class ResOrderServlet extends HttpServlet {
 			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
 
 			resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
-					resOrderVO.getEmp_no(), java.sql.Date.valueOf(res_date), resOrderVO.getPeople(), time_peri_no,
+					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), time_peri_no,
 					resOrderVO.getInfo_sts(), 1, null);
-			
-			mealOrderSvc.updatePickupTime(meal_order_no);
+			// 
+			if(!"undefined".equals(meal_order_no)) {
+				mealOrderSvc.updatePickupTime(meal_order_no);
+			}
 
 			PrintWriter out = res.getWriter();
 			res.setContentType("text/plain");
