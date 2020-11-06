@@ -223,7 +223,7 @@
 						ACTION="<%=request.getContextPath()%>/news/news.do">
 						<b>店訊編號(NEWS0001):</b> <input type="text" name="news_no">
 						<input type="hidden" name="action" value="getOne_For_Display">
-						<input type="submit" value="送出1">
+						<input type="submit" value="送出">
 					</FORM>
 				</li>
 
@@ -238,7 +238,7 @@
 								<option value="${newsVO.news_no}">${newsVO.news_no}
 							</c:forEach>
 						</select> <input type="hidden" name="action" value="getOne_For_Display">
-						<input type="submit" value="送出2">
+						<input type="submit" value="送出">
 					</FORM>
 				</li>
 				<li>
@@ -250,7 +250,7 @@
 								<option value="${empVO.emp_no}">${empVO.emp_no}
 							</c:forEach>
 						</select> <input type="hidden" name="action" value="getNewsByEmpno">
-						<input type="submit" value="送出3">
+						<input type="submit" value="送出">
 					</FORM>
 				</li>
 			</ul>
