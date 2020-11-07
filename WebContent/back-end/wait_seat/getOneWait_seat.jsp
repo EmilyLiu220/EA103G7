@@ -42,7 +42,8 @@
 <div class="wrapper" id="top">
 		<div class=loc>
 	<div id="content" class="mb-2 bt-4">
-		
+		<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
+		<span> - 候位修改</span>
 		<table id="table-1">
 			<tr>
 				<td>
@@ -70,7 +71,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>會員姓名</td>
+		<td>會員編號</td>
 		<td><input class="input" type="text" placeholder="會員姓名" name="mem_no" value=
 			<%=wait_seatVO.getMem_no()==null?"":wait_seatVO.getMem_no()%>>
 		</td>

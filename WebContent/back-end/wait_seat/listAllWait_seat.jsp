@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.wait_seat.model.*"%>
+<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
 <%
 	Wait_seatService wait_seatSvc = new Wait_seatService();
 	List<Wait_seatVO> list = wait_seatSvc.getAll();
@@ -90,7 +91,7 @@
 		<div class=loc>
 		<div id="content" class="mb-2 bt-4">
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 會員評價管理</span>
+			<span> - 候位管理</span>
 			<div id="addWaitSeat" class="my-2">
 				<div class="title mb-2"><h3 style="margin-bottom: 0">新增候位</h3></div>
 				<form id="fd_form_add" method="post" action="<%=request.getContextPath()%>/wait_seat/wait_seat.do" name="form1">				    
@@ -172,7 +173,7 @@
 								<tr class="text-center">
 									<td class="data wait_seat_td_with_n" style="width: 10%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${wait_seatVO.wait_n}</div></td>
 									<td class="data wait_seat_td_wait_seatno" style="width: 20%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${wait_seatVO.wait_seat_no}</div></td>
-									<td class="data wait_seat_td_memno" style="width: 20%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${wait_seatVO.mem_no}</div></td>
+									<td class="data wait_seat_td_memno" style="width: 20%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${memSvc.getOneMem(wait_seatVO.mem_no).mem_name}</div></td>
 									<td class="data wait_seat_td_n_mem_name" style="width: 20%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${wait_seatVO.n_mem_name}</div></td>
 									<td class="data wait_seat_td_phone_m" style="width: 17%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${wait_seatVO.phone_m}</div></td>
 									<td class="data wait_seat_td_delay" style="width: 8%" onclick="location.href='<%=request.getContextPath()%>/wait_seat/wait_seat.do?action=getOne&wait_seat_no=${wait_seatVO.wait_seat_no}';"><div>${wait_seatVO.delay}</div></td>

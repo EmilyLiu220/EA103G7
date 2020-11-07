@@ -1356,9 +1356,9 @@ CREATE TABLE WAIT_SEAT (
     WAIT_N NUMBER(1) NOT NULL
 );
 
-INSERT INTO WAIT_SEAT (WAIT_SEAT_NO,MEM_NO,N_MEM_NAME,PHONE_M,DELAY,WAIT_N) VALUES ('WAIT_SEAT0001','MEM0001','','0911123456',0,1);
+INSERT INTO WAIT_SEAT (WAIT_SEAT_NO,MEM_NO,N_MEM_NAME,PHONE_M,DELAY,WAIT_N) VALUES ('WAIT_SEAT0001','MEM0047','','0912345678',0,1);
 INSERT INTO WAIT_SEAT (WAIT_SEAT_NO,MEM_NO,N_MEM_NAME,PHONE_M,DELAY,WAIT_N) VALUES ('WAIT_SEAT0002','','Amy','0912345678',0,2);
-INSERT INTO WAIT_SEAT (WAIT_SEAT_NO,MEM_NO,N_MEM_NAME,PHONE_M,DELAY,WAIT_N) VALUES ('WAIT_SEAT0003','MEM0002','','0912345678',0,3);
+INSERT INTO WAIT_SEAT (WAIT_SEAT_NO,MEM_NO,N_MEM_NAME,PHONE_M,DELAY,WAIT_N) VALUES ('WAIT_SEAT0003','MEM0040','','0912987654',0,3);
 --==============================================================================================================================
 --PK、FK管理=====================================================================================================================
 --==============================================================================================================================
