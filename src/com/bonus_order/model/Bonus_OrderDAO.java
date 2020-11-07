@@ -32,7 +32,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 	private static final String DELETE_BONUS_ORDER_DETAIL = "DELETE FROM bonus_order_detail where bo_no = ?";
 	private static final String DELETE_BONUS_ORDER = "DELETE FROM bonus_order where bo_no = ?";
 	private static final String UPDATE = "UPDATE bonus_order set mem_no=?, bo_date=?, promo_code=? where bo_no = ?";
-
+                                           //SELECT * FROM BONUS_ORDER_DETAIL WHERE BO_NO = ?
 	@Override
 	public void update(Bonus_OrderVO bonus_orderVO) {
 
@@ -244,7 +244,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public void insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
+	public Bonus_OrderVO insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -269,6 +269,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
 				next_bo_no = rs.getString(1);
+				bonus_orderVO.setBo_no(next_bo_no);
 				System.out.println("自增主鍵值= " + next_bo_no + "(剛新增成功的訂單編號)");
 			} else {
 				System.out.println("未取得自增主鍵值");
@@ -281,7 +282,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
-			con.setAutoCommit(true);
+//			con.setAutoCommit(true);
 			System.out.println("list.size()-B=" + list.size());
 			System.out.println("新增訂單編號" + next_bo_no + "時,共有訂單明細" + list.size() + "張同時被新增");
 
@@ -315,6 +316,7 @@ public class Bonus_OrderDAO implements Bonus_OrderDAO_interface {
 				}
 			}
 		}
+		return bonus_orderVO;
 	}
 
 	@Override

@@ -13,22 +13,22 @@
 	pageContext.setAttribute("list", list);
 %>
 <%
-	BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO");
+// 	BonusVO bonusVO = (BonusVO) request.getAttribute("bonusVO");
 %>
-<jsp:useBean id="bonuswSvc" scope="page"
-	class="com.bonus.model.BonusService" />
+<%-- <jsp:useBean id="bonuswSvc" scope="page" --%>
+<%-- 	class="com.bonus.model.BonusService" /> --%>
 	
 <%
-	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); 
+// 	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); 
 %>
-<jsp:useBean id="bonus_orderSvc" scope="page"
-	class="com.bonus_order.model.Bonus_OrderService" />
+<%-- <jsp:useBean id="bonus_orderSvc" scope="page" --%>
+<%-- 	class="com.bonus_order.model.Bonus_OrderService" /> --%>
 
 <%
-	Bonus_Order_DetailVO bonus_order_detailVO = (Bonus_Order_DetailVO) request.getAttribute("bonus_order_detailVO");  
+// 	Bonus_Order_DetailVO bonus_order_detailVO = (Bonus_Order_DetailVO) request.getAttribute("bonus_order_detailVO");  
 %>
-<jsp:useBean id="bonus_order_detailSvc" scope="page"
-	class="com.bonus_order_detail.model.Bonus_Order_DetailService" />
+<%-- <jsp:useBean id="bonus_order_detailSvc" scope="page" --%>
+<%-- 	class="com.bonus_order_detail.model.Bonus_Order_DetailService" /> --%>
 
 <!DOCTYPE html>
 <html>
@@ -94,8 +94,8 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td style="text-align: center;"><%=bonus_order_detailVO.getBo_no()%></td>
-						<td style="text-align: center;"><%=bonus_order_detailVO.getBns_no()%></td>
+						<td style="text-align: center;">${bonus_orderVO.bo_no}</td>
+						<td style="text-align: center;"></td>
 						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonus_order_detailVO.bns_no}"></td>
 						<td style="text-align: center;"><span style="color:red;">兌換成功</span></td>
 					</tr>

@@ -7,17 +7,17 @@
 <%@ page import="com.bonus_order.model.*"%>
 <%@ page import="com.bonus_order_detail.model.*"%>
 
-<%
-	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
-%>
-<jsp:useBean id="bonus_orderSvc" scope="page"
-	class="com.bonus_order.model.Bonus_OrderService" />
+<%-- <% --%>
+<!-- // 	Bonus_OrderVO bonus_orderVO = (Bonus_OrderVO) request.getAttribute("bonus_orderVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件) -->
+<%-- %> --%>
+<%-- <jsp:useBean id="bonus_orderSvc" scope="page" --%>
+<%-- 	class="com.bonus_order.model.Bonus_OrderService" /> --%>
 	
 <%
-	Bonus_Order_DetailVO bonus_order_detailVO = (Bonus_Order_DetailVO) request.getAttribute("bonus_order_detailVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
-%>
-<jsp:useBean id="bonus_order_detailSvc" scope="page"
-	class="com.bonus_order_detail.model.Bonus_Order_DetailService" />
+ 	Bonus_Order_DetailVO bonus_order_detailVO = (Bonus_Order_DetailVO) request.getAttribute("bonus_order_detailVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件) -->
+ %>
+<%-- <jsp:useBean id="bonus_order_detailSvc" scope="page" --%>
+<%-- 	class="com.bonus_order_detail.model.Bonus_Order_DetailService" /> --%>
 
 <!DOCTYPE html>
 <html>
@@ -280,7 +280,9 @@
 		//		 },	
 		//	});
 		//}
+		
 	</script>
+	
 	<div id="fun" style="display:none">
 		<c:forEach var="fun_authVO2" items="${fun_authVO2}">
 			<span class="fun">${fun_authVO2.fun_name}</span><br>

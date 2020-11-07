@@ -434,8 +434,9 @@ public class Bonus_OrderJDBCDAO implements Bonus_OrderDAO_interface {
 	}
 
 	@Override
-	public void insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
-		// TODO Auto-generated method stub
+	public Bonus_OrderVO insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list) {
+		
+		return bonus_orderVO;// TODO Auto-generated method stub
 		
 	}
 }

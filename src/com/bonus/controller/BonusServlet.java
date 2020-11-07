@@ -24,18 +24,18 @@ public class BonusServlet extends HttpServlet {
 
 		BonusService addSvc = new BonusService();
 
-		String bonus_img = req.getParameter("bonus_img");
-		if (bonus_img != null) {
-			try {
-				ServletOutputStream out = res.getOutputStream();
-				out.write(addSvc.getOneBonus(bonus_img).getBns_img());
-				out.flush();
-				out.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
+//		String bonus_img = req.getParameter("bonus_img");
+//		if (bonus_img != null) {
+//			try {
+//				ServletOutputStream out = res.getOutputStream();
+//				out.write(addSvc.getOneBonus(bonus_img).getBns_img());
+//				out.flush();
+//				out.close();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
 		if ("insertFromBack".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();

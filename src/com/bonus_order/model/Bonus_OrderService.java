@@ -22,9 +22,8 @@ public class Bonus_OrderService {
 		bonus_orderVO.setMem_no(mem_no);
 		bonus_orderVO.setBo_date(bo_date);
 		bonus_orderVO.setPromo_code(promo_code);
-		dao.insert(bonus_orderVO,list);
 		
-		return bonus_orderVO;
+		return dao.insert(bonus_orderVO,list);
 	}
 	
 	public Bonus_OrderVO updateBonus_Order(String bo_no, String mem_no, java.sql.Date bo_date, String promo_code) {

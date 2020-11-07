@@ -22,7 +22,7 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 
-		if ("bonusOrderDetailsFront".equals(action)) { 
+		if ("bonusOrderDetailsFront".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 
@@ -33,7 +33,8 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				String bo_no = new String(req.getParameter("bo_no").trim());
 
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
@@ -45,7 +46,8 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
@@ -55,15 +57,16 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 
 				successView.forward(req, res);
-	
+
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
+
 		if ("bonusOrderDetailsBack".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -79,7 +82,8 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus_order/listAllBonus_Order.jsp");
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/bonus_order/listAllBonus_Order.jsp");
 					failureView.forward(req, res);
 					return; // 程式中斷
 				}
@@ -92,7 +96,8 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus_order/listAllBonus_Order.jsp");
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/bonus_order/listAllBonus_Order.jsp");
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
@@ -115,11 +120,12 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 
 				successView.forward(req, res);
-	
+
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/bonus_order/listAllBonus_Order.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -196,42 +202,45 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			try {
+//			try {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 				String bns_no = req.getParameter("bns_no");
-				
+
 				HttpSession session = req.getSession();
-				MemVO memVO = (MemVO) session.getAttribute("memVO2");			
+				MemVO memVO = (MemVO) session.getAttribute("memVO2");
 				String mem_no = memVO.getMem_no();
 				if (mem_no == null || mem_no.trim().length() == 0) {
 					errorMsgs.add("會員編號：請勿空白");
 				}
 
 //				String promo_code = req.getParameter("promo_code");
-				int[] array = new int [62];
-				for (int i = 0; i < array.length; i ++)
-					if (i < 10) array[i] = 48 + i;	
-					else if (i < 36) array[i] = 55 + i;	
-					else  array[i] = 61 + i;		
-		 
-				int arrayBlength = 10;			
+				int[] array = new int[62];
+				for (int i = 0; i < array.length; i++)
+					if (i < 10)
+						array[i] = 48 + i;
+					else if (i < 36)
+						array[i] = 55 + i;
+					else
+						array[i] = 61 + i;
+
+				int arrayBlength = 10;
 				int[] arrayB = new int[arrayBlength];
 				Random r = new Random();
-				for (int i = 0; i < arrayBlength; i ++)	
-					arrayB[i] = array[r.nextInt(62)];	
-				
-				String arrayCode = "";	
-				for (int i = 0; i < arrayBlength; i ++) 
-					arrayCode += (char)arrayB[i];
-						
-				String promo_code = arrayCode;			
+				for (int i = 0; i < arrayBlength; i++)
+					arrayB[i] = array[r.nextInt(62)];
+
+				String arrayCode = "";
+				for (int i = 0; i < arrayBlength; i++)
+					arrayCode += (char) arrayB[i];
+
+				String promo_code = arrayCode;
 				String promo_codeReg = "^[(a-zA-Z0-9)]{10}$";
 				if (promo_code == null || promo_code.trim().length() == 0) {
 					errorMsgs.add("優惠代碼: 請勿空白");
 				} else if (!promo_code.trim().matches(promo_codeReg)) { // 以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("優惠代碼: 只能是英文字母和數字，且長度必須為10");
 				}
-				
+
 				java.sql.Date bo_date = null;
 				bo_date = new java.sql.Date(System.currentTimeMillis());
 				try {
@@ -246,15 +255,15 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 				bonus_orderVO.setPromo_code(promo_code);
 
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("bonus_orderVO", bonus_orderVO); // 含有輸入格式錯誤的empVO物件,也存入req
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/bonus_order/addBonus_Order.jsp");
-					failureView.forward(req, res);
-					return; // 程式中斷
-				}
-				
-				List<BonusVO>list = new ArrayList<>();
+//				if (!errorMsgs.isEmpty()) {
+//					req.setAttribute("bonus_orderVO", bonus_orderVO); // 含有輸入格式錯誤的empVO物件,也存入req
+//					RequestDispatcher failureView = req
+//							.getRequestDispatcher("/front-end/bonus_order/addBonus_Order.jsp");
+//					failureView.forward(req, res);
+//					return; // 程式中斷
+//				}
+
+				List<BonusVO> list = new ArrayList<>();//明細的集合
 				BonusService svc = new BonusService();
 				BonusVO bonusVO = svc.getOneBonus(bns_no);
 				list.add(bonusVO);
@@ -265,20 +274,21 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				req.setAttribute("bonus_orderVO", bonus_orderVO);
-//				String url = ("/front-end/bonus_order_detail/listOneBonus_Order_Detail.jsp");
-				String url = "/front-end/bonus_order/listAllBonus_Order.jsp";
+				String url = ("/front-end/bonus_order_detail/listOneBonus_Order_Detail.jsp");
+//				String url = "/front-end/bonus_order/listAllBonus_Order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 **********************************/
-			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/addBonus_Order.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				System.out.println("123");
+//				errorMsgs.add(e.getMessage());
+////				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/addBonus_Order.jsp");
+////				failureView.forward(req, res);
+//			}
 		}
 
-		if ("deleteBonusOrder".equals(action)) { 
+		if ("deleteBonusOrder".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 

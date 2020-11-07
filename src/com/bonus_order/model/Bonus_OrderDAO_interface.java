@@ -9,7 +9,7 @@ import com.bonus_order_detail.model.Bonus_Order_DetailVO;
 
 
 public interface Bonus_OrderDAO_interface { // 介面負責定義規格
-	public void insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list);
+	public Bonus_OrderVO insert(Bonus_OrderVO bonus_orderVO, List<BonusVO> list);
 	public void update(Bonus_OrderVO bonus_orderVO);
 	public void delete(String bo_no);
 	public Bonus_OrderVO findByPrimaryKey(String bo_no);
