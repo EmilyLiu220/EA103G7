@@ -6,6 +6,8 @@ public class Wait_seatVO implements java.io.Serializable{
 	private String mem_no;
 	private String n_mem_name;
 	private String phone_m;
+	private Integer delay;
+	private Integer wait_n;
 	public String getWait_seat_no() {
 		return wait_seat_no;
 	}
@@ -30,4 +32,17 @@ public class Wait_seatVO implements java.io.Serializable{
 	public void setPhone_m(String phone_m) {
 		this.phone_m = phone_m;
 	}
+	public Integer getDelay() {
+		return delay;
+	}
+	public void setDelay(Integer delay) {
+		this.delay = delay;
+	}
+	public Integer getWait_n() {
+		return wait_n;
+	}
+	public void setWait_n(Integer wait_n) {
+		this.wait_n = wait_n;
+	}
+	
 }
