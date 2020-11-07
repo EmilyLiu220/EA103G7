@@ -144,8 +144,7 @@ $(document).ready(function() {
 	// save seat
 	var lock_save = true;
 	$("#save").click(function(e) {
-		e.preventDefault();
-		e.stopImmediatePropagation();
+		e.stopPropagation();
 		if (!lock_save) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			console.log("lock");
 			return false;

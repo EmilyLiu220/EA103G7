@@ -683,9 +683,9 @@ $(document).ready(function() {
 				"time_peri_no": getTimePeriNo(nowDay.getHours()),
 			},
 			success: function(messages) {
+				
 				swal(messages, "", "success");
 				lock_popover = true;
-				return false;
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				lock_popover = true;// 如果業務執行失敗，修改鎖狀態
