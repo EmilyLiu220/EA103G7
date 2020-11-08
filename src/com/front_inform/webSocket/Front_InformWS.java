@@ -37,7 +37,7 @@ public class Front_InformWS {
 			if(memSession!=null && memSession.isOpen()) { // 確認此 session 是開啟的
 				List<Front_InformVO> fiVOs = fiSvc.getMyInform(mem_no); // 取得該會員的所有通知訊息
 				// 因為上面是直接傳來 VO → 轉成 Json 後才會再輸出到前端
-				userSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVOs)); // 傳出String
+				memSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVOs)); // 傳出String
 			}
 		}
 	}
