@@ -1,14 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.wait_seat.model.*"%>
+<%@ page import="com.food.model.*"%>
 
 <%
-  Wait_seatVO wait_seatVO = (Wait_seatVO) request.getAttribute("wait_seatVO"); 
+  FoodVO foodVO = (FoodVO) request.getAttribute("foodVO"); 
 %>
 
 <html>
 <head>
-<title><%=wait_seatVO.getWait_seat_no()%></title>
+<title>修改食材</title>
 <style>
 	.loc{
 		z-index: 10;
@@ -42,12 +42,11 @@
 <div class="wrapper" id="top">
 		<div class=loc>
 	<div id="content" class="mb-2 bt-4">
-		<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-		<span> - 候位管理</span>
+		
 		<table id="table-1">
 			<tr>
 				<td>
-					<h3 style="margin-bottom: 0;">候位修改</h3>
+					<h3 style="margin-bottom: 0;">食材管理</h3>
 				</td>
 			</tr>
 		</table>
@@ -61,46 +60,60 @@
 				</ul>
 			</c:if>
 		</div>
-	<form method="post" action="<%=request.getContextPath()%>/wait_seat/wait_seat.do">
+	<form method="post" action="<%=request.getContextPath()%>/food/food.do">
 	<input type="hidden" name="action" value="update">
 	<table class="table table-bordered table-hover table-striped text-center">
 	<tr>
-		<td>候位編號</td>
-		<td><%=wait_seatVO.getWait_seat_no()%>
-			<input type="hidden" name="wait_seat_no" value=<%=wait_seatVO.getWait_seat_no()%>>
+		<td>食材編號</td>
+		<td><%=foodVO.getFd_no()%>
+			<input type="hidden" name="fd_no" value=<%=foodVO.getFd_no()%>>
 		</td>
 	</tr>
 	<tr>
-		<td>會員編號</td>
-		<td><input class="input" type="text" placeholder="會員姓名" name="mem_no" value=
-			<%=wait_seatVO.getMem_no()==null?"":wait_seatVO.getMem_no()%>>
+		<td>食材名稱</td>
+		<td><input class="input" type="text" placeholder="食材名稱" name="fd_name" value=
+			<%=foodVO.getFd_name()%>>
 		</td>
 	</tr>
 	<tr>
-		<td>非會員姓名</td>
-		<td><input class="input" type="text" placeholder="非會員姓名" name="n_mem_name" value=
-			<%=wait_seatVO.getN_mem_name()==null?"":wait_seatVO.getN_mem_name()%>>
+		<td>庫存數量</td>
+		<td><input class="input" type="text" placeholder="庫存數量" name="fd_stk" value=
+			<%=foodVO.getFd_stk()%>>
 		</td>
 	</tr>
 	<tr>	
-		<td>手機號碼</td>
+		<td>庫存底線</td>
 		<td>
-			<input class="input" type="text" placeholder="手機號碼" name="phone_m" value=
-			<%=wait_seatVO.getPhone_m()%>>
+			<input class="input" type="text" placeholder="庫存底線" name="stk_ll" value=
+			<%=foodVO.getStk_ll()%>>
 		</td>
 	</tr>
 	<tr>
-		<td>延遲次數</td>
+		<td>卡路里</td>
 		<td>
-			<%=wait_seatVO.getDelay()%>
-			<input type="hidden" name="delay" value=<%=wait_seatVO.getDelay()%>>	
+			<input class="input" type="text" placeholder="卡路里" name="cal" value=
+			<%=foodVO.getCal()%>>
 		</td>
 	</tr>
 	<tr>	
-		<td>次序</td>
+		<td>蛋白質</td>
 		<td>
-			<%=wait_seatVO.getWait_n()%>
-			<input type="hidden" name="wait_n" value=<%=wait_seatVO.getWait_n()%>>
+			<input class="input" type="text" placeholder="蛋白質" name="prot" value=
+			<%=foodVO.getProt()%>>
+		</td>
+	</tr>
+	<tr>	
+		<td>碳水</td>
+		<td>
+			<input class="input" type="text" placeholder="碳水" name="carb" value=
+			<%=foodVO.getCarb()%>>
+		</td>
+	</tr>
+	<tr>	
+		<td>脂肪</td>
+		<td>
+			<input class="input" type="text" placeholder="脂肪" name="fat" value=
+			<%=foodVO.getFat()%>>
 		</td>
 	</tr>
 	<tr>
