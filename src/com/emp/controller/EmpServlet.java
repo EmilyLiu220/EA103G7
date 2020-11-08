@@ -673,7 +673,7 @@ public class EmpServlet extends HttpServlet {
 							.getRequestDispatcher("/back-end/emp/login.jsp");
 					failureView.forward(req, res);
 			    } else if (lh.allowUser(account, password) == 1) {
-			    	errorMsgs.add("您已離職，請快點滾！");
+			    	errorMsgs.add("您已離職，故無法登入後台系統！");
 			    	RequestDispatcher failureView = req
 							.getRequestDispatcher("/back-end/emp/login.jsp");
 					failureView.forward(req, res);
