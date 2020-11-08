@@ -78,6 +78,7 @@ public class SeatServlet extends HttpServlet {
 									&& seatVO.getSeat_y()
 											.equals(Double.valueOf(objArray.get(i).get("seat_y").toString())))
 									&& floor.equals(objArray.get(i).get("seat_f").toString())) {
+								System.out.println(12312);
 								res.sendError(HttpServletResponse.SC_FORBIDDEN, "沒有更新物件");
 								return;
 							}

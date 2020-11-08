@@ -302,15 +302,20 @@ public class ResOrderServlet extends HttpServlet {
 
 			String res_date = req.getParameter("res_date");
 			String time_peri_no = req.getParameter("time_peri_no");
-
+			
 			ResOrderService resOrderSvc = new ResOrderService();
 			ResDetailService resDetailSvc = new ResDetailService();
 			SeatService seatSvc = new SeatService();
-
-			if (!"-1".equals(time_peri_no) && res_date != null) {
+			
+			if ((!"".equals(time_peri_no)) && res_date != null) {
 				List<ResOrderVO> resOrderList = resOrderSvc.getResDate_And_TimePeri_getAll(res_date, time_peri_no);
 				// 取得訂位訂單
+				if(resOrderList.size() == 0) {
+					res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "此時段無任何訂單！請重新查詢！");
+					return;
+				}
 				for (ResOrderVO resOrderVO : resOrderList) {
+					
 					// 判斷是否被取消
 					if (resOrderVO.getInfo_sts() != 3) {
 						List<ResDetailVO> resDetailList = resDetailSvc.getAllResNO(resOrderVO.getRes_no());
@@ -602,21 +607,66 @@ public class ResOrderServlet extends HttpServlet {
 			}
 
 			ResOrderService resOrderSvc = new ResOrderService();
+			ResDetailService resDetailSvc = new ResDetailService ();
 			MealOrderService mealOrderSvc = new MealOrderService();
 			ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
-
+			
 			resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
-					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), time_peri_no,
+					resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),
 					resOrderVO.getInfo_sts(), 1, null);
 			// 
 			if(!"undefined".equals(meal_order_no)) {
 				mealOrderSvc.updatePickupTime(meal_order_no);
 			}
-
+			List<ResDetailVO> resOrderVOList = resDetailSvc.getAllResNO(res_no);
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+			String jSONString = gson.toJson(resOrderVOList);
+			
 			PrintWriter out = res.getWriter();
 			res.setContentType("text/plain");
 			res.setCharacterEncoding("UTF-8");
-			out.print("成功入座");
+			out.print(jSONString);
+			out.flush();
+			out.close();
+			return;
+		}
+		
+		if ("chooes_a_seat".equals(action)) {
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			String res_no = req.getParameter("res_no");
+			String res_date = req.getParameter("res_date");
+			String time_peri_no = req.getParameter("time_peri_no");
+//			System.out.println(res_no);
+//			System.out.println(res_date);
+//			System.out.println(time_peri_no);
+
+			if ("--請選擇日期--".equals(res_date)) {
+				errorMsgs.add("請選擇訂位日期");
+			}
+
+			if ("-1".equals(time_peri_no)) {
+				errorMsgs.add("請選擇訂位時段");
+			}
+
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/res_order/orderSeat.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+
+			ResDetailService resDetailSvc = new ResDetailService ();
+			
+			List<ResDetailVO> resOrderVOList = resDetailSvc.getAllResNO(res_no);
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+			String jSONString = gson.toJson(resOrderVOList);
+			
+			PrintWriter out = res.getWriter();
+			res.setContentType("text/plain");
+			res.setCharacterEncoding("UTF-8");
+			out.print(jSONString);
+//			System.out.println(jSONString);
 			out.flush();
 			out.close();
 			return;
