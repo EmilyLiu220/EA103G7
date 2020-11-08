@@ -91,7 +91,7 @@ th, td {
 				<td>${bonusVO.bns_name}</td>
 				<td>${bonusVO.bns_price}</td>
 				<td>${bonusVO.bns_date}</td>
-				<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}"></td>
+				<td><img name="bns_img" src="<%=request.getContextPath() %>/bonus/bonus.showPic?bonus_img=${bonusVO.bns_no}"></td>
 			<td>
 				<FORM METHOD="post"
 					ACTION="<%=request.getContextPath()%>/front-end/bonus_order/forwarded"

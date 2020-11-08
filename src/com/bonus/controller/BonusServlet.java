@@ -35,7 +35,7 @@ public class BonusServlet extends HttpServlet {
 //				e.printStackTrace();
 //			}
 //		}
-//		
+
 		if ("insertFromBack".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -52,7 +52,7 @@ public class BonusServlet extends HttpServlet {
 					bns_price = new Integer(req.getParameter("bns_price").trim());
 				} catch (NumberFormatException e) {
 					bns_price = 0;
-					errorMsgs.add("紅利商品價格請填數字！");
+					errorMsgs.add("紅利商品價格：請填數字！");
 				}
 
 				Integer bns_stks = null;
@@ -79,18 +79,23 @@ public class BonusServlet extends HttpServlet {
 				bonusVO.setBns_date(bns_date);
 
 
-				Part bns_img = req.getPart("bns_img");
 				byte[] img = null;
+				byte[] buf = null;
+				try {
 
+				Part bns_img = req.getPart("bns_img");
 				if (bns_img.getSize() != 0) {
-					if (bns_img.getContentType() != null) {
 						InputStream is = bns_img.getInputStream();
 						img = new byte[is.available()];
-						is.read(img);
-						is.close();
-					}
+						is.read(buf);
+						img = buf;
+//						is.close();
 				}else {
-					errorMsgs.add("bns_img: 請勿空白");
+					errorMsgs.add("紅利商品圖片：請上傳圖片！");
+				}
+				
+				} catch (Exception e) {
+					errorMsgs.add("圖片讀取失敗");
 				}
 
 				// Send the use back to the form, if there were errors

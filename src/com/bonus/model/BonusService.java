@@ -3,6 +3,8 @@ package com.bonus.model;
 import java.sql.Date;
 import java.util.List;
 
+import com.meal_set.model.MealSetVO;
+
 public class BonusService {
 	
 	private BonusDAO_interface dao;
@@ -53,6 +55,10 @@ public class BonusService {
 		
 		return bonusVO;
 	}
+	
+	public BonusVO searchByNo(String bns_no) {
+		return dao.searchByNo(bns_no);
+	};
 	
 	public void deleteBonus(String bns_no) {
 		dao.delete(bns_no);
