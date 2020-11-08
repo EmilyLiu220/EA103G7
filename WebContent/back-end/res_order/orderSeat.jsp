@@ -30,7 +30,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>吃胖吧～訂位</title>
+<title>吃胖吧~座位狀況</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back-end/css/orderSeat.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
@@ -79,21 +79,20 @@ input, select {
 							查詢時段: 
 							<select id="time_peri_no" name="time_peri_no" >
 								<c:forEach var="timePeriVO" items="${timePeriSvc.all}">
-									<c:if test="${(fn:indexOf(timePeriVO.time_start,'PM') gt 0 ? fn:substring(timePeriVO.time_start,0,2)+12 : fn:substring(timePeriVO.time_start,0,2)) gt Hours-2}">
+<%-- 									<c:if test="${(fn:indexOf(timePeriVO.time_start,'PM') gt 0 ? fn:substring(timePeriVO.time_start,0,2)+12 : fn:substring(timePeriVO.time_start,0,2)) gt Hours-2}"> --%>
 										<option class="lt" value="${timePeriVO.time_peri_no}">${timePeriVO.time_start}</option>
-									</c:if>
+<%-- 									</c:if> --%>
 								</c:forEach>
 							</select> 
 							<input type="hidden" name="mem_no" value="${memVO2.mem_no}"> <input type="hidden" name="emp_no" value="${empVO2.emp_no}">
 						</label>
 						<button id="orderSearch" name="action" value="order_search" class="btn btn-warning" onclick='return false;'>查詢</button>
 				
-<!-- 						<label class="labelTwo">  -->
-<!-- 							用餐人數:  -->
-<!-- 							<select id="people" name="people" ></select> -->
-<!-- 						</label> -->
-						<input type="hidden" name="action" value="order_seat">
-<!-- 						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>劃位</button> -->
+						<label class="labelTwo"> 
+							用餐人數: 
+							<select id="people" name="people" ></select>
+						</label>
+						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>劃位</button>
 					</div>
 					<div id="container" class="container">
 						<c:forEach var="seatVO" items="${seatSvc.all}">

@@ -1,3 +1,8 @@
+// 0   原色 未被選擇顏色
+// 90  綠色 訂位時選擇顏色
+// 180 藍色 後台已經入座顏色
+// 252 紫色 修改訂位自己選擇之座位的顏色
+// 342 紅色 被訂位顏色
 $(document).ready(function() {
 	/** ***************************** 日期選擇 ****************************** */
 	var errorText;
@@ -7,7 +12,7 @@ $(document).ready(function() {
 	/** ***************************** 人數 ****************************** */
 	var lock_people = true;
 	$("#people").change(function(e) {
-		e.stopPropagation();
+		e.stopImmediatePropagation();
 		console.log("people");
 		if ($("#people").val() > 20 || $("#people").val() < 1) {
 			swal("輸入的值超出範圍!", "請輸入1～20的數字!", "info");
@@ -44,61 +49,53 @@ $(document).ready(function() {
 				 ********** 重新刷新座位區 **********
 				 ********** 讓客人重新選擇 **********
 				 */
-				$("#people").change(function(e) {
-					chooseSeatPeople = 0;
-					e.stopPropagation();
-					if(!lock_people) {
-						return false;
-					}
-					lock_people = false;
-//					console.log("people2");
-					var res_date = $("#res_date").val();
-					var time_peri_no = $("#time_peri_no").val();
-					$.ajax({
-						// url is servlet url, ?archive_seat is tell servlet execute which
-						// one judgment
-						url: contextPath + "/res_order/ResOrderServlet.do?",
-						type: "post",
-						// synchronize is false
-						async: false,
-						data: {
-							"res_date": res_date,
-							"time_peri_no": time_peri_no,
-							"action":"get_Res_Order_Today"
-						},
-						success: function(messages) {
-							var jsonArray = JSON.parse(messages);
-							var $myCheckbox = $(".myCheckbox");
+				chooseSeatPeople = 0;
+				console.log("people2");
+				var res_date = $("#res_date").val();
+				var time_peri_no = $("#time_peri_no").val();
+				$.ajax({
+					// url is servlet url, ?archive_seat is tell servlet execute which
+					// one judgment
+					url: contextPath + "/res_order/ResOrderServlet.do?",
+					type: "post",
+					// synchronize is false
+					async: false,
+					data: {
+						"res_date": res_date,
+						"time_peri_no": time_peri_no,
+						"action":"get_Res_Order_Today"
+					},
+					success: function(messages) {
+						var jsonArray = JSON.parse(messages);
+						var $myCheckbox = $(".myCheckbox");
 
-							$.each($myCheckbox, function(_index, item) {
-								$(item).closest(".drag").css({
-									filter: "hue-rotate(0deg)",
-								});
-								$(item).prop("disabled", false);
-								$(item).prop("checked", false);
+						$.each($myCheckbox, function(_index, item) {
+							$(item).closest(".drag").css({
+								filter: "hue-rotate(0deg)",
 							});
-							$.each($myCheckbox, function(_index, item) {
-								$.each(jsonArray, function(_index, item1) {
-									if ($(item).val() === item1) {
-										$(item).closest(".drag").css({
-											filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
-										});
-										$(item).prop("disabled", true);
-										$(item).prop("checked", true);
-										$(item).css("display", "none");
-									}
-								});
+							$(item).prop("disabled", false);
+							$(item).prop("checked", false);
+						});
+						$.each($myCheckbox, function(_index, item) {
+							$.each(jsonArray, function(_index, item1) {
+								if ($(item).val() === item1) {
+									$(item).closest(".drag").css({
+										filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+									});
+									$(item).prop("disabled", true);
+									$(item).prop("checked", true);
+									$(item).css("display", "none");
+								}
 							});
-							$(".labelTwo").css("display", "inline-block");
-						},
-						error: function(xhr, ajaxOptions, thrownError) {
-							ajaxSuccessFalse(xhr);
-							swal("儲存失敗", errorText, "warning");
-						},
-					});
-					lock_people = true;
+						});
+						$(".labelTwo").css("display", "inline-block");
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						ajaxSuccessFalse(xhr);
+						swal("儲存失敗", errorText, "warning");
+					},
 				});
-				e.preventDefault();
+				lock_people = true;
 				return false;
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -124,84 +121,84 @@ $(document).ready(function() {
 		chooseSeatPeople = value;
 	}
 	/** ***************************** 人數 ****************************** */
-//	$(".myCheckbox").change(function(e) {
-//		e.stopImmediatePropagation();
-////		console.log("myCheckbox");
-//		// 如果被選擇，該區塊div套濾鏡
-//		if ($(this).is(":checked")) {
-//			$(this).closest(".drag").css({
-//				filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(90deg) brightness(103%) contrast(118%)",
-//			});
-//		// 沒被選擇，取消率濾鏡
-//		} else {
-//			$(this).closest(".drag").css({
-//				filter: "hue-rotate(0deg)",
-//			});
-//		}
-//		var people = $("#people").val();
-//		// 請使用者輸入來店人數
-//		if (people == null) {
-//			swal("請先輸入來店人數", "", "info");
-//			$(this).closest(".drag").css({
-//				filter: "hue-rotate(0deg)",
-//			});
-//			$(this).prop("disabled", false);
-//			$(this).prop("checked", false);
-//		}
-//		var thisCheckboxValue = $(this).val();
-//		var thisCheckbox = $(this);
-//		var allNotCheckbox= $(".myCheckbox").not(":checked");
-//		// 畫面上所有位子可容納人數比對選取的位子人數
-//		$.each(jsonArray_people, function(_index, item) {
-//			let key = Object.keys(item);
-//			let value = Object.values(item);
-//			if (key[0] === thisCheckboxValue) {
-//				if (thisCheckbox.is(":checked")) {
-//					addChooseSeatPeople(value[0]);
-//				} else if (thisCheckbox.not(":checked")) {
-//					lessChooseSeatPeople(value[0]);
-//				}
-//				// 來店人數大於選擇座位可容納人數
-//				if (parseInt(people) - parseInt(chooseSeatPeople) > 0) {
-//					let nowNotCheckbox= $(".myCheckbox").not(":checked");
-//					$.each(nowNotCheckbox, function(i, item){
-//						$(item).prop("disabled", false);
-//					});
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
-//				}
-//				// 來店人數等於選擇座位人數
-//				if (parseInt(chooseSeatPeople) - parseInt(people) == 0) {
-//					swal("已經選擇適當的桌位囉！", "", "info");
-//					$.each(allNotCheckbox, function(i, item){
-//						$(item).prop("disabled", true);
-//					});
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
-//				// 選擇座位人數超過來店人數太多
-//				} else if (parseInt(chooseSeatPeople) >= parseInt(people) + 3) {
-//					swal("選擇座位人數超過來店人數太多！！", "請重新選擇相符的人數座位～", "info");
-//					thisCheckbox.closest(".drag").css({
-//						filter: "hue-rotate(0deg)",
-//					});
-//					thisCheckbox.prop("disabled", false);
-//					thisCheckbox.prop("checked", false);
-//					lessChooseSeatPeople(value[0]);
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
-//				// 符合來店人數低於選擇最為可容納人數之可接受範圍
-//				} else if(parseInt(people) - parseInt(chooseSeatPeople) < 0 ) {
-//					swal("已經選擇適當的桌位囉！", "", "info");
-//					$.each(allNotCheckbox, function(i, item){
-//						$(item).prop("disabled", true);
-//					});
-//					console.log("people="+people);
-//					console.log("chooseSeatPeople="+chooseSeatPeople);
-//				} 
-//			}
-//		});
-//		return false;
-//	});
+	$(".myCheckbox").change(function(e) {
+		e.stopImmediatePropagation();
+//		console.log("myCheckbox");
+		// 如果被選擇，該區塊div套濾鏡
+		if ($(this).is(":checked")) {
+			$(this).closest(".drag").css({
+				filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(90deg) brightness(103%) contrast(118%)",
+			});
+		// 沒被選擇，取消率濾鏡
+		} else {
+			$(this).closest(".drag").css({
+				filter: "hue-rotate(0deg)",
+			});
+		}
+		var people = $("#people").val();
+		// 請使用者輸入來店人數
+		if (people == null) {
+			swal("請先輸入來店人數", "", "info");
+			$(this).closest(".drag").css({
+				filter: "hue-rotate(0deg)",
+			});
+			$(this).prop("disabled", false);
+			$(this).prop("checked", false);
+		}
+		var thisCheckboxValue = $(this).val();
+		var thisCheckbox = $(this);
+		var allNotCheckbox= $(".myCheckbox").not(":checked");
+		// 畫面上所有位子可容納人數比對選取的位子人數
+		$.each(jsonArray_people, function(_index, item) {
+			let key = Object.keys(item);
+			let value = Object.values(item);
+			if (key[0] === thisCheckboxValue) {
+				if (thisCheckbox.is(":checked")) {
+					addChooseSeatPeople(value[0]);
+				} else if (thisCheckbox.not(":checked")) {
+					lessChooseSeatPeople(value[0]);
+				}
+				// 來店人數大於選擇座位可容納人數
+				if (parseInt(people) - parseInt(chooseSeatPeople) > 0) {
+					let nowNotCheckbox= $(".myCheckbox").not(":checked");
+					$.each(nowNotCheckbox, function(i, item){
+						$(item).prop("disabled", false);
+					});
+					console.log("people="+people);
+					console.log("chooseSeatPeople="+chooseSeatPeople);
+				}
+				// 來店人數等於選擇座位人數
+				if (parseInt(chooseSeatPeople) - parseInt(people) == 0) {
+					swal("已經選擇適當的桌位囉！", "", "info");
+					$.each(allNotCheckbox, function(i, item){
+						$(item).prop("disabled", true);
+					});
+					console.log("people="+people);
+					console.log("chooseSeatPeople="+chooseSeatPeople);
+				// 選擇座位人數超過來店人數太多
+				} else if (parseInt(chooseSeatPeople) >= parseInt(people) + 3) {
+					swal("選擇座位人數超過來店人數太多！！", "請重新選擇相符的人數座位～", "info");
+					thisCheckbox.closest(".drag").css({
+						filter: "hue-rotate(0deg)",
+					});
+					thisCheckbox.prop("disabled", false);
+					thisCheckbox.prop("checked", false);
+					lessChooseSeatPeople(value[0]);
+					console.log("people="+people);
+					console.log("chooseSeatPeople="+chooseSeatPeople);
+				// 符合來店人數低於選擇最為可容納人數之可接受範圍
+				} else if(parseInt(people) - parseInt(chooseSeatPeople) < 0 ) {
+					swal("已經選擇適當的桌位囉！", "", "info");
+					$.each(allNotCheckbox, function(i, item){
+						$(item).prop("disabled", true);
+					});
+					console.log("people="+people);
+					console.log("chooseSeatPeople="+chooseSeatPeople);
+				} 
+			}
+		});
+		return false;
+	});
 	/**
 	 * 換樓層選擇座位區更換成該樓層座位
 	 * ******************************
@@ -246,9 +243,9 @@ $(document).ready(function() {
 						class: "myCheckbox",
 						name: "seat_checked",
 						value: item.seat_no,
-						disabled: true,
+						disabled: false,
 					}).css({
-						display: "none",
+//						display: "none",
 					}).appendTo($label);
 					$("<img>").attr({
 						src: contextPath + "/seat/Seat_ObjServlet.do?seat_obj_no=" + item.seat_obj_no,
@@ -323,7 +320,7 @@ $(document).ready(function() {
 						});
 						$(item).prop("disabled", false);
 						$(item).prop("checked", false);
-						$(item).css("display", "none");
+//						$(item).css("display", "none");
 					});
 					
 					$.each($myCheckbox, function(_index, item) {
@@ -334,7 +331,7 @@ $(document).ready(function() {
 								});
 								$("<button>").attr({
 									type: "button",
-									container: "body",
+									container: ".drag",
 									class: "info btn btn-secondary",
 									"data-html": "true",
 									"data-toggle": "popover",
@@ -342,7 +339,7 @@ $(document).ready(function() {
 								}).text("資訊").appendTo($(item).closest(".imgLabel"));
 								$(item).prop("disabled", true);
 								$(item).prop("checked", true);
-								$(item).css("display", "none");
+//								$(item).css("display", "none");
 							} 
 						});
 					});
@@ -354,7 +351,7 @@ $(document).ready(function() {
 								});
 								$(item).prop("disabled", true);
 								$(item).prop("checked", true);
-								$(item).css("display", "none");
+//								$(item).css("display", "none");
 							} 
 						});
 					});
@@ -533,23 +530,20 @@ $(document).ready(function() {
 //		e.stopImmediatePropagation();
 //	});
 	// popover menu
-	$('#myPopover').on('show.bs.popover', function () {
-		  
-	});
 	var lock_popover = true;
 	var seat_no = $('[data-toggle="popover"]').popover({
         trigger: 'click',
         delay: { "show": 100, "hide": 100 },
         title: '<span class="text-info"><strong>訂位資訊</strong></span>',
         content: function(){
-        	
+//        	window.event.stopPropagation();
         	var isChecked = $("input:checked");
         	
-        	$.each(isChecked, (i,isChecked) => {
-        		$(isChecked).closest(".drag").css({
-					filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
-				});
-        	});
+//        	$.each(isChecked, (i,isChecked) => {
+//        		$(isChecked).closest(".drag").css({
+//					filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+//				});
+//        	});
         	
         	var seat_no = $(this).closest(".drag").children(".imgLabel").find(".myCheckbox").val();
         	var res_date = $("#res_date").val();
@@ -559,30 +553,6 @@ $(document).ready(function() {
         		return false;
         	}
         	lock_popover = false;
-//        	var nowDay = new Date();
-//        	function formatDate(nowDay) {
-//			         month = '' + (nowDay.getMonth() + 1),
-//			         day = '' + nowDay.getDate(),
-//			         year = nowDay.getFullYear();
-//			     if (month.length < 2) month = '0' + month;
-//			     if (day.length < 2) day = '0' + day;
-//			     return [year, month, day].join('-');
-//			}
-//			function getTimePeriNo (time) {
-//				if(10 <= time && time < 13){
-//					return "TP0001";
-//				} else if (13 <= time && time < 15) {
-//					return "TP0002";
-//				} else if (15 <= time && time < 17) {
-//					return "TP0003";
-//				} else if (17 <= time && time < 19) {
-//					return "TP0004";
-//				} else if (19 <= time && time < 21) {
-//					return "TP0005";
-//				} else if (21 <= time && time < 23) {
-//					return "TP0006";
-//				} else return "TP0007";
-//			}
         	var jsonStr = $.ajax({
     			// url is servlet url, ?archive_seat is tell servlet execute which
     			// one judgment
@@ -618,7 +588,6 @@ $(document).ready(function() {
         	var res_detail = JSON.parse(jsonStr2.res_detail);
         	var seated = JSON.parse(jsonStr2.seated);
         	
-        	
         	$.each(res_detail, (i, item) => {
         		$.each($(".myCheckbox"), (i, myCheckbox) => {
         			if(item.seat_no == $(myCheckbox).val()) {
@@ -641,31 +610,84 @@ $(document).ready(function() {
 					} 
 				});
 			});
-//        	console.log(path);
         	return '<div class="res_info">姓名：'+ mem.mem_name +'</div>' +
             '<div class="res_info">桌名：' + $("#floor_list").val() +"樓"+"_"+$(this).closest(".drag").children(".seatLabel").find(".seatName").val()+"桌"+ '</div>' +
             '<div class="res_info">時段：' + time_peri.time_start +'</div>' +
-            '<div class="res_info">訂餐：' + (res_order.meal_order_no == undefined ? "未訂餐" : '<a href="' + meal_order_no3 + path + "&meal_order_no=" + res_order.meal_order_no + '">這筆訂單</a>' ) +
+            '<div class="res_info">訂餐：' + (res_order.meal_order_no == undefined ? "未訂餐" : '<a href="' + meal_order_no3 + path + "&meal_order_no=" + res_order.meal_order_no + '" class="btn btn-warning">這筆訂單</a>' ) +
             '<div class="res_info">人數：' + res_order.people +'</div>' +
             '<div class="buttonDiv">' +
-            '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;">' +
-            '<i class="fa fa-check-circle"></i>入座</a></div>' +
-            '<div class="button col-4"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;">' +
-            '<i class="fa fa-shopping-cart"></i>點餐</a></div>' +
+            (res_order.seat_sts == 0 ? '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;"><i class="fa fa-check-circle"></i>入座</a></div>' : '<div class="button col-4" style="cursor: no-drop;"><a href="#" class="btn btn-primary" onclick="return false;" style="pointer-events: none;"><i class="fa fa-check-circle"></i>已入座</a></div>') +
+//            '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;"><i class="fa fa-check-circle"></i>入座</a></div>' +
+            (res_order.meal_order_no == undefined ? '<div class="button col-4"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;"><i class="fa fa-shopping-cart"></i>點餐</a></div>' : '<div class="button col-4" style="cursor: no-drop;"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;" style="pointer-events: none;"><i class="fa fa-shopping-cart"></i>已點餐</a></div>') +
+//            '<div class="button col-4"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;"><i class="fa fa-shopping-cart"></i>點餐</a></div>' +
             '<div class="button col-4"><a href="#" class="btn btn-danger" id="clear_window" onclick="return false;">' +
-            '<i class="fa fa-window-close"></i>關閉</a></div></div>'+
+            '<i class="fa fa-window-close"></i>關閉</a></div>' +
+            // div clsaa="buttonDiv"
+            '</div>' +
             '<input type="hidden" id="popover_res_order" value="'+ res_order.res_no +'">' +
+            '<input type="hidden" id="popover_seat_sts" value="'+ res_order.seat_sts +'">' +
             '<input type="hidden" id="popover_meal_order_no" value="'+ res_order.meal_order_no +'">';
         },
     });
-    $(document).on('click', '#clear_window', function() {
-        $('[data-toggle="popover"]').popover('hide');
+	
+	$(document).on('click', '#clear_window', function(e) {
+		$('[data-toggle="popover"]').popover('hide');
+	});
+    
+    $(document).on('click', 'button.info.btn.btn-secondary', function(e) {
+    	e.stopImmediatePropagation();
+    	$('[data-toggle="popover"]').not(this).popover('hide');
     });
-    $(document).on('click', 'button.info.btn.btn-secondary', function() {
-        $('[data-toggle="popover"]').not(this).popover('hide');
-    });
+    
+//    var lock_popover = true;
+	$('[data-toggle="popover"]').on("hide.bs.popover", function (e) {
+//		e.stopPropagation();
+//		e.preventDefault();
+		e.stopImmediatePropagation();
+//		if(!lock_popover){
+//			return false;
+//		}
+//		lock_popover = false;
+		var nowDay = new Date();
+    	var jsonStr = $.ajax({
+			// url is servlet url, ?archive_seat is tell servlet execute which
+			// one judgment
+			url: contextPath + "/res_order/ResOrderServlet.do?",
+			type: "post",
+			// synchronize is false
+			async: false,
+			data: {
+				"action":"chooes_a_seat",
+				"res_no": $("#popover_res_order").val(),
+				"meal_order_no": $("#popover_meal_order_no").val(),
+				"res_date": formatDate(nowDay),
+				"time_peri_no": getTimePeriNo(nowDay.getHours()),
+			},
+			success: function(messages) {
+				let jsonStr = JSON.parse(messages);
+				if($("#popover_seat_sts").val() == 0) {
+					$.each(jsonStr, (index, jsonStr) => {
+//						console.log(jsonStr.seat_no);
+						$("input[value="+jsonStr.seat_no+"]").closest(".drag").css({
+							filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(342deg) brightness(103%) contrast(118%)",
+						});
+					});
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				lock_popover = true;// 如果業務執行失敗，修改鎖狀態
+				ajaxSuccessFalse(xhr);
+				swal("儲存失敗", errorText, "warning");
+				return false
+			},
+		});
+//		lock_popover = true;
+	});
+    
     // *****************入座 *****************
-    $(document).on('click', '#take_a_seat', function() {
+    $(document).on('click', '#take_a_seat', function(e) {
+//		e.stopPropagation();
+		e.stopImmediatePropagation();
     	$('[data-toggle="popover"]').popover('hide');
     	var nowDay = new Date();
     	var jsonStr = $.ajax({
@@ -683,8 +705,14 @@ $(document).ready(function() {
 				"time_peri_no": getTimePeriNo(nowDay.getHours()),
 			},
 			success: function(messages) {
-				
-				swal(messages, "", "success");
+				let jsonStr = JSON.parse(messages);
+				$.each(jsonStr, (index, jsonStr) => {
+					console.log(jsonStr.seat_no);
+					$("input[value="+jsonStr.seat_no+"]").closest(".drag").css({
+						filter: "invert(23%) sepia(98%) saturate(6242%) hue-rotate(180deg) brightness(103%) contrast(118%)",
+					});
+				});
+				swal("成功入座", "", "success");
 				lock_popover = true;
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
@@ -695,39 +723,15 @@ $(document).ready(function() {
 			},
 		});
     });
-    $(document).on('click', '#order_meal', function() {
-    	$('[data-toggle="popover"]').popover('hide');
-    });
+//    $(document).on('click', '#order_meal', function() {
+//    	$('[data-toggle="popover"]').popover('hide');
+//    });
+    
     $("#orderSearch").click(function(e) {
     	e.stopImmediatePropagation();
-    	
+//    	e.stopPropagation();
     	var time_peri_no = $("#time_peri_no").val();
     	var res_date = $("#res_date").val();
-//    	var nowDay = new Date();
-//    	function formatDate(nowDay) {
-//             month = '' + (nowDay.getMonth() + 1),
-//             day = '' + nowDay.getDate(),
-//             year = nowDay.getFullYear();
-//    	     if (month.length < 2) month = '0' + month;
-//    	     if (day.length < 2) day = '0' + day;
-//    	     return [year, month, day].join('-');
-//    	}
-//    	function getTimePeriNo (time) {
-//    		if(10 <= time && time < 13){
-//    			return "TP0001";
-//    		} else if (13 <= time && time < 15) {
-//    			return "TP0002";
-//    		} else if (15 <= time && time < 17) {
-//    			return "TP0003";
-//    		} else if (17 <= time && time < 19) {
-//    			return "TP0004";
-//    		} else if (19 <= time && time < 21) {
-//    			return "TP0005";
-//    		} else if (21 <= time && time < 23) {
-//    			return "TP0006";
-//    		} else return "TP0007";
-//    	}
-//    		console.log(getTimePeriNo(nowDay.getHours()));
     	$.ajax({
     		// url is servlet url, ?archive_seat is tell servlet execute which
     		// one judgment
@@ -753,9 +757,9 @@ $(document).ready(function() {
     				$(item).closest(".drag").css({
     					filter: "hue-rotate(0deg)",
     				});
-    				$(item).prop("disabled", true);
+//    				$(item).prop("disabled", true);
     				$(item).prop("checked", false);
-    				$(item).css("display", "none");
+//    				$(item).css("display", "none");
     			});
     			
     			$.each($myCheckbox, function(_index, item) {
@@ -793,12 +797,12 @@ $(document).ready(function() {
     			
     			lock_time_peri_no = true;// 如果業務執行成功，修改鎖狀態
     			$(".labelTwo").css("display", "inline-block");
-    			$("#people").val("");
+    			return false;
     		},
     		error: function(xhr, ajaxOptions, thrownError) {
     			lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
     			ajaxSuccessFalse(xhr);
-    			swal("儲存失敗", errorText, "warning");
+    			swal("查詢結果", errorText, "info");
     		},
     	});
     	return false;
@@ -831,6 +835,9 @@ $(document).ready(function() {
 
 // 開局載入
 $(window).load(function init() {
+	function ajaxSuccessFalse(xhr) {
+		errorText = xhr.responseText.substr(xhr.responseText.indexOf("Message") + 12, xhr.responseText.indexOf("</p><p><b>Description") - (xhr.responseText.indexOf("Message") + 12));
+	}
 	var lock_time_peri_no = true;// 防止重複提交定義鎖
 	if (!lock_time_peri_no) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 		return false;
@@ -870,7 +877,8 @@ $(window).load(function init() {
 		async: false,
 		data: {
 			"res_date": formatDate(nowDay),
-			"time_peri_no": getTimePeriNo(nowDay.getHours()),
+//			"time_peri_no": getTimePeriNo(nowDay.getHours()),
+			"time_peri_no": "TP0001",
 			"floor": $("#floor_list").val(),
 			"action":"get_Res_Order_Today_For_Back",
 		},
@@ -885,9 +893,9 @@ $(window).load(function init() {
 				$(item).closest(".drag").css({
 					filter: "hue-rotate(0deg)",
 				});
-				$(item).prop("disabled", true);
-				$(item).prop("checked", false);
-				$(item).css("display", "none");
+//				$(item).prop("disabled", true);
+//				$(item).prop("checked", false);
+//				$(item).css("display", "none");
 			});
 			
 			$.each($myCheckbox, function(_index, item) {
@@ -923,9 +931,16 @@ $(window).load(function init() {
 				});
 			});
 			
+			
+			for(let i = 1; i < 21; i++) {
+				$("<option>").attr({
+					value: i,
+				}).text(i+"人").appendTo("#people");
+			}
+			
 			lock_time_peri_no = true;// 如果業務執行成功，修改鎖狀態
 			$(".labelTwo").css("display", "inline-block");
-			$("#people").val("");
+			$("#people").val("1");
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
 			lock_time_peri_no = true;// 如果業務執行失敗，修改鎖狀態
