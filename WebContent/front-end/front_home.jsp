@@ -158,7 +158,7 @@
 
 <body>
 	<%-- 小鈴鐺 table 開始 --%>
-	<table id="fi_cont" style="border: 0; display: none;">
+	<table id="fi_cont" class="scrollbar" style="border: 0; display: none;">
 	</table>
 	<%-- 小鈴鐺 table 結束 --%>
 
@@ -183,7 +183,7 @@
 						</div>
 					</div>
 					<div id="chat"
-						class="chat_box_wrapper chat_box_small chat_box_active"
+						class="scrollbar chat_box_wrapper chat_box_small chat_box_active"
 						style="opacity: 1; display: block; transform: translateX(0px); background: #d6fdff;">
 					</div>
 					<div class="chat_submit_box">
@@ -602,6 +602,28 @@
 		</div>
 	</div>
 	<%-- Modal (擋住未登入的會員點選已登入會員才可看到的畫面) 結束 --%>
+	
+	<%-- Modal (擋住已登入會員點選無任何通知訊息的小鈴鐺) 開始 --%>
+	<div class="modal fade" id="noFiModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">無通知訊息</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">您目前沒有任何活動通知訊息喔~</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%-- Modal (擋住已登入會員點選無任何通知訊息的小鈴鐺) 結束 --%>
 </body>
 <%-- script 開始 --%>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -901,7 +923,7 @@
 				if ( jsonObj.info_sts === 2 ) {
 					// 第一個 td 要放到 tr 中
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "height: 46px; width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width: 380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 下方 span 要放到上方的 td 中
 					var informTdContSpan = document.createElement('span');
 					informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -911,17 +933,22 @@
 					// 下方兩個 button 要放到上方的 div 中
 					var informTdContBtnYes = document.createElement('button');
 					informTdContBtnYes.setAttribute("id",trFiNo+"yes");
+					informTdContBtnYes.setAttribute("type","button");
+					informTdContBtnYes.setAttribute("class","btn btn-warning btn-sm");
 					informTdContBtnYes.innerHTML = "確認";
 					informTdContBtnYes.addEventListener('click', function(){
 						confirm(trFiNo, btnResNo);
 					});
-					informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+					informTdContBtnYes.style.cssText = "margin-right:3px; border-radius: 5px;"; // 兩個 button 間的間距
 					var informTdContBtnNo = document.createElement('button');
 					informTdContBtnNo.setAttribute("id",trFiNo+"no");
+					informTdContBtnNo.setAttribute("type","button");
+					informTdContBtnNo.setAttribute("class","btn btn-outline-secondary btn-sm");
 					informTdContBtnNo.innerHTML = "取消";
 					informTdContBtnNo.addEventListener('click', function(){
 						cancel(trFiNo, btnResNo);
 					});
+					informTdContBtnNo.style.cssText = "border-radius: 5px;";
 					informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
 					informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
 					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
@@ -945,7 +972,7 @@
 					}
 					// tr 中的第一個 td
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width: 380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 把 info_cont 填入 a 中
 					informTdC_A.style.cssText = "word-break: break-all;";
 					informTdC_A.innerHTML = jsonObj.info_cont;
@@ -957,7 +984,7 @@
 				} else if ( jsonObj.info_sts === 1 ) {
 					// 第一個 td 要放到 tr 中
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "height: 46px; width: 300px;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width: 380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 下方 span 要放到上方的 td 中
 					var informTdContSpan = document.createElement('span');
 					informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -965,6 +992,7 @@
 					var informTdDiv = document.createElement('div');
 					informTdDiv.setAttribute("class","d-flex justify-content-end")
 					var informTdContYesSpan = document.createElement('span');
+					informTdContYesSpan.setAttribute('class', 'spanStyle');
 					informTdContYesSpan.innerHTML = "已確認";
 					informTdDiv.appendChild(informTdContYesSpan); // <div> 內放 checked yes
 					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
@@ -975,7 +1003,7 @@
 				} else if ( jsonObj.info_sts === 3 ) {
 					// 第一個 td 要放到 tr 中
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "height: 46px; width:300px;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width:380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 下方 span 要放到上方的 td 中
 					var informTdContSpan = document.createElement('span');
 					informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -983,6 +1011,7 @@
 					var informTdDiv = document.createElement('div');
 					informTdDiv.setAttribute("class","d-flex justify-content-end")
 					var informTdContNoSpan = document.createElement('span');
+					informTdContNoSpan.setAttribute('class', 'spanStyle');
 					informTdContNoSpan.innerHTML = "已取消";
 					informTdDiv.appendChild(informTdContNoSpan); // <div> 內放 checked no
 					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
@@ -992,7 +1021,7 @@
 				
 				// 第二個 td 也要放到 tr 中
 				var informTdDate = document.createElement('td');
-				informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+				informTdDate.style.cssText = "width:120px;"; // 此 td 寬度 100px
 				var infoDate = jsonObj.info_date;
 				informTdDate.innerHTML = infoDate;
 				// 把兩個 td 都放進 tr 中
@@ -1020,7 +1049,7 @@
 				alreadyMade.innerHTML = '';
 				// 第一個 td 要放到 tr 中
 				var informTdCont = document.createElement('td');
-				informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+				informTdCont.style.cssText = "width:380px; word-break: break-all;"; // 此 td 寬度 300px
 				// 下方 span 要放到上方的 td 中
 				var informTdContSpan = document.createElement('span');
 				informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -1031,12 +1060,14 @@
 				// info_sts 必為 1 或 3
 				if ( jsonObj.info_sts === 1 ) {
 					var informTdContYesSpan = document.createElement('span');
+					informTdContYesSpan.setAttribute('class', 'spanStyle');
 					informTdContYesSpan.innerHTML = "已確認";
 					informTdDiv.appendChild(informTdContYesSpan); // <div> 內放 checked yes
 					
 				// 需要回應的通知已取消
 				} else if ( jsonObj.info_sts === 3 ) {
 					var informTdContNoSpan = document.createElement('span');
+					informTdContNoSpan.setAttribute('class', 'spanStyle');
 					informTdContNoSpan.innerHTML = "已取消";
 					informTdDiv.appendChild(informTdContNoSpan); // <div> 內放 checked no
 				}
@@ -1046,7 +1077,7 @@
 				informTdCont.appendChild(informTdDiv); // td 再放含有兩個 button 的 <div>
 				// 第二個 td 也要放到 tr 中
 				var informTdDate = document.createElement('td');
-				informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+				informTdDate.style.cssText = "width:120px;"; // 此 td 寬度 100px
 				var infoDate = jsonObj.info_date;
 				informTdDate.innerHTML = infoDate;
 				// 把兩個 td 都放進 tr 中
@@ -1079,7 +1110,7 @@
 				if ( jsonObj.info_sts === 2 ) {
 					// 第一個 td 要放到 tr 中
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "height: 46px; width:300px; word-break: break-all;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width:300px; word-break: break-all;"; // 此 td 寬度 300px
 					// 下方 span 要放到上方的 td 中
 					var informTdContSpan = document.createElement('span');
 					informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -1089,17 +1120,22 @@
 					// 下方兩個 button 要放到上方的 div 中
 					var informTdContBtnYes = document.createElement('button');
 					informTdContBtnYes.setAttribute("id",trFiNo+"yes");
+					informTdContBtnYes.setAttribute("type","button");
+					informTdContBtnYes.setAttribute("class","btn btn-warning btn-sm");
 					informTdContBtnYes.innerHTML = "確認";
 					informTdContBtnYes.addEventListener('click', function(){
 						confirm(trFiNo, btnResNo);
 					});
-					informTdContBtnYes.style.cssText = "margin-right:3px;"; // 兩個 button 間的間距
+					informTdContBtnYes.style.cssText = "margin-right:3px; border-radius: 5px;"; // 兩個 button 間的間距
 					var informTdContBtnNo = document.createElement('button');
 					informTdContBtnNo.setAttribute("id",trFiNo+"no");
+					informTdContBtnNo.setAttribute("type","button");
+					informTdContBtnNo.setAttribute("class","btn btn-outline-secondary btn-sm");
 					informTdContBtnNo.innerHTML = "取消";
 					informTdContBtnNo.addEventListener('click', function(){
 						cancel(trFiNo, btnResNo);
 					});
+					informTdContBtnNo.style.cssText = "border-radius: 5px;";
 					informTdDiv.appendChild(informTdContBtnYes); // <div> 內放 button
 					informTdDiv.appendChild(informTdContBtnNo); // <div> 內放 button
 					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
@@ -1123,7 +1159,7 @@
 					}
 					// tr 中的第一個 td
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "width: 300px; word-break: break-all;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width: 380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 把 info_cont 填入 a 中
 					informTdC_A.style.cssText = "word-break: break-all;";
 					informTdC_A.innerHTML = jsonObj.info_cont;
@@ -1134,7 +1170,7 @@
 				} else if ( jsonObj.info_sts === 1 ) {
 					// 第一個 td 要放到 tr 中
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width:380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 下方 span 要放到上方的 td 中
 					var informTdContSpan = document.createElement('span');
 					informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -1142,6 +1178,7 @@
 					var informTdDiv = document.createElement('div');
 					informTdDiv.setAttribute("class","d-flex justify-content-end")
 					var informTdContYesSpan = document.createElement('span');
+					informTdContYesSpan.setAttribute('class', 'spanStyle');
 					informTdContYesSpan.innerHTML = "已確認";
 					informTdDiv.appendChild(informTdContYesSpan); // <div> 內放 checked yes
 					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
@@ -1152,7 +1189,7 @@
 				} else if ( jsonObj.info_sts === 3 ) {
 					// 第一個 td 要放到 tr 中
 					var informTdCont = document.createElement('td');
-					informTdCont.style.cssText = "width:300px;"; // 此 td 寬度 300px
+					informTdCont.style.cssText = "width:380px; word-break: break-all;"; // 此 td 寬度 300px
 					// 下方 span 要放到上方的 td 中
 					var informTdContSpan = document.createElement('span');
 					informTdContSpan.innerHTML = jsonObj.info_cont;
@@ -1160,6 +1197,7 @@
 					var informTdDiv = document.createElement('div');
 					informTdDiv.setAttribute("class","d-flex justify-content-end")
 					var informTdContNoSpan = document.createElement('span');
+					informTdContNoSpan.setAttribute('class', 'spanStyle');
 					informTdContNoSpan.innerHTML = "已取消";
 					informTdDiv.appendChild(informTdContNoSpan); // <div> 內放 checked no
 					informTdCont.appendChild(informTdContSpan); // td 放通知文字 <span>
@@ -1169,7 +1207,7 @@
 				
 				// 第二個 td 也要放到 tr 中
 				var informTdDate = document.createElement('td');
-				informTdDate.style.cssText = "width:100px;"; // 此 td 寬度 100px
+				informTdDate.style.cssText = "width:120px;"; // 此 td 寬度 100px
 				var infoDate = jsonObj.info_date;
 				informTdDate.innerHTML = infoDate;
 				// 把兩個 td 都放進 tr 中
@@ -1177,7 +1215,7 @@
 				informTr.appendChild(informTdDate);
 				informArea.scrollTop = 0;			
 			}		
-		}	
+		}
 	};
 				
 	webSocket_Inform.onclose = function(event) {
@@ -1208,7 +1246,7 @@
 	}
 	function popFrontInform(){
 		let fi_cont = document.getElementById("fi_cont");
-	
+		
 		// 已讀未讀顯示顏色
 		let readColor = document.querySelectorAll('[name="read"]');
 		for (let i = 0; i < readColor.length; i++) {
@@ -1219,7 +1257,7 @@
 			unreadColor[i].style.backgroundColor = "#e6f9ff";
 			unreadColor[i].setAttribute('name', 'read');
 		}
-	
+		
 		// 紅點已讀消失
 		document.getElementsByClassName("badge")[0].style.display = "none";
 	
@@ -1244,11 +1282,17 @@
 						fi_cont.style.top = '40px';
 					    fi_cont.style.right = '20%';
 					    fi_cont.style.fontSize = '10px';
-					    fi_cont.style.width = '400px';
-					    fi_cont.style.height = '300px';
-					    fi_cont.style.borderRadius = '10px';
+					    fi_cont.style.width = '500px';
+					    fi_cont.style.maxHeight = '400px';
+					    fi_cont.style.borderRadius = '8px';
+					    fi_cont.style.boxShadow = '0 -1px 2px 0 rgba(0,0,0,0.30), 0 -2px 6px 2px rgba(0,0,0,0.15)';
 					    fi_cont.style.overflow = 'auto';
 					}else{
+						fi_cont.style.display = "none";
+					}
+					let tb = document.querySelector('#fi_cont tr');
+					if(tb === null) {
+						$('#noFiModal').modal('show');
 						fi_cont.style.display = "none";
 					}
 				}
@@ -1396,7 +1440,26 @@ var ad=$(".ad").get(0);
 ad.classList.add("active");
 
 </script>
+<style>
+.scrollbar::-webkit-scrollbar {
+	width: 16px;
+	border-radius: 8px;
+}
+.scrollbar::-webkit-scrollbar-track {
+	background: #f1f1f1;
+    border: none;
+    border-radius: 8px;
+}
 
+.scrollbar::-webkit-scrollbar-thumb {
+	background: #dadce0;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    box-shadow: none;
+    min-height: 50px;
+}
+</style>
 <script
 	src="<%=request.getContextPath()%>/front-end/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/front-end/js/popper.min.js"></script>

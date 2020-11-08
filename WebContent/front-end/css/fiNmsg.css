@@ -1,6 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Oswald:400,300);
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
 /* 以下為聊天室的 CSS  */
 .msg {
 	position: fixed;
@@ -324,6 +323,48 @@ table, th, td {
 th, td {
 	padding: 5px;
 	text-align: center;
+}
+
+#fi_cont,
+#fi_cont th,
+#fi_cont td{
+	border: 0px;
+	border-bottom: 1px solid #bebebe;
+	font-size: 16px;
+	line-height: 32px;
+	font-family: serif;
+}
+
+#fi_cont tr:hover{
+	background-color: rgb(230 230 230) !important;
+}
+
+#fi_cont a:not([href]){
+	color: inherit !important;
+	font-weight: normal !important;
+	text-decoration: inherit !important;
+}
+
+#fi_cont a{
+	color: #c7944c;
+	font-weight: 700;
+}
+
+#fi_cont a:hover {
+	color: #ebaa50;
+	font-weight: 700;
+}
+
+.btn-warning {
+    color: #463113;
+    background-color: #ffd990;
+    border-color: #ffc107;
+}
+
+.spanStyle{
+	font-style: italic;
+	font-weight: 800;
+	color: #986b30;
 }
 
 .badge {

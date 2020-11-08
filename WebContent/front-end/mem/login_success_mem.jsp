@@ -19,7 +19,7 @@
 </style>
     
 </head>
-<body onload="getInfo()">
+<body>
 
 	<%@ include file="/front-end/headfinish.jsp"%>
 
