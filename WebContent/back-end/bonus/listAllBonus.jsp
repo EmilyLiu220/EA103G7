@@ -231,7 +231,7 @@
 									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
 							<td style="text-align: center;">${bonusVO.bns_sts}</td>
 							<td>
-							<img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonusVO.bns_no}" width="250"></td>
+							<td><img name="bns_img" src="<%=request.getContextPath() %>/bonus/bonus.showPic?bonus_img=${bonusVO.bns_no}" width="250"></td>
 
 							<td style="text-align: center;">
 								<FORM METHOD="post"

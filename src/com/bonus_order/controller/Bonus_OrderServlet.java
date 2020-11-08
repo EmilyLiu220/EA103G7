@@ -281,7 +281,6 @@ public class Bonus_OrderServlet extends HttpServlet { // 控制器Servlet收到�
 
 				/*************************** 其他可能的錯誤處理 **********************************/
 //			} catch (Exception e) {
-//				System.out.println("123");
 //				errorMsgs.add(e.getMessage());
 ////				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/bonus_order/addBonus_Order.jsp");
 ////				failureView.forward(req, res);
