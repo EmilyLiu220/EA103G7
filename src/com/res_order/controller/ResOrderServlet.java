@@ -242,10 +242,12 @@ public class ResOrderServlet extends HttpServlet {
 		}
 		/********************** 去訂餐 **********************/
 		if ("go_res_meal".equals(action)) {
+			System.out.println(123);
 			String res_no = req.getParameter("res_no");
 			req.setAttribute("res_no", res_no);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/shopping/mealMenu2.jsp");
 			failureView.forward(req, res);
+			
 			return;
 		}
 
