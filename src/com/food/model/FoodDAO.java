@@ -184,6 +184,29 @@ public class FoodDAO implements FoodDAO_interface {
 		return foodMap;
 	}
 		
+	public boolean check_food(List<MealOrderDetailVO> list) { 
+		//檢查並回傳夠不夠，足夠就update並回傳ture，不足就回傳false
+		//參數是map<食材的編號,所需的重量>
+		FoodDAO FdDao=new FoodDAO();
+		Map<String,Double> foodMap=FdDao.GetFdnoAndQtyByListMealOrderDetail(list);
+		boolean enough=true;
+		//當值為false,break
+		System.out.println("-----------------");
+		for(Map.Entry<String,Double> fdnoMap:foodMap.entrySet()) {
+			System.out.print("庫存量:"+FdDao.findByPrimaryKey(fdnoMap.getKey()).getFd_stk());
+			System.out.println(" 數量:"+fdnoMap.getValue());
+			if(FdDao.findByPrimaryKey(fdnoMap.getKey()).getFd_stk()-fdnoMap.getValue()<0) {
+				enough=false;
+				break;
+			}
+		}//用食材編號查詢該食材的重量，相減若有不夠，break,return false
+		
+		if(enough) {			
+			return true;
+		}
+		return false;
+	}
+	
 	public void update(List<MealOrderDetailVO> list,Connection con){
 		FoodDAO foodDao = new FoodDAO();
 		Map<String,Double> foodnoMap=foodDao.GetFdnoAndQtyByListMealOrderDetail(list);
