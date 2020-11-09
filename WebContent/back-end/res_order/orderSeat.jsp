@@ -88,11 +88,11 @@ input, select {
 						</label>
 						<button id="orderSearch" name="action" value="order_search" class="btn btn-warning" onclick='return false;'>查詢</button>
 				
-						<label class="labelTwo"> 
-							用餐人數: 
-							<select id="people" name="people" ></select>
-						</label>
-						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>劃位</button>
+<!-- 						<label class="labelTwo">  -->
+<!-- 							用餐人數:  -->
+<!-- 							<select id="people" name="people" ></select> -->
+<!-- 						</label> -->
+<!-- 						<button id="orderSeat" name="action" value="order_seat" class="btn btn-warning" onclick='return false;'>劃位</button> -->
 					</div>
 					<div id="container" class="container">
 						<c:forEach var="seatVO" items="${seatSvc.all}">

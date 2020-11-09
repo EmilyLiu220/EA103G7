@@ -172,7 +172,7 @@ public class SeatServlet extends HttpServlet {
 				seatVO = seatSvn.getOneSeat(obj.get("seat_no").toString());
 
 				seatSvn.updateSeat(obj.get("seat_no").toString(), seatVO.getSeat_obj_no(), seatVO.getSeat_name(),
-						new Integer(1), new Double(0), new Double(0), new Integer(0), new Integer(0), new Integer(0));
+						new Integer(1), new Double(0), new Double(0), new Integer(0), new Integer(0), seatVO.getSeat_f());
 			}
 			return;
 		}

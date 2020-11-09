@@ -20,8 +20,9 @@ div.container {
 }
 
 div#modifySeatCondition.container {
-	top: 168px;
-	z-index: 500;
+	position: relative;
+/* 	top: 168px; */
+	z-index: 1;
 	/* 	background: #FFFFFF; */
 }
 
@@ -86,7 +87,6 @@ img {
 	border-color: rgba(0, 0, 0, 0);
 	box-shadow: 0 rgba(0, 0, 0, 0) inset, 0 rgba(0, 0, 0, 0);
 	outline: 0 none;
-	
 }
 
 .seatLabel {
