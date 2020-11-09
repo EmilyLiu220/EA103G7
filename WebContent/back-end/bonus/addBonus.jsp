@@ -192,11 +192,11 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 紅利商品設定管理</span> <a
-				href="<%=request.getContextPath()%>/back-end/backindex.jsp"
+			<span> - 紅利商品功能設定</span> 
+			<a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp"
 				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
 				onMouseOver="this.style.color='#ffbc5e';"
-				onMouseOut="this.style.color='#dea554';">返回首頁</a>
+				onMouseOut="this.style.color='#dea554';">返回紅利商品管理列表</a>
 			<p>
 			<table id="table-1">
 				<tr>

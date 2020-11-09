@@ -44,7 +44,7 @@ public class BonusServlet extends HttpServlet {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 				String bns_name = req.getParameter("bns_name");
 				if (bns_name == null || bns_name.trim().length() == 0) {
-					errorMsgs.add("紅利商品名稱：請勿空白");
+					errorMsgs.add("紅利商品名稱：請勿空白！");
 				}
 
 				Integer bns_price = null;
@@ -79,24 +79,39 @@ public class BonusServlet extends HttpServlet {
 				bonusVO.setBns_date(bns_date);
 
 
-				byte[] img = null;
-				byte[] buf = null;
-				try {
-
 				Part bns_img = req.getPart("bns_img");
+				byte[] img = null;
+
 				if (bns_img.getSize() != 0) {
+					if (bns_img.getContentType() != null) {
 						InputStream is = bns_img.getInputStream();
 						img = new byte[is.available()];
-						is.read(buf);
-						img = buf;
-//						is.close();
-				}else {
+						is.read(img);
+						is.close();
+					}
+				} else {
+					System.out.println(123);
 					errorMsgs.add("紅利商品圖片：請上傳圖片！");
 				}
 				
-				} catch (Exception e) {
-					errorMsgs.add("圖片讀取失敗");
-				}
+//				byte[] img = null;
+//				byte[] buf = null;
+//				try {
+//
+//				Part bns_img = req.getPart("bns_img");
+//				if (bns_img.getSize() != 0) {
+//						InputStream is = bns_img.getInputStream();
+//						img = new byte[is.available()];
+//						is.read(buf);
+//						img = buf;
+////						is.close();
+//				}else {
+//					errorMsgs.add("紅利商品圖片：請上傳圖片！");
+//				}
+//				
+//				} catch (Exception e) {
+//					errorMsgs.add("圖片讀取失敗");
+//				}
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -111,13 +126,14 @@ public class BonusServlet extends HttpServlet {
 				bonusVO = bonusSvc.addBonusFromBack(bns_name, bns_price, bns_stks, bns_date, img); 
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+				req.setAttribute("bonusVO", bonusVO); // 資料庫update成功後,正確的的empVO物件,存入req
 				String url = "/back-end/bonus/listAllBonus.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 **********************************/
 			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
+				errorMsgs.add("新增資料失敗:" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/addBonus.jsp");
 				failureView.forward(req, res);
 			}
@@ -175,35 +191,6 @@ public class BonusServlet extends HttpServlet {
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
-				failureView.forward(req, res);
-			}
-		}
-
-		if ("getOne_For_Update".equals(action)) { // 來自listAllBonus.jsp的請求
-
-			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
-
-			try {
-				/*************************** 1.接收請求參數 ****************************************/
-				String bns_no = new String(req.getParameter("bns_no"));
-
-				/*************************** 2.開始查詢資料 ****************************************/
-				BonusService bonusSvc = new BonusService();
-				BonusVO bonusVO = bonusSvc.getOneBonus(bns_no); // 呼叫Service內getOneEmp的方法
-
-				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
-				req.setAttribute("bonusVO", bonusVO); // 資料庫取出的empVO物件,存入req
-				String url = "/back-end/bonus/update_bonus_input.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
-				successView.forward(req, res);
-
-				/*************************** 其他可能的錯誤處理 **********************************/
-			} catch (Exception e) {
-				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/bonus/listAllBonus.jsp");
 				failureView.forward(req, res);
 			}

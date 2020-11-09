@@ -182,11 +182,11 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 紅利商品管理</span> <a
-				href="<%=request.getContextPath()%>/back-end/backindex.jsp"
+			<span> - 紅利商品功能設定</span> 
+			<a href="<%=request.getContextPath()%>/back-end/bonus/select_page.jsp"
 				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
 				onMouseOver="this.style.color='#ffbc5e';"
-				onMouseOut="this.style.color='#dea554';">返回首頁</a>
+				onMouseOut="this.style.color='#dea554';">返回紅利商品管理列表</a>
 			<p>
 			<table id="table-1">
 				<tr>
@@ -211,11 +211,11 @@
 					<tr>
 						<th style="width: 20%;">紅利商品編號</th>
 						<th style="width: 20%;">紅利商品名稱</th>
-						<th style="width: 15%;">紅利商品價格</th>
-						<th style="width: 10%;">庫存量</th>
-						<th style="width: 15%;">有效日期</th>
-						<th style="width: 10%;">兌換狀態</th>
-						<th style="width: 10%;">圖片</th>
+						<th style="width: 20%;">紅利商品價格</th>
+						<th style="width: 15%;">庫存量</th>
+						<th style="width: 20%;">有效日期</th>
+						<th style="width: 15%;">兌換狀態</th>
+						<th style="width: 5%;">圖片</th>
 					</tr>
 				</thead>
 				<%@ include file="page1.file"%>
@@ -227,11 +227,9 @@
 							<td style="text-align: center;">${bonusVO.bns_name}</td>
 							<td style="text-align: center;">${bonusVO.bns_price}</td>
 							<td style="text-align: center;">${bonusVO.bns_stks}</td>
-							<td style="text-align: center;"><fmt:formatDate
-									value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
+							<td style="text-align: center;"><fmt:formatDate value="${bonusVO.bns_date}" pattern="yyyy-MM-dd" /></td>
 							<td style="text-align: center;">${bonusVO.bns_sts}</td>
-							<td>
-							<td><img name="bns_img" src="<%=request.getContextPath() %>/bonus/bonus.showPic?bonus_img=${bonusVO.bns_no}" width="250"></td>
+							<td><img name="bns_img" src="<%=request.getContextPath() %>/bonus/bonus.showPic?bonus_img=${bonusVO.bns_no}" width="200"></td>
 
 							<td style="text-align: center;">
 								<FORM METHOD="post"

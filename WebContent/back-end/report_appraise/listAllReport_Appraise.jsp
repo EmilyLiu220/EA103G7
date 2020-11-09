@@ -185,8 +185,11 @@
 			</nav>
 
 			<h5 style="font-weight: 900; display: inline-block;">主管員工專區</h5>
-			<span> - 會員評價管理</span>
-			<%-- 			<a href="<%=request.getContextPath()%>/back-end/backindex.jsp" style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;" onMouseOver="this.style.color='#ffbc5e';" onMouseOut="this.style.color='#dea554';">返回首頁</a>			 --%>
+			<span> - 評價檢舉管理</span> <a
+				href="<%=request.getContextPath()%>/back-end/member_review/select_page.jsp"
+				style="display: inline-block; font-size: 8px; font-weight: 900; color: #dea554; text-decoration: none; margin-left: 20px;"
+				onMouseOver="this.style.color='#ffbc5e';"
+				onMouseOut="this.style.color='#dea554';">返回會員評價管理列表</a>
 			<p>
 			<table id="table-1">
 				<tr>
