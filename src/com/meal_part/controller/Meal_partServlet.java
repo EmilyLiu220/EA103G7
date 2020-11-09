@@ -100,13 +100,13 @@ public class Meal_partServlet extends HttpServlet {
 			Meal_partVO meal_partVO = new Meal_partVO();
 			//新增一次只能新增一道菜所用的食材
 			Meal_partService MPSvc=new Meal_partService();
-			List<Meal_partVO> oldList=MPSvc.get_meal_part_by_mealno(meal_no);
 			//檢查重複用
 			MealService mealSvc=new MealService();
 			FoodService foodSvc=new FoodService();
 			for(int i=0;i<fd_no.length;i++) {
 				try {
 					/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/					
+					List<Meal_partVO> oldList=MPSvc.get_meal_part_by_mealno(meal_no);
 					for(int j=0;j<oldList.size();j++) {
 						if(oldList.get(j).getFd_no().equals(fd_no[i])) {
 							errorMsgs.add("餐點"+mealSvc.searchByNo(meal_no).getMeal_name()+"新增失敗，"+foodSvc.getOneFood(fd_no[i]).getFd_name()+"已經有被該餐點使用");
