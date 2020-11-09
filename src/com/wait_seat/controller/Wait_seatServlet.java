@@ -231,6 +231,17 @@ public class Wait_seatServlet extends HttpServlet {
 			if(newlist.get(0).getDelay()==1) { //未到次數已經有一次了，刪掉它
 				Wait_seatVO VO=newlist.get(0);
 				WSsvc.deleteWait_seat(VO.getWait_seat_no());
+				
+				List<Wait_seatVO> newlist2=WSsvc.getAll();
+				for(int i=0;i<newlist2.size();i++) {
+					WSsvc.updateWait_seat(WSsvc.getAll().get(i).getWait_seat_no(),
+							  WSsvc.getAll().get(i).getMem_no(),
+							  WSsvc.getAll().get(i).getN_mem_name(),
+							  WSsvc.getAll().get(i).getPhone_m(),
+							  WSsvc.getAll().get(i).getDelay(),
+							  i+1);
+				}
+				
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/wait_seat/listAllWait_seat.jsp");
 				failureView.forward(req, res);
 				return;
