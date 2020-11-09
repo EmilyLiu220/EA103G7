@@ -7,6 +7,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.meal_order_detail.model.MealOrderDetailVO;
+import com.meal_part.model.Meal_partDAO;
+import com.meal_part.model.Meal_partVO;
+import com.meal_set_consist.model.MealSetConDAO;
+import com.meal_set_consist.model.MealSetConVO;
+
 import java.sql.*;
 
 public class FoodDAO implements FoodDAO_interface {
@@ -20,6 +26,7 @@ public class FoodDAO implements FoodDAO_interface {
 			e.printStackTrace();
 		}
 	}
+	
 
 	private static final String INSERT_STMT = 
 			"INSERT INTO FOOD (FD_NO,FD_NAME,FD_ISDEL,FD_STK,STK_LL,CAL,PROT,CARB,FAT) VALUES ('FD'||LPAD(SEQ_FD_NO.NEXTVAL,4,0),?,?,?,?,?,?,?,?)";
@@ -47,7 +54,9 @@ public class FoodDAO implements FoodDAO_interface {
 			"where meod.meal_set_no is not null " +
 			"group by msc.meal_no,to_char(order_time,'yyyy'),to_char(order_time,'mm'),meal_qty,f.fd_no ,fd_name,fd_gw " +
 			"order by fd_no,s_year,s_month";
-	 
+	private static final String UPDATE_STK = 
+			"UPDATE FOOD SET FD_STK=? WHERE FD_NO = ?";
+	
 	@Override
 	public void insert(FoodVO foodVO) {
 
@@ -134,6 +143,77 @@ public class FoodDAO implements FoodDAO_interface {
 
 	}
 
+	public Map<String,Double> GetFdnoAndQtyByListMealOrderDetail(List<MealOrderDetailVO> list){
+		Map<String,Integer> mealMap=new HashMap<String,Integer>(); 
+		for(MealOrderDetailVO modVO:list) {
+			if(modVO.getMeal_no()!=null) {
+				if(mealMap.containsKey(modVO.getMeal_no())) { 
+					mealMap.put(modVO.getMeal_no(), mealMap.get(modVO.getMeal_no())+modVO.getQty());
+				}else{
+					mealMap.put(modVO.getMeal_no(),modVO.getQty());
+				}
+			}
+		}		
+		Map<String,Integer> mealSetMap=new HashMap<String,Integer>();
+		for(MealOrderDetailVO modVO:list) {
+			if(modVO.getMeal_set_no()!=null) {
+				mealSetMap.put(modVO.getMeal_set_no(),modVO.getQty());
+			}
+		}
+		MealSetConDAO MSCDao=new MealSetConDAO();
+		for(Map.Entry<String,Integer> mealSetnoMap:mealSetMap.entrySet()) {
+			for(MealSetConVO mscVO:MSCDao.searchBySetNo(mealSetnoMap.getKey())) {
+				if(mealMap.containsKey(mscVO.getMeal_no())) { 
+					mealMap.put(mscVO.getMeal_no(), mealMap.get(mscVO.getMeal_no())+mscVO.getMeal_qty()*mealSetnoMap.getValue());
+				}else {
+					mealMap.put(mscVO.getMeal_no(), mscVO.getMeal_qty()*mealSetnoMap.getValue());
+				}
+			}
+		}
+		Meal_partDAO MPDao=new Meal_partDAO();
+		Map<String,Double> foodMap=new HashMap<String,Double>();
+		for(Map.Entry<String,Integer> mealnoMap:mealMap.entrySet()) {
+			for(Meal_partVO meal_partVO:MPDao.get_meal_part_by_mealno(mealnoMap.getKey())) {
+				if(foodMap.containsKey(meal_partVO.getFd_no())) {
+					foodMap.put(meal_partVO.getFd_no(), foodMap.get(meal_partVO.getFd_no())+meal_partVO.getFd_gw()*mealnoMap.getValue());
+				}else {
+					foodMap.put(meal_partVO.getFd_no(), meal_partVO.getFd_gw()*mealnoMap.getValue());
+				}
+			}
+		}
+		return foodMap;
+	}
+		
+	public void update(List<MealOrderDetailVO> list,Connection con){
+		FoodDAO foodDao = new FoodDAO();
+		Map<String,Double> foodnoMap=foodDao.GetFdnoAndQtyByListMealOrderDetail(list);
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(UPDATE_STK);
+			for(Map.Entry<String,Double> map:foodnoMap.entrySet()) {
+				pstmt.setInt(1, foodDao.findByPrimaryKey(map.getKey()).getFd_stk()-map.getValue().intValue());
+				pstmt.setString(2, map.getKey());
+				pstmt.executeUpdate();
+			}
+		} catch (SQLException se) {
+			try {
+				con.rollback();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void delete(String fd_no) {
 
@@ -328,8 +408,67 @@ public class FoodDAO implements FoodDAO_interface {
 		}
 	}
 	
+	public List<List<String>> oneMonthFoodStatistics(){
+		FoodJDBCDAO dao=new FoodJDBCDAO();
+		List<List<String>> list =dao.Statistics();
+		List<List<String>> statList=new ArrayList<>();
+		List<String> statData=null; //統整資料，一筆資料就有1~12個月(為了前端畫統計圖的元件需要)
+		List<FoodVO> fList=dao.getAll();
+
+		for(int j=1;j<13;j++) {
+			statData=new ArrayList<>();
+			statData.add("2020");//年，寫死，只有一年
+			if(j<10)statData.add("0"+j); //月份，1~12月
+			else statData.add(""+j);
+			for(int i=0;i<fList.size();i++) {
+				statData.add(fList.get(i).getFd_no());//編號
+				statData.add(fList.get(i).getFd_name());//食材名稱
+				statData.add("0");//使用量初始化
+			}
+			statList.add(statData);				
+		}
+		//--------------------------------------------
+//		for(List<String> l: statList) {
+//			for(int i=0;i<l.size();i++) {
+//				System.out.printf("%10s",l.get(i));
+//			}
+//			System.out.println();
+//		}
+		//--------------------------------------------
+		int foodnoIndex=0;
+		for(int i=0;i<list.size();i++) {
+			for(int j=0;j<statList.size();j++) {
+//				System.out.println("list="+list.get(i).get(0));
+//				System.out.println("statList"+statList.get(j).get(0) );
+				if(list.get(i).get(3).equals( statList.get(j).get(1) )){ //月份一樣,食材也一樣的話
+					foodnoIndex=Integer.valueOf(list.get(i).get(0).substring(2)); //拿food後面的編號當順序
+//					System.out.println(foodnoIndex);
+//					System.out.println(month);
+//					System.out.println(list.get(i).get(3));
+					if(statList.get(j).get(foodnoIndex*3+1).equals("0")) {
+						statList.get(j).set(foodnoIndex*3+1,list.get(i).get(4));
+						break;
+					}else {
+						statList.get(j).set(foodnoIndex*3+1,list.get(i).get(4)+Double.valueOf(statList.get(j).get(foodnoIndex*3+1)));
+						break;
+					}
+				}
+			}
+		}
+//		for(int i=0;i<12;i++) {
+//			System.out.print("年分="+statList.get(i).get(0)+"月分="+statList.get(i).get(1));
+//			for(int j=0;j<foodnoIndex;j++) {
+//				System.out.print("編號"+statList.get(i).get(3*j+2));
+//				System.out.print("名稱"+statList.get(i).get(3*j+3));
+//				System.out.print("數量"+statList.get(i).get(3*j+4));
+//			}
+//			System.out.println();
+//		}
+		return statList;
+	}
+	
 	public List<List<String>> eachMonthFoodStatistics(){
-		FoodDAO dao=new FoodDAO();
+		FoodJDBCDAO dao=new FoodJDBCDAO();
 		List<List<String>> list =dao.Statistics();
 		List<List<String>> statList=new ArrayList<>();
 		List<String> statData=null; //統整資料，一筆資料就有1~12個月(為了前端畫統計圖的元件需要)
@@ -384,14 +523,13 @@ public class FoodDAO implements FoodDAO_interface {
 		ResultSet rs = null;
 		List<String> data;
 		List<List<String>> list=new ArrayList<>();
-		List<List<String>> statList=null;
 		try {
 			con=ds.getConnection();
 			pstmt = con.prepareStatement(Statistics);
 			rs = pstmt.executeQuery();
 			boolean flag=false;
 			//select f.fd_no,fd_name,to_char(order_time,'yyyy')as s_year,to_char(order_time,'mm') as s_month, sum(qty)*fd_gw as qty
-			FoodDAO dao=new FoodDAO();
+			FoodJDBCDAO dao=new FoodJDBCDAO();
 			List<FoodVO> fList=dao.getAll();
 			for(int i=0;i<fList.size();i++) {
 				for(int j=1;j<13;j++) {//12月
