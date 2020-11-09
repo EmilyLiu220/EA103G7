@@ -432,7 +432,7 @@ public class FoodDAO implements FoodDAO_interface {
 	}
 	
 	public List<List<String>> oneMonthFoodStatistics(){
-		FoodJDBCDAO dao=new FoodJDBCDAO();
+		FoodDAO dao=new FoodDAO();
 		List<List<String>> list =dao.Statistics();
 		List<List<String>> statList=new ArrayList<>();
 		List<String> statData=null; //統整資料，一筆資料就有1~12個月(為了前端畫統計圖的元件需要)
@@ -491,7 +491,7 @@ public class FoodDAO implements FoodDAO_interface {
 	}
 	
 	public List<List<String>> eachMonthFoodStatistics(){
-		FoodJDBCDAO dao=new FoodJDBCDAO();
+		FoodDAO dao=new FoodDAO();
 		List<List<String>> list =dao.Statistics();
 		List<List<String>> statList=new ArrayList<>();
 		List<String> statData=null; //統整資料，一筆資料就有1~12個月(為了前端畫統計圖的元件需要)
@@ -552,7 +552,7 @@ public class FoodDAO implements FoodDAO_interface {
 			rs = pstmt.executeQuery();
 			boolean flag=false;
 			//select f.fd_no,fd_name,to_char(order_time,'yyyy')as s_year,to_char(order_time,'mm') as s_month, sum(qty)*fd_gw as qty
-			FoodJDBCDAO dao=new FoodJDBCDAO();
+			FoodDAO dao=new FoodDAO();
 			List<FoodVO> fList=dao.getAll();
 			for(int i=0;i<fList.size();i++) {
 				for(int j=1;j<13;j++) {//12月
