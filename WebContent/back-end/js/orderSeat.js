@@ -618,7 +618,7 @@ $(document).ready(function() {
             '<div class="buttonDiv">' +
             (res_order.seat_sts == 0 ? '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;"><i class="fa fa-check-circle"></i>入座</a></div>' : '<div class="button col-4" style="cursor: no-drop;"><a href="#" class="btn btn-primary" onclick="return false;" style="pointer-events: none;"><i class="fa fa-check-circle"></i>已入座</a></div>') +
 //            '<div class="button col-4"><a href="#" class="btn btn-primary" id="take_a_seat" onclick="return false;"><i class="fa fa-check-circle"></i>入座</a></div>' +
-            (res_order.meal_order_no == undefined ? '<div class="button col-4"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;"><i class="fa fa-shopping-cart"></i>點餐</a></div>' : '<div class="button col-4" style="cursor: no-drop;"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;" style="pointer-events: none;"><i class="fa fa-shopping-cart"></i>已點餐</a></div>') +
+            (res_order.meal_order_no == undefined ? '<div class="button col-4"><a href="'+contextPath+'/res_order/ResOrderServlet.do?action=go_res_meal&res_no='+ res_order.res_no +'" class="btn btn-success" id="order_meal"><i class="fa fa-shopping-cart"></i>點餐</a></div>' : '<div class="button col-4" style="cursor: no-drop;"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;" style="pointer-events: none;"><i class="fa fa-shopping-cart"></i>已點餐</a></div>') +
 //            '<div class="button col-4"><a href="#" class="btn btn-success" id="order_meal" onclick="return false;"><i class="fa fa-shopping-cart"></i>點餐</a></div>' +
             '<div class="button col-4"><a href="#" class="btn btn-danger" id="clear_window" onclick="return false;">' +
             '<i class="fa fa-window-close"></i>關閉</a></div>' +
@@ -723,9 +723,11 @@ $(document).ready(function() {
 			},
 		});
     });
-//    $(document).on('click', '#order_meal', function() {
-//    	$('[data-toggle="popover"]').popover('hide');
-//    });
+    
+    $(document).on('click', '#order_meal', function(e) {
+    	e.stopImmediatePropagation();
+    	$('[data-toggle="popover"]').popover('hide');
+    });
     
     $("#orderSearch").click(function(e) {
     	e.stopImmediatePropagation();
