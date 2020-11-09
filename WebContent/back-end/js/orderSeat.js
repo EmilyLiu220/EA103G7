@@ -877,8 +877,8 @@ $(window).load(function init() {
 		async: false,
 		data: {
 			"res_date": formatDate(nowDay),
-//			"time_peri_no": getTimePeriNo(nowDay.getHours()),
-			"time_peri_no": "TP0001",
+			"time_peri_no": getTimePeriNo(nowDay.getHours()),
+//			"time_peri_no": "TP0001",
 			"floor": $("#floor_list").val(),
 			"action":"get_Res_Order_Today_For_Back",
 		},
