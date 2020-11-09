@@ -1,6 +1,7 @@
 package com.front_inform.webSocket;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,16 +30,15 @@ public class Front_InformWS {
 	@OnOpen
 	public void onOpen(@PathParam("userName") String userName, Session userSession) throws IOException {
 		sessionsMap.put(userName, userSession); // 把上線者存入 Map 中
-		Set<String> userNames = sessionsMap.keySet(); // 會是一個含有許多 mem_no 的 Set
 		Front_InformService fiSvc = new Front_InformService();
 		Gson gsonReceiver = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		for(String mem_no : userNames) { // 走訪每個在線上的會員
-			Session memSession = sessionsMap.get(mem_no); // 取得 userSession
-			if(memSession!=null && memSession.isOpen()) { // 確認此 session 是開啟的
-				List<Front_InformVO> fiVOs = fiSvc.getMyInform(mem_no); // 取得該會員的所有通知訊息
-				// 因為上面是直接傳來 VO → 轉成 Json 後才會再輸出到前端
-				memSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVOs)); // 傳出String
-			}
+		Session memSession = sessionsMap.get(userName); // 取得 userSession
+		List<Front_InformVO> fiVOs = new ArrayList<Front_InformVO>();
+		if(memSession!=null && memSession.isOpen()) { // 確認此 session 是開啟的
+			fiVOs.clear();
+			fiVOs = fiSvc.getMyInform(userName); // 取得該會員的所有通知訊息
+			// 因為上面是直接傳來 VO → 轉成 Json 後才會再輸出到前端
+			memSession.getAsyncRemote().sendText(gsonReceiver.toJson(fiVOs)); // 傳出String
 		}
 	}
 
