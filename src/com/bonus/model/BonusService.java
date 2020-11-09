@@ -56,9 +56,9 @@ public class BonusService {
 		return bonusVO;
 	}
 	
-	public BonusVO searchByNo(String bns_no) {
-		return dao.searchByNo(bns_no);
-	};
+//	public BonusVO searchByNo(String bns_no) {
+//		return dao.searchByNo(bns_no);
+//	};
 	
 	public void deleteBonus(String bns_no) {
 		dao.delete(bns_no);

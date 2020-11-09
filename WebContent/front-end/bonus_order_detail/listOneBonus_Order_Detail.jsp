@@ -94,7 +94,7 @@
 					<tr>
 						<td style="text-align: center;">${bonus_orderVO.bo_no}</td>
 						<td style="text-align: center;">${bonuswSvc.getOneBonus((bonus_order_detailSvc.getOneBonus_Order_Detail(bonus_orderVO.bo_no).bns_no)).bns_name}</td>
-						<td><img src="<%=request.getContextPath() %>/back-end/bonus/forwarded?bonus_img=${bonus_order_detailVO.bns_no}"></td>
+						<td><img src="<%=request.getContextPath() %>/bonus/bonus.showPic?bonus_img=${bonus_order_detailSvc.getOneBonus_Order_Detail(bonus_orderVO.bo_no).bns_no}"></td>
 						<td style="text-align: center;"><span style="color:red;">兌換成功</span></td>
 					</tr>
 				</tbody>

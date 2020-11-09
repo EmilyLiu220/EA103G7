@@ -20,7 +20,7 @@ public class BonusServletShowImg extends HttpServlet {
 
 		String bonusNo = req.getParameter("bonus_img");
 		BonusService bonusSrv = new BonusService();
-		byte[] thisPic = bonusSrv.searchByNo(bonusNo).getBns_img();
+		byte[] thisPic = bonusSrv.getOneBonus(bonusNo).getBns_img();
 		out.write(thisPic);
 
 	

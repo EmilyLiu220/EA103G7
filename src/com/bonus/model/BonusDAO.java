@@ -263,4 +263,6 @@ public class BonusDAO implements BonusDAO_interface {
 		}
 		return list;
 	}
+	
+	
 }
