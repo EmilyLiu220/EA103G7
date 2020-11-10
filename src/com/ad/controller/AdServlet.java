@@ -81,7 +81,7 @@ public class AdServlet extends HttpServlet {
 					errorMsgs.add("請輸入下架日期!");
 				}
 
-				Integer ad_sts = new Integer(1);
+				Integer ad_sts = new Integer(0);
 				
 //			          抓取登入員工
 //				HttpSession session = req.getSession();
