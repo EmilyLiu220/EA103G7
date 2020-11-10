@@ -58,5 +58,9 @@ public class MealService {
 	public List<MealVO> getAll(){
 		return dao.getAll();
 	}
+	
+	public List<MealVO> getAll2(){
+		return dao.getAll2();
+	}
 
 }
