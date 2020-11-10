@@ -95,6 +95,10 @@
 	.adddiv_original{
 	display:none;
 	}
+	#test{
+	width:30px;
+	height:30px;
+	}
 </style>
       
 </head>
@@ -107,6 +111,7 @@
 			<span> - 食材管理</span>
 			<button id="addBtn" class="btn btn-secondary btn-sm float-right">+</button>
 			<button id="subBtn" class="btn btn-secondary btn-sm float-right">-</button>
+			<button id="test" class="btn btn-secondary btn-sm float-right" size="10"></button>
 			<div id="addWaitSeat" class="my-2">
 				<div class="title mb-2"><h3 style="margin-bottom: 0">新增食材</h3>
 			</div>
@@ -128,13 +133,13 @@
 									<div class="col-6 mx-0">
 										<div class="input-title mr-1 p-0">食材名稱</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="fd_name_original" placeholder="請填入食材名稱" >
+											<input style="width: 100%" class="input_fd_name my-0 p-0 text-center" type="text" name="fd_name_original" placeholder="請填入食材名稱" >
 										</div>
 									</div>
 									<div class="col-6 mx-0">
 										<div class="input-title-nut mr-1 p-0">熱量</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="cal_original" placeholder="請填入100g食材所含的熱量" >
+											<input style="width: 100%" class="input_fd_cal my-0 p-0 text-center" type="text" name="cal_original" placeholder="請填入100g食材所含的熱量" >
 										</div>
 									</div>																			
 								</div>
@@ -143,13 +148,13 @@
 									<div class="col-6">
 										<div class="input-title mr-1 p-0">庫存量</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="fd_stk_original" placeholder="請填入食材庫存量" >
+											<input style="width: 100%" class="input_fd_stk my-0 p-0 text-center" type="text" name="fd_stk_original" placeholder="請填入食材庫存量" >
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="input-title-nut mr-1 p-0">蛋白質</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="prot_original" placeholder="請填入100g食材所含的蛋白質" >
+											<input style="width: 100%" class="input_fd_prot my-0 p-0 text-center" type="text" name="prot_original" placeholder="請填入100g食材所含的蛋白質" >
 										</div>
 									</div>																			
 								</div>
@@ -158,13 +163,13 @@
 									<div class="col-6">
 										<div class="input-title mr-1 p-0">庫存底線</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="stk_ll_original" placeholder="請填入食材的庫存底線" >
+											<input style="width: 100%" class="input_fd_stkll my-0 p-0 text-center" type="text" name="stk_ll_original" placeholder="請填入食材的庫存底線" >
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="input-title-nut mr-1 p-0">碳水</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="carb_original" placeholder="請填入100g食材所含的碳水" >
+											<input style="width: 100%" class="input_fd_carb my-0 p-0 text-center" type="text" name="carb_original" placeholder="請填入100g食材所含的碳水" >
 										</div>
 									</div>																			
 								</div>
@@ -177,7 +182,7 @@
 									<div class="col-6">
 										<div class="input-title-nut mr-1 p-0">脂肪</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="fat_original" placeholder="請填入100g食材所含的脂肪" >
+											<input style="width: 100%" class="input_fd_fat my-0 p-0 text-center" type="text" name="fat_original" placeholder="請填入100g食材所含的脂肪" >
 										</div>
 									</div>																			
 								</div>
@@ -188,13 +193,13 @@
 									<div class="col-6 mx-0">
 										<div class="input-title mr-1 p-0">食材名稱</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="fd_name" placeholder="請填入食材名稱" >
+											<input style="width: 100%" class="input_fd_name my-0 p-0 text-center" type="text" name="fd_name" placeholder="請填入食材名稱" >
 										</div>
 									</div>
 									<div class="col-6 mx-0">
 										<div class="input-title-nut mr-1 p-0">熱量</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="cal" placeholder="請填入100g食材所含的熱量" >
+											<input style="width: 100%" class="input_fd_cal my-0 p-0 text-center" type="text" name="cal" placeholder="請填入100g食材所含的熱量" >
 										</div>
 									</div>																			
 								</div>
@@ -203,13 +208,13 @@
 									<div class="col-6">
 										<div class="input-title mr-1 p-0">庫存量</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="fd_stk" placeholder="請填入食材庫存量" >
+											<input style="width: 100%" class="input_fd_stk my-0 p-0 text-center" type="text" name="fd_stk" placeholder="請填入食材庫存量" >
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="input-title-nut mr-1 p-0">蛋白質</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="prot" placeholder="請填入100g食材所含的蛋白質" >
+											<input style="width: 100%" class="input_fd_prot my-0 p-0 text-center" type="text" name="prot" placeholder="請填入100g食材所含的蛋白質" >
 										</div>
 									</div>																			
 								</div>
@@ -218,13 +223,13 @@
 									<div class="col-6">
 										<div class="input-title mr-1 p-0">庫存底線</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="stk_ll" placeholder="請填入食材的庫存底線" >
+											<input style="width: 100%" class="input_fd_stkll my-0 p-0 text-center" type="text" name="stk_ll" placeholder="請填入食材的庫存底線" >
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="input-title-nut mr-1 p-0">碳水</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="carb" placeholder="請填入100g食材所含的碳水" >
+											<input style="width: 100%" class="input_fd_carb my-0 p-0 text-center" type="text" name="carb" placeholder="請填入100g食材所含的碳水" >
 										</div>
 									</div>																			
 								</div>
@@ -237,7 +242,7 @@
 									<div class="col-6">
 										<div class="input-title-nut mr-1 p-0">脂肪</div>
 										<div class="input-text">
-											<input style="width: 100%" class="my-0 p-0 text-center" type="text" name="fat" placeholder="請填入100g食材所含的脂肪" >
+											<input style="width: 100%" class="input_fd_fat my-0 p-0 text-center" type="text" name="fat" placeholder="請填入100g食材所含的脂肪" >
 										</div>
 									</div>																			
 								</div>
@@ -313,6 +318,64 @@
 		tablestart();
 	});
 	
+	$("#test").click(function(){
+		add();
+		let fd_name=document.getElementsByClassName("input_fd_name");
+		fd_name[1].value="香菇1"
+		fd_name[2].value="洋芋片1"
+		let fd_stk=document.getElementsByClassName("input_fd_stk");
+		fd_stk[1].value="1000"
+		fd_stk[2].value="2000"
+		let fd_stkll=document.getElementsByClassName("input_fd_stkll");
+		fd_stkll[1].value="500"
+		fd_stkll[2].value="1000"
+		let fd_cal=document.getElementsByClassName("input_fd_cal");
+		fd_cal[1].value="10000"
+		fd_cal[2].value="10000"
+		let fd_carb=document.getElementsByClassName("input_fd_carb");
+		fd_carb[1].value="30"
+		fd_carb[2].value="50"
+		let fd_prot=document.getElementsByClassName("input_fd_prot");
+		fd_prot[1].value="20"
+		fd_prot[2].value="10"
+		let fd_fat=document.getElementsByClassName("input_fd_fat");
+		fd_fat[1].value="50"
+		fd_fat[2].value="30"
+	});
+	
+	function add(){
+		$("#fd_form_add").find(".fd_btn_send_addfd").before( $("#fd_form_add").find(".adddiv_original").clone() );
+		//複製一個div放在button前
+		let adddiv_count=$("#fd_form_add").find(".adddiv");
+		if(adddiv_count.length!=0){
+			$("#fd_form_add").find(".adddiv_original:last-of-type").prepend("<hr>");
+		}
+		//如果adddiv都沒有，不加<hr>，有超過一個，要加
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='fd_name_original']").attr({
+			"type":"text","name":"fd_name"
+		});
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='fd_stk_original']").attr({
+			"type":"text","name":"fd_stk"
+		});
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='stk_ll_original']").attr({
+			"type":"text","name":"stk_ll"
+		});
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='cal_original']").attr({
+			"type":"text","name":"cal"
+		});
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='prot_original']").attr({
+			"type":"text","name":"prot"
+		});
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='carb_original']").attr({
+			"type":"text","name":"carb"
+		});
+		$("#fd_form_add").find(".adddiv_original:last-of-type").find("input[name='fat_original']").attr({
+			"type":"text","name":"fat"
+		});
+		//更改複製div內的input的display和name，原本的name故意取別的，這樣取值的時候才不會把隱藏的input也當資料取出
+		$("#fd_form_add").find(".adddiv_original:last-of-type").attr("class","adddiv");
+		//更改div，div故意取別的，這樣刪的時候才不會把隱藏的div都刪掉
+	}
 	var warningMsg="";
 	<c:forEach var="warningVO" items="${warningList}">
 		warningMsg+="食材編號"+'${warningVO.getFd_no()}'+" "+'${warningVO.getFd_name()}'+" 庫存量不足"+"\n";
@@ -407,6 +470,8 @@
 		//刪除input
 		$("#fd_form_add").find(".adddiv:last-of-type").remove();
 	});
+	
+	
 	
 	function tablestart(){
 		table = $("#dataTable").DataTable({
