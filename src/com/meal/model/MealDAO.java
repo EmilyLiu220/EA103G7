@@ -383,21 +383,60 @@ public class MealDAO implements MealDAO_interface {
 
 	};
 	
-//	public static byte[] getPicByteArray() throws IOException{
-//		File file = new File("meal_img/1.jpg");
-//		FileInputStream fis = new FileInputStream(file);
-//		ByteArrayOutputStream baos = new ByteArrayOutputStream();//��Ƭywrite�C����,dest�O���ت�byte[]
-//		byte[] buffer = new byte[8192];
-//		int i;
-//		while ((i = fis.read(buffer)) != -1) {
-//			baos.write(buffer, 0, i);
-//			baos.flush();
-//		}
-//		baos.close();
-//		fis.close();
-//		
-//		return baos.toByteArray();
-//		
-//	}
+	public List<MealVO> getAll2() {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<MealVO> list = new ArrayList<MealVO>();
+		MealVO mealVO = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GETALL);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				mealVO = new MealVO();
+				
+				mealVO.setMeal_no(rs.getString("meal_no"));
+				mealVO.setMeal_name(rs.getString("meal_name"));
+				mealVO.setMeal_info(rs.getString("meal_info"));
+				mealVO.setMeal_price(rs.getInt("meal_price"));
+				mealVO.setMeal_sts(rs.getInt("meal_sts"));
+				mealVO.setCat_no(rs.getInt("cat_no"));
+				list.add(mealVO);
+
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+
+	};
+	
 
 }

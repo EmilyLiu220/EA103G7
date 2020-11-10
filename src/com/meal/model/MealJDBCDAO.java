@@ -392,6 +392,62 @@ public List<MealVO> searchByMealSts(Integer mealSts){
 
 	};
 	
+	public List<MealVO> getAll2() {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<MealVO> list = new ArrayList<MealVO>();
+		MealVO mealVO = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GETALL);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				mealVO = new MealVO();
+				
+				mealVO.setMeal_no(rs.getString("meal_no"));
+				mealVO.setMeal_name(rs.getString("meal_name"));
+				mealVO.setMeal_info(rs.getString("meal_info"));
+				mealVO.setMeal_price(rs.getInt("meal_price"));
+				mealVO.setMeal_sts(rs.getInt("meal_sts"));
+				mealVO.setCat_no(rs.getInt("cat_no"));
+				list.add(mealVO);
+
+			}
+		} catch (SQLException | ClassNotFoundException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+
+	};
+	
 	public static void main(String[] args) throws IOException{
 		
 		/*-------------------insert����-------------------*/

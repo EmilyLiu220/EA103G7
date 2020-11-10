@@ -31,7 +31,7 @@
 		}
 	}
 
-	Map<String, Object> mealMap = mealSrv.getAll().stream()
+	Map<String, Object> mealMap = mealSrv.getAll2().stream()
 			.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
 	Map<String, Object> mealSetMap = mealSetSrv.getAll().stream()
 			.collect(Collectors.toMap(MealSetVO::getMeal_set_no, ms -> ms));

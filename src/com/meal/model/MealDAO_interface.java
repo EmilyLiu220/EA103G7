@@ -13,5 +13,6 @@ public interface MealDAO_interface {
 //     public MealVO findByMealName(String mealName);
      public List<MealVO> searchByMealSts(Integer mealSts);
      public List<MealVO> getAll();
+     public List<MealVO> getAll2();
 	
 }

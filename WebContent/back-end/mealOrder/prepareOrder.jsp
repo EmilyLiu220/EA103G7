@@ -28,7 +28,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>訂單管理-listAll</title>
+<title>訂單管理-出餐</title>
 <jsp:useBean id="mealSrv" class="com.meal.model.MealService"/>
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService"/>
 <jsp:useBean id="mealSetSrv" scope="page" class="com.meal_set.model.MealSetService"/>
@@ -369,7 +369,7 @@
 				count = document.getElementsByClassName("table").length;
 				$("#table-1").find("span").html('目 前 共 有 <font color="red" size="5">' + count  + ' 筆   </font>未 完 成 餐 點 的 訂 單');
 		}
-		$(".checkbox").change(sendOrder);
+// 		$(".checkbox").change(sendOrder);
 	}
 	
 	window.onbeforeunload = function (e) {
