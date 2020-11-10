@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.food.model.FoodDAO;
 import com.google.gson.Gson;
 import com.meal_order.controller.MealOrderWebSocket;
 import com.meal_order_detail.model.MealOrderDetailDAO;
@@ -90,6 +91,10 @@ public class MealOrderDAO implements MealOrderDAO_interface {
 				detailVO.setMeal_order_no(orderNo);
 				detailDAO.insert(detailVO, con);
 			}
+			
+			FoodDAO foodDAO=new FoodDAO();
+            foodDAO.update(detailList, con);
+            
 			map.put("mealOrderVO", mealOrderVO);
 			map.put("con", con);
 

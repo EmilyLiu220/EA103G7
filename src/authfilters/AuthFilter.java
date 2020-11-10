@@ -80,6 +80,12 @@ public class AuthFilter implements Filter {
 		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/7.png");
 		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/8.png");
 		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/9.png");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/10.png");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/11.png");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/12.png");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/13.png");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/14.png");
+		fa0009.add(req.getContextPath() + "/back-end/mealOrder/icon/15.png");
 		fa0009.add(req.getContextPath() + "/back-end/mealOrder/asignOrder.jsp");
 		fa0009.add(req.getContextPath() + "/back-end/mealOrder/listAllOrder2.jsp");
 		fa0009.add(req.getContextPath() + "/back-end/mealOrder/listOneOrder.jsp");

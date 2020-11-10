@@ -210,57 +210,14 @@ figure figcaption {
 					</tr>
 				</table>
 				<br>
-<%-- 				<form action="<%= request.getContextPath()%>/MealOrderServlet.do" method="POST"> --%>
-<!-- 				<table id="table-2"> -->
-<!-- 				<tr class="row query"> -->
-<!-- 					<td class="col">訂單編號：<input type="text" name="meal_order_no" size="10"/></td> -->
-<!-- 					<td class="col">員工編號：<input type="text" name="emp_no" size="10"/></td> -->
-<!-- 					<td class="col">會員編號：<input type="text" name="mem_no" size="10"/></td> -->
-<!-- 				</tr> -->
-<!-- 				<tr class="row query"> -->
-<!-- 					<td class="col">通知狀態：<select name="noti_sts"> -->
-<!-- 			 			<option value=''>請選擇 -->
-<!-- 			 			<option value=0>未通知 -->
-<!-- 			 			<option value=1>已通知 -->
-<!-- 						</select></td> -->
-<!-- 				<td class="col">付款狀態：<select name="pay_sts"> -->
-<!-- 			 			<option value=''>請選擇 -->
-<!-- 			 			<option value=0>未付款 -->
-<!-- 			 			<option value=1>已付款 -->
-<!-- 						</select></td> -->
-<!-- 				<td class="col">訂單狀態：<select name="meal_order_sts"> -->
-<!-- 			 			<option value=''>請選擇 -->
-<!-- 			 			<option value=0>已取消 -->
-<!-- 			 			<option value=1>未派工 -->
-<!-- 			 			<option value=2>已派工 -->
-<!-- 			 			<option value=3>已出餐 -->
-<!-- 			 			<option value=4>已完成 -->
-<!-- 						</select></td> -->
-<!-- 						</tr> -->
-<!-- 	<tr class="row query"> -->
-<!-- 				<td class="col"> -->
-<!-- 				訂餐時間：<input type="text" name="order_time" class="f_date1"/> -->
-<!-- 				至 <input type="text" name="order_time" class="f_date1"/> 之間</td> -->
-<!-- 				</tr> -->
-<!-- 	<tr class="row query">			 -->
-<!-- 				<td class="col"> -->
-<!-- 				取餐時間：<input type="text" name="pickup_time" class="f_date1"/> -->
-<!-- 				至 <input type="text" name="pickup_time" class="f_date1"/> 之間</td> -->
-<!-- 				<td> -->
-<!-- 				<input type="submit" value="快速查詢"/> -->
-<!-- 				<input type="hidden" name="action" value="queryAll"/></td> -->
-<!-- 				</tr> -->
-				
-<!-- 				</table> -->
-<!-- 				</form> -->
 				
 				<br><br><br>
 				
 				<div class="icon">
-				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal/listAllMeal2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/2.png"/></a><figcaption>查看所有餐點</figcaption></figure>
-				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal/insertMeal2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/3.png"/></a><figcaption>新增餐點</figcaption></figure>
-				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal_set/listAllMealSet2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/7.png"/></a><figcaption>查看所有套餐</figcaption></figure>
-				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal_set/insertMealSet2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/9.png"/></a><figcaption>新增套餐</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal/listAllMeal2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/14.png"/></a><figcaption>查看所有餐點</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal/insertMeal2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/13.png"/></a><figcaption>新增餐點</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal_set/listAllMealSet2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/2.png"/></a><figcaption>查看所有套餐</figcaption></figure>
+				<figure class=""><a href="<%= request.getContextPath()%>/back-end/meal_set/insertMealSet2.jsp"><img src="<%= request.getContextPath()%>/back-end/mealOrder/icon/10.png"/></a><figcaption>新增套餐</figcaption></figure>
 				</div>
 			</p>
 		</div> <!-- content -->
