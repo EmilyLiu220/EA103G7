@@ -233,7 +233,7 @@ public class NewsServlet extends HttpServlet {
 
 //				------------------------
 				
-				Integer news_sts = new Integer(1);				
+				Integer news_sts = new Integer(0);				
 				
 				NewsVO newsVO = new NewsVO();
 				newsVO.setEmp_no(emp_no);
