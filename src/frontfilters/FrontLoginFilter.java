@@ -24,8 +24,9 @@ public class FrontLoginFilter implements Filter {
 		// 【取得 session】
 		HttpSession session = req.getSession();
 		// 【從 session 判斷此user是否登入過】
-		Object account = session.getAttribute("account_m");
-		if (account == null) {
+		Object account_m = session.getAttribute("account_m");
+		Object account_e = session.getAttribute("account_e");
+		if (account_m == null && account_e == null) {
 			session.setAttribute("location_m", req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/front-end/mem/login_mem.jsp");
 			return;

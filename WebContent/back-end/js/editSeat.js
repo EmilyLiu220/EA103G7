@@ -144,7 +144,7 @@ $(document).ready(function() {
 	// save seat
 	var lock_save = true;
 	$("#save").click(function(e) {
-//		e.stopPropagation();
+		e.preventDefault();
 		e.stopImmediatePropagation();
 		if (!lock_save) {// 2.判斷該鎖是否開啟，如果是關閉的，則直接返回
 			console.log("lock");
@@ -198,7 +198,7 @@ $(document).ready(function() {
 				"floor_list": $("#floor_list").val()
 			},
 			success: function(messages) {
-//				console.log(messages);
+				// console.log(messages);
 				swal("儲存成功", "以儲存更動，點擊按鈕或任何空白處離開", "success").then(function() {
 					$("body > div#container").load(ajaxURL + "/back-end/seat/editSeat2.jsp div#container", function(){
 						$.getScript(ajaxURL + "/back-end/js/jquery-1.12.4.js");
