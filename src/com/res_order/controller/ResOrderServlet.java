@@ -1,6 +1,5 @@
 package com.res_order.controller;
 
-import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -9,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.ad.model.AdDAO;
 import com.front_inform.model.Front_InformService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -254,6 +251,7 @@ public class ResOrderServlet extends HttpServlet {
 			String res_no = req.getParameter("res_no");
 			String mem_no = req.getParameter("mem_no");
 			req.setAttribute("res_no", res_no);
+			req.setAttribute("mem_no", mem_no);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/shopping/mealMenu2.jsp");
 			failureView.forward(req, res);
 			
@@ -555,7 +553,6 @@ public class ResOrderServlet extends HttpServlet {
 					if (resOrderVO.getInfo_sts() != 3) {
 						List<ResDetailVO> resDetailList = resDetailSvc.getAllResNO(resOrderVO.getRes_no());
 						// 如果桌位編號有在訂單內，回傳並將該桌號disabled
-						int i = 0;
 						for (ResDetailVO resDetailVO : resDetailList) {
 							if (floor != null
 									&& seatSvc.getOneSeat(resDetailVO.getSeat_no()).getSeat_f().equals(floor)) {
