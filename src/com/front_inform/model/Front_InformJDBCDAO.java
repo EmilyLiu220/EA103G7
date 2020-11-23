@@ -231,7 +231,7 @@ public class Front_InformJDBCDAO implements Front_InformDAO_interface {
 
 	@Override
 	public Front_InformVO insertResCheInform(String res_no) { 
-		// 寫一支額外的排程器檔，每一個小時掃一次 DB 的訂位訂單表格時間，若時間 +6 為該次掃 DB 的時間，
+		// 寫一支額外的排程器檔，每天 9 點掃一次 DB 的訂位訂單表格時間
 		// 則 new Front_InformService、call addRCFI() 方法去新增並發出通知
 		Connection con = null;
 		PreparedStatement pstmt1 = null;

@@ -56,17 +56,6 @@ public class Front_InformService {
 		ResOrderService resOrderSvc = new ResOrderService();
 		ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
 		
-//		// EJ 說在 ResOrderDAO 裡有判斷 seats_no 是否為 null 值，若是，則會做其他動作
-//		// 透過 ResDetailService 取得 String[] seats_no 才能塞入 updateResOrder() 方法
-//		ResDetailService resDetailSvc = new ResDetailService();
-//		List<ResDetailVO> resDetailVOs = resDetailSvc.getAllResNO(res_no);
-//		List<String> seats_noList = new ArrayList<String>();
-//		for(ResDetailVO resDetailVO : resDetailVOs) {
-//			seats_noList.add(resDetailVO.getSeat_no());
-//		}
-//		String[] seats_no= new String[seats_noList.size()];
-//		seats_noList.toArray(seats_no);
-		
 		// 發送當日訂位確認通知後必須修改 Info_Sts 為 1 (已發送未確認)
 		resOrderSvc.updateResOrder(res_no, resOrderVO.getMeal_order_no(), resOrderVO.getMem_no(),
 				resOrderVO.getEmp_no(), resOrderVO.getRes_date(), resOrderVO.getPeople(), resOrderVO.getTime_peri_no(),

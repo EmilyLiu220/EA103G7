@@ -127,17 +127,6 @@ public class Front_informServlet extends HttpServlet {
 				ResOrderService resOrderSvc = new ResOrderService();
 				ResOrderVO resOrderVO = resOrderSvc.getOneResOrder(res_no);
 				
-//				// EJ 說在 ResOrderDAO 裡有判斷 seats_no 是否為 null 值，若是，則會做其他動作
-//				// 透過 ResDetailService 取得 String[] seats_no 才能塞入 updateResOrder() 方法
-//				ResDetailService resDetailSvc = new ResDetailService();
-//				List<ResDetailVO> resDetailVOs = resDetailSvc.getAllResNO(res_no);
-//				List<String> seats_noList = new ArrayList<String>();
-//				for(ResDetailVO resDetailVO : resDetailVOs) {
-//					seats_noList.add(resDetailVO.getSeat_no());
-//				}
-//				String[] seats_no= new String[seats_noList.size()];
-//				seats_noList.toArray(seats_no);
-				
 				if(checkYes!=null) { // 點選確定來吃
 					boolean checked = fiSvc.updateSts(1, info_no);
 					if(checked) {
