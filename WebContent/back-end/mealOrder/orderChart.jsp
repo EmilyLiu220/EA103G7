@@ -21,15 +21,15 @@
 	ResOrderService resOrderSrv = new ResOrderService();
 	int nop = 0;
 	
-	for(ResOrderVO resOrderVO : resOrderSrv.getAll()){
-		for(MealOrderVO mealOrderVO : list ){
-			if(resOrderVO.getSeat_sts() == 1 && resOrderVO.getMeal_order_no().equals(mealOrderVO.getMeal_order_no())){
-				nop += resOrderVO.getPeople();
-			}else{
-				nop += 1;
-			}
-		}
-	}
+// 	for(ResOrderVO resOrderVO : resOrderSrv.getAll()){
+// 		for(MealOrderVO mealOrderVO : list ){
+// 			if(resOrderVO.getSeat_sts() == 1 && resOrderVO.getMeal_order_no().equals(mealOrderVO.getMeal_order_no())){
+// 				nop += resOrderVO.getPeople();
+// 			}else{
+// 				nop += 1;
+// 			}
+// 		}
+// 	}
 
 	Map<String, Object> mealMap = mealSrv.getAll2().stream()
 			.collect(Collectors.toMap(MealVO::getMeal_no, m -> m));
