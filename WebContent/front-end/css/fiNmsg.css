@@ -13,7 +13,7 @@
 }
 
 .chat_box_wrapper.chat_box_small.chat_box_active {
-	height: 346px;
+	height: 348px;
 	overflow-y: scroll;
 	width: 316px;
 }
